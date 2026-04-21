@@ -1,0 +1,443 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { portfolios, getPortfolio } from "@/data/portfolios";
+import { categoryAllocations, getHoldingsByCategory } from "@/data/holdings";
+import { rothIraHoldings, etfsSleeveHoldings } from "@/data/sleeveHoldings";
+import { etfProfiles } from "@/data/etfConstituents";
+import { QuotesProvider } from "@/components/QuotesProvider";
+import Hero from "@/components/Hero";
+import PortfolioOverview from "@/components/PortfolioOverview";
+import FullHoldingsSection from "@/components/FullHoldingsSection";
+import CategorySection from "@/components/CategorySection";
+import SleeveHoldingsTable from "@/components/SleeveHoldingsTable";
+import BreakdownPanel from "@/components/BreakdownPanel";
+import { BenchmarkComparisonWrapper } from "@/components/BenchmarkComparisonWrapper";
+
+export function generateStaticParams() {
+  return portfolios.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const p = getPortfolio(slug);
+  if (!p) return {};
+  return { title: `${p.title} — Portfolio` };
+}
+
+export default async function PortfolioPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const portfolio = getPortfolio(slug);
+  if (!portfolio) notFound();
+
+  if (portfolio.type === "retail") return <RetailView />;
+  if (portfolio.type === "roth-ira") return <RothIraView />;
+  if (portfolio.type === "etfs") return <EtfsView />;
+  return notFound();
+}
+
+// ── Shared nav elements ───────────────────────────────────────────────────────
+
+function OverviewLink() {
+  return (
+    <Link
+      href="/"
+      className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+    >
+      ← Overview
+    </Link>
+  );
+}
+
+function SleeveFooter() {
+  return (
+    <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
+      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-12">
+        <div className="flex items-center justify-between">
+          <Link
+            href="/"
+            className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+          >
+            ← Overview
+          </Link>
+          <p className="font-mono text-[10px] text-[#a8b2bd]">
+            For informational purposes only. Not financial advice.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// ── Retail with Friends view ──────────────────────────────────────────────────
+
+function RetailView() {
+  return (
+    <div className="min-h-screen bg-[#faf7f2]">
+      <nav
+        className="sticky top-0 z-50 backdrop-blur-xl"
+        style={{
+          background: "rgba(250,247,242,0.94)",
+          borderBottom: "1px solid rgba(15,30,53,0.08)",
+        }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
+          <OverviewLink />
+          <div className="hidden items-center gap-8 sm:flex">
+            {categoryAllocations.map((c) => (
+              <a
+                key={c.category}
+                href={`#${c.category
+                  .toLowerCase()
+                  .replace(/\s*\/\s*/g, "-")
+                  .replace(/\s+/g, "-")}`}
+                className="font-mono text-[11px] text-[#a8b2bd] transition-colors duration-150 hover:text-[#0f1e35]"
+              >
+                {c.category}
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      <QuotesProvider>
+        <main>
+          <Hero />
+          <PortfolioOverview />
+          <FullHoldingsSection />
+          {categoryAllocations.map((c) => (
+            <CategorySection
+              key={c.category}
+              category={c.category}
+              description={c.description}
+              holdings={getHoldingsByCategory(c.category)}
+            />
+          ))}
+        </main>
+      </QuotesProvider>
+
+      <SleeveFooter />
+    </div>
+  );
+}
+
+// ── Roth IRA view ─────────────────────────────────────────────────────────────
+
+function RothIraView() {
+  const color = "#1a4a2e";
+
+  return (
+    <div className="min-h-screen bg-[#faf7f2]">
+      <nav
+        className="sticky top-0 z-50 backdrop-blur-xl"
+        style={{
+          background: "rgba(250,247,242,0.94)",
+          borderBottom: "1px solid rgba(15,30,53,0.08)",
+        }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
+          <OverviewLink />
+          <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
+            Roth IRA
+          </span>
+        </div>
+      </nav>
+
+      <main>
+        {/* Header */}
+        <section
+          className="border-b"
+          style={{ borderColor: "rgba(15,30,53,0.08)" }}
+        >
+          <div
+            style={{
+              height: "2px",
+              background: `linear-gradient(90deg, transparent 0%, ${color}30 15%, ${color}60 50%, ${color}30 85%, transparent 100%)`,
+            }}
+          />
+          <div className="mx-auto max-w-7xl px-6 py-20 lg:px-12">
+            <p
+              className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
+              style={{ color }}
+            >
+              Portfolio Sleeve
+            </p>
+            <div className="flex items-end justify-between gap-8">
+              <div className="min-w-0">
+                <h1
+                  className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
+                  style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
+                >
+                  Roth IRA
+                </h1>
+                <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
+                  Long-term retirement sleeve blending core market exposure,
+                  compounders, thematic growth, and select speculative positions.
+                </p>
+              </div>
+              <div className="shrink-0 text-right">
+                <p
+                  className="font-mono font-bold leading-none tracking-tight"
+                  style={{ color, fontSize: "clamp(3.5rem,5.5vw,5rem)" }}
+                >
+                  {rothIraHoldings.length}
+                </p>
+                <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                  positions
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Holdings table */}
+        <section
+          className="border-b"
+          style={{ borderColor: "rgba(15,30,53,0.08)" }}
+        >
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+            <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+              Holdings
+            </p>
+            <SleeveHoldingsTable holdings={rothIraHoldings} />
+          </div>
+        </section>
+
+        {/* Breakdown */}
+        <section
+          className="border-b"
+          style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
+        >
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+            <p className="mb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+              Portfolio Composition
+            </p>
+            <BreakdownPanel holdings={rothIraHoldings} />
+          </div>
+        </section>
+
+        {/* 3Y benchmark comparison */}
+        <section
+          className="border-b"
+          style={{ borderColor: "rgba(15,30,53,0.08)" }}
+        >
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+            <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+              3Y Relative Performance
+            </p>
+            <p className="mb-8 font-mono text-[10px] text-[#a8b2bd]">
+              Normalized price performance over the last 3 years, with VOO and
+              QQQ as benchmarks.
+            </p>
+            <BenchmarkComparisonWrapper
+              holdingTickers={rothIraHoldings.map((h) => h.ticker)}
+            />
+          </div>
+        </section>
+      </main>
+
+      <SleeveFooter />
+    </div>
+  );
+}
+
+// ── ETFs view ─────────────────────────────────────────────────────────────────
+
+function EtfsView() {
+  const color = "#8b2530";
+
+  return (
+    <div className="min-h-screen bg-[#faf7f2]">
+      <nav
+        className="sticky top-0 z-50 backdrop-blur-xl"
+        style={{
+          background: "rgba(250,247,242,0.94)",
+          borderBottom: "1px solid rgba(15,30,53,0.08)",
+        }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
+          <OverviewLink />
+          <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
+            ETFs
+          </span>
+        </div>
+      </nav>
+
+      <main>
+        {/* Header */}
+        <section
+          className="border-b"
+          style={{ borderColor: "rgba(15,30,53,0.08)" }}
+        >
+          <div
+            style={{
+              height: "2px",
+              background: `linear-gradient(90deg, transparent 0%, ${color}30 15%, ${color}60 50%, ${color}30 85%, transparent 100%)`,
+            }}
+          />
+          <div className="mx-auto max-w-7xl px-6 py-20 lg:px-12">
+            <p
+              className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
+              style={{ color }}
+            >
+              Portfolio Sleeve
+            </p>
+            <div className="flex items-end justify-between gap-8">
+              <div>
+                <h1
+                  className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
+                  style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
+                >
+                  ETFs
+                </h1>
+                <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
+                  Core ETF sleeve centered on broad-market exposure, large-cap
+                  growth, and semiconductors.
+                </p>
+              </div>
+              <div className="shrink-0 text-right">
+                <p
+                  className="font-mono font-bold leading-none tracking-tight"
+                  style={{ color, fontSize: "clamp(3.5rem,5.5vw,5rem)" }}
+                >
+                  {etfsSleeveHoldings.length}
+                </p>
+                <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                  ETFs
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ETF cards */}
+        <section
+          className="border-b"
+          style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
+        >
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+            <p className="mb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+              Holdings
+            </p>
+            <div className="grid gap-5 md:grid-cols-3">
+              {etfsSleeveHoldings.map((h) => {
+                const profile = etfProfiles[h.ticker];
+                const pos = h.returnPct !== undefined && h.returnPct >= 0;
+                return (
+                  <div
+                    key={h.ticker}
+                    className="flex flex-col rounded-2xl p-8"
+                    style={{
+                      background: "#ffffff",
+                      border: "1px solid rgba(15,30,53,0.09)",
+                      boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+                    }}
+                  >
+                    <div className="mb-1 flex items-start justify-between gap-3">
+                      <p
+                        className="font-mono text-[9px] uppercase tracking-[0.22em]"
+                        style={{ color }}
+                      >
+                        {h.subcategory}
+                      </p>
+                      {h.returnPct !== undefined && (
+                        <span
+                          className="font-mono text-[11px] font-semibold tabular-nums"
+                          style={{ color: pos ? "#15542e" : "#8b1a1a" }}
+                        >
+                          {pos ? "+" : ""}
+                          {h.returnPct.toFixed(2)}%
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="mt-3 font-mono text-[2rem] font-bold leading-none tracking-tight text-[#0f1e35]">
+                      {h.ticker}
+                    </p>
+                    <p className="mt-1.5 text-[13px] text-[#5a6e82]">{h.company}</p>
+
+                    {/* Portfolio weight */}
+                    <div className="mt-4 flex items-center gap-2.5">
+                      <div
+                        className="flex-1 overflow-hidden rounded-full"
+                        style={{ background: "rgba(15,30,53,0.07)", height: 3 }}
+                      >
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${h.portfolioWeightPct}%`,
+                            backgroundColor: color,
+                            opacity: 0.6,
+                          }}
+                        />
+                      </div>
+                      <span className="font-mono text-[10px] tabular-nums text-[#7a8799]">
+                        {h.portfolioWeightPct.toFixed(1)}%
+                      </span>
+                    </div>
+
+                    {h.thesis && (
+                      <p className="mt-4 text-[12px] leading-[1.65] text-[#7a8799]">
+                        {h.thesis}
+                      </p>
+                    )}
+
+                    {profile && (
+                      <Link
+                        href={`/etfs/${h.ticker}`}
+                        className="mt-auto pt-5 inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+                      >
+                        View Holdings →
+                      </Link>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ETFs breakdown */}
+        <section
+          className="border-b"
+          style={{ borderColor: "rgba(15,30,53,0.08)" }}
+        >
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+            <p className="mb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+              Portfolio Composition
+            </p>
+            <BreakdownPanel holdings={etfsSleeveHoldings} />
+          </div>
+        </section>
+
+        {/* 3Y benchmark comparison */}
+        <section
+          className="border-b"
+          style={{ borderColor: "rgba(15,30,53,0.08)" }}
+        >
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+            <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+              3Y Relative Performance
+            </p>
+            <p className="mb-8 font-mono text-[10px] text-[#a8b2bd]">
+              Normalized price performance over the last 3 years, with VOO and
+              QQQ as benchmarks.
+            </p>
+            <BenchmarkComparisonWrapper
+              holdingTickers={etfsSleeveHoldings.map((h) => h.ticker)}
+            />
+          </div>
+        </section>
+      </main>
+
+      <SleeveFooter />
+    </div>
+  );
+}

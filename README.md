@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Investment Portfolio Site
+
+A dark, premium, data-driven investment portfolio website built with Next.js 16, TypeScript, and Tailwind CSS v4.
 
 ## Getting Started
 
-First, run the development server:
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Market Data (Live Quotes)
+
+The site fetches live delayed stock quotes and refreshes them automatically while the page is open.
+
+### 1. Get a Finnhub API key
+
+Sign up for a free account at **https://finnhub.io** and copy your API key from the dashboard. The free tier supports 60 API calls per minute, which is well above what this site needs.
+
+### 2. Create `.env.local`
+
+In the project root, create a file called `.env.local` and add:
+
+```
+FINNHUB_API_KEY=your_api_key_here
+```
+
+This file is already in `.gitignore` and will never be committed.
+
+### 3. Restart the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The `Price` and `Day %` columns in the holdings tables will now show live data. Without an API key the columns show `—` and the server logs a clear error message.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How quote refreshing works
 
-## Learn More
+1. When the page loads, `QuotesProvider` (`components/QuotesProvider.tsx`) immediately calls `GET /api/quotes`.
+2. The API route (`app/api/quotes/route.ts`) calls `getProvider()` from `lib/marketData.ts`, which constructs a `FinnhubProvider` using the server-side env var.
+3. The provider fetches all 14 holding tickers in parallel from Finnhub and returns a `QuoteMap` (`Record<symbol, Quote>`).
+4. `QuotesProvider` stores the result in React context. `PriceCell` and `ChangeCell` (in `components/QuoteCell.tsx`) read from that context and update their cells.
+5. A `setInterval` repeats step 1 every **15 minutes**. The interval is cleaned up on unmount.
 
-To learn more about Next.js, take a look at the following resources:
+The API key is **never sent to the browser** — all provider logic runs server-side inside the API route.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Changing the refresh interval
 
-## Deploy on Vercel
+Open `components/QuotesProvider.tsx` and edit the constant at the top:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```ts
+export const QUOTE_REFRESH_INTERVAL_MS = 15 * 60 * 1_000; // 15 minutes
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Examples:
+- `5 * 60 * 1_000` — every 5 minutes
+- `60 * 1_000` — every 1 minute (watch Finnhub rate limits on the free tier)
+- `30 * 60 * 1_000` — every 30 minutes
+
+---
+
+## Switching quote providers
+
+All provider logic is isolated:
+
+| File | Purpose |
+|------|---------|
+| `lib/types.ts` | `Quote`, `QuoteMap`, `MarketDataProvider` interface |
+| `lib/providers/finnhub.ts` | Finnhub implementation |
+| `lib/marketData.ts` | `getProvider()` factory — **edit this to swap providers** |
+
+To add a new provider:
+1. Create `lib/providers/yourprovider.ts` implementing `MarketDataProvider`.
+2. In `lib/marketData.ts`, import your class and return it from `getProvider()`.
+3. Add the new provider's API key to `.env.local`.
+
+---
+
+## Disabling live pricing for a specific holding
+
+In `data/holdings.ts`, add `livePricing: false` to any holding entry:
+
+```ts
+{
+  ticker: 'AVEX',
+  company: 'AEVEX Corp',
+  livePricing: false,   // ← opt out of live quotes
+  ...
+}
+```
+
+---
+
+## Portfolio data
+
+All holdings, weights, categories, subcategories, and thesis notes live in **`data/holdings.ts`**. Edit that file to update the portfolio. The market data layer reads tickers from the same file automatically.
