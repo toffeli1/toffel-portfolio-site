@@ -51,7 +51,7 @@ function CategoryCard({
   description: string;
 }) {
   const catHoldings = getHoldingsByCategory(category);
-  const maxPct = Math.max(...catHoldings.map((h) => h.portfolioPct));
+  const maxPct = Math.max(...catHoldings.map((h) => h.portfolioPct), 1);
 
   return (
     <div

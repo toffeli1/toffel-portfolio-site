@@ -382,19 +382,104 @@ export const positionLots: Record<string, PurchaseLot[]> = {
       amountUsd: 209.05,
     },
   ],
+
+  // ── META ──────────────────────────────────────────────────────────────────
+  // 2 buys, 0 sells → all lots survive
+  META: [
+    {
+      date: "2026-01-23",
+      shares: 0.778573,
+      pricePerShare: 642.20,
+      amountUsd: 500.00,
+    },
+    {
+      date: "2026-01-26",
+      shares: 1.2,
+      pricePerShare: 662.78,
+      amountUsd: 795.34,
+    },
+  ],
+
+  // ── SCHD ──────────────────────────────────────────────────────────────────
+  // 1 buy, 0 sells → lot survives
+  SCHD: [
+    {
+      date: "2026-04-01",
+      shares: 65.147614,
+      pricePerShare: 30.70,
+      amountUsd: 2000.00,
+    },
+  ],
+
+  // ── ASTS ──────────────────────────────────────────────────────────────────
+  // 1 buy, 0 sells → lot survives
+  ASTS: [
+    {
+      date: "2026-01-26",
+      shares: 6,
+      pricePerShare: 108.92,
+      amountUsd: 653.53,
+    },
+  ],
+
+  // ── SMH (Roth IRA position) ───────────────────────────────────────────────
+  // 1 buy, 0 sells → lot survives
+  // Note: SMH also appears in the ETFs sleeve with an earlier, untracked cost basis.
+  // This lot represents the Roth IRA purchase only.
+  SMH: [
+    {
+      date: "2026-01-26",
+      shares: 1.78,
+      pricePerShare: 398.63,
+      amountUsd: 709.55,
+    },
+  ],
+
+  // ── RKLB ──────────────────────────────────────────────────────────────────
+  // 3 buys, 0 sells → all lots survive
+  RKLB: [
+    {
+      date: "2026-01-23",
+      shares: 2.246055,
+      pricePerShare: 89.05,
+      amountUsd: 200.00,
+    },
+    {
+      date: "2026-01-26",
+      shares: 5.5,
+      pricePerShare: 86.04,
+      amountUsd: 473.22,
+    },
+    {
+      date: "2026-02-04",
+      shares: 5,
+      pricePerShare: 70.04,
+      amountUsd: 350.20,
+    },
+  ],
 };
 
 // ── Weighted average cost per share for each fully-tracked position ───────────
 // Computed from surviving lots only (post-FIFO). Not available for VOO
 // (recurring lots lack per-share data until resolved from chart history).
 export const positionAverageCost: Record<string, number> = {
-  AMD: 206.16,
-  UNH: 292.46,
-  NBIS: 51.77,
-  DLO: 11.67,
+  AMD:   206.16,
+  UNH:   292.46,
+  NBIS:   51.77,
+  DLO:    11.67,
   GOOGL: 189.06,
-  FBTC: 77.59,
+  FBTC:   77.59,
   MELI: 1962.06,
-  NU: 13.29,
-  IREN: 31.46,
+  NU:     13.29,
+  IREN:   31.46,
+  // ── added batch ───────────────────────────────────────────────────────────
+  AVEX:   37.56,  // from holdings.ts purchase.costBasis; no dated lot available
+  META:  654.69,  // 2 lots: Jan 23 (0.778573 sh @$642.20) + Jan 26 (1.2 sh @$662.78)
+  SCHD:   30.70,  // 1 lot:  Apr 1  (65.147614 sh @$30.70)
+  ASTS:  108.92,  // 1 lot:  Jan 26 (6 sh @$108.92)
+  // SMH intentionally excluded: the Roth IRA lot (Jan 26, @$398.63) would produce
+  // incorrect live returns on the ETF sleeve, which has a much older, lower cost basis.
+  // Both sleeves fall back to their static returnPct until sleeve-specific cost bases
+  // are tracked separately.
+  RKLB:   80.29,  // 3 lots: Jan 23 (2.246055 sh @$89.05) + Jan 26 (5.5 sh @$86.04) + Feb 4 (5 sh @$70.04)
 };

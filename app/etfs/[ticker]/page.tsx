@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { etfProfiles } from "@/data/etfConstituents";
 import { ChartWrapper } from "@/components/ChartWrapper";
+import { positionLots, positionAverageCost } from "@/lib/positionLots";
 
 export function generateStaticParams() {
   return Object.keys(etfProfiles).map((ticker) => ({ ticker }));
@@ -91,7 +92,11 @@ export default async function EtfDetailPage({
           style={{ borderColor: "rgba(15,30,53,0.08)" }}
         >
           <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-            <ChartWrapper ticker={profile.ticker} />
+            <ChartWrapper
+              ticker={profile.ticker}
+              purchaseLots={positionLots[profile.ticker]}
+              averageCost={positionAverageCost[profile.ticker]}
+            />
           </div>
         </section>
 

@@ -23,6 +23,7 @@ interface FinnhubResponse {
   o: number;
   pc: number;
   t: number;
+  error?: string;
 }
 
 interface FinnhubCandleResponse {
@@ -73,9 +74,15 @@ export class FinnhubProvider implements MarketDataProvider, HistoricalProvider {
 
           const data: FinnhubResponse = await res.json();
 
-          // Finnhub returns c: 0 for unsupported or unrecognised symbols.
+          if (data.error) {
+            console.error(`[finnhub] API error for ${symbol}: ${data.error}`);
+            results[symbol] = empty;
+            return;
+          }
+
+          // Finnhub returns c: 0 for unrecognised symbols or market-closed periods.
           if (!data.c) {
-            console.info(`[finnhub] No data for ${symbol} (c=0) — showing as unavailable`);
+            console.info(`[finnhub] Zero price for ${symbol} — market closed or unrecognized ticker`);
             results[symbol] = empty;
             return;
           }

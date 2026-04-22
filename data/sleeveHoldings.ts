@@ -55,7 +55,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "AMD",
     company: "AMD",
     portfolioWeightPct: 9.74,
-    returnPct: 36.73,
+    returnPct: 45.86,
     country: "US",
     marketCap: "Large Cap",
     assetType: "Equity",
@@ -215,19 +215,6 @@ export const rothIraHoldings: SleeveHolding[] = [
     assetType: "ETF",
     subcategory: "Dividend ETF",
     thesis: "Quality dividend and value tilt.",
-  },
-  {
-    ticker: "AVEX",
-    company: "AEVEX Corp",
-    portfolioWeightPct: 1.32,
-    returnPct: -6.24,
-    country: "US",
-    marketCap: "Small Cap",
-    assetType: "Equity",
-    subcategory: "Defense / Drone",
-    thesis: "Speculative autonomy and defense systems exposure.",
-    // update returnPct and entry fields when data is available
-    purchaseDateSource: "unknown",
   },
 ];
 

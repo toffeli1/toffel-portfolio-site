@@ -10,19 +10,19 @@ import {
 } from "react";
 import type { QuoteMap } from "@/lib/types";
 
-// ── Adjust this to change how often quotes refresh ────────────────────────────
-export const QUOTE_REFRESH_INTERVAL_MS = 15 * 60 * 1_000; // 15 minutes
-// ─────────────────────────────────────────────────────────────────────────────
+export const QUOTE_REFRESH_INTERVAL_MS = 5 * 60 * 1_000; // 5 minutes
 
-interface QuotesState {
+export interface QuotesState {
   quotes: QuoteMap;
-  loading: boolean;       // true only during the initial fetch
+  loading: boolean;   // true only during the initial fetch
+  error: boolean;     // true when the most recent fetch attempt failed
   lastUpdated: Date | null;
 }
 
-const QuotesContext = createContext<QuotesState>({
+export const QuotesContext = createContext<QuotesState>({
   quotes: {},
   loading: true,
+  error: false,
   lastUpdated: null,
 });
 
@@ -33,6 +33,7 @@ export function useQuotes(): QuotesState {
 export function QuotesProvider({ children }: { children: React.ReactNode }) {
   const [quotes, setQuotes] = useState<QuoteMap>({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -42,9 +43,12 @@ export function QuotesProvider({ children }: { children: React.ReactNode }) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: QuoteMap = await res.json();
       setQuotes(data);
+      setError(false);
       setLastUpdated(new Date());
     } catch (err) {
-      console.error("[QuotesProvider] Failed to fetch quotes:", err);
+      console.error("[QuotesProvider] fetch failed:", err);
+      setError(true);
+      // Intentionally do NOT clear quotes — preserve last known-good data.
     } finally {
       setLoading(false);
     }
@@ -59,7 +63,7 @@ export function QuotesProvider({ children }: { children: React.ReactNode }) {
   }, [fetchQuotes]);
 
   return (
-    <QuotesContext.Provider value={{ quotes, loading, lastUpdated }}>
+    <QuotesContext.Provider value={{ quotes, loading, error, lastUpdated }}>
       {children}
     </QuotesContext.Provider>
   );

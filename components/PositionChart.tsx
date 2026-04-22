@@ -16,11 +16,16 @@ import type { PurchaseLot } from "@/lib/positionLots";
 
 // ── types ─────────────────────────────────────────────────────────────────────
 
-type Range = "1y" | "3y" | "5y" | "max";
+type Range = "1w" | "1m" | "3m" | "6m" | "1y" | "3y" | "5y" | "max";
 
 export interface EntryMarker {
   price: number;
   source: "confirmed" | "estimated";
+}
+
+export interface ExitMarker {
+  date: string;     // "YYYY-MM-DD"
+  reason?: string;  // e.g., "Reallocated / Valuation discipline"
 }
 
 interface PurchaseCluster {
@@ -41,9 +46,13 @@ interface TooltipState {
 // ── constants ─────────────────────────────────────────────────────────────────
 
 const RANGES: { key: Range; label: string }[] = [
-  { key: "1y", label: "1Y" },
-  { key: "3y", label: "3Y" },
-  { key: "5y", label: "5Y" },
+  { key: "1w",  label: "1W"  },
+  { key: "1m",  label: "1M"  },
+  { key: "3m",  label: "3M"  },
+  { key: "6m",  label: "6M"  },
+  { key: "1y",  label: "1Y"  },
+  { key: "3y",  label: "3Y"  },
+  { key: "5y",  label: "5Y"  },
   { key: "max", label: "MAX" },
 ];
 
@@ -51,7 +60,12 @@ const RANGES: { key: Range; label: string }[] = [
 
 function formatXTick(timestamp: number, range: Range): string {
   const d = new Date(timestamp * 1000);
-  if (range === "max") return d.getFullYear().toString();
+  if (range === "1w" || range === "1m" || range === "3m")
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  if (range === "6m")
+    return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
+  if (range === "max")
+    return d.getFullYear().toString();
   return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
 }
 
@@ -160,13 +174,17 @@ export function PositionChart({
   entryMarker,
   purchaseLots,
   averageCost,
+  exitMarker,
+  defaultRange,
 }: {
   ticker: string;
   entryMarker?: EntryMarker;
   purchaseLots?: PurchaseLot[];
   averageCost?: number;
+  exitMarker?: ExitMarker;
+  defaultRange?: Range;
 }) {
-  const [range, setRange] = useState<Range>("1y");
+  const [range, setRange] = useState<Range>(defaultRange ?? "1y");
   const [points, setPoints] = useState<HistoricalPoint[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [markerTooltip, setMarkerTooltip] = useState<TooltipState | null>(null);
@@ -208,6 +226,13 @@ export function PositionChart({
         : closest
     );
   }, [entryMarker, purchaseLots, chartData]);
+
+  // ── exit marker ───────────────────────────────────────────────────────────
+
+  const exitPoint = useMemo(() => {
+    if (!exitMarker || chartData.length === 0) return null;
+    return findNearestPoint(exitMarker.date, chartData);
+  }, [exitMarker, chartData]);
 
   // ── purchase clusters ──────────────────────────────────────────────────────
 
@@ -284,6 +309,11 @@ export function PositionChart({
             <p className="font-mono text-[9px] text-[#a8b2bd]">
               ◎&ensp;
               {entryMarker.source === "confirmed" ? "confirmed entry" : "estimated entry"}
+            </p>
+          )}
+          {exitMarker && (
+            <p className="font-mono text-[9px]" style={{ color: "#8b2530", opacity: 0.7 }}>
+              ✕&ensp;exit
             </p>
           )}
         </div>
@@ -587,6 +617,76 @@ export function PositionChart({
                   />
                 );
               })}
+              {/* Exit marker — vertical line + × dot */}
+              {exitPoint && (
+                <>
+                  <ReferenceLine
+                    segment={[
+                      { x: exitPoint.t, y: lineBottom },
+                      { x: exitPoint.t, y: exitPoint.c },
+                    ]}
+                    ifOverflow="visible"
+                    stroke="#8b2530"
+                    strokeOpacity={0.45}
+                    strokeWidth={1.25}
+                  />
+                  <ReferenceDot
+                    x={exitPoint.t}
+                    y={exitPoint.c}
+                    r={0}
+                    fill="none"
+                    stroke="none"
+                    shape={((props: { cx?: number; cy?: number }) => {
+                      const cx = props.cx ?? 0;
+                      const cy = props.cy ?? 0;
+                      const r = 5;
+                      return (
+                        <g>
+                          <circle
+                            cx={cx}
+                            cy={cy}
+                            r={r + 4}
+                            fill="transparent"
+                            style={{ pointerEvents: "none" }}
+                          />
+                          <line
+                            x1={cx - r}
+                            y1={cy - r}
+                            x2={cx + r}
+                            y2={cy + r}
+                            stroke="#8b2530"
+                            strokeWidth={1.75}
+                            strokeOpacity={0.8}
+                            style={{ pointerEvents: "none" }}
+                          />
+                          <line
+                            x1={cx + r}
+                            y1={cy - r}
+                            x2={cx - r}
+                            y2={cy + r}
+                            stroke="#8b2530"
+                            strokeWidth={1.75}
+                            strokeOpacity={0.8}
+                            style={{ pointerEvents: "none" }}
+                          />
+                          <text
+                            x={cx}
+                            y={cy - r - 5}
+                            textAnchor="middle"
+                            fontSize={8}
+                            fontFamily="var(--font-geist-mono)"
+                            fill="#8b2530"
+                            fillOpacity={0.65}
+                            style={{ pointerEvents: "none" }}
+                          >
+                            Exited
+                          </text>
+                        </g>
+                      );
+                    }) as never}
+                  />
+                </>
+              )}
             </AreaChart>
           </ResponsiveContainer>
         )}

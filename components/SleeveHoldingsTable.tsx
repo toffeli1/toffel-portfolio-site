@@ -1,7 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import type { SleeveHolding } from "@/data/sleeveHoldings";
 import { etfProfiles } from "@/data/etfConstituents";
 import { ClickableRow } from "./ClickableRow";
+import { useQuotes } from "./QuotesProvider";
+import { getAvgCost, computeReturnPct } from "@/lib/costBasis";
 
 // ── type styles ───────────────────────────────────────────────────────────────
 
@@ -19,18 +23,39 @@ const TYPE_BG: Record<string, string> = {
 
 // ── sub-components ────────────────────────────────────────────────────────────
 
-function ReturnPct({ value }: { value?: number }) {
-  if (value === undefined || value === null)
-    return <span className="font-mono text-[12px]" style={{ color: "#a8b2bd" }}>—</span>;
-  const pos = value >= 0;
+function ReturnCell({ ticker, sleeve }: { ticker: string; sleeve: string }) {
+  const { quotes, loading } = useQuotes();
+  const q = quotes[ticker];
+  const avgCost = getAvgCost(ticker, sleeve);
+
+  const currentPrice = q?.price ?? null;
+  const liveReturn =
+    avgCost !== null && currentPrice !== null
+      ? computeReturnPct(avgCost, currentPrice)
+      : null;
+
   return (
-    <span
-      className="font-mono text-[12px] font-semibold tabular-nums"
-      style={{ color: pos ? "#15542e" : "#8b1a1a" }}
-    >
-      {pos ? "+" : ""}
-      {value.toFixed(2)}%
-    </span>
+    <div className="flex flex-col gap-0.5">
+      {loading && q === undefined ? (
+        <span className="font-mono text-[12px] animate-pulse" style={{ color: "#a8b2bd" }}>···</span>
+      ) : avgCost === null ? (
+        <span className="font-mono text-[11px]" style={{ color: "#a8b2bd" }}>No cost basis</span>
+      ) : liveReturn !== null ? (
+        <span
+          className="font-mono text-[12px] font-semibold tabular-nums"
+          style={{ color: liveReturn >= 0 ? "#15542e" : "#8b1a1a" }}
+        >
+          {liveReturn >= 0 ? "+" : ""}{liveReturn.toFixed(2)}%
+        </span>
+      ) : (
+        <span className="font-mono text-[12px]" style={{ color: "#a8b2bd" }}>—</span>
+      )}
+      {!loading && q?.changePercent != null && (
+        <span className="font-mono text-[9px] tabular-nums" style={{ color: "#a8b2bd" }}>
+          {q.changePercent >= 0 ? "+" : ""}{q.changePercent.toFixed(2)}% today
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -94,10 +119,12 @@ function WeightBar({
 
 export default function SleeveHoldingsTable({
   holdings,
+  sleeve,
 }: {
   holdings: SleeveHolding[];
+  sleeve: string;
 }) {
-  const maxWeight = Math.max(...holdings.map((h) => h.portfolioWeightPct));
+  const maxWeight = Math.max(...holdings.map((h) => h.portfolioWeightPct), 1);
 
   return (
     <div
@@ -195,14 +222,14 @@ export default function SleeveHoldingsTable({
                   />
                   {h.notes && (
                     <p className="mt-0.5 font-mono text-[9px] text-[#a8b2bd]">
-                      placeholder
+                      {h.notes}
                     </p>
                   )}
                 </td>
 
                 {/* Return % */}
                 <td className="px-5 py-4">
-                  <ReturnPct value={h.returnPct} />
+                  <ReturnCell ticker={h.ticker} sleeve={sleeve} />
                 </td>
 
                 {/* Subcategory */}

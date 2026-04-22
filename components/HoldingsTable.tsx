@@ -22,7 +22,7 @@ export default function HoldingsTable({
   holdings: Holding[];
   showCategory?: boolean;
 }) {
-  const maxPct = Math.max(...holdings.map((h) => h.portfolioPct));
+  const maxPct = Math.max(...holdings.map((h) => h.portfolioPct), 1);
 
   return (
     <div

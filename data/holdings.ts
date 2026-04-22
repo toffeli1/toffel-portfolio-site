@@ -11,7 +11,8 @@ export type Subcategory =
   | 'Traditional Energy'
   | 'Nuclear'
   | 'Uranium'
-  | 'Grid / Power Infrastructure';
+  | 'Grid / Power Infrastructure'
+  | 'Nuclear / Power Infrastructure';
 
 export interface Purchase {
   costBasis: number;    // per-share average cost
@@ -52,13 +53,13 @@ export const holdings: Holding[] = [
       'Custom silicon and networking ASICs driving AI data center buildout; strong hyperscaler design-win pipeline.',
   },
   {
-    ticker: 'COHR',
-    company: 'Coherent Corp',
+    ticker: 'POET',
+    company: 'POET Technologies',
     portfolioPct: 8.0,
     category: 'AI',
     subcategory: 'Photonics / Optical Networking',
     thesis:
-      'High-speed optical transceivers critical for AI cluster interconnects; dominant position at 800G/1.6T speeds.',
+      'Optical interposer platform enabling co-packaged photonics for AI cluster connectivity; asset-light licensing model with Tier 1 design-in momentum at 800G/1.6T.',
   },
   {
     ticker: 'MU',
@@ -169,13 +170,13 @@ export const holdings: Holding[] = [
       'Leading uranium miner positioned for the nuclear renaissance; multi-decade supply agreements in place.',
   },
   {
-    ticker: 'BE',
-    company: 'Bloom Energy',
+    ticker: 'CEG',
+    company: 'Constellation Energy',
     portfolioPct: 5.0,
     category: 'Energy',
-    subcategory: 'Grid / Power Infrastructure',
+    subcategory: 'Nuclear / Power Infrastructure',
     thesis:
-      'Solid oxide fuel cells providing resilient distributed power to data centers and industrial facilities.',
+      'Largest US nuclear operator capturing premium pricing from AI data center clean power demand; long-term PPAs with hyperscalers underpin durable earnings growth.',
   },
 ];
 

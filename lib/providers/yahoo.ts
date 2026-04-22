@@ -18,20 +18,21 @@ interface YahooChartResponse {
   };
 }
 
-function toYahooParams(
-  from: number,
-  resolution: string
-): { range: string; interval: string } {
+function toYahooParams(from: number, resolution: string): { range: string; interval: string } {
   const ageDays = (Date.now() / 1000 - from) / 86400;
+
+  // Short ranges: use daily candles
+  if (ageDays <= 8)   return { range: "5d",  interval: "1d" };
+  if (ageDays <= 35)  return { range: "1mo", interval: "1d" };
+  if (ageDays <= 95)  return { range: "3mo", interval: "1d" };
+  if (ageDays <= 190) return { range: "6mo", interval: "1d" };
+
+  // Longer ranges: use weekly or monthly
   const interval = resolution === "M" ? "1mo" : "1wk";
-
-  let range: string;
-  if (ageDays <= 420) range = "1y";
-  else if (ageDays <= 800) range = "2y";
-  else if (ageDays <= 2000) range = "5y";
-  else range = "max";
-
-  return { range, interval };
+  if (ageDays <= 420)  return { range: "1y",  interval };
+  if (ageDays <= 800)  return { range: "2y",  interval };
+  if (ageDays <= 2000) return { range: "5y",  interval };
+  return { range: "max", interval };
 }
 
 export class YahooHistoricalProvider implements HistoricalProvider {

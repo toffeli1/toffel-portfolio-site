@@ -5,8 +5,9 @@ import { rothIraHoldings, etfsSleeveHoldings } from "@/data/sleeveHoldings";
 import { positionDetails } from "@/data/positionDetails";
 import type { Scenario, TrimEvent } from "@/data/positionDetails";
 import { etfProfiles } from "@/data/etfConstituents";
-import { QuotesProvider } from "@/components/QuotesProvider";
+import { PositionQuoteProvider } from "@/components/PositionQuoteProvider";
 import { PriceCell, ChangeCell, LastUpdated } from "@/components/QuoteCell";
+import { LiveReturnBadge } from "@/components/LiveReturnBadge";
 import { ChartWrapper } from "@/components/ChartWrapper";
 import { ReturnSinceSection } from "@/components/ReturnSinceSection";
 import { positionLots, positionAverageCost } from "@/lib/positionLots";
@@ -18,7 +19,6 @@ interface SleeveOwnership {
   title: string;
   color: string;
   weightPct: number;
-  returnPct?: number;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -30,10 +30,9 @@ function buildSleeveOwnerships(ticker: string): SleeveOwnership[] {
   if (retail) {
     result.push({
       slug: "retail-with-friends",
-      title: "Retail with Friends",
+      title: "Speculative Individual Stocks",
       color: "#1a3a5c",
       weightPct: retail.portfolioPct,
-      returnPct: undefined,
     });
   }
 
@@ -44,7 +43,6 @@ function buildSleeveOwnerships(ticker: string): SleeveOwnership[] {
       title: "Roth IRA",
       color: "#1a4a2e",
       weightPct: roth.portfolioWeightPct,
-      returnPct: roth.returnPct,
     });
   }
 
@@ -55,7 +53,6 @@ function buildSleeveOwnerships(ticker: string): SleeveOwnership[] {
       title: "ETFs",
       color: "#8b2530",
       weightPct: etfSleeve.portfolioWeightPct,
-      returnPct: etfSleeve.returnPct,
     });
   }
 
@@ -163,7 +160,7 @@ export default async function PositionPage({
         </div>
       </nav>
 
-      <QuotesProvider>
+      <PositionQuoteProvider ticker={ticker}>
         <main>
 
           {/* ── Hero ──────────────────────────────────────────────────────── */}
@@ -255,6 +252,29 @@ export default async function PositionPage({
                       </span>
                       <ChangeCell ticker={ticker} />
                     </div>
+                    {avgCost && (
+                      <div
+                        className="mt-4 pt-4"
+                        style={{ borderTop: "1px solid rgba(15,30,53,0.07)" }}
+                      >
+                        <div className="flex items-start justify-between gap-6">
+                          <div>
+                            <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em] text-[#a8b2bd]">
+                              Avg Cost
+                            </p>
+                            <p className="font-mono text-sm font-medium text-[#0f1e35]">
+                              ${avgCost.toFixed(2)}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em] text-[#a8b2bd]">
+                              Total Return
+                            </p>
+                            <LiveReturnBadge ticker={ticker} avgCost={avgCost} />
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     <div
                       className="mt-4 pt-4"
                       style={{ borderTop: "1px solid rgba(15,30,53,0.07)" }}
@@ -293,17 +313,7 @@ export default async function PositionPage({
                               <span className="font-mono text-[11px] tabular-nums text-[#3d4f66]">
                                 {s.weightPct.toFixed(1)}%
                               </span>
-                              {s.returnPct !== undefined && (
-                                <span
-                                  className="font-mono text-[11px] font-semibold tabular-nums"
-                                  style={{
-                                    color: s.returnPct >= 0 ? "#15542e" : "#8b1a1a",
-                                  }}
-                                >
-                                  {s.returnPct >= 0 ? "+" : ""}
-                                  {s.returnPct.toFixed(2)}%
-                                </span>
-                              )}
+                              <LiveReturnBadge ticker={ticker} sleeve={s.slug} />
                             </div>
                           </Link>
                         ))}
@@ -470,7 +480,7 @@ export default async function PositionPage({
           )}
 
         </main>
-      </QuotesProvider>
+      </PositionQuoteProvider>
 
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
       <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>

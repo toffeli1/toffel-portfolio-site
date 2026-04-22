@@ -108,57 +108,57 @@ export const positionDetails: Record<string, PositionDetail> = {
     ],
   },
 
-  COHR: {
+  POET: {
     whyIOwnIt:
-      "Coherent is a pick-and-shovel play on AI infrastructure where inventory cycle troughs create violent recoveries. The optical transceiver market is structurally necessary — every GPU needs high-speed fiber connections, and Coherent is one of only two or three companies globally with the manufacturing scale and vertical integration (they produce their own semiconductor lasers) to compete at 800G and above. I established the position during the extended inventory digestion period, when the market was pricing structural impairment rather than cyclical trough, and sized it to reflect both the recovery optionality and the real execution risk of a post-merger integration that is still maturing.",
+      "POET is a platform bet on a specific inflection in how AI data centers handle optical connectivity. The optical interposer is an attempt to solve a real and growing problem: as GPU clusters scale, the bandwidth and power constraints of traditional pluggable transceivers start to bite, and the industry is converging on co-packaged optics as the next architectural standard. POET's interposer integrates photonic and electronic components on a single substrate using standard wafer-scale semiconductor processes — which, if it works at volume, produces a dramatically smaller, lower-power optical engine than what discrete transceiver designs can achieve. The position is sized to reflect that this is an early-stage company with real technology and real design-win momentum, but not a proven revenue ramp. It's a high-conviction, high-risk allocation on a platform that could become critical infrastructure for next-generation AI clusters.",
     whyThisSleeve:
-      "COHR is in the taxable retail portfolio because optical component stocks are notoriously volatile around earnings, and I want the flexibility to manage the position through inventory cycle swings — adding during drawdowns, trimming on outsized recoveries. The IRA's long-duration hold orientation isn't suited for a sector known for 30-50% quarterly moves driven by transceiver pricing surveys and hyperscaler capex revisions.",
+      "POET is in the taxable retail portfolio because it carries the binary risk profile of an early-stage technology company — the outcome distribution is wide, and active position management matters. If the interposer platform wins at Tier 1 customers, the position should be sized up; if key design-ins stall, there's a rational exit. That kind of dynamic management doesn't fit the long-duration, low-touch orientation of the Roth IRA.",
     longDescription:
-      "Coherent Corp is the product of multiple mergers — II-VI acquiring Finisar and then rebranding after merging with the original Coherent — making it one of the broadest photonics and compound semiconductor companies in the world. Its optical transceivers, VCSELs, and industrial laser systems span data center networking, telecom, and industrial manufacturing. The data center segment is the core thesis: as AI clusters scale from individual GPU servers to massively parallel training fabrics, the speed and volume of optical connectivity required grows nonlinearly, and Coherent is one of a small number of companies with both the 800G transceiver capability and the upstream laser manufacturing to supply that demand.",
+      "POET Technologies is building an optical interposer platform that co-packages photonic and electronic devices on a single semiconductor substrate using standard III-V wafer processes. The core product — the POET Optical Engine — is a highly integrated 800G-capable module designed for AI data center connectivity, produced with a manufacturing process that eliminates the need for labor-intensive active alignment steps used in conventional transceiver assembly. The result is a smaller form factor, lower power consumption, and a cost structure that scales with semiconductor volume rather than skilled assembly labor.",
     thesisP2:
-      "The post-merger integration risk is largely behind the company now, and the focus has shifted to executing the next-generation ramp. Coherent's vertical integration — producing the semiconductor lasers inside the transceivers rather than sourcing them externally — creates a cost structure advantage over competitors. As 800G volumes scale through 2025-2026 and 1.6T design-ins begin converting to production, this structural advantage should compound into margin expansion. The bear scenario is already largely priced in from the inventory trough; the question is the pace and magnitude of the recovery.",
+      "The strategic logic is that co-packaged optics will become the dominant interconnect architecture for next-generation AI infrastructure, and POET's interposer positions the company to be a substrate and optical engine supplier to the major module manufacturers rather than competing head-to-head as a transceiver vendor. The asset-light licensing model — partnering with established manufacturers for volume production while retaining IP royalties — creates the potential for high-margin revenue if the platform achieves broad adoption. Key partnerships with Mitsubishi Electric and Taiwanese module manufacturers validate the platform's technical merit, but the transition from design-win to volume production revenue is the critical execution milestone the position is underwriting.",
     bullCase: {
-      title: "800G/1.6T Transceiver Dominance",
+      title: "Co-Packaged Optics Platform Wins",
       summary:
-        "Coherent captures the majority of hyperscaler 800G and 1.6T transceiver sockets, driving a multiyear revenue cycle.",
+        "POET's optical interposer becomes the preferred substrate for 800G and 1.6T co-packaged optics modules, generating royalty and component revenue across multiple Tier 1 manufacturers.",
       assumptions: [
-        "Dominant share secured in 800G QSFP-DD sockets across major U.S. hyperscalers",
-        "1.6T transceiver ramp begins 2025-2026, extending the optical upcycle",
-        "Vertical integration in semiconductor lasers creates a durable cost advantage over peers",
+        "Co-packaged optics adoption accelerates as AI cluster bandwidth demands exceed pluggable transceiver limits",
+        "POET's wafer-scale process achieves cost parity with discrete transceiver assembly at volume",
+        "Multiple Tier 1 module manufacturers qualify the POET Optical Engine for hyperscaler supply chains",
       ],
     },
     baseCase: {
-      title: "Optical Inventory Cycle Clears",
+      title: "Design-Wins Convert to Volume Revenue",
       summary:
-        "Coherent recovers from an extended inventory correction as data center optical spending normalizes.",
+        "Existing design-in partnerships ramp to meaningful production volumes, establishing POET as a credible optical engine supplier.",
       assumptions: [
-        "Transceiver inventory destocking completes by mid-2025, enabling new order flow",
-        "30-40% market share maintained at 800G; 1.6T design-ins secured",
-        "Industrial laser (ILAS) segment stabilizes, reducing earnings volatility",
+        "Mitsubishi Electric partnership and POET-TEGAS manufacturing JV ramp 800G optical engine shipments",
+        "Revenue transitions from development contracts to repeating component and licensing revenue",
+        "POET secures at least one direct hyperscaler qualification via a Tier 1 module partner",
       ],
     },
     bearCase: {
-      title: "Inventory and Competition Extend Downturn",
+      title: "Design-Win Delays and Platform Competition",
       summary:
-        "Customer inventory digestion and competitive price pressure delay the revenue recovery timeline.",
+        "Volume ramp stalls as hyperscaler qualification timelines extend, while better-capitalized competitors advance alternative co-packaged optics approaches.",
       assumptions: [
-        "Hyperscaler transceiver inventory digestion extends beyond consensus estimates",
-        "Lumentum and emerging photonics companies gain share at 800G",
-        "ILAS segment remains under structural pressure from macro headwinds",
+        "Key design-win conversions to production volume slip by 12-18 months",
+        "Intel Silicon Photonics, Broadcom, or Ayar Labs advance competing CPO architectures with stronger hyperscaler relationships",
+        "POET requires additional equity raises to fund operations through an extended ramp, diluting existing shareholders",
       ],
     },
     risks: [
-      "Transceiver inventory overhang — optical component destocking cycles have historically lasted longer than expected.",
-      "Competition from Lumentum, POET Technologies, and vertically integrated Asian suppliers.",
-      "Integration execution risk following the II-VI/Coherent and Finisar mergers.",
-      "Telecom capex weakness creating a persistent drag on the non-datacom revenue base.",
+      "Early-stage execution risk — POET has not yet demonstrated sustained high-volume revenue from its optical engine platform.",
+      "Platform competition from larger, better-capitalized companies including Intel, Broadcom, and vertically integrated Asian photonics suppliers.",
+      "Customer concentration — success depends heavily on a small number of key design-win partnerships advancing to production.",
+      "Capital requirements — as a pre-scale company, POET may need additional financing that could be dilutive if the ramp timeline extends.",
     ],
     watchList: [
-      "Quarterly order rate for 800G transceivers as a leading indicator of inventory cycle resolution.",
-      "1.6T transceiver design-in announcements and expected production ramp timeline.",
-      "Industrial laser (ILAS) segment revenue — a signal of broader manufacturing capex recovery.",
-      "Gross margin progression back toward 30%, then 35%+ as higher-margin product mix grows.",
-      "Market share at 800G — whether Lumentum, Innolight, or Chinese suppliers are taking unexpected sockets.",
+      "Purchase order announcements and revenue guidance for 800G optical engines from Mitsubishi and POET-TEGAS.",
+      "Hyperscaler qualification progress via Tier 1 module partners — the gating milestone for volume revenue.",
+      "Co-packaged optics adoption timeline at major AI infrastructure builds — the broader market signal.",
+      "Competitive developments: Intel Silicon Photonics, Broadcom CPO, and Ayar Labs customer announcements.",
+      "Cash runway and any equity or debt financing activity given the pre-scale operating model.",
     ],
   },
 
@@ -218,19 +218,19 @@ export const positionDetails: Record<string, PositionDetail> = {
 
   LITE: {
     whyIOwnIt:
-      "Lumentum was deeply in a trough when I established the position — telecom capex depressed, transceiver inventory elevated, and the market pricing in structural impairment rather than cyclical discount. The thesis is that the same AI data center buildout driving COHR's recovery applies here too, and Lumentum adds something COHR doesn't: a VCSEL franchise used in Apple Face ID and future AR/VR 3D sensing that most data center-focused investors don't fully value. The position is sized as a smaller, higher-risk, higher-upside complement to COHR — two optical plays with overlapping but distinct recovery curves.",
+      "Lumentum was deeply in a trough when I established the position — telecom capex depressed, transceiver inventory elevated, and the market pricing in structural impairment rather than cyclical discount. The AI data center buildout thesis applies here directly, and Lumentum adds something most optical infrastructure names don't: a VCSEL franchise used in Apple Face ID and future AR/VR 3D sensing that data center-focused investors consistently undervalue. The position is sized as a differentiated optical play — transceiver recovery plus consumer photonics optionality in the same name.",
     whyThisSleeve:
-      "LITE is in the taxable retail portfolio alongside COHR because the optical sector tends to move on shared catalysts — transceiver surveys, inventory data, hyperscaler capex announcements. Having both in the same sleeve makes it easier to manage the combined optical exposure as a cohesive position and take relative-value moves between them if their recovery timelines diverge.",
+      "LITE is in the taxable retail portfolio because optical component stocks are notoriously volatile around earnings — transceiver surveys, inventory data, and hyperscaler capex revisions all move the sector. The taxable sleeve gives the flexibility to manage the position through cycle swings rather than locking it into a long-duration hold.",
     longDescription:
       "Lumentum Holdings is a precision photonics company with two distinct businesses at different cycle points. The datacom and telecom optical networking segment — transceivers, amplifiers, and ROADMs — is recovering from an extended inventory correction as AI data center buildout accelerates. The consumer and industrial segment is centered on VCSELs (vertical-cavity surface-emitting lasers), which power 3D sensing in every iPhone shipped since the iPhone X, and are positioned to benefit from growing demand in AR/VR devices and automotive LiDAR.",
     thesisP2:
       "The optical networking recovery is the near-term catalyst, but the VCSEL franchise is the long-duration optionality I don't think is well-priced. Apple's dependence on Lumentum's VCSEL technology for Face ID creates a strategic supply relationship, and next-generation AR/VR headsets from Apple and Meta will require more advanced and higher-volume 3D sensing. If AR/VR adoption accelerates on a 3-5 year horizon, VCSEL volumes could grow significantly beyond what the current multiple implies — making this a two-vector thesis: optical networking recovery near-term, VCSEL expansion long-term.",
     bullCase: {
-      title: "Coherent Transceiver and VCSEL Revival",
+      title: "Transceiver and VCSEL Supercycle",
       summary:
-        "Datacom transceiver design wins and recovering VCSEL demand for 3D sensing deliver above-consensus revenue.",
+        "Datacom transceiver design wins and recovering VCSEL demand for 3D sensing deliver above-consensus revenue across both business segments.",
       assumptions: [
-        "Coherent transceiver wins at hyperscalers drive 800G volume ramp",
+        "Lumentum secures 800G transceiver sockets across multiple hyperscaler supply chains",
         "VCSEL demand for AR/VR and 3D sensing recovers alongside consumer hardware cycles",
         "ROADM orders in telecom stabilize as carriers resume network investment",
       ],
@@ -252,12 +252,12 @@ export const positionDetails: Record<string, PositionDetail> = {
       assumptions: [
         "Telecom capex remains depressed through 2025 as carriers defer network upgrades",
         "Hyperscaler transceiver inventory digestion takes longer than the market expects",
-        "Coherent Corp gains share in key transceiver sockets, pressuring Lumentum's datacom revenue",
+        "Vertically integrated Asian transceiver suppliers gain share at 800G, pressuring Lumentum's datacom revenue",
       ],
     },
     risks: [
       "Significant exposure to telecom optical networking, which remains in a multi-year capex downturn.",
-      "Competition from Coherent Corp across multiple product lines in both datacom and telecom.",
+      "Competition from vertically integrated Asian suppliers and co-packaged optics entrants across the transceiver market.",
       "Customer concentration in a handful of major network equipment providers and hyperscalers.",
       "Inventory overhang risk — optical components have historically experienced severe destocking cycles.",
     ],
@@ -266,7 +266,7 @@ export const positionDetails: Record<string, PositionDetail> = {
       "Apple VCSEL volume guidance — seasonally important in Q1-Q2 ahead of the iPhone production ramp.",
       "Telecom ROADM orders as a signal of carrier capex recovery.",
       "Gross margin recovery trajectory — watching for inflection back above 37-38%.",
-      "Competitive socket races at 800G: whether Coherent Corp is winning share in transceivers.",
+      "Competitive socket dynamics at 800G — share movements among Lumentum, Innolight, and co-packaged optics challengers.",
     ],
   },
 
@@ -760,57 +760,57 @@ export const positionDetails: Record<string, PositionDetail> = {
     ],
   },
 
-  BE: {
+  CEG: {
     whyIOwnIt:
-      "Bloom Energy is the highest-risk, highest-potential-upside position in the energy sleeve — and it earns its place specifically because of the AI data center power problem. Utility grid interconnection queues in most US markets are now 3-5 years long. A hyperscaler that needs power for a new data center today cannot get it from the grid quickly enough. Bloom's solid oxide fuel cells can be installed on-site in 12-18 months, produce reliable baseload power without grid connection, and are fuel-flexible (natural gas today, hydrogen when it becomes viable). If even a fraction of Bloom's data center pipeline converts to signed contracts, it would be transformational for a company that has historically grown slowly on the utility and commercial segments. I sized it as a speculative position — meaningful enough to matter if the thesis plays out, small enough not to impair the portfolio if the execution challenges persist.",
+      "Constellation Energy operates the largest nuclear fleet in the United States — roughly 10% of US clean electricity generation — at a moment when the structural demand for always-on, carbon-free power has never been greater. AI data center buildouts require 24/7 baseload power that intermittent renewables cannot reliably deliver. Nuclear is the only zero-carbon source that runs at 90%+ capacity factors around the clock. Constellation has capitalized on this directly: the Microsoft agreement to restart Three Mile Island Unit 1 established a new pricing benchmark for nuclear power purchase agreements, and hyperscaler demand for clean firm power is accelerating across the fleet. The IRA's nuclear production tax credit adds a regulatory backstop to earnings that reduces downside risk significantly.",
     whyThisSleeve:
-      "BE is in the retail portfolio because it's a volatile, early-stage growth story that will have significant earnings swings as large data center contracts are announced or delayed. Active position management — adding on pullbacks, trimming on outsized moves — is important for a position with this risk profile.",
+      "CEG belongs in the retail portfolio as a core infrastructure compounder with a clear near-term catalyst in AI data center PPAs. It is less speculative than the small-cap energy names in the sleeve — nuclear assets have 20-40 year operating lives and contracted revenues — but the re-rating from commodity power producer to premium clean energy infrastructure is still in early stages. The position size reflects both the conviction in the long-duration thesis and the reality that utility-adjacent stocks can de-rate sharply on policy surprises.",
     longDescription:
-      "Bloom Energy manufactures solid oxide fuel cells that generate electricity on-site from natural gas, biogas, or hydrogen without combustion. Unlike traditional generators, Bloom's systems are highly efficient (60%+ electrical efficiency), quiet, and emit significantly less CO2 than grid power in most US markets. The company's initial markets were utilities, hospitals, universities, and commercial buildings seeking reliable backup and on-site generation. The AI data center opportunity has emerged as a potential step-change: data centers require enormous amounts of reliable power, and utility grid interconnection delays of 3-5 years create a compelling market for Bloom's on-site solution.",
+      "Constellation Energy is the largest producer of clean, carbon-free energy in the United States, operating a fleet of 21 nuclear power plants across 12 states. The company was spun off from Exelon in February 2022 and operates approximately 32,400 megawatts of generating capacity. Nuclear plants running at 90%+ capacity factors generate enormous free cash flow at today's power prices, and Constellation benefits disproportionately from any environment in which clean firm power commands a premium over intermittent renewables.",
     thesisP2:
-      "The transformation from a slow-growing utility and commercial power company into a data center power infrastructure provider is the core of the thesis. Bloom has disclosed a meaningful data center sales pipeline, and the conversion rate of that pipeline into signed contracts is the primary catalyst watch. The company's fuel cells are particularly well-suited for data center applications: they can be installed in modular increments, scaled up as power demand grows, and integrated with backup systems. The hydrogen optionality — Bloom's cells can operate on green hydrogen when it becomes cost-competitive — provides a potential future pathway that adds to the long-duration value without being required for the near-term thesis.",
+      "The AI data center power thesis is the key re-rating driver. Hyperscalers — Microsoft, Google, Meta, and others — have made explicit commitments to 24/7 carbon-free energy, and wind and solar cannot meet that requirement without expensive storage. Nuclear power purchase agreements have emerged as the premium solution: locked-in, always-on, genuinely zero-carbon. Constellation's Three Mile Island restart (now Crane Clean Energy Center) for Microsoft validated that hyperscalers will pay a meaningful premium for nuclear PPAs. The pipeline of similar agreements across Constellation's broader fleet represents a multi-year earnings catalyst that is only partially reflected in consensus estimates.",
     bullCase: {
-      title: "Grid Delays Force Data Centers to Bloom",
+      title: "Nuclear PPA Wave Across the Fleet",
       summary:
-        "Utility interconnection queue delays force data centers to turn to Bloom's on-site fuel cells as a primary power solution.",
+        "Hyperscaler demand for 24/7 clean power drives a sustained wave of premium nuclear PPAs, re-rating Constellation from utility to clean infrastructure.",
       assumptions: [
-        "Utility interconnection queues create 3-5 year grid delays for new data center sites",
-        "Hyperscalers sign large Bloom Energy contracts to power facilities that cannot wait for grid connection",
-        "Hydrogen-capable fuel cell architecture positions Bloom for energy transition without stranded asset risk",
+        "Microsoft, Google, and other hyperscalers sign additional multi-GW PPAs at premium pricing across Constellation's fleet",
+        "Nuclear production tax credit (IRA) provides a durable earnings floor, reducing commodity power price sensitivity",
+        "Fleet life extensions (license renewals to 80 years) add decades of zero-capex generation value",
       ],
     },
     baseCase: {
-      title: "Data Center Pipeline Converts to Contracts",
+      title: "Steady PPA Expansion with IRA Floor",
       summary:
-        "Bloom's existing data center sales pipeline translates into contracted orders with improving unit economics.",
+        "Constellation converts its disclosed PPA pipeline at moderate pricing, with the nuclear PTC providing earnings stability.",
       assumptions: [
-        "2-3 GW of data center pipeline converts to signed orders over 2025-2026",
-        "Natural gas prices remain stable, preserving Bloom's economics against grid alternatives",
-        "Gross margins improve as manufacturing scale drives down fuel cell unit costs",
+        "3-5 additional hyperscaler PPA agreements signed over 2025-2027 at premiums to market power prices",
+        "Nuclear PTC remains intact, providing ~$15/MWh earnings floor across the fleet",
+        "Power market prices remain constructive as natural gas prices stay elevated",
       ],
     },
     bearCase: {
-      title: "Natural Gas Prices Erode Economics",
+      title: "Policy Reversal Pressures PTC",
       summary:
-        "Rising natural gas prices erode Bloom's cost advantage relative to grid power, slowing enterprise adoption.",
+        "IRA nuclear production tax credit faces political risk; power prices soften as new renewable capacity floods the market.",
       assumptions: [
-        "Henry Hub natural gas prices rise above $4/MMBtu, compressing Bloom's economics",
-        "Grid power becomes increasingly cost-competitive as renewable energy capacity grows",
-        "Large data center deployment execution challenges delay revenue recognition",
+        "Legislative changes reduce or eliminate the nuclear production tax credit",
+        "Rapid renewable deployment drives merchant power prices below Constellation's cost of capital",
+        "Hyperscaler PPA pipeline stalls as carbon accounting standards shift away from nuclear",
       ],
     },
     risks: [
-      "Business model is directly linked to natural gas price levels — sustained high gas prices undermine project economics.",
-      "Significant capital requirements to fund customer financing structures and manufacturing scale-up.",
-      "Competition from direct grid alternatives and other distributed generation technologies (fuel cells, small modular reactors).",
-      "Policy risk around the fuel cell investment tax credit, which underpins project economics for many customers.",
+      "Nuclear production tax credit (IRA) is subject to legislative modification — partial or full elimination would compress earnings significantly.",
+      "Unplanned reactor outages are low-probability but high-impact; any extended outage at a major plant would dent annual generation.",
+      "Power price sensitivity: while PPAs provide partial insulation, a significant portion of output remains exposed to merchant market pricing.",
+      "Capital intensity of life extensions and potential new capacity additions could weigh on free cash flow conversion.",
     ],
     watchList: [
-      "Data center pipeline conversion — signed contracts from the disclosed hyperscaler and enterprise pipeline.",
-      "Gross margin improvement as manufacturing scale-up reduces fuel cell unit costs.",
-      "Natural gas price trends — the primary input cost that determines customer project economics.",
-      "ITC (investment tax credit) policy stability for fuel cell projects in the IRA.",
-      "Hydrogen fuel cell pilot deployments — any commercial green hydrogen integration would validate the long-duration thesis.",
+      "New hyperscaler PPA announcements — volume, pricing, and duration relative to existing Microsoft agreement benchmarks.",
+      "Nuclear production tax credit (IRA) legislative status — any policy changes affecting the ~$15/MWh earnings floor.",
+      "Capacity factor and fleet reliability — unplanned outage trends across the 21-plant fleet.",
+      "Power market pricing in PJM and other key markets — directional indicator for merchant revenue on uncontracted output.",
+      "License renewal progress for plants approaching 60-year operating licenses — each renewal adds decades of asset life.",
     ],
   },
 
@@ -1106,8 +1106,8 @@ export const positionDetails: Record<string, PositionDetail> = {
         amountUsd: 330.12,
         pricePerShare: 330.12,
         type: "partial_trim",
-        explanation: "This appears to have been a partial reduction rather than a full exit — the position remains open. The sale occurred at approximately $330/share, well above the initial cost basis in the $182–$195 range, suggesting a deliberate profit-taking event. Most likely reflects capital reallocation or near-term portfolio management rather than a change in the underlying thesis. The remaining position was retained without further reduction.",
-        inferred: true,
+        explanation: "I trimmed one share at $330 after the position had grown beyond my target weighting following a significant re-rating. The core thesis — search durability through the AI transition and Google Cloud's operating leverage — remained intact. This was a sizing decision, not a change in conviction. I retained the remainder of the position.",
+        inferred: false,
       },
     ],
   },
@@ -1312,8 +1312,8 @@ export const positionDetails: Record<string, PositionDetail> = {
         amountUsd: 239.60,
         pricePerShare: 47.92,
         type: "partial_trim",
-        explanation: "This appears to have been a partial de-risking after significant price appreciation from the initial cost basis. IREN had roughly doubled from the August 2025 entry by the time of this sale, and the $47.92/share exit price implies a gain of approximately 127% on those shares relative to the ~$21 initial cost. Half the position was retained, suggesting continued conviction in the AI infrastructure pivot thesis rather than a thesis change. Most likely reflects profit-taking or position-sizing discipline after an outsized move.",
-        inferred: true,
+        explanation: "I reduced the position by approximately half after a 127% gain from my August 2025 entry near $21. At $47.92, the stock had moved well ahead of where I expected the AI pivot thesis to be priced at this stage, and the position size had grown beyond my intended weighting. I retained the remaining shares — the transition from Bitcoin mining toward AI cloud infrastructure is still in early execution, and the thesis remains intact.",
+        inferred: false,
       },
     ],
   },

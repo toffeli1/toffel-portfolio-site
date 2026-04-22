@@ -4,10 +4,15 @@ import { getHistoryProvider } from "@/lib/marketData";
 export const dynamic = "force-dynamic";
 
 const RANGES: Record<string, { from: () => number; resolution: string }> = {
-  "1y": { from: () => Math.floor(Date.now() / 1000) - 365 * 86400, resolution: "W" },
-  "3y": { from: () => Math.floor(Date.now() / 1000) - 3 * 365 * 86400, resolution: "W" },
-  "5y": { from: () => Math.floor(Date.now() / 1000) - 5 * 365 * 86400, resolution: "W" },
-  "max": { from: () => 946684800, resolution: "M" }, // 2000-01-01
+  "1w":  { from: () => Math.floor(Date.now() / 1000) -   7 * 86400, resolution: "D" },
+  "1m":  { from: () => Math.floor(Date.now() / 1000) -  30 * 86400, resolution: "D" },
+  "3m":  { from: () => Math.floor(Date.now() / 1000) -  90 * 86400, resolution: "D" },
+  "6m":  { from: () => Math.floor(Date.now() / 1000) - 182 * 86400, resolution: "D" },
+  "1y":  { from: () => Math.floor(Date.now() / 1000) -  1 * 365 * 86400, resolution: "W" },
+  "3y":  { from: () => Math.floor(Date.now() / 1000) -  3 * 365 * 86400, resolution: "W" },
+  "5y":  { from: () => Math.floor(Date.now() / 1000) -  5 * 365 * 86400, resolution: "W" },
+  "10y": { from: () => Math.floor(Date.now() / 1000) - 10 * 365 * 86400, resolution: "M" },
+  "max": { from: () => 946684800,                                          resolution: "M" },
 };
 
 const empty = NextResponse.json({ points: [] }, { headers: { "Cache-Control": "no-store" } });
