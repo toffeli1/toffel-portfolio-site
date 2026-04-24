@@ -28,6 +28,8 @@ export interface Holding {
   category: Category;
   subcategory: Subcategory;
   thesis: string;
+  /** Explicit entry / average cost per share for this holding (numeric). */
+  entryPrice?: number;
   /** Set to false to suppress live market data for this holding. Defaults to true. */
   livePricing?: boolean;
   purchase?: Purchase;
@@ -49,6 +51,7 @@ export const holdings: Holding[] = [
     portfolioPct: 10.0,
     category: 'AI',
     subcategory: 'Hardware / Compute',
+    entryPrice: 127.3,
     thesis:
       'Custom silicon and networking ASICs driving AI data center buildout; strong hyperscaler design-win pipeline.',
   },
@@ -58,6 +61,7 @@ export const holdings: Holding[] = [
     portfolioPct: 8.0,
     category: 'AI',
     subcategory: 'Photonics / Optical Networking',
+    entryPrice: 12.0,
     thesis:
       'Optical interposer platform enabling co-packaged photonics for AI cluster connectivity; asset-light licensing model with Tier 1 design-in momentum at 800G/1.6T.',
   },
@@ -67,6 +71,7 @@ export const holdings: Holding[] = [
     portfolioPct: 7.5,
     category: 'AI',
     subcategory: 'Hardware / Compute',
+    entryPrice: 326.2,
     thesis:
       'High-bandwidth memory (HBM3E) supplying AI accelerator demand; only U.S.-headquartered HBM supplier.',
   },
@@ -76,6 +81,7 @@ export const holdings: Holding[] = [
     portfolioPct: 6.5,
     category: 'AI',
     subcategory: 'Lasers / Components',
+    entryPrice: 848.7,
     thesis:
       'Laser components for optical networking and 3D sensing; beneficiary of AI-driven photonics demand cycle.',
   },
@@ -85,6 +91,7 @@ export const holdings: Holding[] = [
     portfolioPct: 6.5,
     category: 'AI',
     subcategory: 'AI Infrastructure / Supporting Systems',
+    entryPrice: 200.0,
     thesis:
       'PCIe and CXL connectivity fabric enabling low-latency communication within AI training clusters.',
   },
@@ -94,6 +101,7 @@ export const holdings: Holding[] = [
     portfolioPct: 6.5,
     category: 'AI',
     subcategory: 'Hardware / Compute',
+    entryPrice: 75.5,
     thesis:
       'Advanced packaging (CoWoS, SoIC) enabling chiplet-based AI silicon; key position in TSMC supply chain.',
   },
@@ -103,6 +111,7 @@ export const holdings: Holding[] = [
     portfolioPct: 5.0,
     category: 'AI',
     subcategory: 'AI Infrastructure / Supporting Systems',
+    entryPrice: 320.7,
     thesis:
       'Power and thermal management infrastructure for hyperscale AI data centers; multi-year backlog visibility.',
   },
@@ -112,6 +121,7 @@ export const holdings: Holding[] = [
     portfolioPct: 5.0,
     category: 'AI',
     subcategory: 'AI Infrastructure / Supporting Systems',
+    entryPrice: 115.6,
     thesis:
       'Purpose-built GPU cloud for AI training and inference; strong hyperscaler and enterprise contract pipeline.',
   },
@@ -121,6 +131,7 @@ export const holdings: Holding[] = [
     portfolioPct: 5.0,
     category: 'AI',
     subcategory: 'AI Infrastructure / Supporting Systems',
+    entryPrice: 51.4,
     thesis:
       'Photomask manufacturing underpinning advanced-node semiconductor production; oligopolistic market structure.',
   },
@@ -139,6 +150,7 @@ export const holdings: Holding[] = [
       shares: 10.65,
       totalInvested: 400,
     },
+    entryPrice: 37.0,
   },
 
   // ─── Energy (20%) ────────────────────────────────────────────────────────────
@@ -148,6 +160,7 @@ export const holdings: Holding[] = [
     portfolioPct: 5.0,
     category: 'Energy',
     subcategory: 'Traditional Energy',
+    entryPrice: 122.6,
     thesis:
       'Large-cap E&P with strong free cash flow generation and disciplined capital allocation through the cycle.',
   },
@@ -157,6 +170,7 @@ export const holdings: Holding[] = [
     portfolioPct: 5.0,
     category: 'Energy',
     subcategory: 'Nuclear',
+    entryPrice: 267.7,
     thesis:
       'Nuclear components and propulsion systems for U.S. government; long-cycle contract visibility.',
   },
@@ -166,6 +180,7 @@ export const holdings: Holding[] = [
     portfolioPct: 5.0,
     category: 'Energy',
     subcategory: 'Uranium',
+    entryPrice: 123.9,
     thesis:
       'Leading uranium miner positioned for the nuclear renaissance; multi-decade supply agreements in place.',
   },
@@ -175,6 +190,7 @@ export const holdings: Holding[] = [
     portfolioPct: 5.0,
     category: 'Energy',
     subcategory: 'Nuclear / Power Infrastructure',
+    entryPrice: 294.3,
     thesis:
       'Largest US nuclear operator capturing premium pricing from AI data center clean power demand; long-term PPAs with hyperscalers underpin durable earnings growth.',
   },
