@@ -67,20 +67,20 @@ export const etfProfiles: Record<string, EtfProfile> = {
     ticker: "VOO",
     fullName: "Vanguard S&P 500 ETF",
     description:
-      "Tracks the S&P 500 Index, providing low-cost, diversified exposure to 500 of the largest U.S. publicly traded companies.",
+      "Tracks the S&P 500 Index, providing broad, low-cost exposure to 500 of the largest U.S. publicly traded companies across all sectors — technology, financials, healthcare, consumer, industrials, communication services, energy, utilities, materials, and real estate.",
     constituentsNote:
-      "Representative top-10 holdings shown. Edit data/etfConstituents.ts to replace with a full constituent list.",
+      "Representative top-10 holdings shown. These ~34% of the index are concentrated in mega-cap names; the remaining 490 holdings span all S&P 500 sectors.",
     constituents: [
       { ticker: "AAPL",  company: "Apple",              weightPct: 7.1, sector: "Technology" },
       { ticker: "MSFT",  company: "Microsoft",          weightPct: 6.5, sector: "Technology" },
-      { ticker: "NVDA",  company: "NVIDIA",             weightPct: 6.2, sector: "Semiconductors" },
+      { ticker: "NVDA",  company: "NVIDIA",             weightPct: 6.2, sector: "Technology" },
       { ticker: "AMZN",  company: "Amazon",             weightPct: 3.7, sector: "Consumer / Cloud" },
       { ticker: "META",  company: "Meta Platforms",     weightPct: 2.8, sector: "Technology" },
       { ticker: "GOOGL", company: "Alphabet",           weightPct: 2.5, sector: "Technology" },
       { ticker: "BRK.B", company: "Berkshire Hathaway", weightPct: 1.9, sector: "Financials" },
       { ticker: "LLY",   company: "Eli Lilly",          weightPct: 1.7, sector: "Healthcare" },
-      { ticker: "AVGO",  company: "Broadcom",           weightPct: 1.7, sector: "Semiconductors" },
-      { ticker: "TSLA",  company: "Tesla",              weightPct: 1.6, sector: "Consumer / EV" },
+      { ticker: "AVGO",  company: "Broadcom",           weightPct: 1.7, sector: "Technology" },
+      { ticker: "TSLA",  company: "Tesla",              weightPct: 1.6, sector: "Consumer" },
     ],
   },
 };

@@ -124,7 +124,8 @@ export default function SleeveHoldingsTable({
   holdings: SleeveHolding[];
   sleeve: string;
 }) {
-  const maxWeight = Math.max(...holdings.map((h) => h.portfolioWeightPct), 1);
+  const totalWeight = holdings.reduce((s, h) => s + h.portfolioWeightPct, 0) || 1;
+  const maxWeight = Math.max(...holdings.map((h) => h.portfolioWeightPct / totalWeight * 100), 1);
 
   return (
     <div
@@ -216,7 +217,7 @@ export default function SleeveHoldingsTable({
                 {/* Weight */}
                 <td className="px-5 py-4">
                   <WeightBar
-                    pct={h.portfolioWeightPct}
+                    pct={h.portfolioWeightPct / totalWeight * 100}
                     max={maxWeight}
                     color={typeColor}
                   />
