@@ -80,16 +80,18 @@ export class FinnhubProvider implements MarketDataProvider, HistoricalProvider {
             return;
           }
 
-          // Finnhub returns c: 0 for unrecognised symbols or market-closed periods.
-          if (!data.c) {
-            console.info(`[finnhub] Zero price for ${symbol} — market closed or unrecognized ticker`);
+          // Finnhub returns c: 0 for unrecognised symbols or some ETFs when market is closed.
+          // Fall back to previous close (pc) so quotes remain visible outside market hours.
+          const price = data.c || data.pc || 0;
+          if (!price) {
+            console.info(`[finnhub] No price data for ${symbol}`);
             results[symbol] = empty;
             return;
           }
 
           results[symbol] = {
             symbol,
-            price: data.c,
+            price,
             change: data.d,
             changePercent: data.dp,
             updatedAt,

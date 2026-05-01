@@ -98,9 +98,6 @@ export function ReturnSinceSection({
               ? ((currentPrice / e.purchasePrice) - 1) * 100
               : null;
 
-          const currentValue =
-            currentPrice !== null && e.shares !== null ? e.shares * currentPrice : null;
-
           const isUp = totalReturnPct !== null ? totalReturnPct >= 0 : true;
 
           return (
@@ -134,14 +131,6 @@ export function ReturnSinceSection({
 
               <div className="my-7 h-px" style={{ background: "rgba(15,30,53,0.07)" }} />
 
-              <div className="grid grid-cols-3 gap-x-10 gap-y-5">
-                <Stat label="Shares" value={e.shares !== null ? e.shares.toFixed(2) : dash} />
-                <Stat label="Total Invested" value={e.totalInvested !== null ? fmt$(e.totalInvested) : dash} />
-                <Stat
-                  label="Current Value"
-                  value={loading ? dots : currentValue !== null ? fmt$(currentValue) : dash}
-                />
-              </div>
 
               {/* chart only for single legacy purchase view */}
               {purchase && ticker && e.ticker === ticker && e.purchasePrice !== null && (

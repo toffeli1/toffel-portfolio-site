@@ -532,13 +532,6 @@ function TrimEventCard({ event }: { event: TrimEvent }) {
             {formatDetailDate(event.date)}
           </p>
           <p className="font-mono text-[13px] font-semibold text-[#0f1e35]">
-            {event.quantity} sh&ensp;·&ensp;$
-            {event.amountUsd.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </p>
-          <p className="mt-1 font-mono text-[10px] text-[#7a8799]">
             ${event.pricePerShare.toFixed(2)}/sh
           </p>
         </div>

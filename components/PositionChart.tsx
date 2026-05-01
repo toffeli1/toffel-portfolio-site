@@ -759,19 +759,9 @@ function PurchaseTooltip({
       </p>
 
       {cluster.isRecurring ? (
-        <>
-          <p style={{ color: "#0f1e35", fontWeight: 600, fontSize: 13 }}>
-            $
-            {cluster.totalAmount.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-          </p>
-          <p style={{ color: "#a8b2bd", fontSize: 10, marginTop: 3 }}>
-            {cluster.lots.length} recurring buys · $
-            {cluster.lots[0].amountUsd.toFixed(0)} each
-          </p>
-        </>
+        <p style={{ color: "#a8b2bd", fontSize: 10, marginTop: 3 }}>
+          {cluster.lots.length} recurring buys
+        </p>
       ) : (
         cluster.lots.map((lot, i) => (
           <div
@@ -783,11 +773,7 @@ function PurchaseTooltip({
             }}
           >
             <p style={{ color: "#0f1e35", fontWeight: 600, fontSize: 13 }}>
-              ${lot.amountUsd.toFixed(2)}
-            </p>
-            <p style={{ color: "#7a8799", fontSize: 10, marginTop: 2 }}>
-              {lot.shares.toFixed(4)} sh&ensp;·&ensp;$
-              {lot.pricePerShare.toFixed(2)}/sh
+              ${lot.pricePerShare.toFixed(2)}/sh
             </p>
             {lot.isPartial && (
               <p style={{ color: "#b0bac5", fontSize: 9, marginTop: 2 }}>
