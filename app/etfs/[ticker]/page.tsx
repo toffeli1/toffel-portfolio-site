@@ -100,96 +100,136 @@ export default async function EtfDetailPage({
           </div>
         </section>
 
-        {/* ── Top Holdings ─────────────────────────────────────────────────── */}
-        <section
-          className="border-b"
-          style={{ borderColor: "rgba(15,30,53,0.08)" }}
-        >
-          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-            <div className="mb-8 flex items-end justify-between gap-6">
-              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Top Holdings
-              </p>
-              <p className="font-mono text-[9px] text-[#a8b2bd]">
-                {profile.constituentsNote}
-              </p>
-            </div>
+        {/* ── Sector Breakdown (when sectorBreakdown is provided) ─────────── */}
+        {profile.sectorBreakdown && profile.sectorBreakdown.length > 0 && (() => {
+          const maxSectorWeight = Math.max(...profile.sectorBreakdown!.map((s) => s.weightPct));
+          return (
+            <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+              <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+                <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+                  Sector Allocation
+                </p>
+                <div
+                  className="overflow-x-auto rounded-2xl"
+                  style={{
+                    background: "#ffffff",
+                    border: "1px solid rgba(15,30,53,0.09)",
+                    boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+                  }}
+                >
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
+                        {["Sector", "VOO Weight"].map((h) => (
+                          <th key={h} className="px-5 py-3.5 text-left font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {profile.sectorBreakdown!.map((s, i) => (
+                        <tr
+                          key={s.sector}
+                          style={i < profile.sectorBreakdown!.length - 1 ? { borderBottom: "1px solid rgba(15,30,53,0.05)" } : undefined}
+                        >
+                          <td className="px-5 py-4 text-[13px] text-[#2d3d52]">{s.sector}</td>
+                          <td className="px-5 py-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-40 overflow-hidden rounded-full" style={{ background: "rgba(15,30,53,0.07)", height: 3 }}>
+                                <div
+                                  className="h-full rounded-full"
+                                  style={{ width: `${(s.weightPct / maxSectorWeight) * 100}%`, backgroundColor: "#1a3a5c", opacity: 0.6 }}
+                                />
+                              </div>
+                              <span className="font-mono text-[11px] tabular-nums text-[#5a6e82]">
+                                {s.weightPct.toFixed(1)}%
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          );
+        })()}
 
-            <div
-              className="overflow-x-auto rounded-2xl"
-              style={{
-                background: "#ffffff",
-                border: "1px solid rgba(15,30,53,0.09)",
-                boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-              }}
-            >
-              <table className="w-full text-sm">
-                <thead>
-                  <tr
-                    style={{
-                      background: "#f8f4ee",
-                      borderBottom: "1px solid rgba(15,30,53,0.07)",
-                    }}
-                  >
-                    {["#", "Ticker", "Company", "Weight", "Sector"].map((h) => (
-                      <th
-                        key={h}
-                        className="px-5 py-3.5 text-left font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]"
-                      >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {profile.constituents.map((c, i) => (
-                    <tr
-                      key={c.ticker}
-                      style={
-                        i < profile.constituents.length - 1
-                          ? { borderBottom: "1px solid rgba(15,30,53,0.05)" }
-                          : undefined
-                      }
-                    >
-                      <td className="px-5 py-4 font-mono text-[10px] tabular-nums text-[#a8b2bd]">
-                        {String(i + 1).padStart(2, "0")}
-                      </td>
-                      <td className="px-5 py-4 font-mono text-[12px] font-bold text-[#0f1e35]">
-                        {c.ticker}
-                      </td>
-                      <td className="px-5 py-4 text-[13px] text-[#2d3d52]">
-                        {c.company}
-                      </td>
-                      <td className="px-5 py-4">
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="w-20 overflow-hidden rounded-full"
-                            style={{ background: "rgba(15,30,53,0.07)", height: 3 }}
-                          >
-                            <div
-                              className="h-full rounded-full"
-                              style={{
-                                width: `${(c.weightPct / profile.constituents[0].weightPct) * 100}%`,
-                                backgroundColor: "#1a3a5c",
-                                opacity: 0.6,
-                              }}
-                            />
-                          </div>
-                          <span className="font-mono text-[11px] tabular-nums text-[#5a6e82]">
-                            {c.weightPct.toFixed(1)}%
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-5 py-4 font-mono text-[10px] text-[#7a8799]">
-                        {c.sector ?? "—"}
-                      </td>
+        {/* ── Top Holdings (when individual constituents are available) ──────── */}
+        {profile.constituents.length > 0 && (
+          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+              <div className="mb-8 flex items-end justify-between gap-6">
+                <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+                  Top Holdings
+                </p>
+                {profile.constituentsNote && (
+                  <p className="font-mono text-[9px] text-[#a8b2bd]">
+                    {profile.constituentsNote}
+                  </p>
+                )}
+              </div>
+              <div
+                className="overflow-x-auto rounded-2xl"
+                style={{
+                  background: "#ffffff",
+                  border: "1px solid rgba(15,30,53,0.09)",
+                  boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+                }}
+              >
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
+                      {["#", "Ticker", "Company", "Weight", "Sector"].map((h) => (
+                        <th key={h} className="px-5 py-3.5 text-left font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
+                          {h}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {profile.constituents.map((c, i) => (
+                      <tr
+                        key={c.ticker}
+                        style={i < profile.constituents.length - 1 ? { borderBottom: "1px solid rgba(15,30,53,0.05)" } : undefined}
+                      >
+                        <td className="px-5 py-4 font-mono text-[10px] tabular-nums text-[#a8b2bd]">
+                          {String(i + 1).padStart(2, "0")}
+                        </td>
+                        <td className="px-5 py-4 font-mono text-[12px] font-bold text-[#0f1e35]">
+                          {c.ticker}
+                        </td>
+                        <td className="px-5 py-4 text-[13px] text-[#2d3d52]">{c.company}</td>
+                        <td className="px-5 py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-20 overflow-hidden rounded-full" style={{ background: "rgba(15,30,53,0.07)", height: 3 }}>
+                              <div
+                                className="h-full rounded-full"
+                                style={{
+                                  width: `${(c.weightPct / profile.constituents[0].weightPct) * 100}%`,
+                                  backgroundColor: "#1a3a5c",
+                                  opacity: 0.6,
+                                }}
+                              />
+                            </div>
+                            <span className="font-mono text-[11px] tabular-nums text-[#5a6e82]">
+                              {c.weightPct.toFixed(1)}%
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-5 py-4 font-mono text-[10px] text-[#7a8799]">
+                          {c.sector ?? "—"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
       {/* ── Footer ──────────────────────────────────────────────────────────── */}

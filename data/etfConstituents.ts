@@ -1,15 +1,13 @@
-// ─── ETF constituent / underlying holdings ────────────────────────────────────
-// Edit this file to update ETF top-holdings lists.
-// Initial data shows representative top-10 holdings for each ETF.
-// Replace with full constituent lists when available.
-//
-// constituentsNote is displayed on the ETF detail page as a disclaimer.
-
 export interface EtfConstituent {
   ticker: string;
   company: string;
   weightPct: number;
   sector?: string;
+}
+
+export interface SectorAllocation {
+  sector: string;
+  weightPct: number;
 }
 
 export interface EtfProfile {
@@ -18,6 +16,8 @@ export interface EtfProfile {
   description: string;
   constituents: EtfConstituent[];
   constituentsNote: string;
+  /** When present, rendered as the primary breakdown instead of individual constituents. */
+  sectorBreakdown?: SectorAllocation[];
 }
 
 export const etfProfiles: Record<string, EtfProfile> = {
@@ -27,7 +27,7 @@ export const etfProfiles: Record<string, EtfProfile> = {
     description:
       "Tracks the Nasdaq-100 Index, comprising 100 of the largest non-financial companies listed on the Nasdaq Stock Market.",
     constituentsNote:
-      "Representative top-10 holdings shown. Edit data/etfConstituents.ts to replace with a full constituent list.",
+      "Representative top-10 holdings shown. Actual weights shift with market prices.",
     constituents: [
       { ticker: "MSFT",  company: "Microsoft",       weightPct: 8.5, sector: "Technology" },
       { ticker: "AAPL",  company: "Apple",            weightPct: 8.2, sector: "Technology" },
@@ -48,7 +48,7 @@ export const etfProfiles: Record<string, EtfProfile> = {
     description:
       "Tracks the MVIS US Listed Semiconductor 25 Index, providing targeted exposure to global semiconductor equipment, materials, and chip leaders.",
     constituentsNote:
-      "Representative top-10 holdings shown. Edit data/etfConstituents.ts to replace with a full constituent list.",
+      "Representative top-10 holdings shown. Actual weights shift with market prices.",
     constituents: [
       { ticker: "NVDA",  company: "NVIDIA",                  weightPct: 19.8, sector: "GPUs / AI" },
       { ticker: "TSM",   company: "Taiwan Semiconductor",    weightPct: 11.6, sector: "Foundry" },
@@ -68,19 +68,20 @@ export const etfProfiles: Record<string, EtfProfile> = {
     fullName: "Vanguard S&P 500 ETF",
     description:
       "Tracks the S&P 500 Index, providing broad, low-cost exposure to 500 of the largest U.S. publicly traded companies across all sectors — technology, financials, healthcare, consumer, industrials, communication services, energy, utilities, materials, and real estate.",
-    constituentsNote:
-      "Representative top-10 holdings shown. These ~34% of the index are concentrated in mega-cap names; the remaining 490 holdings span all S&P 500 sectors.",
-    constituents: [
-      { ticker: "AAPL",  company: "Apple",              weightPct: 7.1, sector: "Technology" },
-      { ticker: "MSFT",  company: "Microsoft",          weightPct: 6.5, sector: "Technology" },
-      { ticker: "NVDA",  company: "NVIDIA",             weightPct: 6.2, sector: "Technology" },
-      { ticker: "AMZN",  company: "Amazon",             weightPct: 3.7, sector: "Consumer / Cloud" },
-      { ticker: "META",  company: "Meta Platforms",     weightPct: 2.8, sector: "Technology" },
-      { ticker: "GOOGL", company: "Alphabet",           weightPct: 2.5, sector: "Technology" },
-      { ticker: "BRK.B", company: "Berkshire Hathaway", weightPct: 1.9, sector: "Financials" },
-      { ticker: "LLY",   company: "Eli Lilly",          weightPct: 1.7, sector: "Healthcare" },
-      { ticker: "AVGO",  company: "Broadcom",           weightPct: 1.7, sector: "Technology" },
-      { ticker: "TSLA",  company: "Tesla",              weightPct: 1.6, sector: "Consumer" },
+    constituentsNote: "",
+    constituents: [],
+    sectorBreakdown: [
+      { sector: "Information Technology",    weightPct: 32.90 },
+      { sector: "Financials",                weightPct: 12.60 },
+      { sector: "Communication Services",    weightPct: 10.30 },
+      { sector: "Consumer Discretionary",    weightPct:  9.90 },
+      { sector: "Health Care",               weightPct:  9.50 },
+      { sector: "Industrials",               weightPct:  9.00 },
+      { sector: "Consumer Staples",          weightPct:  5.30 },
+      { sector: "Energy",                    weightPct:  4.00 },
+      { sector: "Utilities",                 weightPct:  2.50 },
+      { sector: "Materials",                 weightPct:  2.10 },
+      { sector: "Real Estate",               weightPct:  1.90 },
     ],
   },
 };

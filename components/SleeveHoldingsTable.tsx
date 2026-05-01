@@ -55,6 +55,11 @@ function ReturnCell({ ticker, sleeve }: { ticker: string; sleeve: string }) {
           {q.changePercent >= 0 ? "+" : ""}{q.changePercent.toFixed(2)}% today
         </span>
       )}
+      {avgCost !== null && (
+        <span className="font-mono text-[9px] tabular-nums" style={{ color: "#b0bac5" }}>
+          avg ${avgCost.toFixed(2)}
+        </span>
+      )}
     </div>
   );
 }

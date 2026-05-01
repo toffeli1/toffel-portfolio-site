@@ -430,9 +430,9 @@ export const positionLots: Record<string, PurchaseLot[]> = {
 };
 
 // ── Weighted average cost per share for each fully-tracked position ───────────
-// Computed from surviving lots only (post-FIFO). Not available for VOO
-// (recurring lots lack per-share data until resolved from chart history).
+// Computed from surviving lots only (post-FIFO).
 export const positionAverageCost: Record<string, number> = {
+  VOO:   616.41,  // manually provided weighted average across all surviving lots
   AMD:   206.66,  // updated after Apr 30 2% trim (FIFO removed low-cost Jul 8 shares)
   UNH:   292.46,
   NBIS:   51.77,
