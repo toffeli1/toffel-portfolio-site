@@ -36,6 +36,86 @@ export interface PreviousHolding {
 
 export const previousHoldings: PreviousHolding[] = [
   {
+    ticker: "IREN",
+    company: "IREN",
+    sleeve: "roth-ira",
+    subcategory: "AI / Infrastructure / Energy",
+    country: "International",
+    marketCap: "Small Cap",
+    assetType: "Equity",
+    ownedFrom: "2025-08-22",
+    ownedTo: "2026-04-30",
+    exitType: "Capital-Allocation Upgrade",
+    summaryReason: "Exited after the position had run up; capital reallocated toward better risk/reward.",
+    originalThesis:
+      "IREN was held as power-linked digital infrastructure exposure, combining Bitcoin mining economics with an emerging AI cloud pivot. The thesis was that IREN's low-cost power base positioned it well to transition GPU capacity toward AI workloads as mining margins compressed.",
+    whatChanged:
+      "The position appreciated significantly from the August 2025 entry. After a partial trim in April following a 127%+ gain, the remaining position was evaluated against other opportunities. The risk/reward at elevated prices relative to the AI pivot execution stage made reallocation the better portfolio construction decision.",
+    whyExited:
+      "Exited IREN fully on April 30 after the position had run up. The exit was a capital-allocation upgrade, reallocating away from a less attractive risk/reward setup toward better opportunities.",
+    lesson:
+      "Significant appreciation from a speculative entry creates a natural reassessment point. When a position has already captured most of the near-term thesis, holding requires a new and distinct reason to remain sized. Reallocating gains into higher-conviction setups is sound portfolio management.",
+    purchaseLots: [
+      { date: "2025-08-22", shares: 5, pricePerShare: 21.11, amountUsd: 105.55, isPartial: true },
+      { date: "2026-02-05", shares: 5, pricePerShare: 41.81, amountUsd: 209.05 },
+    ],
+    averageCostPerShare: 31.46,
+    estimatedEntryPrice: 21.11,
+  },
+  {
+    ticker: "SATL",
+    company: "Satellogic",
+    sleeve: "roth-ira",
+    subcategory: "Space / Earth Observation",
+    country: "Latin America",
+    marketCap: "Small Cap",
+    assetType: "Equity",
+    ownedFrom: "2026-01-01",
+    ownedTo: "2026-04-30",
+    exitType: "Capital-Allocation Upgrade",
+    summaryReason: "Exited after the position had run up; capital reallocated toward better risk/reward.",
+    originalThesis:
+      "SATL was held as small-cap satellite and imagery exposure, providing access to the emerging commercial Earth observation market through a Latin American operator with a large satellite constellation.",
+    whatChanged:
+      "The position appreciated from entry. Evaluated against the broader portfolio and available opportunities, the risk/reward setup at elevated prices no longer competed favorably with higher-conviction alternatives.",
+    whyExited:
+      "Exited SATL fully on April 30 after the position had run up. The exit was a capital-allocation upgrade, reallocating away from a less attractive risk/reward setup toward better opportunities.",
+    lesson:
+      "Small-cap speculative positions require ongoing re-underwriting as the price moves. When a position runs and the margin of safety compresses, the bar for continued ownership rises. If a better use of that capital exists, reallocation is the disciplined move.",
+    estimatedEntryPrice: 7.10,
+  },
+  {
+    ticker: "SCHD",
+    company: "Schwab U.S. Dividend Equity ETF",
+    sleeve: "roth-ira",
+    subcategory: "Dividend ETF",
+    country: "US",
+    marketCap: "Large Cap",
+    assetType: "ETF",
+    ownedFrom: "2026-04-01",
+    ownedTo: "2026-04-30",
+    exitType: "Portfolio Role Clarity / Capital Reallocation",
+    summaryReason: "Exited on role clarity grounds — insufficient alignment with current return objectives and overlap with broader defensive exposure.",
+    originalThesis:
+      "SCHD was added as the portfolio's income and stability allocation — the position designed to perform when high-beta growth names struggle. The ETF's methodology filters for dividend sustainability rather than raw yield, holding high-quality businesses with durable free cash flow. It was intended to function as a partial hedge to the AI infrastructure and growth technology exposure that dominated the rest of the book.",
+    whatChanged:
+      "Portfolio composition and return objectives evolved. As conviction in the growth and AI-oriented positions deepened, SCHD's role as a defensive anchor became less clearly defined. The position created overlap with broader defensive and value exposure already present in the book, without providing sufficient differentiated return potential to justify a standalone allocation. The role it was meant to fill — income, stability, and ballast — was increasingly addressed by the portfolio's structure, leaving SCHD without a clear, non-redundant mandate.",
+    whyExited:
+      "Exited SCHD fully at $31.95 on April 30. SCHD no longer fit the intended role of the portfolio. While the fund provides quality dividend exposure, it created overlap with broader defensive/value exposure and did not offer enough alignment with current long-term return objectives. This was a portfolio role clarity decision rather than a negative view on SCHD itself.",
+    lesson:
+      "Every position needs a clear, non-redundant role in the portfolio. A quality fund can be correct on its own merits while still being the wrong fit for a specific book at a specific time. Portfolio construction requires asking not just whether a holding is good, but whether it is good in relation to everything else already owned — and whether its presence sharpens or dilutes the portfolio's overall mandate.",
+    purchaseLots: [
+      {
+        date: "2026-04-01",
+        shares: 65.147614,
+        pricePerShare: 30.70,
+        amountUsd: 2000.00,
+      },
+    ],
+    averageCostPerShare: 30.70,
+    estimatedEntryPrice: 30.70,
+  },
+  {
     ticker: "PLTR",
     company: "Palantir Technologies",
     sleeve: "roth-ira",

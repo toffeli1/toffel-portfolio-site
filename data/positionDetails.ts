@@ -871,6 +871,18 @@ export const positionDetails: Record<string, PositionDetail> = {
       "Quarterly data center GPU revenue as a percentage of total — the most direct thesis progress metric.",
       "NVIDIA Blackwell/Rubin performance benchmarks that set the competitive bar AMD must meet.",
     ],
+    trimEvents: [
+      {
+        date: "2026-04-30",
+        quantity: 0.197783,
+        amountUsd: 70.00,
+        pricePerShare: 354.00,
+        type: "partial_trim",
+        explanation:
+          "Trimmed AMD by 2% in the Roth IRA at $354 on April 30. The position had appreciated beyond my intended risk limit, so I reduced exposure to keep AMD near my 10% maximum position size. This was not a thesis reversal. The trim was a portfolio construction decision focused on position discipline, concentration control, and preserving gains after significant appreciation.",
+        inferred: false,
+      },
+    ],
   },
 
   UNH: {

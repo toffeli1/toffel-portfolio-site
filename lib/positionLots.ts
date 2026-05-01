@@ -13,8 +13,9 @@ export interface PurchaseLot {
 
 // ── FIFO audit summary ───────────────────────────────────────────────────────
 //
-// AMD: 7 buys, 1 sell (0.306495 sh @ $163.13 on Aug 21, 2025)
-//   FIFO: Jul 8 lot (1 sh @ $136.54) partially consumed → 0.693505 sh survive
+// AMD: 7 buys, 2 sells
+//   Sell 1: 0.306495 sh @ $163.13 on Aug 21, 2025 — FIFO: Jul 8 lot (1 sh @ $136.54) partially consumed → 0.693505 sh survive
+//   Sell 2: 0.197783 sh @ $354.00 on Apr 30, 2026 (2% trim; 10% max position rule) — FIFO: Jul 8 partial further consumed → 0.495722 sh survive
 //   Surviving: 7 lots (Jul 8 partial, Jul 15 ×2, Jan 26, Feb 3, Feb 4 ×2)
 //
 // VOO: 4 known buys + 23 recurring + 6 sells
@@ -38,9 +39,9 @@ export const positionLots: Record<string, PurchaseLot[]> = {
   AMD: [
     {
       date: "2025-07-08",
-      shares: 0.693505,
+      shares: 0.495722,
       pricePerShare: 136.54,
-      amountUsd: 94.71,
+      amountUsd: 67.70,
       isPartial: true,
     },
     {
@@ -363,26 +364,6 @@ export const positionLots: Record<string, PurchaseLot[]> = {
     },
   ],
 
-  // ── IREN ──────────────────────────────────────────────────────────────────
-  // 3 buys, 1 sell (5 sh @ $47.92 on Apr 17, 2026)
-  // FIFO: Aug 22 lot (10 sh) partially consumed → 5 sh survive
-  // Surviving: 2 lots
-  IREN: [
-    {
-      date: "2025-08-22",
-      shares: 5,
-      pricePerShare: 21.11,
-      amountUsd: 105.55,
-      isPartial: true,
-    },
-    {
-      date: "2026-02-05",
-      shares: 5,
-      pricePerShare: 41.81,
-      amountUsd: 209.05,
-    },
-  ],
-
   // ── META ──────────────────────────────────────────────────────────────────
   // 2 buys, 0 sells → all lots survive
   META: [
@@ -397,17 +378,6 @@ export const positionLots: Record<string, PurchaseLot[]> = {
       shares: 1.2,
       pricePerShare: 662.78,
       amountUsd: 795.34,
-    },
-  ],
-
-  // ── SCHD ──────────────────────────────────────────────────────────────────
-  // 1 buy, 0 sells → lot survives
-  SCHD: [
-    {
-      date: "2026-04-01",
-      shares: 65.147614,
-      pricePerShare: 30.70,
-      amountUsd: 2000.00,
     },
   ],
 
@@ -463,7 +433,7 @@ export const positionLots: Record<string, PurchaseLot[]> = {
 // Computed from surviving lots only (post-FIFO). Not available for VOO
 // (recurring lots lack per-share data until resolved from chart history).
 export const positionAverageCost: Record<string, number> = {
-  AMD:   206.16,
+  AMD:   206.66,  // updated after Apr 30 2% trim (FIFO removed low-cost Jul 8 shares)
   UNH:   292.46,
   NBIS:   51.77,
   DLO:    11.67,
@@ -471,11 +441,11 @@ export const positionAverageCost: Record<string, number> = {
   FBTC:   77.59,
   MELI: 1962.06,
   NU:     13.29,
-  IREN:   31.46,
+  // IREN removed — position fully exited Apr 30, 2026; lots preserved in previousHoldings
   // ── added batch ───────────────────────────────────────────────────────────
   AVEX:   37.56,  // from holdings.ts purchase.costBasis; no dated lot available
   META:  654.69,  // 2 lots: Jan 23 (0.778573 sh @$642.20) + Jan 26 (1.2 sh @$662.78)
-  SCHD:   30.70,  // 1 lot:  Apr 1  (65.147614 sh @$30.70)
+  // SCHD removed — position fully exited Apr 30, 2026 @ $31.95; lots preserved in previousHoldings
   ASTS:  108.92,  // 1 lot:  Jan 26 (6 sh @$108.92)
   // SMH intentionally excluded: the Roth IRA lot (Jan 26, @$398.63) would produce
   // incorrect live returns on the ETF sleeve, which has a much older, lower cost basis.
