@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Holding, Category } from "@/data/holdings";
-import { PriceCell, ChangeCell } from "./QuoteCell";
 import { ClickableRow } from "./ClickableRow";
 
 const COLOR: Record<Category, string> = {
@@ -31,16 +30,14 @@ export default function HoldingsTable({
         boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
       }}
     >
-      <table className="w-full min-w-[900px] border-collapse">
+      <table className="w-full min-w-[600px] border-collapse">
         <thead>
           <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
             <Th w="w-[100px]">Ticker</Th>
             <Th w="w-[165px]">Company</Th>
-            <Th w="w-[155px]" right>Weight</Th>
-            <Th w="w-[100px]" right>Price</Th>
-            <Th w="w-[95px]" right>Day %</Th>
-            {showCategory && <Th w="w-[135px]">Theme</Th>}
-            <Th w="w-[200px]">Subcategory</Th>
+            <Th w="w-[130px]" right>Weight</Th>
+            {showCategory && <Th w="w-[120px]">Theme</Th>}
+            <Th w="w-[180px]">Subcategory</Th>
             <Th>Thesis</Th>
           </tr>
         </thead>
@@ -92,16 +89,6 @@ export default function HoldingsTable({
                       {h.portfolioPct.toFixed(1)}%
                     </span>
                   </div>
-                </td>
-
-                {/* Price — client island */}
-                <td className="px-5 py-5 text-right">
-                  <PriceCell ticker={h.ticker} />
-                </td>
-
-                {/* Daily change — client island */}
-                <td className="px-5 py-5 text-right">
-                  <ChangeCell ticker={h.ticker} />
                 </td>
 
                 {/* Theme */}

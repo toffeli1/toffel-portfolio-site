@@ -1,15 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { portfolios, getPortfolio } from "@/data/portfolios";
-import { categoryAllocations, getHoldingsByCategory } from "@/data/holdings";
+import { holdings } from "@/data/holdings";
 import { rothIraHoldings, etfsSleeveHoldings } from "@/data/sleeveHoldings";
 import { etfProfiles } from "@/data/etfConstituents";
 import { QuotesProvider } from "@/components/QuotesProvider";
 import { LiveReturnBadge } from "@/components/LiveReturnBadge";
-import Hero from "@/components/Hero";
-import PortfolioOverview from "@/components/PortfolioOverview";
-import FullHoldingsSection from "@/components/FullHoldingsSection";
-import CategorySection from "@/components/CategorySection";
+import HoldingsTable from "@/components/HoldingsTable";
 import SleeveHoldingsTable from "@/components/SleeveHoldingsTable";
 import BreakdownPanel from "@/components/BreakdownPanel";
 import { BenchmarkComparisonWrapper } from "@/components/BenchmarkComparisonWrapper";
@@ -79,9 +76,13 @@ function SleeveFooter() {
   );
 }
 
-// ── Speculative Individual Stocks view ───────────────────────────────────────
+// ── Individual Brokerage view ─────────────────────────────────────────────────
 
 function RetailView() {
+  const color = "#1a3a5c";
+  const etfPct = holdings.filter(h => h.category === "ETFs").reduce((s, h) => s + h.portfolioPct, 0);
+  const equityPct = holdings.filter(h => h.category === "Equities").reduce((s, h) => s + h.portfolioPct, 0);
+
   return (
     <div className="min-h-screen bg-[#faf7f2]">
       <nav
@@ -93,38 +94,72 @@ function RetailView() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <OverviewLink />
-          <div className="hidden items-center gap-8 sm:flex">
-            {categoryAllocations.map((c) => (
-              <a
-                key={c.category}
-                href={`#${c.category
-                  .toLowerCase()
-                  .replace(/\s*\/\s*/g, "-")
-                  .replace(/\s+/g, "-")}`}
-                className="font-mono text-[11px] text-[#a8b2bd] transition-colors duration-150 hover:text-[#0f1e35]"
-              >
-                {c.category}
-              </a>
-            ))}
-          </div>
+          <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
+            Individual Brokerage
+          </span>
         </div>
       </nav>
 
-      <QuotesProvider>
-        <main>
-          <Hero />
-          <PortfolioOverview />
-          <FullHoldingsSection />
-          {categoryAllocations.map((c) => (
-            <CategorySection
-              key={c.category}
-              category={c.category}
-              description={c.description}
-              holdings={getHoldingsByCategory(c.category)}
-            />
-          ))}
-        </main>
-      </QuotesProvider>
+      <main>
+        {/* Header */}
+        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <div
+            style={{
+              height: "2px",
+              background: `linear-gradient(90deg, transparent 0%, ${color}30 15%, ${color}60 50%, ${color}30 85%, transparent 100%)`,
+            }}
+          />
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+            <p
+              className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
+              style={{ color }}
+            >
+              Taxable Account&ensp;·&ensp;Active Research
+            </p>
+            <h1
+              className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
+              style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
+            >
+              Individual Brokerage
+            </h1>
+            <p className="mt-4 max-w-xl text-[14px] leading-[1.7] text-[#3d4f66]">
+              Taxable brokerage account focused on ETF-based market exposure,
+              semiconductor cyclicality, Bitcoin exposure, and select high-conviction
+              individual equities.
+            </p>
+            <p className="mt-2 font-mono text-[11px] text-[#7a8799]">
+              {holdings.length} active holdings&ensp;·&ensp;ETF-based market exposure&ensp;·&ensp;Select individual equities
+            </p>
+
+            {/* Summary pills */}
+            <div className="mt-6 flex flex-wrap gap-2">
+              {[
+                { label: `ETFs ${etfPct.toFixed(1)}%` },
+                { label: `Equity ${equityPct.toFixed(1)}%` },
+                { label: `${holdings.length} holdings` },
+              ].map((p) => (
+                <span
+                  key={p.label}
+                  className="rounded px-3 py-1 font-mono text-[10px] text-[#5a6e82]"
+                  style={{ border: "1px solid rgba(15,30,53,0.09)" }}
+                >
+                  {p.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Holdings table */}
+        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
+            <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+              Holdings
+            </p>
+            <HoldingsTable holdings={holdings} showCategory />
+          </div>
+        </section>
+      </main>
 
       <SleeveFooter />
     </div>
