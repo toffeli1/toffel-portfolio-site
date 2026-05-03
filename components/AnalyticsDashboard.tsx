@@ -415,34 +415,34 @@ export default function AnalyticsDashboard() {
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {[
               {
-                label: "Roth IRA Return",
+                label: "Roth Return",
                 value: pp(rothReturn),
                 positive: rothReturn >= 0,
                 sub: "weighted avg",
               },
               {
-                label: "ETF Sleeve Return",
+                label: "ETF Exposure Return",
                 value: pp(etfReturn),
                 positive: etfReturn >= 0,
                 sub: "weighted avg",
               },
               {
-                label: "Retail Positions",
+                label: "Brokerage Positions",
                 value: holdings.length.toString(),
                 sub: "holdings",
               },
               {
-                label: "Roth IRA Positions",
+                label: "Roth Positions",
                 value: rothIraHoldings.length.toString(),
                 sub: "holdings",
               },
               {
-                label: "Retail Eff. N",
+                label: "Brokerage Eff. N",
                 value: fmt1(retailConc.effectiveN),
                 sub: `HHI ${fmt2(retailConc.hhi)}`,
               },
               {
-                label: "Roth IRA Eff. N",
+                label: "Roth Eff. N",
                 value: fmt1(rothConc.effectiveN),
                 sub: `HHI ${fmt2(rothConc.hhi)}`,
               },
@@ -488,14 +488,14 @@ export default function AnalyticsDashboard() {
             Weighted Contribution by Holding
           </h2>
           <p className="mb-10 max-w-2xl text-[13px] leading-[1.8]" style={{ color: MUTED }}>
-            Each bar shows a holding&apos;s percentage-point contribution to the sleeve&apos;s
-            total weighted return — weight × individual return. Retail holdings are excluded
-            because intra-sleeve return data is not tracked for that account.
+            Each bar shows a holding&apos;s percentage-point contribution to the account&apos;s
+            total weighted return — weight × individual return. Individual Brokerage holdings
+            are excluded because position-level return data is not tracked for that account.
           </p>
 
           <div className="grid gap-14 lg:grid-cols-2">
-            <AttributionChart title="Roth IRA" data={rothAttribution} color={GREEN} />
-            <AttributionChart title="ETF Sleeve" data={etfAttribution} color={ROSE} />
+            <AttributionChart title="Roth Retirement Account" data={rothAttribution} color={GREEN} />
+            <AttributionChart title="ETF Exposure" data={etfAttribution} color={ROSE} />
           </div>
         </div>
       </section>
@@ -506,7 +506,7 @@ export default function AnalyticsDashboard() {
         style={{ borderColor: BORDER, background: "#f3ede1" }}
       >
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-          <SectionLabel>Roth IRA Exposure</SectionLabel>
+          <SectionLabel>Roth Retirement Account Exposure</SectionLabel>
           <h2 className="mb-10 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
             Geography · Market Cap · Asset Type
           </h2>
@@ -534,7 +534,7 @@ export default function AnalyticsDashboard() {
       {/* ── Exposure: Retail ───────────────────────────────────────────────── */}
       <section className="border-b" style={{ borderColor: BORDER }}>
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-          <SectionLabel>Retail Portfolio Exposure</SectionLabel>
+          <SectionLabel>Individual Brokerage Exposure</SectionLabel>
           <h2 className="mb-10 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
             Thematic Category · Subcategory
           </h2>
@@ -562,7 +562,7 @@ export default function AnalyticsDashboard() {
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
           <SectionLabel>Concentration</SectionLabel>
           <h2 className="mb-2 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
-            Diversification Metrics by Sleeve
+            Diversification Metrics by Account
           </h2>
           <p className="mb-10 max-w-2xl text-[13px] leading-[1.8]" style={{ color: MUTED }}>
             The Herfindahl-Hirschman Index (HHI) measures concentration: 1/N for equal weights,
@@ -571,9 +571,9 @@ export default function AnalyticsDashboard() {
           </p>
 
           <div className="grid gap-5 sm:grid-cols-3">
-            <ConcentrationCard label="Speculative Individual Stocks" metrics={retailConc} color={NAVY} />
-            <ConcentrationCard label="Roth IRA" metrics={rothConc} color={GREEN} />
-            <ConcentrationCard label="ETF Sleeve" metrics={etfConc} color={ROSE} />
+            <ConcentrationCard label="Individual Brokerage" metrics={retailConc} color={NAVY} />
+            <ConcentrationCard label="Roth Retirement Account" metrics={rothConc} color={GREEN} />
+            <ConcentrationCard label="ETF Exposure" metrics={etfConc} color={ROSE} />
           </div>
 
           <div
@@ -581,13 +581,14 @@ export default function AnalyticsDashboard() {
             style={{ borderColor: BORDER, color: MUTED }}
           >
             <span className="font-mono text-[9px] uppercase tracking-[0.2em]" style={{ color: DIM }}>
-              Note on retail
+              Note on Individual Brokerage
             </span>
             <p className="mt-1">
-              The retail sleeve&apos;s top-1 weight ({pct(retailConc.top1Pct)}) reflects a single
-              concentrated position in AVEX (defense/drone). This is intentional — a high-conviction,
-              asymmetric bet sized accordingly. Effective N of {fmt1(retailConc.effectiveN)} for a
-              9-position AI book plus this anchor reflects the deliberate concentration structure.
+              The Individual Brokerage top-1 weight ({pct(retailConc.top1Pct)}) reflects the largest
+              ETF position. The five-holding account is ETF-heavy by design — four ETFs representing
+              broad market, semiconductor, large-cap growth, and Bitcoin exposure — with MU as the
+              sole individual equity. Effective N of {fmt1(retailConc.effectiveN)} reflects this
+              deliberately concentrated, ETF-anchored structure.
             </p>
           </div>
         </div>
@@ -600,9 +601,9 @@ export default function AnalyticsDashboard() {
             <span className="uppercase tracking-[0.18em]">Methodology</span> · Return figures
             are total return since initial purchase as manually recorded; they are not
             time-weighted or annualized. Attribution uses simple arithmetic weighting
-            (holding weight × total return). Retail sleeve attribution is unavailable —
-            individual position returns are not tracked for that account. Weights reflect
-            approximate intra-sleeve allocation, not absolute dollar amounts. Data is
+            (holding weight × total return). Individual Brokerage attribution is unavailable —
+            position-level returns are not tracked for that account. Weights reflect
+            approximate intra-account allocation, not absolute dollar amounts. Data is
             updated manually and may lag current positions.
           </p>
         </div>

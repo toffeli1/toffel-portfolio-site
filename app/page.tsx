@@ -82,8 +82,8 @@ export default function OverviewPage() {
               Dashboard
             </h1>
             <p className="mt-7 max-w-lg text-[15px] leading-[1.75] text-[#3d4f66]">
-              Three accounts. Individual brokerage, retirement, and ETF
-              exposure. A documented investment process, built in public.
+              Two accounts, plus ETF exposure. A documented investment
+              process, built in public.
             </p>
           </div>
         </section>
@@ -253,15 +253,15 @@ export default function OverviewPage() {
                 construction makes sense at the total-book level.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                The portfolio is organized around three distinct accounts. The first
-                is a higher-conviction individual brokerage, where capital is allocated
-                to areas I believe can materially outperform over a multi-year horizon,
-                especially where the market may still be underestimating the duration
-                or breadth of the opportunity. The second is a retirement account, which
-                blends core market exposure with selective growth and measured
-                speculative positions. The third is an ETF exposure account that provides
-                broad index and thematic exposure, keeps the portfolio grounded, and
-                serves as a benchmark-aware core.
+                The portfolio is organized around two primary accounts. The first
+                is the Individual Brokerage, where capital is allocated to ETF-based
+                market exposure, semiconductor cyclicality, Bitcoin exposure, and select
+                high-conviction individual equities. The second is the Roth Retirement
+                Account, which blends core market exposure with selective growth and
+                measured speculative positions inside a tax-advantaged wrapper. ETF
+                Exposure is tracked separately as a supporting look-through view for
+                evaluating index, thematic ETF, and benchmark-like exposures — not
+                treated as a third primary account.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
                 Position size is intentional. Larger weights are reserved for names

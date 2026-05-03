@@ -27,6 +27,8 @@ export interface SleeveHolding {
   /** Omit for ETFs / crypto-linked ETFs with no clear market cap bucket */
   marketCap?: MarketCapBucket;
   assetType: AssetType;
+  /** Broad theme/sleeve grouping — used by the interactive composition chart */
+  theme?: string;
   subcategory?: string;
   thesis?: string;
   notes?: string;
@@ -48,6 +50,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "US",
     marketCap: "Mega Cap",
     assetType: "ETF",
+    theme: "Core Market",
     subcategory: "Broad Market ETF",
     thesis: "Core U.S. large-cap market exposure.",
   },
@@ -59,6 +62,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "US",
     marketCap: "Large Cap",
     assetType: "Equity",
+    theme: "AI / Semiconductors",
     subcategory: "Semiconductors / AI",
     thesis: "AI compute and semiconductor exposure.",
     notes: "Position trimmed 2% on Apr 30, 2026 to maintain ≤10% max position size.",
@@ -71,6 +75,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "US",
     marketCap: "Mega Cap",
     assetType: "Equity",
+    theme: "Healthcare",
     subcategory: "Healthcare",
     thesis: "Defensive large-cap healthcare compounder.",
   },
@@ -82,6 +87,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "International",
     marketCap: "Mid Cap",
     assetType: "Equity",
+    theme: "AI / Semiconductors",
     subcategory: "AI / Infrastructure",
     thesis: "Higher-beta AI infrastructure and compute exposure.",
   },
@@ -93,6 +99,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "Latin America",
     marketCap: "Mid Cap",
     assetType: "Equity",
+    theme: "Fintech",
     subcategory: "Fintech / Payments",
     thesis: "Cross-border payments exposure in emerging markets.",
   },
@@ -104,6 +111,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "US",
     marketCap: "Mega Cap",
     assetType: "Equity",
+    theme: "Platform Tech",
     subcategory: "Internet / AI",
     thesis: "Durable large-cap platform with AI optionality.",
   },
@@ -115,6 +123,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "US",
     // marketCap intentionally omitted — crypto-linked ETF
     assetType: "Crypto-linked ETF",
+    theme: "Digital Assets",
     subcategory: "Bitcoin",
     thesis: "Bitcoin exposure through ETF wrapper.",
   },
@@ -126,6 +135,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "Latin America",
     marketCap: "Large Cap",
     assetType: "Equity",
+    theme: "Platform Tech",
     subcategory: "E-commerce / Fintech",
     thesis: "Latin American platform and payments compounder.",
   },
@@ -137,6 +147,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "Latin America",
     marketCap: "Large Cap",
     assetType: "Equity",
+    theme: "Fintech",
     subcategory: "Fintech",
     thesis: "Digital banking exposure in Latin America.",
   },
@@ -148,6 +159,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "US",
     marketCap: "Mega Cap",
     assetType: "Equity",
+    theme: "Platform Tech",
     subcategory: "Internet / AI",
     thesis: "Large-cap platform with AI monetization upside.",
   },
@@ -159,6 +171,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "US",
     marketCap: "Mid Cap",
     assetType: "Equity",
+    theme: "Space / Defense",
     subcategory: "Space",
     thesis: "Space launch and infrastructure exposure.",
   },
@@ -170,6 +183,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "US",
     marketCap: "Large Cap",
     assetType: "ETF",
+    theme: "AI / Semiconductors",
     subcategory: "Semiconductors ETF",
     thesis: "Concentrated semiconductor basket.",
   },
@@ -181,8 +195,21 @@ export const rothIraHoldings: SleeveHolding[] = [
     country: "US",
     marketCap: "Mid Cap",
     assetType: "Equity",
+    theme: "Space / Defense",
     subcategory: "Space / Communications",
     thesis: "Speculative direct-to-cell satellite connectivity exposure.",
+  },
+  {
+    ticker: "AVEX",
+    company: "AEVEX Corp.",
+    portfolioWeightPct: 1.33,
+    returnPct: -23.35,
+    country: "US",
+    marketCap: "Small Cap",
+    assetType: "Equity",
+    theme: "Space / Defense",
+    subcategory: "Defense Technology / Unmanned Systems",
+    thesis: "Defense technology contractor and unmanned systems exposure tied to UAS, ISR, and defense modernization demand.",
   },
 ];
 

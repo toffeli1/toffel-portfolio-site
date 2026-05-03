@@ -14,10 +14,10 @@ interface Message {
 // ── Suggested prompts ─────────────────────────────────────────────────────────
 
 const GLOBAL_PROMPTS = [
-  "How is this portfolio positioned for AI?",
-  "What are my biggest risk concentrations?",
-  "How do the three accounts differ in strategy?",
-  "What's my largest single position and why?",
+  "How do the Individual Brokerage and Roth Retirement Account differ?",
+  "What are the largest sources of portfolio concentration?",
+  "How does ETF exposure affect the overall risk profile?",
+  "What recent decisions changed the portfolio?",
 ];
 
 function getSuggestedPrompts(pathname: string | null): string[] {
@@ -47,19 +47,19 @@ function getSuggestedPrompts(pathname: string | null): string[] {
 
   if (pathname.includes("/portfolio/retail-with-friends")) {
     return [
-      "What are the top holdings by weight?",
-      "How is the AI 60% allocated across sub-themes?",
-      "What's the defense thesis here?",
-      "What energy names am I holding and why?",
+      "How is the brokerage account allocated across ETFs and MU?",
+      "What is the semiconductor exposure through SMH and MU?",
+      "Why use FBTC for Bitcoin exposure?",
+      "How does the brokerage account differ from the Roth Retirement Account?",
     ];
   }
 
   if (pathname.includes("/portfolio/roth-ira")) {
     return [
-      "What's the largest Roth IRA holding?",
-      "Why does the Roth IRA hold FBTC?",
-      "What Latin America exposure is in the Roth IRA?",
-      "What was PLTR and why was it archived?",
+      "What are the largest Roth Retirement Account positions?",
+      "How does the Roth balance core exposure with compounders?",
+      "Which positions drive the most concentration risk?",
+      "What archived decisions changed the Roth account?",
     ];
   }
 

@@ -9,9 +9,9 @@ function describePageContext(pathname: string): string {
   const archiveMatch = pathname.match(/^\/archive\/([A-Z]+)/i);
   if (archiveMatch) return `Archived position page for ${archiveMatch[1].toUpperCase()} (/archive/${archiveMatch[1].toUpperCase()})`;
 
-  if (pathname.includes("/portfolio/retail-with-friends")) return "Speculative Individual Stocks sleeve page (/portfolio/retail-with-friends)";
-  if (pathname.includes("/portfolio/roth-ira")) return "Roth IRA sleeve page (/portfolio/roth-ira)";
-  if (pathname.includes("/portfolio/etfs")) return "ETF sleeve page (/portfolio/etfs)";
+  if (pathname.includes("/portfolio/retail-with-friends")) return "Individual Brokerage page (/portfolio/retail-with-friends)";
+  if (pathname.includes("/portfolio/roth-ira")) return "Roth Retirement Account page (/portfolio/roth-ira)";
+  if (pathname.includes("/portfolio/etfs")) return "ETF Exposure page (/portfolio/etfs)";
 
   return `${pathname}`;
 }
@@ -28,7 +28,7 @@ CURRENT PAGE: ${pageDescription}
 Use this to make your answers page-aware. If the user asks "what is this position" and they're on a position page, answer about that position specifically.
 
 NAVIGATION REFERENCE:
-- Sleeve pages: /portfolio/retail-with-friends, /portfolio/roth-ira, /portfolio/etfs
+- Account pages: /portfolio/retail-with-friends (Individual Brokerage), /portfolio/roth-ira (Roth Retirement Account), /portfolio/etfs (ETF Exposure)
 - Position pages: /positions/TICKER (e.g. /positions/MRVL)
 - Archived positions: /archive/TICKER (e.g. /archive/PLTR)
 

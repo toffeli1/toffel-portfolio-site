@@ -30,14 +30,14 @@ export default function HoldingsTable({
         boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
       }}
     >
-      <table className="w-full min-w-[600px] border-collapse">
+      <table className="w-full min-w-[700px] border-collapse">
         <thead>
           <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
             <Th w="w-[100px]">Ticker</Th>
             <Th w="w-[165px]">Company</Th>
             <Th w="w-[130px]" right>Weight</Th>
-            {showCategory && <Th w="w-[120px]">Theme</Th>}
-            <Th w="w-[180px]">Subcategory</Th>
+            {showCategory && <Th w="w-[135px]">Theme</Th>}
+            <Th w="w-[200px]">Subcategory</Th>
             <Th>Thesis</Th>
           </tr>
         </thead>

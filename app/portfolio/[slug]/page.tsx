@@ -12,6 +12,7 @@ import BreakdownPanel from "@/components/BreakdownPanel";
 import { BenchmarkComparisonWrapper } from "@/components/BenchmarkComparisonWrapper";
 import { RetirementCalculatorWrapper } from "@/components/RetirementCalculatorWrapper";
 import { getPreviousHoldingsBySleeve } from "@/data/previousHoldings";
+import RothThemeChart from "@/components/RothThemeChart";
 
 export function generateStaticParams() {
   return portfolios.map((p) => ({ slug: p.slug }));
@@ -309,16 +310,22 @@ function RothIraView() {
             </section>
           )}
 
-          {/* Breakdown */}
+          {/* Theme composition + Breakdown */}
           <section
             className="border-b"
             style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
           >
             <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-              <p className="mb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Portfolio Composition
+              <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+                Account Themes
               </p>
-              <BreakdownPanel holdings={rothIraHoldings} />
+              <RothThemeChart holdings={rothIraHoldings} />
+              <div className="mt-16">
+                <p className="mb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+                  Portfolio Composition
+                </p>
+                <BreakdownPanel holdings={rothIraHoldings} />
+              </div>
             </div>
           </section>
 

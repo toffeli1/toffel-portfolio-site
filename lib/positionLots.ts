@@ -443,7 +443,7 @@ export const positionAverageCost: Record<string, number> = {
   NU:     13.29,
   // IREN removed — position fully exited Apr 30, 2026; lots preserved in previousHoldings
   // ── added batch ───────────────────────────────────────────────────────────
-  AVEX:   37.56,  // from holdings.ts purchase.costBasis; no dated lot available
+  AVEX:   36.40,  // Roth IRA avg cost
   META:  654.69,  // 2 lots: Jan 23 (0.778573 sh @$642.20) + Jan 26 (1.2 sh @$662.78)
   // SCHD removed — position fully exited Apr 30, 2026 @ $31.95; lots preserved in previousHoldings
   ASTS:  108.92,  // 1 lot:  Jan 26 (6 sh @$108.92)
