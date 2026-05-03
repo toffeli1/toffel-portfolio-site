@@ -194,31 +194,38 @@ export default function OverviewPage() {
             <div className="mb-12 flex items-end justify-between">
               <div>
                 <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Accounts
+                  Account Views
                 </p>
                 <h2 className="text-3xl font-bold tracking-tight text-[#0f1e35]">
-                  Three Accounts
+                  Two Accounts
                 </h2>
               </div>
               <p className="hidden font-mono text-sm text-[#7a8799] sm:block">
-                {holdings.length + rothIraHoldings.length + etfsSleeveHoldings.length} positions total
+                Account-level research views
               </p>
             </div>
 
-            <div className="grid items-start gap-5 sm:grid-cols-3">
-              {portfolios.map((p) => (
-                <SleeveCard
-                  key={p.slug}
-                  slug={p.slug}
-                  title={p.title}
-                  subtitle={p.subtitle}
-                  description={p.description}
-                  role={p.role}
-                  color={p.color}
-                  themes={p.themes}
-                  holdingCount={HOLDING_COUNTS[p.slug] ?? 0}
-                />
-              ))}
+            <div className="grid items-start gap-5 sm:grid-cols-2">
+              <SleeveCard
+                slug="retail-with-friends"
+                subtitle="Taxable Account"
+                title="Individual Brokerage"
+                description="High-conviction thematic equities across AI infrastructure, defense autonomy, space, and energy transition."
+                role="Active research account focused on flexible capital allocation, thesis tracking, and higher-risk thematic positions."
+                color="#1a3a5c"
+                themes={["AI / Semis", "Defense / Space", "Energy"]}
+                holdingCount={holdings.length}
+              />
+              <SleeveCard
+                slug="roth-ira"
+                subtitle="Retirement Account"
+                title="Roth Retirement Account"
+                description="Roth IRA focused on broad market exposure, durable compounders, and select long-term thematic growth."
+                role="Tax-advantaged account designed for long-duration compounding, account-level allocation, and lower turnover."
+                color="#1a4a2e"
+                themes={["Core Market", "Compounders", "Thematic Growth"]}
+                holdingCount={rothIraHoldings.length}
+              />
             </div>
           </div>
         </section>
