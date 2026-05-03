@@ -2,9 +2,8 @@ import { Category, Holding } from "@/data/holdings";
 import HoldingsTable from "./HoldingsTable";
 
 const COLOR: Record<Category, string> = {
-  AI: "#1a3a5c",
-  "Defense / Drone": "#8b2530",
-  Energy: "#1a4a2e",
+  ETFs: "#1a3a5c",
+  Equities: "#1a4a2e",
 };
 
 interface Props {

@@ -20,13 +20,13 @@ export const portfolios: Portfolio[] = [
   {
     slug: "retail-with-friends",
     title: "Individual Brokerage",
-    subtitle: "Taxable Account · High-Conviction Thematic Equities · Active Research",
+    subtitle: "Taxable Account · ETF Exposure · Active Research",
     description:
-      "Concentrated thematic bets across AI infrastructure, defense autonomy, and energy transition.",
-    role: "Primary expression of high-conviction themes. Carries the highest risk budget in the book.",
+      "Taxable brokerage account focused on ETF-based market exposure, semiconductor cyclicality, Bitcoin exposure, and select high-conviction individual equities.",
+    role: "Active brokerage account used for flexible allocation across broad-market ETFs, thematic ETFs, digital asset exposure, and selected individual equities.",
     type: "retail",
     color: "#1a3a5c",
-    themes: ["AI", "Defense / Drone", "Energy"],
+    themes: ["ETFs", "Semiconductors", "Bitcoin"],
   },
   {
     slug: "roth-ira",

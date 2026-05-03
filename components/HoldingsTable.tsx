@@ -4,15 +4,13 @@ import { PriceCell, ChangeCell } from "./QuoteCell";
 import { ClickableRow } from "./ClickableRow";
 
 const COLOR: Record<Category, string> = {
-  AI: "#1a3a5c",
-  "Defense / Drone": "#8b2530",
-  Energy: "#1a4a2e",
+  ETFs: "#1a3a5c",
+  Equities: "#1a4a2e",
 };
 
 const BG: Record<Category, string> = {
-  AI: "rgba(26,58,92,0.08)",
-  "Defense / Drone": "rgba(139,37,48,0.08)",
-  Energy: "rgba(26,74,46,0.08)",
+  ETFs: "rgba(26,58,92,0.08)",
+  Equities: "rgba(26,74,46,0.08)",
 };
 
 export default function HoldingsTable({

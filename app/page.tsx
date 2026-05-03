@@ -210,10 +210,10 @@ export default function OverviewPage() {
                 slug="retail-with-friends"
                 subtitle="Taxable Account"
                 title="Individual Brokerage"
-                description="High-conviction thematic equities across AI infrastructure, defense autonomy, space, and energy transition."
-                role="Active research account focused on flexible capital allocation, thesis tracking, and higher-risk thematic positions."
+                description="Taxable brokerage account focused on ETF-based market exposure, semiconductor cyclicality, Bitcoin exposure, and select high-conviction individual equities."
+                role="Active brokerage account used for flexible allocation across broad-market ETFs, thematic ETFs, digital asset exposure, and selected individual equities."
                 color="#1a3a5c"
-                themes={["AI / Semis", "Defense / Space", "Energy"]}
+                themes={["ETFs", "Semiconductors", "Bitcoin"]}
                 holdingCount={holdings.length}
               />
               <SleeveCard
