@@ -40,7 +40,7 @@ export const holdings: Holding[] = [
   {
     ticker: 'QQQM',
     company: 'Invesco Nasdaq-100 ETF',
-    portfolioPct: 20.0,
+    portfolioPct: 22.68,
     category: 'ETFs',
     subcategory: 'Large-Cap Growth ETF',
     thesis: 'Nasdaq / large-cap growth exposure.',
@@ -48,7 +48,7 @@ export const holdings: Holding[] = [
   {
     ticker: 'SMH',
     company: 'VanEck Semiconductor ETF',
-    portfolioPct: 20.0,
+    portfolioPct: 19.70,
     category: 'ETFs',
     subcategory: 'Semiconductors ETF',
     thesis: 'Broad semiconductor cycle / AI infrastructure exposure.',
@@ -56,7 +56,7 @@ export const holdings: Holding[] = [
   {
     ticker: 'VOO',
     company: 'Vanguard S&P 500 ETF',
-    portfolioPct: 20.0,
+    portfolioPct: 35.96,
     category: 'ETFs',
     subcategory: 'Broad Market ETF',
     thesis: 'Core U.S. equity market exposure.',
@@ -64,7 +64,7 @@ export const holdings: Holding[] = [
   {
     ticker: 'FBTC',
     company: 'Fidelity Wise Origin Bitcoin Fund',
-    portfolioPct: 20.0,
+    portfolioPct: 15.78,
     category: 'ETFs',
     subcategory: 'Bitcoin ETF',
     thesis: 'Bitcoin exposure through ETF structure.',
@@ -73,7 +73,7 @@ export const holdings: Holding[] = [
   {
     ticker: 'MU',
     company: 'Micron Technology',
-    portfolioPct: 20.0,
+    portfolioPct: 5.89,
     category: 'Equities',
     subcategory: 'Semiconductor Equity',
     entryPrice: 300,
