@@ -82,7 +82,7 @@ export default function OverviewPage() {
               Dashboard
             </h1>
             <p className="mt-7 max-w-lg text-[15px] leading-[1.75] text-[#3d4f66]">
-              Three sleeves. Thematic equity, long-term retirement, and core ETF
+              Three accounts. Individual brokerage, retirement, and ETF
               exposure. A documented investment process, built in public.
             </p>
           </div>
@@ -116,7 +116,7 @@ export default function OverviewPage() {
                 <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
                   The goal isn&apos;t to be right about every position. It&apos;s to be
                   disciplined enough to know whether I was right for the right
-                  reasons. Each holding has a testable thesis, each sleeve has a
+                  reasons. Each holding has a testable thesis, each account has a
                   role, and the site documents both. I think building a serious
                   process early — rather than collecting interesting-sounding
                   ideas — is what compounds over time. This is that attempt, in
@@ -194,7 +194,7 @@ export default function OverviewPage() {
             <div className="mb-12 flex items-end justify-between">
               <div>
                 <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Sleeves
+                  Accounts
                 </p>
                 <h2 className="text-3xl font-bold tracking-tight text-[#0f1e35]">
                   Three Accounts
@@ -238,7 +238,7 @@ export default function OverviewPage() {
             <div className="max-w-3xl space-y-7">
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
                 This portfolio is built as a system, not a collection of disconnected
-                ideas. Every position has a role, every sleeve has a job, and sizing
+                ideas. Every position has a role, every account has a job, and sizing
                 reflects conviction, risk, time horizon, and how directly a name
                 expresses the underlying theme. The goal is not to own a large number
                 of interesting companies. The goal is to concentrate capital where the
@@ -246,15 +246,15 @@ export default function OverviewPage() {
                 construction makes sense at the total-book level.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                The portfolio is organized around three distinct functions. The first
-                is a higher-conviction thematic sleeve, where capital is allocated to
-                areas I believe can materially outperform over a multi-year horizon,
+                The portfolio is organized around three distinct accounts. The first
+                is a higher-conviction individual brokerage, where capital is allocated
+                to areas I believe can materially outperform over a multi-year horizon,
                 especially where the market may still be underestimating the duration
-                or breadth of the opportunity. The second is a retirement sleeve, which
+                or breadth of the opportunity. The second is a retirement account, which
                 blends core market exposure with selective growth and measured
-                speculative positions. The third is a cleaner ETF sleeve that provides
-                broad exposure, keeps the portfolio grounded, and serves as a
-                benchmark-aware core.
+                speculative positions. The third is an ETF exposure account that provides
+                broad index and thematic exposure, keeps the portfolio grounded, and
+                serves as a benchmark-aware core.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
                 Position size is intentional. Larger weights are reserved for names
@@ -324,7 +324,7 @@ export default function OverviewPage() {
                 is a definable source of future value creation, and because that
                 exposure improves the portfolio relative to the alternatives. The first
                 entry in the log should capture that plainly: why this company, why
-                now, why in this sleeve, and why at this size.
+                now, why in this account, and why at this size.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
                 After initiation, the log should track changes in the thesis rather

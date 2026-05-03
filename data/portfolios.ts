@@ -19,8 +19,8 @@ export interface Portfolio {
 export const portfolios: Portfolio[] = [
   {
     slug: "retail-with-friends",
-    title: "Speculative Individual Stocks",
-    subtitle: "Speculative thematic equity sleeve",
+    title: "Individual Brokerage",
+    subtitle: "Taxable Account · High-Conviction Thematic Equities · Active Research",
     description:
       "Concentrated thematic bets across AI infrastructure, defense autonomy, and energy transition.",
     role: "Primary expression of high-conviction themes. Carries the highest risk budget in the book.",
@@ -30,8 +30,8 @@ export const portfolios: Portfolio[] = [
   },
   {
     slug: "roth-ira",
-    title: "Roth IRA",
-    subtitle: "Long-term retirement sleeve",
+    title: "Retirement Account",
+    subtitle: "Roth IRA · Long-Term Compounding · Tax-Advantaged Growth",
     description:
       "Blends core market exposure with compounders, thematic growth, and measured speculative positions.",
     role: "Long-duration compounders inside a tax-free wrapper. Low turnover by design.",
@@ -41,8 +41,8 @@ export const portfolios: Portfolio[] = [
   },
   {
     slug: "etfs",
-    title: "ETFs",
-    subtitle: "Core ETF sleeve",
+    title: "ETF Exposure",
+    subtitle: "Index Funds · Thematic ETFs · Portfolio Look-Through",
     description:
       "Broad-market exposure centered on large-cap growth and semiconductors.",
     role: "Benchmark-aware core. Anchors total book risk and serves as a performance reference.",

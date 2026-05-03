@@ -16,7 +16,7 @@ interface Message {
 const GLOBAL_PROMPTS = [
   "How is this portfolio positioned for AI?",
   "What are my biggest risk concentrations?",
-  "How do the three sleeves differ in strategy?",
+  "How do the three accounts differ in strategy?",
   "What's my largest single position and why?",
 ];
 
@@ -67,7 +67,7 @@ function getSuggestedPrompts(pathname: string | null): string[] {
     return [
       "What ETFs am I holding?",
       "What's the semiconductor weight across ETFs?",
-      "How does the ETF sleeve serve as a benchmark?",
+      "How does the ETF Exposure account serve as a benchmark?",
       "What are the total returns across ETF positions?",
     ];
   }

@@ -148,7 +148,7 @@ function RothIraView() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <OverviewLink />
           <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
-            Roth IRA
+            Retirement Account
           </span>
         </div>
       </nav>
@@ -171,7 +171,7 @@ function RothIraView() {
                 className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
                 style={{ color }}
               >
-                Portfolio Sleeve
+                Account View
               </p>
               <div className="flex items-end justify-between gap-8">
                 <div className="min-w-0">
@@ -179,11 +179,10 @@ function RothIraView() {
                     className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
                     style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
                   >
-                    Roth IRA
+                    Retirement Account
                   </h1>
                   <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
-                    Long-term retirement sleeve blending core market exposure,
-                    compounders, thematic growth, and select speculative positions.
+                    Roth IRA · Long-Term Compounding · Tax-Advantaged Growth
                   </p>
                 </div>
                 <div className="shrink-0 text-right">
@@ -340,7 +339,7 @@ function EtfsView() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <OverviewLink />
           <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
-            ETFs
+            ETF Exposure
           </span>
         </div>
       </nav>
@@ -363,7 +362,7 @@ function EtfsView() {
                 className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
                 style={{ color }}
               >
-                Portfolio Sleeve
+                Exposure View
               </p>
               <div className="flex items-end justify-between gap-8">
                 <div>
@@ -371,11 +370,10 @@ function EtfsView() {
                     className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
                     style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
                   >
-                    ETFs
+                    ETF Exposure
                   </h1>
                   <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
-                    Core ETF sleeve centered on broad-market exposure, large-cap
-                    growth, and semiconductors.
+                    Index Funds · Thematic ETFs · Portfolio Look-Through
                   </p>
                 </div>
                 <div className="shrink-0 text-right">
