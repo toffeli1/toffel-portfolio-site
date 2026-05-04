@@ -70,8 +70,8 @@ export default function AnalyticsPage() {
             Analytics
           </h1>
           <p className="mt-6 max-w-lg text-[14px] leading-[1.75] text-[#3d4f66]">
-            Attribution, exposure breakdown, and concentration metrics across all three sleeves.
-            Data is as-recorded; retail attribution is unavailable.
+            Attribution, exposure breakdown, and concentration metrics across account and exposure views.
+            Individual Brokerage attribution is unavailable.
           </p>
         </div>
       </section>

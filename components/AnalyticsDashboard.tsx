@@ -231,7 +231,7 @@ function AttributionChart({
           {title}
         </p>
         <p className="font-mono text-[11px]" style={{ color: TEXT }}>
-          Sleeve return:{" "}
+          Account return:{" "}
           <span style={{ color: totalReturn >= 0 ? color : ROSE }}>
             {pp(totalReturn)}
           </span>
