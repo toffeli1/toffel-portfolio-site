@@ -410,7 +410,7 @@ function SleeveCard({
 
         <div className="mt-auto flex items-center justify-between">
           <span className="font-mono text-[11px] text-[#7a8799]">
-            {holdingCount} position{holdingCount !== 1 ? "s" : ""}
+            {`${holdingCount} position${holdingCount !== 1 ? "s" : ""}`}
           </span>
           <span
             className="font-mono text-[11px] text-[#a8b2bd] transition-colors group-hover:text-[#0f1e35]"

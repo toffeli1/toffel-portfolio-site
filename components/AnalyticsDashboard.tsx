@@ -214,10 +214,12 @@ function AttributionChart({
   title,
   data,
   color,
+  returnLabel = "Account return",
 }: {
   title: string;
   data: ReturnType<typeof computeAttribution>;
   color: string;
+  returnLabel?: string;
 }) {
   const totalReturn = data.reduce((s, d) => s + d.contribution, 0);
 
@@ -231,7 +233,7 @@ function AttributionChart({
           {title}
         </p>
         <p className="font-mono text-[11px]" style={{ color: TEXT }}>
-          Account return:{" "}
+          {returnLabel}:{" "}
           <span style={{ color: totalReturn >= 0 ? color : ROSE }}>
             {pp(totalReturn)}
           </span>
@@ -505,7 +507,7 @@ export default function AnalyticsDashboard() {
 
           <div className="grid gap-14 lg:grid-cols-2">
             <AttributionChart title="Roth Retirement Account" data={rothAttribution} color={GREEN} />
-            <AttributionChart title="ETF Exposure" data={etfAttribution} color={ROSE} />
+            <AttributionChart title="ETF Exposure" data={etfAttribution} color={ROSE} returnLabel="Exposure return" />
           </div>
         </div>
       </section>
