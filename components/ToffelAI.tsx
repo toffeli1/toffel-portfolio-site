@@ -578,7 +578,7 @@ export function ToffelAI() {
               onClick={() => sendMessage(input)}
               disabled={!input.trim() || streaming}
               aria-label="Send"
-              className="shrink-0 w-7 h-7 flex items-center justify-center rounded-lg bg-[#0f1e35] text-white disabled:opacity-25 transition-opacity hover:opacity-75 active:scale-95"
+              className="shrink-0 w-7 h-7 flex items-center justify-center rounded-lg bg-[#07111f] text-white disabled:opacity-25 transition-opacity hover:opacity-75 active:scale-95"
             >
               <svg
                 width="11"
@@ -608,7 +608,7 @@ export function ToffelAI() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Open Toffel AI"
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#0f1e35] text-white shadow-lg hover:shadow-xl hover:scale-[1.06] active:scale-100 transition-all duration-150 flex items-center justify-center"
+          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#07111f] text-white shadow-lg hover:shadow-xl hover:scale-[1.06] active:scale-100 transition-all duration-150 flex items-center justify-center"
         >
           <svg
             width="22"

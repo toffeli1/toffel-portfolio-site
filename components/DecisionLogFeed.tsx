@@ -61,9 +61,9 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
               className="rounded-full font-mono text-[11px] transition-colors"
               style={{
                 padding: "5px 14px",
-                background: active ? "#0f1e35" : "transparent",
+                background: active ? "#07111f" : "transparent",
                 color: active ? "#ffffff" : "#7a8799",
-                border: `1px solid ${active ? "#0f1e35" : "rgba(15,30,53,0.15)"}`,
+                border: `1px solid ${active ? "#07111f" : "rgba(15,30,53,0.15)"}`,
               }}
             >
               {label}
