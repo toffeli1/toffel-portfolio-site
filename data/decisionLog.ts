@@ -1,6 +1,5 @@
 // ─── Decision log — public-safe portfolio activity entries ────────────────────
 // Privacy: no share counts, quantities, total dollar amounts, or market values.
-// Per-share prices are permitted where already consistent with position page style.
 
 export interface DecisionEntry {
   /** "YYYY-MM-DD" or "YYYY-MM" for month-resolution entries */
@@ -8,14 +7,16 @@ export interface DecisionEntry {
   ticker: string;
   company: string;
   account: string;
-  /** Short action label: "Buy", "Trim", "Full Exit" */
+  /** Short action label: "Buy", "Market buy", "Trim", "Full exit" */
   action: string;
-  /** Decision category: "Thematic exposure increase", "Position sizing / risk management", etc. */
+  /** Decision category */
   type: string;
   /** Public-safe rationale */
   note: string;
   /** /positions/TICKER for active, /archive/TICKER for exited */
   href: string;
+  /** Return % since entry — positive or negative; omit if unavailable */
+  returnPct?: number;
 }
 
 // Reverse-chronological order — newest first.
@@ -29,6 +30,7 @@ export const decisionLog: DecisionEntry[] = [
     type: "Thematic exposure increase",
     note: "Added to SMH on May 1, 2026 to increase broad semiconductor and AI infrastructure exposure within the Roth Retirement Account.",
     href: "/positions/SMH",
+    returnPct: 27.12,
   },
   {
     date: "2026-05-01",
@@ -49,6 +51,7 @@ export const decisionLog: DecisionEntry[] = [
     type: "Position sizing / risk management",
     note: "Trimmed AMD in the Roth Retirement Account on May 1, 2026 after a significant run to bring the position back toward my 10% max position-size discipline. This was not a thesis reversal. The core AMD thesis remains intact, but the trim reflected concentration control, risk management, and a preference to preserve gains after the position had outgrown its intended role.",
     href: "/positions/AMD",
+    returnPct: 71.53,
   },
   {
     date: "2026-05-01",
@@ -59,6 +62,7 @@ export const decisionLog: DecisionEntry[] = [
     type: "Portfolio role clarity / capital reallocation",
     note: "Fully exited SCHD from the Roth Retirement Account on May 1, 2026. SCHD remains a quality dividend ETF, but it no longer fit the intended role of this account. The Roth is being used for long-term compounding, broad-market exposure, durable growth, and select high-conviction themes, while SCHD's dividend/value profile created lower-conviction exposure that did not align with that objective.",
     href: "/archive/SCHD",
+    returnPct: 2.0,
   },
   {
     date: "2026-04",
@@ -69,6 +73,7 @@ export const decisionLog: DecisionEntry[] = [
     type: "Capital-allocation upgrade",
     note: "Exited IREN in April 2026 after the position had run up. The cut was a capital-allocation upgrade, reallocating away from a less attractive risk/reward setup toward better opportunities.",
     href: "/archive/IREN",
+    returnPct: 133.3,
   },
   {
     date: "2026-04",
@@ -79,6 +84,7 @@ export const decisionLog: DecisionEntry[] = [
     type: "Capital-allocation upgrade",
     note: "Exited SATL in April 2026 after the position had run up. The cut was a capital-allocation upgrade, reallocating away from a less attractive risk/reward setup toward better opportunities.",
     href: "/archive/SATL",
+    returnPct: 30.0,
   },
   {
     date: "2025-08",
@@ -89,5 +95,6 @@ export const decisionLog: DecisionEntry[] = [
     type: "Reallocated / valuation discipline",
     note: "Exited PLTR in August 2025 as a valuation-discipline and reallocation decision. The exit reflected portfolio construction and risk/reward discipline rather than a negative view on the business.",
     href: "/archive/PLTR",
+    returnPct: 520.0,
   },
 ];

@@ -1,31 +1,23 @@
 import Link from "next/link";
 import { portfolios } from "@/data/portfolios";
 import { decisionLog } from "@/data/decisionLog";
+import DecisionLogFeed from "@/components/DecisionLogFeed";
 
 export const metadata = { title: "Decision Log — Portfolio" };
 
-function formatDate(date: string): string {
-  if (date.length === 7) {
-    // "YYYY-MM"
-    const [y, m] = date.split("-").map(Number);
-    return new Date(y, m - 1, 1).toLocaleDateString("en-US", { month: "long", year: "numeric" });
-  }
-  const [y, m, d] = date.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-const ACTION_COLOR: Record<string, string> = {
-  "Buy":        "#1a4a2e",
-  "Market buy": "#1a4a2e",
-  "Trim":       "#7a4520",
-  "Full exit":  "#8b2530",
-};
-
 export default function DecisionLogPage() {
+  const total = decisionLog.length;
+  const buys  = decisionLog.filter((e) => e.action === "Buy" || e.action === "Market buy").length;
+  const risk  = decisionLog.filter((e) => e.action === "Trim").length;
+  const exits = decisionLog.filter((e) => e.action === "Full exit").length;
+
+  const stats = [
+    { label: "Total Decisions", value: total },
+    { label: "Buys / Adds",     value: buys,  color: "#1a4a2e" },
+    { label: "Risk Management", value: risk,  color: "#7a4520" },
+    { label: "Exits",           value: exits, color: "#8b2530" },
+  ];
+
   return (
     <div className="min-h-screen bg-[#faf7f2]">
       <nav
@@ -69,94 +61,55 @@ export default function DecisionLogPage() {
       </nav>
 
       <main>
-        {/* Header */}
+        {/* Header + stats */}
         <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+          <div className="mx-auto max-w-4xl px-6 py-14 lg:px-12">
             <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
               Process
             </p>
             <h1 className="text-3xl font-bold tracking-tight text-[#0f1e35]">
               Decision Log
             </h1>
-            <p className="mt-4 max-w-xl text-[14px] leading-[1.75] text-[#3d4f66]">
+            <p className="mt-3 max-w-lg text-[14px] leading-[1.75] text-[#3d4f66]">
               A record of portfolio decisions, trims, exits, and allocation changes used to evaluate process quality over time.
             </p>
+
+            {/* Summary stats */}
+            <div className="mt-8 flex flex-wrap gap-3">
+              {stats.map(({ label, value, color }) => (
+                <div
+                  key={label}
+                  className="flex items-baseline gap-2 rounded-xl px-4 py-3"
+                  style={{
+                    background: "#ffffff",
+                    border: "1px solid rgba(15,30,53,0.09)",
+                  }}
+                >
+                  <span
+                    className="font-mono text-[18px] font-bold tabular-nums"
+                    style={{ color: color ?? "#0f1e35" }}
+                  >
+                    {value}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#a8b2bd]">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Entries */}
-        <section style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-            <div className="space-y-5">
-              {decisionLog.map((entry, i) => {
-                const actionColor = ACTION_COLOR[entry.action] ?? "#1a3a5c";
-                const actionBg = `${actionColor}12`;
-                return (
-                  <div
-                    key={i}
-                    className="rounded-2xl p-7"
-                    style={{
-                      background: "#ffffff",
-                      border: "1px solid rgba(15,30,53,0.09)",
-                      boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-                    }}
-                  >
-                    {/* Row 1: date + badges */}
-                    <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <Link
-                          href={entry.href}
-                          className="font-mono text-[13px] font-semibold transition-opacity hover:opacity-70"
-                          style={{ color: actionColor }}
-                        >
-                          {entry.ticker}
-                        </Link>
-                        <span className="text-[13px] text-[#3d4f66]">{entry.company}</span>
-                        <span
-                          className="rounded font-mono text-[8px] uppercase tracking-[0.18em]"
-                          style={{
-                            color: actionColor,
-                            backgroundColor: actionBg,
-                            padding: "3px 8px",
-                          }}
-                        >
-                          {entry.action}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span
-                          className="rounded font-mono text-[8px] uppercase tracking-[0.15em]"
-                          style={{
-                            color: "#7a8799",
-                            backgroundColor: "rgba(15,30,53,0.05)",
-                            padding: "3px 8px",
-                          }}
-                        >
-                          {entry.account}
-                        </span>
-                        <span className="font-mono text-[11px] text-[#a8b2bd]">
-                          {formatDate(entry.date)}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Type */}
-                    <p className="mb-3 font-mono text-[9px] uppercase tracking-[0.2em] text-[#a8b2bd]">
-                      {entry.type}
-                    </p>
-
-                    {/* Note */}
-                    <p className="text-[13px] leading-[1.85] text-[#3d4f66]">{entry.note}</p>
-                  </div>
-                );
-              })}
-            </div>
+        {/* Feed */}
+        <section>
+          <div className="mx-auto max-w-4xl px-6 py-10 lg:px-12">
+            <DecisionLogFeed entries={decisionLog} />
           </div>
         </section>
       </main>
 
       <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
-        <div className="mx-auto max-w-7xl px-6 py-8 lg:px-12">
+        <div className="mx-auto max-w-4xl px-6 py-8 lg:px-12">
           <p className="font-mono text-[10px] text-[#a8b2bd]">
             For informational purposes only. Not financial advice.
           </p>
