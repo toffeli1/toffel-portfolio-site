@@ -129,6 +129,13 @@ export const positionLots: Record<string, PurchaseLot[]> = {
     { date: "2026-04-17", shares: 0, pricePerShare: 0, amountUsd: 50.00, isRecurring: true },
     { date: "2026-04-20", shares: 0, pricePerShare: 0, amountUsd: 50.00, isRecurring: true },
     { date: "2026-04-21", shares: 0, pricePerShare: 0, amountUsd: 50.00, isRecurring: true },
+    { date: "2026-05-01", shares: 0, pricePerShare: 0, amountUsd: 50.00, isRecurring: true },
+    {
+      date: "2026-05-01",
+      shares: 2.707845,
+      pricePerShare: 664.74,
+      amountUsd: 1799.84,
+    },
   ],
 
   UNH: [
@@ -402,6 +409,12 @@ export const positionLots: Record<string, PurchaseLot[]> = {
       shares: 1.78,
       pricePerShare: 398.63,
       amountUsd: 709.55,
+    },
+    {
+      date: "2026-05-01",
+      shares: 1,
+      pricePerShare: 509.50,
+      amountUsd: 509.50,
     },
   ],
 

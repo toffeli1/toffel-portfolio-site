@@ -16,12 +16,12 @@ export interface Scenario {
 
 export interface TrimEvent {
   date: string;           // "YYYY-MM-DD"
-  quantity: number;       // shares sold
-  amountUsd: number;
-  pricePerShare: number;
-  type: "partial_trim";
+  quantity?: number;      // shares sold/bought — internal, not displayed publicly
+  amountUsd?: number;     // internal, not displayed publicly
+  pricePerShare?: number; // shown publicly if present
+  type: "partial_trim" | "add" | "recurring_add" | "pending_stop_loss";
   explanation: string;
-  inferred: boolean;
+  inferred?: boolean;
 }
 
 export interface PositionDetail {
@@ -873,6 +873,12 @@ export const positionDetails: Record<string, PositionDetail> = {
     ],
     trimEvents: [
       {
+        date: "2026-05-01",
+        type: "partial_trim",
+        explanation:
+          "Trimmed AMD in the Roth Retirement Account on May 1, 2026 after a significant run to bring the position back toward my 10% max position-size discipline. This was not a thesis reversal. The core AMD thesis remains intact, but the trim reflected concentration control, risk management, and a preference to preserve gains after the position had outgrown its intended role.",
+      },
+      {
         date: "2026-04-30",
         quantity: 0.197783,
         amountUsd: 70.00,
@@ -1555,6 +1561,55 @@ export const positionDetails: Record<string, PositionDetail> = {
       "Active satellite count and constellation health — the number of operational satellites determines service quality and contract eligibility.",
       "Capital raise needs and timeline — the single most critical risk factor for a capital-constrained business.",
       "Planet and Maxar competitive activity in government and commercial contract bids.",
+    ],
+  },
+
+  // ─── SOAR ──────────────────────────────────────────────────────────────────
+  SOAR: {
+    trimEvents: [
+      {
+        date: "2026-04-28",
+        type: "pending_stop_loss",
+        explanation:
+          "Placed a stop-loss sell order for SOAR on Apr 28, 2026 as part of risk management around a highly speculative aviation/mobility position.",
+      },
+    ],
+  },
+
+  // ─── SMH ───────────────────────────────────────────────────────────────────
+  SMH: {
+    trimEvents: [
+      {
+        date: "2026-05-01",
+        quantity: 1,
+        amountUsd: 509.50,
+        pricePerShare: 509.50,
+        type: "add",
+        explanation:
+          "Added to SMH on May 1, 2026 to increase broad semiconductor and AI infrastructure exposure within the Roth Retirement Account.",
+      },
+    ],
+  },
+
+  // ─── VOO ───────────────────────────────────────────────────────────────────
+  VOO: {
+    trimEvents: [
+      {
+        date: "2026-05-01",
+        amountUsd: 50.00,
+        type: "recurring_add",
+        explanation:
+          "Recurring VOO investment processed on May 1, 2026, continuing the account's core U.S. equity market exposure.",
+      },
+      {
+        date: "2026-05-01",
+        quantity: 2.707845,
+        amountUsd: 1799.84,
+        pricePerShare: 664.74,
+        type: "add",
+        explanation:
+          "Added to VOO on May 1, 2026 to increase core U.S. equity market exposure within the Roth Retirement Account.",
+      },
     ],
   },
 

@@ -42,6 +42,12 @@ export default function OverviewPage() {
             >
               Analytics
             </Link>
+            <Link
+              href="/decision-log"
+              className="font-mono text-[11px] text-[#a8b2bd] transition-colors duration-150 hover:text-[#0f1e35]"
+            >
+              Decision Log
+            </Link>
           </div>
         </div>
       </nav>
@@ -300,104 +306,6 @@ export default function OverviewPage() {
           </div>
         </section>
 
-        {/* ── Decision Log ─────────────────────────────────────────────────── */}
-        <section
-          className="border-b"
-          style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
-        >
-          <div className="mx-auto max-w-7xl px-6 py-24 lg:px-12">
-            <div className="mb-12">
-              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Process
-              </p>
-              <h2 className="text-3xl font-bold tracking-tight text-[#0f1e35]">
-                Decision Log
-              </h2>
-            </div>
-
-            <div className="max-w-3xl space-y-7">
-              <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                This portfolio is managed as an ongoing decision process. The most
-                important record is not the list of current holdings. It is the
-                sequence of decisions that created them. The purpose of the decision
-                log is to document that process clearly: when a position was initiated,
-                why it was added, what changed afterward, and whether the original
-                thesis is becoming more or less credible over time.
-              </p>
-              <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                Every position begins with a reason to exist. That reason should be
-                specific enough to test. A name is not added because a theme is popular
-                or because price action is strong. It is added because I believe there
-                is a definable source of future value creation, and because that
-                exposure improves the portfolio relative to the alternatives. The first
-                entry in the log should capture that plainly: why this company, why
-                now, why in this account, and why at this size.
-              </p>
-              <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                After initiation, the log should track changes in the thesis rather
-                than just changes in price. If revenue quality improves, if customer
-                concentration worsens, if execution disappoints, if the competitive set
-                changes, or if the market begins pricing in more of the upside, those
-                developments matter more than whether the stock is up or down over a
-                short period. The goal is to separate outcome from process. A position
-                can be down while the thesis is improving, and it can be up while the
-                thesis is deteriorating.
-              </p>
-
-              <div
-                className="rounded-2xl p-8"
-                style={{
-                  background: "#ffffff",
-                  border: "1px solid rgba(15,30,53,0.08)",
-                }}
-              >
-                <p className="mb-5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
-                  What each entry should answer
-                </p>
-                <div className="space-y-4">
-                  {[
-                    {
-                      label: "Add",
-                      text: "What increased conviction — a development in the thesis, not price momentum.",
-                    },
-                    {
-                      label: "Trim",
-                      text: "Whether the driver was valuation, risk control, position sizing, or a better opportunity elsewhere.",
-                    },
-                    {
-                      label: "Exit",
-                      text: "What broke: the thesis, the sizing discipline, or the relative attractiveness of the idea.",
-                    },
-                  ].map(({ label, text }) => (
-                    <div key={label} className="flex gap-5">
-                      <span
-                        className="mt-0.5 w-10 shrink-0 font-mono text-[9px] uppercase tracking-[0.18em]"
-                        style={{ color: "#7a8799" }}
-                      >
-                        {label}
-                      </span>
-                      <p className="text-[13px] leading-[1.75] text-[#3d4f66]">{text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <p
-                className="border-t pt-7 text-[15px] font-medium leading-[1.9]"
-                style={{
-                  borderColor: "rgba(15,30,53,0.08)",
-                  color: "#0f1e35",
-                }}
-              >
-                Over time, the decision log becomes more valuable than the snapshot of
-                the portfolio itself. It shows whether the process is consistent,
-                whether conviction is earned or emotional, and whether capital is being
-                reallocated for good reasons. It turns the portfolio from a static
-                display into a live record of judgment.
-              </p>
-            </div>
-          </div>
-        </section>
 
       </main>
 

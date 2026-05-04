@@ -42,6 +42,12 @@ export default function AnalyticsPage() {
             >
               Analytics
             </Link>
+            <Link
+              href="/decision-log"
+              className="font-mono text-[11px] text-[#a8b2bd] transition-colors duration-150 hover:text-[#0f1e35]"
+            >
+              Decision Log
+            </Link>
           </div>
         </div>
       </nav>

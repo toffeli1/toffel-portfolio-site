@@ -211,6 +211,17 @@ export const rothIraHoldings: SleeveHolding[] = [
     subcategory: "Defense Technology / Unmanned Systems",
     thesis: "Defense technology contractor and unmanned systems exposure tied to UAS, ISR, and defense modernization demand.",
   },
+  {
+    ticker: "SOAR",
+    company: "Volato Group",
+    portfolioWeightPct: 0,
+    country: "US",
+    assetType: "Equity",
+    theme: "Aviation / Mobility",
+    subcategory: "Aviation / Mobility",
+    thesis: "Speculative aviation and mobility position.",
+    notes: "Stop-loss sell order placed Apr 28, 2026. Position pending exit.",
+  },
 ];
 
 // ─── ETFs sleeve ──────────────────────────────────────────────────────────────

@@ -100,7 +100,15 @@ export function assemblePortfolioContext(): string {
     if (d?.watchList?.length) lines.push(`  Watching: ${cap(d.watchList, 3).join(" | ")}`);
     if (d?.trimEvents?.length) {
       for (const t of d.trimEvents) {
-        lines.push(`  Position Change (${t.date}): Sold ${t.quantity} sh @ $${t.pricePerShare}. ${t.explanation}`);
+        if (t.type === "partial_trim") {
+          lines.push(`  Position Change (${t.date}): Partial trim @ $${t.pricePerShare}/sh. ${t.explanation}`);
+        } else if (t.type === "add") {
+          lines.push(`  Position Change (${t.date}): Added${t.pricePerShare ? ` @ $${t.pricePerShare}/sh` : ""}. ${t.explanation}`);
+        } else if (t.type === "recurring_add") {
+          lines.push(`  Position Change (${t.date}): Recurring add. ${t.explanation}`);
+        } else if (t.type === "pending_stop_loss") {
+          lines.push(`  Position Change (${t.date}): Pending stop-loss order placed. ${t.explanation}`);
+        }
       }
     }
   }
@@ -128,7 +136,15 @@ export function assemblePortfolioContext(): string {
     if (d?.watchList?.length) lines.push(`  Watching: ${cap(d.watchList, 3).join(" | ")}`);
     if (d?.trimEvents?.length) {
       for (const t of d.trimEvents) {
-        lines.push(`  Position Change (${t.date}): Sold ${t.quantity} sh @ $${t.pricePerShare}. ${t.explanation}`);
+        if (t.type === "partial_trim") {
+          lines.push(`  Position Change (${t.date}): Partial trim @ $${t.pricePerShare}/sh. ${t.explanation}`);
+        } else if (t.type === "add") {
+          lines.push(`  Position Change (${t.date}): Added${t.pricePerShare ? ` @ $${t.pricePerShare}/sh` : ""}. ${t.explanation}`);
+        } else if (t.type === "recurring_add") {
+          lines.push(`  Position Change (${t.date}): Recurring add. ${t.explanation}`);
+        } else if (t.type === "pending_stop_loss") {
+          lines.push(`  Position Change (${t.date}): Pending stop-loss order placed. ${t.explanation}`);
+        }
       }
     }
   }

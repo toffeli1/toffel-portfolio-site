@@ -516,6 +516,13 @@ function formatDetailDate(dateStr: string): string {
 
 // ── Trim event card ────────────────────────────────────────────────────────────
 
+const EVENT_TYPE_LABEL: Record<TrimEvent["type"], string> = {
+  partial_trim:      "Partial trim",
+  add:               "Add",
+  recurring_add:     "Recurring",
+  pending_stop_loss: "Pending stop-loss",
+};
+
 function TrimEventCard({ event }: { event: TrimEvent }) {
   return (
     <div
@@ -531,9 +538,11 @@ function TrimEventCard({ event }: { event: TrimEvent }) {
           <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
             {formatDetailDate(event.date)}
           </p>
-          <p className="font-mono text-[13px] font-semibold text-[#0f1e35]">
-            ${event.pricePerShare.toFixed(2)}/sh
-          </p>
+          {event.pricePerShare !== undefined && (
+            <p className="font-mono text-[13px] font-semibold text-[#0f1e35]">
+              ${event.pricePerShare.toFixed(2)}/sh
+            </p>
+          )}
         </div>
         <span
           className="shrink-0 rounded font-mono text-[8px] uppercase tracking-[0.18em]"
@@ -543,7 +552,7 @@ function TrimEventCard({ event }: { event: TrimEvent }) {
             padding: "3px 8px",
           }}
         >
-          Partial trim
+          {EVENT_TYPE_LABEL[event.type]}
         </span>
       </div>
       <p className="text-[13px] leading-[1.85] text-[#3d4f66]">
