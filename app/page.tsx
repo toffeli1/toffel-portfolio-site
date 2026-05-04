@@ -31,20 +31,20 @@ export default function OverviewPage() {
               <Link
                 key={p.slug}
                 href={`/portfolio/${p.slug}`}
-                className="font-mono text-[11px] text-[#a8b2bd] transition-colors duration-150 hover:text-[#0f1e35]"
+                className="font-mono text-[11px] text-[#111111] transition-opacity duration-150 hover:opacity-50"
               >
                 {p.title}
               </Link>
             ))}
             <Link
               href="/analytics"
-              className="font-mono text-[11px] text-[#a8b2bd] transition-colors duration-150 hover:text-[#0f1e35]"
+              className="font-mono text-[11px] text-[#111111] transition-opacity duration-150 hover:opacity-50"
             >
               Analytics
             </Link>
             <Link
               href="/decision-log"
-              className="font-mono text-[11px] text-[#a8b2bd] transition-colors duration-150 hover:text-[#0f1e35]"
+              className="font-mono text-[11px] text-[#111111] transition-opacity duration-150 hover:opacity-50"
             >
               Decision Log
             </Link>
