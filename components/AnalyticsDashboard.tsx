@@ -350,8 +350,18 @@ function AttributionChart({
 // ── main dashboard ─────────────────────────────────────────────────────────────
 
 export default function AnalyticsDashboard() {
+  // ── Roth weight normalization (SOAR = 0 makes raw sum < 100) ─────────────
+  const rothTotal = useMemo(
+    () => rothIraHoldings.reduce((s, h) => s + h.portfolioWeightPct, 0) || 1,
+    []
+  );
+  const rothNormalized = useMemo(
+    () => rothIraHoldings.map((h) => ({ ...h, portfolioWeightPct: (h.portfolioWeightPct / rothTotal) * 100 })),
+    [rothTotal]
+  );
+
   // ── attribution ────────────────────────────────────────────────────────────
-  const rothAttribution = useMemo(() => computeAttribution(rothIraHoldings), []);
+  const rothAttribution = useMemo(() => computeAttribution(rothNormalized), [rothNormalized]);
   const etfAttribution = useMemo(() => computeAttribution(etfsSleeveHoldings), []);
 
   const rothReturn = rothAttribution.reduce((s, d) => s + d.contribution, 0);
@@ -363,8 +373,8 @@ export default function AnalyticsDashboard() {
     []
   );
   const rothConc = useMemo(
-    () => computeConcentration(rothIraHoldings.map((h) => h.portfolioWeightPct)),
-    []
+    () => computeConcentration(rothNormalized.map((h) => h.portfolioWeightPct)),
+    [rothNormalized]
   );
   const etfConc = useMemo(
     () => computeConcentration(etfsSleeveHoldings.map((h) => h.portfolioWeightPct)),
@@ -373,22 +383,22 @@ export default function AnalyticsDashboard() {
 
   // ── exposure: Roth IRA ─────────────────────────────────────────────────────
   const rothByGeo = useMemo(
-    () => groupWeights(rothIraHoldings.map((h) => ({ value: h.country, weight: h.portfolioWeightPct }))),
-    []
+    () => groupWeights(rothNormalized.map((h) => ({ value: h.country, weight: h.portfolioWeightPct }))),
+    [rothNormalized]
   );
   const rothByMarketCap = useMemo(
     () =>
       groupWeights(
-        rothIraHoldings.map((h) => ({
+        rothNormalized.map((h) => ({
           value: h.marketCap ?? (h.assetType === "Crypto-linked ETF" ? "Crypto-linked" : undefined),
           weight: h.portfolioWeightPct,
         }))
       ),
-    []
+    [rothNormalized]
   );
   const rothByAssetType = useMemo(
-    () => groupWeights(rothIraHoldings.map((h) => ({ value: h.assetType, weight: h.portfolioWeightPct }))),
-    []
+    () => groupWeights(rothNormalized.map((h) => ({ value: h.assetType, weight: h.portfolioWeightPct }))),
+    [rothNormalized]
   );
 
   // ── exposure: Retail ───────────────────────────────────────────────────────
