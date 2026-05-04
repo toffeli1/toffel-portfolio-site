@@ -347,6 +347,10 @@ export default function OverviewPage() {
 
 // ── Sleeve card ───────────────────────────────────────────────────────────────
 
+function formatPositionCount(count: number): string {
+  return `${count} ${count === 1 ? "position" : "positions"}`;
+}
+
 function SleeveCard({
   slug,
   title,
@@ -410,7 +414,7 @@ function SleeveCard({
 
         <div className="mt-auto flex items-center justify-between">
           <span className="font-mono text-[11px] text-[#7a8799]">
-            {`${holdingCount} position${holdingCount !== 1 ? "s" : ""}`}
+            {formatPositionCount(holdingCount)}
           </span>
           <span
             className="font-mono text-[11px] text-[#a8b2bd] transition-colors group-hover:text-[#0f1e35]"
