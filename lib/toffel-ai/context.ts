@@ -64,7 +64,7 @@ export function assemblePortfolioContext(): string {
   if (latam.length) {
     lines.push("Latin America:");
     for (const h of latam) {
-      lines.push(`  ${h.ticker} — ${h.company} | Roth IRA | ${h.portfolioWeightPct}% of sleeve | ${h.thesis ?? ""}`);
+      lines.push(`  ${h.ticker} — ${h.company} | Roth Retirement Account | ${h.portfolioWeightPct}% of account | ${h.thesis ?? ""}`);
     }
   }
 
@@ -74,7 +74,7 @@ export function assemblePortfolioContext(): string {
   if (intl.length) {
     lines.push("International:");
     for (const h of intl) {
-      lines.push(`  ${h.ticker} — ${h.company} | Roth IRA | ${h.portfolioWeightPct}% of sleeve | ${h.thesis ?? ""}`);
+      lines.push(`  ${h.ticker} — ${h.company} | Roth Retirement Account | ${h.portfolioWeightPct}% of account | ${h.thesis ?? ""}`);
     }
   }
 
@@ -85,8 +85,8 @@ export function assemblePortfolioContext(): string {
   ];
   lines.push(`US: ${[...new Set(usTickers)].join(", ")}`);
 
-  // ── Speculative Individual Stocks holdings ───────────────────────────────
-  lines.push("\n=== SPECULATIVE INDIVIDUAL STOCKS — HOLDINGS (position pages at /positions/TICKER) ===");
+  // ── Individual Brokerage holdings ────────────────────────────────────────
+  lines.push("\n=== INDIVIDUAL BROKERAGE HOLDINGS (position pages at /positions/TICKER) ===");
   for (const h of holdings) {
     const d = positionDetails[h.ticker];
     lines.push(`\n${h.ticker} — ${h.company} | ${h.category} / ${h.subcategory} | ${h.portfolioPct}%`);
@@ -113,14 +113,14 @@ export function assemblePortfolioContext(): string {
     }
   }
 
-  // ── Roth IRA holdings ─────────────────────────────────────────────────────
-  lines.push("\n=== ROTH IRA HOLDINGS (sleeve at /portfolio/roth-ira) ===");
+  // ── Roth Retirement Account holdings ─────────────────────────────────────
+  lines.push("\n=== ROTH RETIREMENT ACCOUNT HOLDINGS (at /portfolio/roth-ira) ===");
   for (const h of rothIraHoldings) {
     const d = positionDetails[h.ticker];
     const meta = [
       h.assetType,
       h.subcategory,
-      `${h.portfolioWeightPct}% of sleeve`,
+      `${h.portfolioWeightPct}% of account`,
       h.returnPct !== undefined ? `return: ${h.returnPct > 0 ? "+" : ""}${h.returnPct}%` : null,
       h.country,
       h.marketCap,
@@ -149,15 +149,15 @@ export function assemblePortfolioContext(): string {
     }
   }
 
-  // ── ETF sleeve ────────────────────────────────────────────────────────────
-  // VOO and SMH also appear in Roth IRA above; cross-sleeve note prevents duplication.
-  lines.push("\n=== ETF SLEEVE HOLDINGS (sleeve at /portfolio/etfs) ===");
+  // ── ETF Exposure look-through ─────────────────────────────────────────────
+  // VOO and SMH also appear in Roth Retirement Account above; cross-account note prevents duplication.
+  lines.push("\n=== ETF EXPOSURE — LOOK-THROUGH VIEW (at /portfolio/etfs) ===");
   const rothTickers = new Set(rothIraHoldings.map((h) => h.ticker));
 
   for (const h of etfsSleeveHoldings) {
-    const crossNote = rothTickers.has(h.ticker) ? " [also in Roth IRA above]" : "";
+    const crossNote = rothTickers.has(h.ticker) ? " [also in Roth Retirement Account above]" : "";
     lines.push(
-      `${h.ticker} — ${h.company} | ${h.assetType} | ${h.portfolioWeightPct}% of sleeve${crossNote}`
+      `${h.ticker} — ${h.company} | ${h.assetType} | ${h.portfolioWeightPct}% of exposure${crossNote}`
       + (h.returnPct !== undefined ? ` | return: ${h.returnPct > 0 ? "+" : ""}${h.returnPct}%` : "")
       + (h.thesis ? ` | ${h.thesis}` : "")
     );

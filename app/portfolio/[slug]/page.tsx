@@ -184,7 +184,7 @@ function RothIraView() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <OverviewLink />
           <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
-            Retirement Account
+            Roth Retirement Account
           </span>
         </div>
       </nav>
@@ -215,7 +215,7 @@ function RothIraView() {
                     className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
                     style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
                   >
-                    Retirement Account
+                    Roth Retirement Account
                   </h1>
                   <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
                     Roth IRA · Long-Term Compounding · Tax-Advantaged Growth

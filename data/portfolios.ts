@@ -30,7 +30,7 @@ export const portfolios: Portfolio[] = [
   },
   {
     slug: "roth-ira",
-    title: "Retirement Account",
+    title: "Roth Retirement Account",
     subtitle: "Roth IRA · Long-Term Compounding · Tax-Advantaged Growth",
     description:
       "Blends core market exposure with compounders, thematic growth, and measured speculative positions.",
