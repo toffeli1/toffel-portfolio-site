@@ -16,7 +16,10 @@ export async function generateMetadata({
   const { ticker } = await params;
   const profile = etfProfiles[ticker];
   if (!profile) return {};
-  return { title: `${profile.ticker} — ${profile.fullName}` };
+  return {
+    title: `${profile.ticker} ${profile.fullName}`,
+    description: `${profile.ticker} ${profile.fullName} — look-through composition, sector exposure, and portfolio role.`,
+  };
 }
 
 export default async function EtfDetailPage({
@@ -42,11 +45,11 @@ export default async function EtfDetailPage({
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <Link
             href="/portfolio/etfs"
-            className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+            className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
           >
             ← ETFs
           </Link>
-          <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
+          <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
             {profile.ticker}&ensp;·&ensp;{profile.fullName}
           </span>
         </div>
@@ -166,7 +169,7 @@ export default async function EtfDetailPage({
                   Top Holdings
                 </p>
                 {profile.constituentsNote && (
-                  <p className="font-mono text-[9px] text-[#a8b2bd]">
+                  <p className="font-mono text-[9px] text-[#5a6e82]">
                     {profile.constituentsNote}
                   </p>
                 )}
@@ -195,7 +198,7 @@ export default async function EtfDetailPage({
                         key={c.ticker}
                         style={i < profile.constituents.length - 1 ? { borderBottom: "1px solid rgba(15,30,53,0.05)" } : undefined}
                       >
-                        <td className="px-5 py-4 font-mono text-[10px] tabular-nums text-[#a8b2bd]">
+                        <td className="px-5 py-4 font-mono text-[10px] tabular-nums text-[#5a6e82]">
                           {String(i + 1).padStart(2, "0")}
                         </td>
                         <td className="px-5 py-4 font-mono text-[12px] font-bold text-[#0f1e35]">
@@ -238,11 +241,11 @@ export default async function EtfDetailPage({
           <div className="flex items-center justify-between">
             <Link
               href="/portfolio/etfs"
-              className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+              className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
             >
               ← ETFs
             </Link>
-            <p className="font-mono text-[10px] text-[#a8b2bd]">
+            <p className="font-mono text-[10px] text-[#5a6e82]">
               For informational purposes only. Not financial advice.
             </p>
           </div>

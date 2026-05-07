@@ -17,7 +17,10 @@ export async function generateMetadata({
   const { ticker } = await params;
   const h = getPreviousHolding(ticker);
   if (!h) return {};
-  return { title: `${ticker} — Archived Position` };
+  return {
+    title: `${ticker} Archived Position`,
+    description: h.summaryReason,
+  };
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -113,7 +116,7 @@ export default async function ArchivePage({
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <Link
             href={sleeve?.href ?? "/"}
-            className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+            className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
           >
             ← {sleeve?.label ?? "Overview"}
           </Link>
@@ -128,7 +131,7 @@ export default async function ArchivePage({
             >
               Archived
             </span>
-            <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
+            <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
               {holding.ticker}
             </span>
           </div>
@@ -191,7 +194,7 @@ export default async function ArchivePage({
                   border: "1px solid rgba(139,37,48,0.12)",
                 }}
               >
-                <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#a8b2bd]">
+                <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#5a6e82]">
                   Exit Classification
                 </p>
                 <p
@@ -206,7 +209,7 @@ export default async function ArchivePage({
             {/* Holding period stats */}
             <div className="mt-10 flex flex-wrap gap-10">
               <div>
-                <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                   Opened
                 </p>
                 <p className="mt-1 font-mono text-[13px] text-[#0f1e35]">
@@ -214,7 +217,7 @@ export default async function ArchivePage({
                 </p>
               </div>
               <div>
-                <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                   Closed
                 </p>
                 <p className="mt-1 font-mono text-[13px] text-[#0f1e35]">
@@ -222,7 +225,7 @@ export default async function ArchivePage({
                 </p>
               </div>
               <div>
-                <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                   Held
                 </p>
                 <p className="mt-1 font-mono text-[13px] text-[#0f1e35]">
@@ -231,7 +234,7 @@ export default async function ArchivePage({
               </div>
               {holding.country && (
                 <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                     Geography
                   </p>
                   <p className="mt-1 font-mono text-[13px] text-[#0f1e35]">
@@ -241,7 +244,7 @@ export default async function ArchivePage({
               )}
               {holding.marketCap && (
                 <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                     Market Cap
                   </p>
                   <p className="mt-1 font-mono text-[13px] text-[#0f1e35]">
@@ -262,7 +265,7 @@ export default async function ArchivePage({
             <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
               Price History
             </p>
-            <p className="mb-8 font-mono text-[10px] text-[#a8b2bd]">
+            <p className="mb-8 font-mono text-[10px] text-[#5a6e82]">
               Full price history shown. Exit marker indicates the date of final sale.
             </p>
             <ChartWrapper
@@ -317,11 +320,11 @@ export default async function ArchivePage({
           <div className="flex items-center justify-between">
             <Link
               href={sleeve?.href ?? "/"}
-              className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+              className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
             >
               ← {sleeve?.label ?? "Overview"}
             </Link>
-            <p className="font-mono text-[10px] text-[#a8b2bd]">
+            <p className="font-mono text-[10px] text-[#5a6e82]">
               For informational purposes only. Not financial advice.
             </p>
           </div>

@@ -28,7 +28,7 @@ function Stat({ label, value, highlight, positive }: StatProps) {
     : "#0f1e35";
   return (
     <div>
-      <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.25em] text-[#a8b2bd]">
+      <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.25em] text-[#5a6e82]">
         {label}
       </p>
       <p
@@ -54,8 +54,8 @@ export function ReturnSinceSection({
 }) {
   const { quotes, loading } = useQuotes();
 
-  const dash = <span style={{ color: "#a8b2bd" }}>—</span>;
-  const dots = <span className="animate-pulse" style={{ color: "#a8b2bd" }}>···</span>;
+  const dash = <span style={{ color: "#5a6e82" }}>—</span>;
+  const dots = <span className="animate-pulse" style={{ color: "#5a6e82" }}>···</span>;
 
   // Determine entries to render. Priority:
   // 1) explicit holdingsList prop

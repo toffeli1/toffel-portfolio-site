@@ -61,7 +61,7 @@ export default function CategorySection({ category, description, holdings }: Pro
             >
               {totalPct.toFixed(0)}%
             </p>
-            <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+            <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
               of portfolio
             </p>
           </div>
@@ -75,7 +75,7 @@ export default function CategorySection({ category, description, holdings }: Pro
           <span className="font-mono text-[11px] text-[#7a8799]">
             {holdings.length} position{holdings.length !== 1 ? "s" : ""}
           </span>
-          <span className="font-mono text-[#a8b2bd]">&nbsp;·&nbsp;</span>
+          <span className="font-mono text-[#5a6e82]">&nbsp;·&nbsp;</span>
           {subcats.map((s) => (
             <span
               key={s}

@@ -296,17 +296,17 @@ export function PositionChart({
             Price Chart
           </p>
           {purchaseLots && purchaseLots.length > 0 && (
-            <p className="font-mono text-[9px] text-[#a8b2bd]">
+            <p className="font-mono text-[9px] text-[#5a6e82]">
               ◎&ensp;purchase events
             </p>
           )}
           {averageCost && (
-            <p className="font-mono text-[9px] text-[#a8b2bd]">
+            <p className="font-mono text-[9px] text-[#5a6e82]">
               — avg cost
             </p>
           )}
           {!purchaseLots && entryMarker && (
-            <p className="font-mono text-[9px] text-[#a8b2bd]">
+            <p className="font-mono text-[9px] text-[#5a6e82]">
               ◎&ensp;
               {entryMarker.source === "confirmed" ? "confirmed entry" : "estimated entry"}
             </p>
@@ -326,7 +326,7 @@ export function PositionChart({
               style={
                 range === r.key
                   ? { background: "rgba(15,30,53,0.07)", color: "#0f1e35" }
-                  : { color: "#a8b2bd" }
+                  : { color: "#5a6e82" }
               }
               onMouseEnter={(e) => {
                 if (range !== r.key)
@@ -334,7 +334,7 @@ export function PositionChart({
               }}
               onMouseLeave={(e) => {
                 if (range !== r.key)
-                  (e.currentTarget as HTMLButtonElement).style.color = "#a8b2bd";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#5a6e82";
               }}
             >
               {r.label}
@@ -352,7 +352,7 @@ export function PositionChart({
           />
         ) : chartData.length === 0 ? (
           <div className="flex h-full items-center justify-center">
-            <p className="font-mono text-[11px] text-[#a8b2bd]">
+            <p className="font-mono text-[11px] text-[#5a6e82]">
               Historical data unavailable for this range
             </p>
           </div>
@@ -375,7 +375,7 @@ export function PositionChart({
                 scale="time"
                 domain={["dataMin", "dataMax"]}
                 tick={{
-                  fill: "#a8b2bd",
+                  fill: "#5a6e82",
                   fontSize: 9,
                   fontFamily: "var(--font-geist-mono)",
                 }}
@@ -388,7 +388,7 @@ export function PositionChart({
 
               <YAxis
                 tick={{
-                  fill: "#a8b2bd",
+                  fill: "#5a6e82",
                   fontSize: 9,
                   fontFamily: "var(--font-geist-mono)",
                 }}
@@ -469,7 +469,7 @@ export function PositionChart({
                     position: "insideTopRight",
                     fontSize: 8,
                     fontFamily: "var(--font-geist-mono)",
-                    fill: "#a8b2bd",
+                    fill: "#5a6e82",
                     dy: -5,
                   }}
                 />
@@ -694,7 +694,7 @@ export function PositionChart({
 
       {/* Estimated entry footnote */}
       {!purchaseLots && entryMarker?.source === "estimated" && entryPoint && (
-        <p className="mt-3 font-mono text-[9px] text-[#a8b2bd]">
+        <p className="mt-3 font-mono text-[9px] text-[#5a6e82]">
           Estimated entry dates are inferred from the known entry price and
           historical price alignment. Not a confirmed purchase date.
         </p>
@@ -752,14 +752,14 @@ function PurchaseTooltip({
           ? `${formatLotDate(cluster.date)} – ${formatLotDate(cluster.endDate)}`
           : formatLotDate(cluster.date)}
         {cluster.isCluster && !cluster.isRecurring && (
-          <span style={{ color: "#a8b2bd", marginLeft: 6 }}>
+          <span style={{ color: "#5a6e82", marginLeft: 6 }}>
             · {cluster.lots.length} lots
           </span>
         )}
       </p>
 
       {cluster.isRecurring ? (
-        <p style={{ color: "#a8b2bd", fontSize: 10, marginTop: 3 }}>
+        <p style={{ color: "#5a6e82", fontSize: 10, marginTop: 3 }}>
           {cluster.lots.length} recurring buys
         </p>
       ) : (

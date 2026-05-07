@@ -27,7 +27,7 @@ export default function OverviewPage() {
             <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#111111]">
               Portfolio
             </span>
-            <a href="https://www.linkedin.com/feed/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#111111] transition-opacity hover:opacity-50">
+            <a href="https://www.linkedin.com/in/isaac-toffel" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="-m-3 inline-flex h-11 w-11 items-center justify-center text-[#111111] transition-opacity hover:opacity-50">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
             </a>
           </div>
@@ -114,7 +114,7 @@ export default function OverviewPage() {
                   Hello, I&apos;m Isaac Toffel, an Economics and Data Science student at
                   Northeastern University. I&apos;m currently in the midst of my first
                   Co-op at State Street. I&apos;m also pursuing the CFA designation,
-                  sitting for the first exam this fall.
+                  sitting for the Level I exam in February 2027.
                 </p>
                 <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
                   This site is a live record of how I think about capital allocation.
@@ -142,8 +142,8 @@ export default function OverviewPage() {
                   {[
                     { label: "Education",    value: "Northeastern University" },
                     { label: "Experience",   value: "State Street" },
-                    { label: "Certification",value: "CFA Level I Candidate" },
-                    { label: "LinkedIn",     value: "Isaac Toffel", href: "https://www.linkedin.com/feed/" },
+                    { label: "Certification",value: "CFA Level I Candidate, Feb 2027 sitting" },
+                    { label: "LinkedIn",     value: "Isaac Toffel", href: "https://www.linkedin.com/in/isaac-toffel" },
                     { label: "Email",        value: "toffel.i@northeastern.edu", href: "mailto:toffel.i@northeastern.edu" },
                   ].map(({ label, value, href }) => (
                     <div key={label}>
@@ -187,7 +187,7 @@ export default function OverviewPage() {
                     className="h-full w-full object-cover object-top"
                   />
                 </div>
-                <p className="mt-3 text-center font-mono text-[9px] text-[#a8b2bd]">
+                <p className="mt-3 text-center font-mono text-[9px] text-[#5a6e82]">
                   Isaac Toffel
                 </p>
               </div>
@@ -235,7 +235,7 @@ export default function OverviewPage() {
                 role="Tax-advantaged account designed for long-duration compounding, account-level allocation, and lower turnover."
                 color="#1a4a2e"
                 themes={["Core Market", "Compounders", "Thematic Growth"]}
-                holdingCount={rothIraHoldings.length}
+                holdingCount={rothIraHoldings.filter((h) => h.portfolioWeightPct > 0).length}
               />
             </div>
           </div>
@@ -318,27 +318,27 @@ export default function OverviewPage() {
       <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-12">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <p className="font-mono text-[10px] text-[#a8b2bd]">
+            <p className="font-mono text-[10px] text-[#5a6e82]">
               Isaac Toffel · For informational purposes only. Not financial advice.
             </p>
             <div className="flex items-center gap-5">
               <a
-                href="https://www.linkedin.com/feed/"
+                href="https://www.linkedin.com/in/isaac-toffel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-[10px] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+                className="inline-block py-2 font-mono text-[10px] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
                 style={{ textDecoration: "none" }}
               >
                 LinkedIn ↗
               </a>
               <a
                 href="mailto:toffel.i@northeastern.edu"
-                className="font-mono text-[10px] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+                className="inline-block py-2 font-mono text-[10px] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
                 style={{ textDecoration: "none" }}
               >
                 toffel.i@northeastern.edu
               </a>
-              <span className="font-mono text-[10px] text-[#c8d0d8]">
+              <span className="font-mono text-[10px] text-[#7a8799]">
                 {new Date().getFullYear()}
               </span>
             </div>
@@ -422,7 +422,7 @@ function SleeveCard({
             {formatPositionCount(holdingCount)}
           </span>
           <span
-            className="font-mono text-[11px] text-[#a8b2bd] transition-colors group-hover:text-[#0f1e35]"
+            className="font-mono text-[11px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]"
           >
             View →
           </span>

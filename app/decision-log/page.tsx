@@ -3,7 +3,11 @@ import { portfolios } from "@/data/portfolios";
 import { decisionLog } from "@/data/decisionLog";
 import DecisionLogFeed from "@/components/DecisionLogFeed";
 
-export const metadata = { title: "Decision Log — Portfolio" };
+export const metadata = {
+  title: "Decision Log",
+  description:
+    "A record of portfolio decisions, trims, exits, and allocation changes used to evaluate process quality over time.",
+};
 
 export default function DecisionLogPage() {
   const total = decisionLog.length;
@@ -32,7 +36,7 @@ export default function DecisionLogPage() {
             <Link href="/" className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#111111] transition-opacity hover:opacity-50">
               Portfolio
             </Link>
-            <a href="https://www.linkedin.com/feed/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#111111] transition-opacity hover:opacity-50">
+            <a href="https://www.linkedin.com/in/isaac-toffel" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="-m-3 inline-flex h-11 w-11 items-center justify-center text-[#111111] transition-opacity hover:opacity-50">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
             </a>
           </div>
@@ -93,7 +97,7 @@ export default function DecisionLogPage() {
                   >
                     {value}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#a8b2bd]">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5a6e82]">
                     {label}
                   </span>
                 </div>
@@ -105,6 +109,9 @@ export default function DecisionLogPage() {
         {/* Feed */}
         <section>
           <div className="mx-auto max-w-4xl px-6 py-10 lg:px-12">
+            <p className="mb-8 max-w-2xl text-[12px] italic leading-[1.7] text-[#5a6e82]">
+              Return % shown on each entry reflects the realized return on the position at the time of the decision (trim, exit, or buy lot). Current returns on remaining shares are tracked separately on the Analytics page and may differ.
+            </p>
             <DecisionLogFeed entries={decisionLog} />
           </div>
         </section>
@@ -112,7 +119,7 @@ export default function DecisionLogPage() {
 
       <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
         <div className="mx-auto max-w-4xl px-6 py-8 lg:px-12">
-          <p className="font-mono text-[10px] text-[#a8b2bd]">
+          <p className="font-mono text-[10px] text-[#5a6e82]">
             For informational purposes only. Not financial advice.
           </p>
         </div>

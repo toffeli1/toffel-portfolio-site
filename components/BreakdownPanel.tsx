@@ -79,7 +79,7 @@ function BreakdownSection({
                 <span className="font-mono text-[11px] text-[#3d4f66]">{label}</span>
                 <span className="font-mono text-[10px] tabular-nums text-[#7a8799]">
                   {weightPct.toFixed(1)}%
-                  <span className="ml-1.5 text-[9px] text-[#a8b2bd]">
+                  <span className="ml-1.5 text-[9px] text-[#5a6e82]">
                     ({count})
                   </span>
                 </span>
@@ -101,7 +101,7 @@ function BreakdownSection({
           );
         })}
       </div>
-      <p className="mt-5 font-mono text-[9px] text-[#a8b2bd]">
+      <p className="mt-5 font-mono text-[9px] text-[#5a6e82]">
         {note ?? "weighted by portfolio weight %"}
       </p>
     </div>

@@ -66,7 +66,7 @@ function CategoryCard({
         <p className="font-mono text-[10px] uppercase tracking-[0.22em]" style={{ color }}>
           {category}
         </p>
-        <span className="font-mono text-[10px] text-[#a8b2bd]">
+        <span className="font-mono text-[10px] text-[#5a6e82]">
           {catHoldings.length}&thinsp;pos
         </span>
       </div>

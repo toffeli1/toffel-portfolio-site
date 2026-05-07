@@ -106,7 +106,7 @@ export default function RothThemeChart({
               textAnchor="middle"
               dominantBaseline="middle"
               className="font-mono"
-              style={{ fontSize: 9, fill: "#a8b2bd", letterSpacing: "0.15em" }}
+              style={{ fontSize: 9, fill: "#5a6e82", letterSpacing: "0.15em" }}
             >
               {selectedSlice
                 ? `${selectedSlice.pct.toFixed(1)}%`
@@ -118,7 +118,7 @@ export default function RothThemeChart({
               textAnchor="middle"
               dominantBaseline="middle"
               className="font-mono"
-              style={{ fontSize: 7, fill: "#a8b2bd", letterSpacing: "0.1em", textTransform: "uppercase" }}
+              style={{ fontSize: 7, fill: "#5a6e82", letterSpacing: "0.1em", textTransform: "uppercase" }}
             >
               {selectedSlice ? "of account" : "themes"}
             </text>
@@ -154,7 +154,7 @@ export default function RothThemeChart({
                 >
                   {slice.theme}
                 </span>
-                <span className="font-mono text-[11px] tabular-nums text-[#a8b2bd]">
+                <span className="font-mono text-[11px] tabular-nums text-[#5a6e82]">
                   {slice.pct.toFixed(1)}%
                 </span>
               </button>
@@ -228,7 +228,7 @@ export default function RothThemeChart({
               border: "1px dashed rgba(15,30,53,0.12)",
             }}
           >
-            <p className="font-mono text-[11px] text-[#a8b2bd]">
+            <p className="font-mono text-[11px] text-[#5a6e82]">
               Select a theme to see holdings
             </p>
           </div>

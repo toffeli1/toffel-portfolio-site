@@ -26,7 +26,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const p = getPortfolio(slug);
   if (!p) return {};
-  return { title: `${p.title} — Portfolio` };
+  return {
+    title: p.title,
+    description: p.description,
+  };
 }
 
 export default async function PortfolioPage({
@@ -50,7 +53,7 @@ function OverviewLink() {
   return (
     <Link
       href="/"
-      className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+      className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
     >
       ← Overview
     </Link>
@@ -64,11 +67,11 @@ function SleeveFooter() {
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+            className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
           >
             ← Overview
           </Link>
-          <p className="font-mono text-[10px] text-[#a8b2bd]">
+          <p className="font-mono text-[10px] text-[#5a6e82]">
             For informational purposes only. Not financial advice.
           </p>
         </div>
@@ -95,7 +98,7 @@ function RetailView() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <OverviewLink />
-          <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
+          <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
             Individual Brokerage
           </span>
         </div>
@@ -183,7 +186,7 @@ function RothIraView() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <OverviewLink />
-          <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
+          <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
             Roth Retirement Account
           </span>
         </div>
@@ -226,9 +229,9 @@ function RothIraView() {
                     className="font-mono font-bold leading-none tracking-tight"
                     style={{ color, fontSize: "clamp(3.5rem,5.5vw,5rem)" }}
                   >
-                    {rothIraHoldings.length}
+                    {rothIraHoldings.filter((h) => h.portfolioWeightPct > 0).length}
                   </p>
-                  <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                  <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                     positions
                   </p>
                 </div>
@@ -259,7 +262,7 @@ function RothIraView() {
                 <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
                   Previous Holdings
                 </p>
-                <p className="mb-10 font-mono text-[10px] text-[#a8b2bd]">
+                <p className="mb-10 font-mono text-[10px] text-[#5a6e82]">
                   Archived positions — research records with full exit analysis.
                 </p>
                 <div className="divide-y" style={{ borderColor: "rgba(15,30,53,0.07)" }}>
@@ -289,7 +292,7 @@ function RothIraView() {
                           </span>
                         </div>
                         <div className="flex shrink-0 items-center gap-6">
-                          <span className="hidden font-mono text-[10px] text-[#a8b2bd] sm:block">
+                          <span className="hidden font-mono text-[10px] text-[#5a6e82] sm:block">
                             {from} → {to}
                           </span>
                           <span
@@ -298,7 +301,7 @@ function RothIraView() {
                           >
                             {h.exitType}
                           </span>
-                          <span className="font-mono text-[10px] text-[#a8b2bd] transition-colors group-hover:text-[#0f1e35]">
+                          <span className="font-mono text-[10px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]">
                             →
                           </span>
                         </div>
@@ -338,7 +341,7 @@ function RothIraView() {
               <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
                 Relative Performance
               </p>
-              <p className="mb-8 font-mono text-[10px] text-[#a8b2bd]">
+              <p className="mb-8 font-mono text-[10px] text-[#5a6e82]">
                 Normalized price performance vs. VOO and QQQ benchmarks.
               </p>
               <BenchmarkComparisonWrapper
@@ -380,7 +383,7 @@ function EtfsView() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <OverviewLink />
-          <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
+          <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
             ETF Exposure
           </span>
         </div>
@@ -425,7 +428,7 @@ function EtfsView() {
                   >
                     {etfsSleeveHoldings.length}
                   </p>
-                  <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                  <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                     ETFs
                   </p>
                 </div>
@@ -499,7 +502,7 @@ function EtfsView() {
                       {profile && (
                         <Link
                           href={`/etfs/${h.ticker}`}
-                          className="mt-auto pt-5 inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+                          className="mt-auto pt-5 inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
                         >
                           View Holdings →
                         </Link>
@@ -533,7 +536,7 @@ function EtfsView() {
               <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
                 3Y Relative Performance
               </p>
-              <p className="mb-8 font-mono text-[10px] text-[#a8b2bd]">
+              <p className="mb-8 font-mono text-[10px] text-[#5a6e82]">
                 Normalized price performance over the last 3 years, with VOO and
                 QQQ as benchmarks.
               </p>

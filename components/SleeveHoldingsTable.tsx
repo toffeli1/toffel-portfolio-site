@@ -37,9 +37,9 @@ function ReturnCell({ ticker, sleeve }: { ticker: string; sleeve: string }) {
   return (
     <div className="flex flex-col gap-0.5">
       {loading && q === undefined ? (
-        <span className="font-mono text-[12px] animate-pulse" style={{ color: "#a8b2bd" }}>···</span>
+        <span className="font-mono text-[12px] animate-pulse" style={{ color: "#5a6e82" }}>···</span>
       ) : avgCost === null ? (
-        <span className="font-mono text-[11px]" style={{ color: "#a8b2bd" }}>No cost basis</span>
+        <span className="font-mono text-[11px]" style={{ color: "#5a6e82" }}>No cost basis</span>
       ) : liveReturn !== null ? (
         <span
           className="font-mono text-[12px] font-semibold tabular-nums"
@@ -48,10 +48,10 @@ function ReturnCell({ ticker, sleeve }: { ticker: string; sleeve: string }) {
           {liveReturn >= 0 ? "+" : ""}{liveReturn.toFixed(2)}%
         </span>
       ) : (
-        <span className="font-mono text-[12px]" style={{ color: "#a8b2bd" }}>—</span>
+        <span className="font-mono text-[12px]" style={{ color: "#5a6e82" }}>—</span>
       )}
       {!loading && q?.changePercent != null && (
-        <span className="font-mono text-[9px] tabular-nums" style={{ color: "#a8b2bd" }}>
+        <span className="font-mono text-[9px] tabular-nums" style={{ color: "#5a6e82" }}>
           {q.changePercent >= 0 ? "+" : ""}{q.changePercent.toFixed(2)}% today
         </span>
       )}
@@ -213,7 +213,7 @@ export default function SleeveHoldingsTable({
                 <td className="px-5 py-4">
                   <p className="text-[13px] text-[#2d3d52]">{h.company}</p>
                   {h.thesis && (
-                    <p className="mt-0.5 max-w-[220px] text-[10px] leading-[1.5] text-[#a8b2bd]">
+                    <p className="mt-0.5 max-w-[220px] text-[10px] leading-[1.5] text-[#5a6e82]">
                       {h.thesis}
                     </p>
                   )}
@@ -227,7 +227,7 @@ export default function SleeveHoldingsTable({
                     color={typeColor}
                   />
                   {h.notes && (
-                    <p className="mt-0.5 font-mono text-[9px] text-[#a8b2bd]">
+                    <p className="mt-0.5 font-mono text-[9px] text-[#5a6e82]">
                       {h.notes}
                     </p>
                   )}

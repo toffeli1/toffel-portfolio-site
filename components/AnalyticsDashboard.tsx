@@ -20,7 +20,7 @@ const NAVY = "#1a3a5c";
 const ROSE = "#8b2530";
 const GREEN = "#1a4a2e";
 const MUTED = "#7a8799";
-const DIM = "#a8b2bd";
+const DIM = "#5a6e82";
 const TEXT = "#0f1e35";
 const BODY = "#2d3d52";
 const BORDER = "rgba(15,30,53,0.08)";
@@ -297,7 +297,7 @@ function AttributionChart({
 
       {/* Compact return table below chart */}
       <div
-        className="mt-3 overflow-hidden rounded border"
+        className="mt-3 overflow-x-auto rounded border"
         style={{ borderColor: BORDER }}
       >
         <table className="w-full text-left">

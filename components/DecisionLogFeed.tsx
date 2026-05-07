@@ -60,7 +60,7 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
               onClick={() => setFilter(key)}
               className="rounded-full font-mono text-[11px] transition-colors"
               style={{
-                padding: "5px 14px",
+                padding: "10px 16px",
                 background: active ? "#111111" : "transparent",
                 color: active ? "#ffffff" : "#7a8799",
                 border: `1px solid ${active ? "#111111" : "rgba(15,30,53,0.15)"}`,
@@ -139,11 +139,11 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
                   >
                     {entry.type}
                   </span>
-                  <span className="font-mono text-[11px] text-[#a8b2bd]">
+                  <span className="font-mono text-[11px] text-[#5a6e82]">
                     {formatDate(entry.date)}
                   </span>
-                  <span className="font-mono text-[11px] text-[#a8b2bd]">·</span>
-                  <span className="font-mono text-[11px] text-[#a8b2bd]">
+                  <span className="font-mono text-[11px] text-[#5a6e82]">·</span>
+                  <span className="font-mono text-[11px] text-[#5a6e82]">
                     {entry.account}
                   </span>
                 </div>
@@ -156,7 +156,7 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
         })}
 
         {visible.length === 0 && (
-          <p className="font-mono text-[12px] text-[#a8b2bd]">No entries for this filter.</p>
+          <p className="font-mono text-[12px] text-[#5a6e82]">No entries for this filter.</p>
         )}
       </div>
     </div>
