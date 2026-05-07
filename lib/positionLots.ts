@@ -445,24 +445,23 @@ export const positionLots: Record<string, PurchaseLot[]> = {
 // ── Weighted average cost per share for each fully-tracked position ───────────
 // Computed from surviving lots only (post-FIFO).
 export const positionAverageCost: Record<string, number> = {
-  VOO:   616.41,  // manually provided weighted average across all surviving lots
-  AMD:   206.66,  // updated after Apr 30 2% trim (FIFO removed low-cost Jul 8 shares)
-  UNH:   292.46,
+  VOO:   624.40,  // broker-provided weighted average
+  AMD:   216.01,  // broker-provided weighted average
+  UNH:   292.48,
   NBIS:   51.77,
   DLO:    11.67,
   GOOGL: 189.06,
-  FBTC:   77.59,
+  FBTC:   77.42,
   MELI: 1962.06,
   NU:     13.29,
   // IREN removed — position fully exited Apr 30, 2026; lots preserved in previousHoldings
-  // ── added batch ───────────────────────────────────────────────────────────
   AVEX:   36.40,  // Roth IRA avg cost
-  META:  654.69,  // 2 lots: Jan 23 (0.778573 sh @$642.20) + Jan 26 (1.2 sh @$662.78)
+  META:  654.66,
   // SCHD removed — position fully exited Apr 30, 2026 @ $31.95; lots preserved in previousHoldings
-  ASTS:  108.92,  // 1 lot:  Jan 26 (6 sh @$108.92)
-  // SMH intentionally excluded: the Roth IRA lot (Jan 26, @$398.63) would produce
-  // incorrect live returns on the ETF sleeve, which has a much older, lower cost basis.
-  // Both sleeves fall back to their static returnPct until sleeve-specific cost bases
-  // are tracked separately.
-  RKLB:   80.29,  // 3 lots: Jan 23 (2.246055 sh @$89.05) + Jan 26 (5.5 sh @$86.04) + Feb 4 (5 sh @$70.04)
+  ASTS:   98.16,
+  RKLB:   80.29,
+  // SMH (Brokerage) intentionally excluded: Brokerage SMH cost basis differs from
+  // the Roth lot. Roth-specific cost basis is tracked under SMH_ROTH below.
+  // Lookups by plain "SMH" return undefined → callers fall back to static returnPct.
+  SMH_ROTH: 446.58,  // Roth IRA SMH cost basis — used by computeReturnPct via avgCostOverride
 };
