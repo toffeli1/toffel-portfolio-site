@@ -25,8 +25,8 @@ export default function NavBar() {
         borderBottom: "1px solid rgba(15,30,53,0.08)",
       }}
     >
-      <div className="flex items-center justify-between px-8 py-4 lg:px-12">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between px-6 py-3 lg:px-10">
+        <div className="flex items-center gap-2">
           <Link
             href="/"
             aria-label="Toffel Capital — Home"
@@ -35,8 +35,8 @@ export default function NavBar() {
             <Image
               src="/tc-logo.png"
               alt="Toffel Capital"
-              width={32}
-              height={32}
+              width={26}
+              height={26}
               priority
               className="rounded-sm"
             />
@@ -49,8 +49,8 @@ export default function NavBar() {
             className="-m-3 inline-flex h-11 w-11 items-center justify-center text-[#111111] transition-opacity hover:opacity-50"
           >
             <svg
-              width="22"
-              height="22"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="currentColor"
               aria-hidden="true"
