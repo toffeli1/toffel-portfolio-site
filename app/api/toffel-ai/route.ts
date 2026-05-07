@@ -1,6 +1,7 @@
 import { buildSystemPrompt } from "@/lib/toffel-ai/systemPrompt";
 import { getProvider } from "@/lib/marketData";
 import { getCachedQuote, setCachedQuote } from "@/lib/quoteCache";
+import { computeReturnPct } from "@/lib/computeReturns";
 
 export const dynamic = "force-dynamic";
 
@@ -81,11 +82,17 @@ async function executeGetLiveQuote(ticker: string): Promise<unknown> {
     return { ticker: symbol, error: "no price data" };
   }
 
+  // SMH has different cost bases in Roth vs Brokerage — the tool can't
+  // disambiguate from a bare ticker arg, so omit returnPct and let the
+  // model use the account-specific value from context.
+  const returnPct = symbol === "SMH" ? undefined : computeReturnPct(symbol);
+
   return {
     ticker: symbol,
     price: quote.price,
     change: quote.change,
     changePercent: quote.changePercent,
+    returnPct,
     updatedAt: quote.updatedAt,
   };
 }

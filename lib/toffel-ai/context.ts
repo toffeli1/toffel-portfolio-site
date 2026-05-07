@@ -3,9 +3,27 @@ import { portfolios } from "@/data/portfolios";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { positionDetails } from "@/data/positionDetails";
 import { previousHoldings } from "@/data/previousHoldings";
+import { computeReturnPct } from "@/lib/computeReturns";
 
 function cap<T>(arr: T[], n: number): T[] {
   return arr.slice(0, n);
+}
+
+// Roth-specific avgCost overrides for tickers that need a different basis from
+// the default positionAverageCost lookup (e.g. SMH appears in both Roth and
+// Brokerage with different cost bases).
+const ROTH_AVG_COST_OVERRIDE: Record<string, number> = {
+  SMH: 446.58,
+};
+
+/** Live return % for a Roth holding, with static fallback. */
+function rothReturn(ticker: string, fallback: number | undefined): number | undefined {
+  const live = computeReturnPct(ticker, ROTH_AVG_COST_OVERRIDE[ticker]);
+  return live ?? fallback;
+}
+
+function fmtReturn(n: number): string {
+  return `${n > 0 ? "+" : ""}${n.toFixed(2)}%`;
 }
 
 // ── Context assembly ──────────────────────────────────────────────────────────
@@ -120,11 +138,12 @@ export function assemblePortfolioContext(): string {
   lines.push("\n=== ROTH RETIREMENT ACCOUNT HOLDINGS (at /portfolio/roth-ira) ===");
   for (const h of rothIraHoldings) {
     const d = positionDetails[h.ticker];
+    const liveReturn = rothReturn(h.ticker, h.returnPct);
     const meta = [
       h.assetType,
       h.subcategory,
       `${h.portfolioWeightPct}% of account`,
-      h.returnPct !== undefined ? `return: ${h.returnPct > 0 ? "+" : ""}${h.returnPct}%` : null,
+      liveReturn !== undefined ? `return: ${fmtReturn(liveReturn)}` : null,
       h.country,
       h.marketCap,
     ].filter(Boolean).join(" | ");
@@ -153,31 +172,35 @@ export function assemblePortfolioContext(): string {
   }
 
   // ── Pre-sorted return ranking (for ranking queries — do not re-derive) ────
+  // Sort dynamically using live-computed returnPct where available
+  // (computeReturnPct hits the shared quote cache + broker avgCost), with
+  // static returnPct fallback when the cache is cold.
   lines.push("\n=== HOLDINGS RANKED BY RETURN (for ranking queries) ===");
   lines.push("Use ONLY this section for ranking, best/worst performers, or top/bottom queries. The list is already sorted high → low. Never re-sort or re-derive from other sections.");
 
   const rothRanked = rothIraHoldings
-    .filter((h) => h.portfolioWeightPct > 0 && h.returnPct !== undefined)
-    .sort((a, b) => (b.returnPct ?? 0) - (a.returnPct ?? 0));
+    .filter((h) => h.portfolioWeightPct > 0)
+    .map((h) => ({ ticker: h.ticker, pct: rothReturn(h.ticker, h.returnPct) }))
+    .filter((x): x is { ticker: string; pct: number } => x.pct !== undefined)
+    .sort((a, b) => b.pct - a.pct);
   const rothPendingExit = rothIraHoldings.filter((h) => h.portfolioWeightPct === 0);
 
   lines.push("\n--- Roth Retirement Account — sorted high to low ---");
-  rothRanked.forEach((h, i) => {
-    const pct = h.returnPct!;
-    lines.push(`${i + 1}. ${h.ticker} ${pct > 0 ? "+" : ""}${pct}%`);
+  rothRanked.forEach((x, i) => {
+    lines.push(`${i + 1}. ${x.ticker} ${fmtReturn(x.pct)}`);
   });
   for (const h of rothPendingExit) {
     lines.push(`${h.ticker} — pending exit, weight 0%`);
   }
 
-  const brokerageRanked = [...holdings]
-    .filter((h) => h.returnPct !== undefined)
-    .sort((a, b) => (b.returnPct ?? 0) - (a.returnPct ?? 0));
+  const brokerageRanked = holdings
+    .map((h) => ({ ticker: h.ticker, pct: computeReturnPct(h.ticker) ?? h.returnPct }))
+    .filter((x): x is { ticker: string; pct: number } => x.pct !== undefined)
+    .sort((a, b) => b.pct - a.pct);
 
   lines.push("\n--- Individual Brokerage — sorted high to low ---");
-  brokerageRanked.forEach((h, i) => {
-    const pct = h.returnPct!;
-    lines.push(`${i + 1}. ${h.ticker} ${pct > 0 ? "+" : ""}${pct}%`);
+  brokerageRanked.forEach((x, i) => {
+    lines.push(`${i + 1}. ${x.ticker} ${fmtReturn(x.pct)}`);
   });
 
   // ── Archived / previous holdings ──────────────────────────────────────────
