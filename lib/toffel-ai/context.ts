@@ -87,7 +87,12 @@ export function assemblePortfolioContext(): string {
   lines.push("\n=== INDIVIDUAL BROKERAGE HOLDINGS (position pages at /positions/TICKER) ===");
   for (const h of holdings) {
     const d = positionDetails[h.ticker];
-    lines.push(`\n${h.ticker} — ${h.company} | ${h.category} / ${h.subcategory} | ${h.portfolioPct}%`);
+    const meta = [
+      `${h.category} / ${h.subcategory}`,
+      `${h.portfolioPct}% of portfolio`,
+      h.returnPct !== undefined ? `return: ${h.returnPct > 0 ? "+" : ""}${h.returnPct}%` : null,
+    ].filter(Boolean).join(" | ");
+    lines.push(`\n${h.ticker} — ${h.company} | ${meta}`);
     lines.push(`  Thesis: ${h.thesis}`);
     if (d?.whyIOwnIt) lines.push(`  Why I Own It: ${d.whyIOwnIt}`);
     if (d?.whyThisSleeve) lines.push(`  Why This Sleeve: ${d.whyThisSleeve}`);
@@ -146,6 +151,34 @@ export function assemblePortfolioContext(): string {
       }
     }
   }
+
+  // ── Pre-sorted return ranking (for ranking queries — do not re-derive) ────
+  lines.push("\n=== HOLDINGS RANKED BY RETURN (for ranking queries) ===");
+  lines.push("Use ONLY this section for ranking, best/worst performers, or top/bottom queries. The list is already sorted high → low. Never re-sort or re-derive from other sections.");
+
+  const rothRanked = rothIraHoldings
+    .filter((h) => h.portfolioWeightPct > 0 && h.returnPct !== undefined)
+    .sort((a, b) => (b.returnPct ?? 0) - (a.returnPct ?? 0));
+  const rothPendingExit = rothIraHoldings.filter((h) => h.portfolioWeightPct === 0);
+
+  lines.push("\n--- Roth Retirement Account — sorted high to low ---");
+  rothRanked.forEach((h, i) => {
+    const pct = h.returnPct!;
+    lines.push(`${i + 1}. ${h.ticker} ${pct > 0 ? "+" : ""}${pct}%`);
+  });
+  for (const h of rothPendingExit) {
+    lines.push(`${h.ticker} — pending exit, weight 0%`);
+  }
+
+  const brokerageRanked = [...holdings]
+    .filter((h) => h.returnPct !== undefined)
+    .sort((a, b) => (b.returnPct ?? 0) - (a.returnPct ?? 0));
+
+  lines.push("\n--- Individual Brokerage — sorted high to low ---");
+  brokerageRanked.forEach((h, i) => {
+    const pct = h.returnPct!;
+    lines.push(`${i + 1}. ${h.ticker} ${pct > 0 ? "+" : ""}${pct}%`);
+  });
 
   // ── Archived / previous holdings ──────────────────────────────────────────
   lines.push("\n=== ARCHIVED POSITIONS — CLOSED, NOT CURRENT (pages at /archive/TICKER) ===");

@@ -23,6 +23,8 @@ export interface Holding {
   category: Category;
   subcategory: Subcategory;
   thesis: string;
+  /** Manually-maintained return-since-entry percentage (positive or negative). */
+  returnPct?: number;
   /** Explicit entry / average cost per share for this holding (numeric). */
   entryPrice?: number;
   /** Set to false to suppress live market data for this holding. Defaults to true. */
@@ -41,6 +43,7 @@ export const holdings: Holding[] = [
     ticker: 'QQQM',
     company: 'Invesco Nasdaq-100 ETF',
     portfolioPct: 22.68,
+    returnPct: 30.84,
     category: 'ETFs',
     subcategory: 'Large-Cap Growth ETF',
     thesis: 'Nasdaq / large-cap growth exposure.',
@@ -49,6 +52,7 @@ export const holdings: Holding[] = [
     ticker: 'SMH',
     company: 'VanEck Semiconductor ETF',
     portfolioPct: 19.70,
+    returnPct: 90.76,
     category: 'ETFs',
     subcategory: 'Semiconductors ETF',
     thesis: 'Broad semiconductor cycle / AI infrastructure exposure.',
@@ -57,6 +61,7 @@ export const holdings: Holding[] = [
     ticker: 'VOO',
     company: 'Vanguard S&P 500 ETF',
     portfolioPct: 35.96,
+    returnPct: 17.57,
     category: 'ETFs',
     subcategory: 'Broad Market ETF',
     thesis: 'Core U.S. equity market exposure.',
@@ -65,6 +70,7 @@ export const holdings: Holding[] = [
     ticker: 'FBTC',
     company: 'Fidelity Wise Origin Bitcoin Fund',
     portfolioPct: 15.78,
+    returnPct: -20.50,
     category: 'ETFs',
     subcategory: 'Bitcoin ETF',
     thesis: 'Bitcoin exposure through ETF structure.',
@@ -74,6 +80,7 @@ export const holdings: Holding[] = [
     ticker: 'MU',
     company: 'Micron Technology',
     portfolioPct: 5.89,
+    returnPct: 101.65,
     category: 'Equities',
     subcategory: 'Semiconductor Equity',
     entryPrice: 300,
