@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { holdings } from "@/data/holdings";
-import { rothIraHoldings, etfsSleeveHoldings } from "@/data/sleeveHoldings";
+import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { previousHoldings } from "@/data/previousHoldings";
 import { portfolios } from "@/data/portfolios";
+import { etfProfiles } from "@/data/etfConstituents";
 
 const BASE_URL = "https://toffelcapital.com";
 
@@ -25,7 +26,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const positionTickers = new Set<string>([
     ...holdings.map((h) => h.ticker),
     ...rothIraHoldings.map((h) => h.ticker),
-    ...etfsSleeveHoldings.map((h) => h.ticker),
   ]);
   const positionEntries: MetadataRoute.Sitemap = [...positionTickers].map((ticker) => ({
     url: `${BASE_URL}/positions/${ticker}`,
@@ -34,8 +34,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  const etfEntries: MetadataRoute.Sitemap = etfsSleeveHoldings.map((h) => ({
-    url: `${BASE_URL}/etfs/${h.ticker}`,
+  const etfEntries: MetadataRoute.Sitemap = Object.keys(etfProfiles).map((ticker) => ({
+    url: `${BASE_URL}/etfs/${ticker}`,
     lastModified: now,
     changeFrequency: "monthly",
     priority: 0.5,

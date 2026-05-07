@@ -1,6 +1,6 @@
 import { holdings, categoryAllocations } from "@/data/holdings";
 import { portfolios } from "@/data/portfolios";
-import { rothIraHoldings, etfsSleeveHoldings } from "@/data/sleeveHoldings";
+import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { positionDetails } from "@/data/positionDetails";
 import { previousHoldings } from "@/data/previousHoldings";
 
@@ -29,7 +29,6 @@ export function assemblePortfolioContext(): string {
   const currentTickerSet = new Set<string>([
     ...holdings.map((h) => h.ticker),
     ...rothIraHoldings.map((h) => h.ticker),
-    ...etfsSleeveHoldings.map((h) => h.ticker),
   ]);
   const archivedTickerSet = new Set(previousHoldings.map((h) => h.ticker));
 
@@ -81,7 +80,6 @@ export function assemblePortfolioContext(): string {
   const usTickers = [
     ...holdings.map((h) => h.ticker),
     ...rothIraHoldings.filter((h) => h.country === "US" || !h.country).map((h) => h.ticker),
-    ...etfsSleeveHoldings.map((h) => h.ticker),
   ];
   lines.push(`US: ${[...new Set(usTickers)].join(", ")}`);
 
@@ -147,20 +145,6 @@ export function assemblePortfolioContext(): string {
         }
       }
     }
-  }
-
-  // ── ETF Exposure look-through ─────────────────────────────────────────────
-  // VOO and SMH also appear in Roth Retirement Account above; cross-account note prevents duplication.
-  lines.push("\n=== ETF EXPOSURE — LOOK-THROUGH VIEW (at /portfolio/etfs) ===");
-  const rothTickers = new Set(rothIraHoldings.map((h) => h.ticker));
-
-  for (const h of etfsSleeveHoldings) {
-    const crossNote = rothTickers.has(h.ticker) ? " [also in Roth Retirement Account above]" : "";
-    lines.push(
-      `${h.ticker} — ${h.company} | ${h.assetType} | ${h.portfolioWeightPct}% of exposure${crossNote}`
-      + (h.returnPct !== undefined ? ` | return: ${h.returnPct > 0 ? "+" : ""}${h.returnPct}%` : "")
-      + (h.thesis ? ` | ${h.thesis}` : "")
-    );
   }
 
   // ── Archived / previous holdings ──────────────────────────────────────────

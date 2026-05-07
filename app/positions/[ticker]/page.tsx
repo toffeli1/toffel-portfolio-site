@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { holdings } from "@/data/holdings";
-import { rothIraHoldings, etfsSleeveHoldings } from "@/data/sleeveHoldings";
+import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { positionDetails } from "@/data/positionDetails";
 import type { Scenario, TrimEvent } from "@/data/positionDetails";
 import { etfProfiles } from "@/data/etfConstituents";
@@ -46,16 +46,6 @@ function buildSleeveOwnerships(ticker: string): SleeveOwnership[] {
     });
   }
 
-  const etfSleeve = etfsSleeveHoldings.find((h) => h.ticker === ticker);
-  if (etfSleeve) {
-    result.push({
-      slug: "etfs",
-      title: "ETFs",
-      color: "#8b2530",
-      weightPct: etfSleeve.portfolioWeightPct,
-    });
-  }
-
   return result;
 }
 
@@ -80,8 +70,7 @@ export async function generateMetadata({
 }) {
   const { ticker } = await params;
   const retail = holdings.find((h) => h.ticker === ticker);
-  const sleeve = rothIraHoldings.find((h) => h.ticker === ticker)
-    ?? etfsSleeveHoldings.find((h) => h.ticker === ticker);
+  const sleeve = rothIraHoldings.find((h) => h.ticker === ticker);
   const company = retail?.company ?? sleeve?.company;
   const thesis = retail?.thesis ?? sleeve?.thesis;
   if (!company) return {};
@@ -103,8 +92,7 @@ export default async function PositionPage({
   // Gather data from all sources.
   const retailHolding = holdings.find((h) => h.ticker === ticker);
   const rothHolding = rothIraHoldings.find((h) => h.ticker === ticker);
-  const etfSleeveHolding = etfsSleeveHoldings.find((h) => h.ticker === ticker);
-  const sleeveHolding = rothHolding ?? etfSleeveHolding;
+  const sleeveHolding = rothHolding;
 
   if (!retailHolding && !sleeveHolding) notFound();
 

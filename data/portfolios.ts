@@ -2,7 +2,7 @@
 // Add a new entry here to add another sleeve.  The `slug` drives the URL at
 // /portfolio/[slug].  The `type` controls which view component renders.
 
-export type PortfolioType = "retail" | "roth-ira" | "etfs";
+export type PortfolioType = "retail" | "roth-ira";
 
 export interface Portfolio {
   slug: string;
@@ -20,7 +20,7 @@ export const portfolios: Portfolio[] = [
   {
     slug: "retail-with-friends",
     title: "Individual Brokerage",
-    subtitle: "Taxable Account · ETF Exposure · Active Research",
+    subtitle: "Taxable Account · Active Research",
     description:
       "Taxable brokerage account focused on ETF-based market exposure, semiconductor cyclicality, Bitcoin exposure, and select high-conviction individual equities.",
     role: "Active brokerage account used for flexible allocation across broad-market ETFs, thematic ETFs, digital asset exposure, and selected individual equities.",
@@ -38,17 +38,6 @@ export const portfolios: Portfolio[] = [
     type: "roth-ira",
     color: "#1a4a2e",
     themes: ["US", "Latin America", "International"],
-  },
-  {
-    slug: "etfs",
-    title: "ETF Exposure",
-    subtitle: "Index Funds · Thematic ETFs · Portfolio Look-Through",
-    description:
-      "Broad-market exposure centered on large-cap growth and semiconductors.",
-    role: "Benchmark-aware core. Anchors total book risk and serves as a performance reference.",
-    type: "etfs",
-    color: "#8b2530",
-    themes: ["Broad Market", "Semiconductors", "Large-cap Growth"],
   },
 ];
 

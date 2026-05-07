@@ -47,7 +47,6 @@ function daysBetween(from: string, to: string): number {
 const SLEEVE_META: Record<string, { label: string; href: string; color: string }> = {
   "roth-ira": { label: "Roth IRA", href: "/portfolio/roth-ira", color: "#1a4a2e" },
   retail:     { label: "Speculative Individual Stocks", href: "/portfolio/retail-with-friends", color: "#1a3a5c" },
-  etfs:       { label: "ETFs", href: "/portfolio/etfs", color: "#8b2530" },
 };
 
 // ── Research card ─────────────────────────────────────────────────────────────

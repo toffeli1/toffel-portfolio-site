@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getProvider } from "@/lib/marketData";
 import { holdings } from "@/data/holdings";
-import { rothIraHoldings, etfsSleeveHoldings } from "@/data/sleeveHoldings";
+import { rothIraHoldings } from "@/data/sleeveHoldings";
 
 // Never cache this route — always fetch fresh data on each request.
 export const dynamic = "force-dynamic";
@@ -11,10 +11,7 @@ export async function GET() {
     .filter((h) => h.livePricing !== false)
     .map((h) => h.ticker);
 
-  const sleeveSymbols = [
-    ...rothIraHoldings.map((h) => h.ticker),
-    ...etfsSleeveHoldings.map((h) => h.ticker),
-  ];
+  const sleeveSymbols = rothIraHoldings.map((h) => h.ticker);
 
   // Deduplicate across all sources.
   const symbols = [...new Set([...retailSymbols, ...sleeveSymbols])];

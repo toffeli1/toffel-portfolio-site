@@ -63,15 +63,6 @@ function getSuggestedPrompts(pathname: string | null): string[] {
     ];
   }
 
-  if (pathname.includes("/portfolio/etfs")) {
-    return [
-      "What ETFs am I holding?",
-      "What's the semiconductor weight across ETFs?",
-      "How does the ETF Exposure account serve as a benchmark?",
-      "What are the total returns across ETF positions?",
-    ];
-  }
-
   return GLOBAL_PROMPTS;
 }
 

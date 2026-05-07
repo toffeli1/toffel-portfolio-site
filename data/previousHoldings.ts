@@ -2,7 +2,7 @@ import type { PurchaseLot } from "@/lib/positionLots";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type PreviousSleeve = "roth-ira" | "retail" | "etfs";
+export type PreviousSleeve = "roth-ira" | "retail";
 
 export interface PreviousHolding {
   ticker: string;

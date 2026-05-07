@@ -224,43 +224,6 @@ export const rothIraHoldings: SleeveHolding[] = [
   },
 ];
 
-// ─── ETFs sleeve ──────────────────────────────────────────────────────────────
-export const etfsSleeveHoldings: SleeveHolding[] = [
-  {
-    ticker: "SMH",
-    company: "VanEck Semiconductor ETF",
-    portfolioWeightPct: 23.97,
-    returnPct: 61.68,
-    country: "US",
-    marketCap: "Large Cap",
-    assetType: "ETF",
-    subcategory: "Semiconductors ETF",
-    thesis: "Concentrated semiconductor exposure.",
-  },
-  {
-    ticker: "VOO",
-    company: "Vanguard S&P 500 ETF",
-    portfolioWeightPct: 47.03,
-    returnPct: 12.89,
-    country: "US",
-    marketCap: "Mega Cap",
-    assetType: "ETF",
-    subcategory: "Broad Market ETF",
-    thesis: "Core S&P 500 exposure.",
-  },
-  {
-    ticker: "QQQM",
-    company: "Invesco NASDAQ 100 ETF",
-    portfolioWeightPct: 28.99,
-    returnPct: 21.29,
-    country: "US",
-    marketCap: "Mega Cap",
-    assetType: "ETF",
-    subcategory: "Large Cap Growth ETF",
-    thesis: "Nasdaq 100 growth exposure.",
-  },
-];
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /** Returns all sleeve holdings that contain the given ticker. */
@@ -271,9 +234,6 @@ export function findCrossSleeveOwnerships(ticker: string): {
   const result: { slug: string; title: string }[] = [];
   if (rothIraHoldings.some((h) => h.ticker === ticker)) {
     result.push({ slug: "roth-ira", title: "Roth IRA" });
-  }
-  if (etfsSleeveHoldings.some((h) => h.ticker === ticker)) {
-    result.push({ slug: "etfs", title: "ETFs" });
   }
   return result;
 }

@@ -44,10 +44,10 @@ export default async function EtfDetailPage({
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <Link
-            href="/portfolio/etfs"
+            href="/"
             className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
           >
-            ← ETFs
+            ← Portfolio
           </Link>
           <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
             {profile.ticker}&ensp;·&ensp;{profile.fullName}
@@ -240,10 +240,10 @@ export default async function EtfDetailPage({
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-12">
           <div className="flex items-center justify-between">
             <Link
-              href="/portfolio/etfs"
+              href="/"
               className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
             >
-              ← ETFs
+              ← Portfolio
             </Link>
             <p className="font-mono text-[10px] text-[#5a6e82]">
               For informational purposes only. Not financial advice.

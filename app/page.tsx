@@ -2,12 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { portfolios } from "@/data/portfolios";
 import { holdings } from "@/data/holdings";
-import { rothIraHoldings, etfsSleeveHoldings } from "@/data/sleeveHoldings";
+import { rothIraHoldings } from "@/data/sleeveHoldings";
 
 const HOLDING_COUNTS: Record<string, number> = {
   "retail-with-friends": holdings.length,
   "roth-ira": rothIraHoldings.length,
-  "etfs": etfsSleeveHoldings.length,
 };
 
 export default function OverviewPage() {
@@ -93,8 +92,7 @@ export default function OverviewPage() {
               Dashboard
             </h1>
             <p className="mt-7 max-w-lg text-[15px] leading-[1.75] text-[#3d4f66]">
-              Two accounts, plus ETF exposure. A documented investment
-              process, built in public.
+              Two accounts. A documented investment process, built in public.
             </p>
           </div>
         </section>

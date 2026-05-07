@@ -12,7 +12,7 @@ import {
   Tooltip,
 } from "recharts";
 import { holdings, categoryAllocations } from "@/data/holdings";
-import { rothIraHoldings, etfsSleeveHoldings, type SleeveHolding } from "@/data/sleeveHoldings";
+import { rothIraHoldings, type SleeveHolding } from "@/data/sleeveHoldings";
 
 // ── constants ─────────────────────────────────────────────────────────────────
 
@@ -364,10 +364,8 @@ export default function AnalyticsDashboard() {
 
   // ── attribution ────────────────────────────────────────────────────────────
   const rothAttribution = useMemo(() => computeAttribution(rothNormalized), [rothNormalized]);
-  const etfAttribution = useMemo(() => computeAttribution(etfsSleeveHoldings), []);
 
   const rothReturn = rothAttribution.reduce((s, d) => s + d.contribution, 0);
-  const etfReturn = etfAttribution.reduce((s, d) => s + d.contribution, 0);
 
   // ── concentration ──────────────────────────────────────────────────────────
   const retailConc = useMemo(
@@ -377,10 +375,6 @@ export default function AnalyticsDashboard() {
   const rothConc = useMemo(
     () => computeConcentration(rothNormalized.map((h) => h.portfolioWeightPct)),
     [rothNormalized]
-  );
-  const etfConc = useMemo(
-    () => computeConcentration(etfsSleeveHoldings.map((h) => h.portfolioWeightPct)),
-    []
   );
 
   // ── exposure: Roth IRA ─────────────────────────────────────────────────────
@@ -424,18 +418,12 @@ export default function AnalyticsDashboard() {
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
           <SectionLabel>Overview</SectionLabel>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {[
               {
                 label: "Roth Return",
                 value: pp(rothReturn),
                 positive: rothReturn >= 0,
-                sub: "weighted avg",
-              },
-              {
-                label: "ETF Exposure Return",
-                value: pp(etfReturn),
-                positive: etfReturn >= 0,
                 sub: "weighted avg",
               },
               {
@@ -505,9 +493,8 @@ export default function AnalyticsDashboard() {
             are excluded because position-level return data is not tracked for that account.
           </p>
 
-          <div className="grid gap-14 lg:grid-cols-2">
+          <div className="grid gap-14">
             <AttributionChart title="Roth Retirement Account" data={rothAttribution} color={GREEN} />
-            <AttributionChart title="ETF Exposure" data={etfAttribution} color={ROSE} returnLabel="Exposure return" />
           </div>
         </div>
       </section>
@@ -582,10 +569,9 @@ export default function AnalyticsDashboard() {
             positions that would produce the same concentration level.
           </p>
 
-          <div className="grid gap-5 sm:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2">
             <ConcentrationCard label="Individual Brokerage" metrics={retailConc} color={NAVY} />
             <ConcentrationCard label="Roth Retirement Account" metrics={rothConc} color={GREEN} />
-            <ConcentrationCard label="ETF Exposure" metrics={etfConc} color={ROSE} />
           </div>
 
           <div
