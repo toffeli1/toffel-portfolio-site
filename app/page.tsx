@@ -22,7 +22,7 @@ export default function OverviewPage() {
           borderBottom: "1px solid rgba(15,30,53,0.08)",
         }}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
+        <div className="flex items-center justify-between px-8 py-4 lg:px-12">
           <div className="flex items-center gap-3">
             <Link href="/" aria-label="Toffel Capital — Home" className="flex items-center transition-opacity hover:opacity-80">
               <Image src="/tc-logo.png" alt="Toffel Capital" width={32} height={32} priority className="rounded-sm" />
@@ -36,20 +36,20 @@ export default function OverviewPage() {
               <Link
                 key={p.slug}
                 href={`/portfolio/${p.slug}`}
-                className="font-mono text-[11px] text-[#111111] border border-[#0f1e35]/15 rounded-md px-3 py-1 transition-opacity duration-150 hover:opacity-50"
+                className="font-mono text-[11px] text-[#111111] transition-opacity duration-150 hover:opacity-50"
               >
                 {p.title}
               </Link>
             ))}
             <Link
               href="/analytics"
-              className="font-mono text-[11px] text-[#111111] border border-[#0f1e35]/15 rounded-md px-3 py-1 transition-opacity duration-150 hover:opacity-50"
+              className="font-mono text-[11px] text-[#111111] transition-opacity duration-150 hover:opacity-50"
             >
               Analytics
             </Link>
             <Link
               href="/decision-log"
-              className="font-mono text-[11px] text-[#111111] border border-[#0f1e35]/15 rounded-md px-3 py-1 transition-opacity duration-150 hover:opacity-50"
+              className="font-mono text-[11px] text-[#111111] transition-opacity duration-150 hover:opacity-50"
             >
               Decision Log
             </Link>
