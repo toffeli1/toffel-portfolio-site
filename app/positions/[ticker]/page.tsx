@@ -130,28 +130,6 @@ export default async function PositionPage({
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
-
-      {/* ── Nav ─────────────────────────────────────────────────────────── */}
-      <nav
-        className="sticky top-0 z-50 backdrop-blur-xl"
-        style={{
-          background: "rgba(250,247,242,0.94)",
-          borderBottom: "1px solid rgba(15,30,53,0.08)",
-        }}
-      >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
-          <Link
-            href={primarySleeve ? `/portfolio/${primarySleeve.slug}` : "/"}
-            className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
-          >
-            ← {primarySleeve?.title ?? "Overview"}
-          </Link>
-          <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
-            {ticker}&ensp;·&ensp;{company}
-          </span>
-        </div>
-      </nav>
-
       <PositionQuoteProvider ticker={ticker}>
         <main>
 

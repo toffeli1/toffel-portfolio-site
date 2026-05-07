@@ -47,17 +47,6 @@ export default async function PortfolioPage({
 
 // ── Shared nav elements ───────────────────────────────────────────────────────
 
-function OverviewLink() {
-  return (
-    <Link
-      href="/"
-      className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
-    >
-      ← Overview
-    </Link>
-  );
-}
-
 function SleeveFooter() {
   return (
     <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
@@ -87,21 +76,6 @@ function RetailView() {
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
-      <nav
-        className="sticky top-0 z-50 backdrop-blur-xl"
-        style={{
-          background: "rgba(250,247,242,0.94)",
-          borderBottom: "1px solid rgba(15,30,53,0.08)",
-        }}
-      >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
-          <OverviewLink />
-          <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
-            Individual Brokerage
-          </span>
-        </div>
-      </nav>
-
       <main>
         {/* Header */}
         <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
@@ -178,21 +152,6 @@ function RothIraView() {
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
-      <nav
-        className="sticky top-0 z-50 backdrop-blur-xl"
-        style={{
-          background: "rgba(250,247,242,0.94)",
-          borderBottom: "1px solid rgba(15,30,53,0.08)",
-        }}
-      >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
-          <OverviewLink />
-          <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
-            Roth Retirement Account
-          </span>
-        </div>
-      </nav>
-
       <QuotesProvider>
         <main>
           {/* Header */}

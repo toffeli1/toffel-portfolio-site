@@ -104,39 +104,6 @@ export default async function ArchivePage({
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
-      {/* Nav */}
-      <nav
-        className="sticky top-0 z-50 backdrop-blur-xl"
-        style={{
-          background: "rgba(250,247,242,0.94)",
-          borderBottom: "1px solid rgba(15,30,53,0.08)",
-        }}
-      >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
-          <Link
-            href={sleeve?.href ?? "/"}
-            className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
-          >
-            ← {sleeve?.label ?? "Overview"}
-          </Link>
-          <div className="flex items-center gap-3">
-            <span
-              className="rounded-full px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em]"
-              style={{
-                background: "rgba(139,37,48,0.08)",
-                color: "#8b2530",
-                border: "1px solid rgba(139,37,48,0.16)",
-              }}
-            >
-              Archived
-            </span>
-            <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
-              {holding.ticker}
-            </span>
-          </div>
-        </div>
-      </nav>
-
       <main>
         {/* ── Hero ──────────────────────────────────────────────────────────── */}
         <section
