@@ -3,8 +3,9 @@ import { portfolios } from "@/data/portfolios";
 import AnalyticsDashboard from "@/components/AnalyticsDashboard";
 
 export const metadata = {
-  title: "Analytics · Portfolio",
-  description: "Portfolio analytics: attribution, exposure, and concentration metrics.",
+  title: "Analytics",
+  description:
+    "Portfolio attribution, exposure breakdown, and concentration metrics across account and exposure views.",
 };
 
 export default function AnalyticsPage() {

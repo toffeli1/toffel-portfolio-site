@@ -3,7 +3,11 @@ import { portfolios } from "@/data/portfolios";
 import { decisionLog } from "@/data/decisionLog";
 import DecisionLogFeed from "@/components/DecisionLogFeed";
 
-export const metadata = { title: "Decision Log — Portfolio" };
+export const metadata = {
+  title: "Decision Log",
+  description:
+    "A record of portfolio decisions, trims, exits, and allocation changes used to evaluate process quality over time.",
+};
 
 export default function DecisionLogPage() {
   const total = decisionLog.length;

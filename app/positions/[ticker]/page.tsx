@@ -83,8 +83,12 @@ export async function generateMetadata({
   const sleeve = rothIraHoldings.find((h) => h.ticker === ticker)
     ?? etfsSleeveHoldings.find((h) => h.ticker === ticker);
   const company = retail?.company ?? sleeve?.company;
+  const thesis = retail?.thesis ?? sleeve?.thesis;
   if (!company) return {};
-  return { title: `${ticker} — ${company}` };
+  return {
+    title: `${ticker} ${company}`,
+    description: thesis ?? `${ticker} ${company} — position thesis and research.`,
+  };
 }
 
 // ── Page ─────────────────────────────────────────────────────────────────────

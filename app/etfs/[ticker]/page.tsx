@@ -16,7 +16,10 @@ export async function generateMetadata({
   const { ticker } = await params;
   const profile = etfProfiles[ticker];
   if (!profile) return {};
-  return { title: `${profile.ticker} — ${profile.fullName}` };
+  return {
+    title: `${profile.ticker} ${profile.fullName}`,
+    description: `${profile.ticker} ${profile.fullName} — look-through composition, sector exposure, and portfolio role.`,
+  };
 }
 
 export default async function EtfDetailPage({

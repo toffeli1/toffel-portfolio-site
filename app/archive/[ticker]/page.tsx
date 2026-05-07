@@ -17,7 +17,10 @@ export async function generateMetadata({
   const { ticker } = await params;
   const h = getPreviousHolding(ticker);
   if (!h) return {};
-  return { title: `${ticker} — Archived Position` };
+  return {
+    title: `${ticker} Archived Position`,
+    description: h.summaryReason,
+  };
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

@@ -26,7 +26,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const p = getPortfolio(slug);
   if (!p) return {};
-  return { title: `${p.title} — Portfolio` };
+  return {
+    title: p.title,
+    description: p.description,
+  };
 }
 
 export default async function PortfolioPage({
