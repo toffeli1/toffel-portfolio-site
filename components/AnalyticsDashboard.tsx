@@ -352,7 +352,7 @@ function AttributionChart({
 // ── main dashboard ─────────────────────────────────────────────────────────────
 
 export default function AnalyticsDashboard() {
-  // ── Roth weight normalization (SOAR = 0 makes raw sum < 100) ─────────────
+  // ── Roth weight normalization (raw weights may sum < 100) ──────────────────
   const rothTotal = useMemo(
     () => rothIraHoldings.reduce((s, h) => s + h.portfolioWeightPct, 0) || 1,
     []

@@ -1564,18 +1564,6 @@ export const positionDetails: Record<string, PositionDetail> = {
     ],
   },
 
-  // ─── SOAR ──────────────────────────────────────────────────────────────────
-  SOAR: {
-    trimEvents: [
-      {
-        date: "2026-04-28",
-        type: "pending_stop_loss",
-        explanation:
-          "Placed a stop-loss sell order for SOAR on Apr 28, 2026 as part of risk management around a highly speculative aviation/mobility position.",
-      },
-    ],
-  },
-
   // ─── SMH ───────────────────────────────────────────────────────────────────
   SMH: {
     trimEvents: [
