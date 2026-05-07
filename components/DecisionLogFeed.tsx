@@ -60,7 +60,7 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
               onClick={() => setFilter(key)}
               className="rounded-full font-mono text-[11px] transition-colors"
               style={{
-                padding: "5px 14px",
+                padding: "10px 16px",
                 background: active ? "#111111" : "transparent",
                 color: active ? "#ffffff" : "#7a8799",
                 border: `1px solid ${active ? "#111111" : "rgba(15,30,53,0.15)"}`,

@@ -476,7 +476,7 @@ export function ToffelAI() {
             {messages.length > 0 && (
               <button
                 onClick={handleClear}
-                className="text-[11px] text-[#9ca3af] hover:text-[#0f1e35] transition-colors px-2 py-1 rounded"
+                className="text-[11px] text-[#9ca3af] hover:text-[#0f1e35] transition-colors px-3 py-2.5 rounded"
               >
                 Clear
               </button>
@@ -484,7 +484,7 @@ export function ToffelAI() {
             <button
               onClick={() => setOpen(false)}
               aria-label="Close Toffel AI"
-              className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-[#f0ede8] transition-colors text-[#9ca3af] hover:text-[#0f1e35]"
+              className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#f0ede8] transition-colors text-[#9ca3af] hover:text-[#0f1e35]"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
                 <path
@@ -578,7 +578,7 @@ export function ToffelAI() {
               onClick={() => sendMessage(input)}
               disabled={!input.trim() || streaming}
               aria-label="Send"
-              className="shrink-0 w-7 h-7 flex items-center justify-center rounded-lg bg-[#111111] text-white disabled:opacity-25 transition-opacity hover:opacity-75 active:scale-95"
+              className="shrink-0 w-11 h-11 flex items-center justify-center rounded-lg bg-[#111111] text-white disabled:opacity-25 transition-opacity hover:opacity-75 active:scale-95"
             >
               <svg
                 width="11"
