@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { portfolios } from "@/data/portfolios";
 import AnalyticsDashboard from "@/components/AnalyticsDashboard";
+import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 
 export const metadata = {
   title: "Analytics",
@@ -75,6 +76,9 @@ export default function AnalyticsPage() {
           <p className="mt-6 max-w-lg text-[14px] leading-[1.75] text-[#3d4f66]">
             Attribution, exposure breakdown, and concentration metrics across account and exposure views.
             Individual Brokerage attribution is unavailable.
+          </p>
+          <p className="mt-4 font-mono text-[10px] text-[#5a6e82]">
+            Data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}
           </p>
         </div>
       </section>

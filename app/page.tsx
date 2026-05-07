@@ -3,6 +3,7 @@ import Image from "next/image";
 import { portfolios } from "@/data/portfolios";
 import { holdings } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
+import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 
 const HOLDING_COUNTS: Record<string, number> = {
   "retail-with-friends": holdings.length,
@@ -425,6 +426,9 @@ function SleeveCard({
             View →
           </span>
         </div>
+        <p className="mt-2 font-mono text-[10px] text-[#5a6e82]">
+          Data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}
+        </p>
       </div>
     </Link>
   );

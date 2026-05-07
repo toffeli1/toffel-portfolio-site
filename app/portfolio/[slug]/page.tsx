@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { portfolios, getPortfolio } from "@/data/portfolios";
 import { holdings } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
+import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
 import HoldingsTable from "@/components/HoldingsTable";
 import SleeveHoldingsTable from "@/components/SleeveHoldingsTable";
@@ -123,6 +124,9 @@ function RetailView() {
             >
               Individual Brokerage
             </h1>
+            <p className="mt-2 font-mono text-[10px] text-[#5a6e82]">
+              Data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}
+            </p>
             <p className="mt-4 max-w-xl text-[14px] leading-[1.7] text-[#3d4f66]">
               Taxable brokerage account focused on ETF-based market exposure,
               semiconductor cyclicality, Bitcoin exposure, and select high-conviction
@@ -217,6 +221,9 @@ function RothIraView() {
                   >
                     Roth Retirement Account
                   </h1>
+                  <p className="mt-2 font-mono text-[10px] text-[#5a6e82]">
+                    Data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}
+                  </p>
                   <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
                     Roth IRA · Long-Term Compounding · Tax-Advantaged Growth
                   </p>
