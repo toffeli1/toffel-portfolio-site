@@ -297,7 +297,7 @@ function AttributionChart({
 
       {/* Compact return table below chart */}
       <div
-        className="mt-3 overflow-hidden rounded border"
+        className="mt-3 overflow-x-auto rounded border"
         style={{ borderColor: BORDER }}
       >
         <table className="w-full text-left">

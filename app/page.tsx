@@ -338,7 +338,7 @@ export default function OverviewPage() {
               >
                 toffel.i@northeastern.edu
               </a>
-              <span className="font-mono text-[10px] text-[#c8d0d8]">
+              <span className="font-mono text-[10px] text-[#7a8799]">
                 {new Date().getFullYear()}
               </span>
             </div>

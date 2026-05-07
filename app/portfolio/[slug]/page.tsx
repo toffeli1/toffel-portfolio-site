@@ -229,7 +229,7 @@ function RothIraView() {
                     className="font-mono font-bold leading-none tracking-tight"
                     style={{ color, fontSize: "clamp(3.5rem,5.5vw,5rem)" }}
                   >
-                    {rothIraHoldings.length}
+                    {rothIraHoldings.filter((h) => h.portfolioWeightPct > 0).length}
                   </p>
                   <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                     positions
