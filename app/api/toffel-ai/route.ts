@@ -1,6 +1,6 @@
 import { buildSystemPrompt } from "@/lib/toffel-ai/systemPrompt";
 import { getProvider } from "@/lib/marketData";
-import { getCachedQuote, setCachedQuote } from "@/lib/quoteCache";
+import { getCachedQuote, setCachedQuote, getOrFetchQuotes } from "@/lib/quoteCache";
 import { computeReturnPct } from "@/lib/computeReturns";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +34,37 @@ const TOOLS = [
 ];
 
 const MAX_TOOL_HOPS = 3;
+
+// ── Quote cache pre-warm ─────────────────────────────────────────────────────
+// Fetched at the top of every POST so computeReturnPct() in the context
+// builder finds warm entries. Bounded by PREWARM_TIMEOUT_MS so a slow Finnhub
+// response can never delay the AI reply by more than 3 seconds; on timeout we
+// proceed and the static returnPct fallback in source data is used instead.
+const ROTH_TICKERS = [
+  "VOO", "AMD", "UNH", "NBIS", "DLO", "GOOGL",
+  "FBTC", "MELI", "NU", "META", "RKLB", "SMH", "ASTS", "AVEX",
+];
+const BROKERAGE_TICKERS = ["QQQM", "SMH", "VOO", "FBTC", "MU"];
+const PREWARM_TICKERS = [...new Set([...ROTH_TICKERS, ...BROKERAGE_TICKERS])];
+const PREWARM_TIMEOUT_MS = 3_000;
+
+async function prewarmQuoteCache(): Promise<void> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const provider = getProvider();
+    const work = getOrFetchQuotes(PREWARM_TICKERS, (missing) =>
+      provider.fetchQuotes(missing)
+    );
+    const timeout = new Promise<void>((resolve) => {
+      timer = setTimeout(resolve, PREWARM_TIMEOUT_MS);
+    });
+    await Promise.race([work, timeout]);
+  } catch (err) {
+    console.warn("[toffel-ai] cache prewarm failed (continuing):", err);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
 
 interface AccumulatedToolCall {
   id: string;
@@ -245,6 +276,11 @@ export async function POST(request: Request) {
   if (messages.length === 0) {
     return new Response("messages array is required", { status: 400 });
   }
+
+  // Pre-warm the quote cache so computeReturnPct() inside buildSystemPrompt()
+  // resolves to live values. Bounded — if Finnhub is slow, fall through to
+  // static fallback rather than block the user.
+  await prewarmQuoteCache();
 
   const systemPrompt = buildSystemPrompt(pathname);
   const encoder = new TextEncoder();
