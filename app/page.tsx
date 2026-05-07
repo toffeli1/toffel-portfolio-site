@@ -187,7 +187,7 @@ export default function OverviewPage() {
                     className="h-full w-full object-cover object-top"
                   />
                 </div>
-                <p className="mt-3 text-center font-mono text-[9px] text-[#a8b2bd]">
+                <p className="mt-3 text-center font-mono text-[9px] text-[#5a6e82]">
                   Isaac Toffel
                 </p>
               </div>
@@ -318,7 +318,7 @@ export default function OverviewPage() {
       <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-12">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <p className="font-mono text-[10px] text-[#a8b2bd]">
+            <p className="font-mono text-[10px] text-[#5a6e82]">
               Isaac Toffel · For informational purposes only. Not financial advice.
             </p>
             <div className="flex items-center gap-5">
@@ -326,14 +326,14 @@ export default function OverviewPage() {
                 href="https://www.linkedin.com/in/isaac-toffel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-[10px] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+                className="font-mono text-[10px] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
                 style={{ textDecoration: "none" }}
               >
                 LinkedIn ↗
               </a>
               <a
                 href="mailto:toffel.i@northeastern.edu"
-                className="font-mono text-[10px] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+                className="font-mono text-[10px] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
                 style={{ textDecoration: "none" }}
               >
                 toffel.i@northeastern.edu
@@ -422,7 +422,7 @@ function SleeveCard({
             {formatPositionCount(holdingCount)}
           </span>
           <span
-            className="font-mono text-[11px] text-[#a8b2bd] transition-colors group-hover:text-[#0f1e35]"
+            className="font-mono text-[11px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]"
           >
             View →
           </span>

@@ -6,7 +6,7 @@ function Dots() {
   return (
     <span
       className="font-mono animate-pulse select-none"
-      style={{ color: "#a8b2bd" }}
+      style={{ color: "#5a6e82" }}
     >
       ···
     </span>
@@ -18,7 +18,7 @@ function Unavailable({ size = "sm" }: { size?: "sm" | "lg" }) {
     <span
       className="font-mono select-none"
       style={{
-        color: "#a8b2bd",
+        color: "#5a6e82",
         fontSize: size === "lg" ? "1rem" : undefined,
       }}
     >
@@ -76,7 +76,7 @@ export function LastUpdated() {
 
   if (error && !lastUpdated) {
     return (
-      <span className="font-mono text-[10px]" style={{ color: "#a8b2bd" }}>
+      <span className="font-mono text-[10px]" style={{ color: "#5a6e82" }}>
         Market data unavailable
       </span>
     );
@@ -88,7 +88,7 @@ export function LastUpdated() {
       minute: "2-digit",
     });
     return (
-      <span className="font-mono text-[10px]" style={{ color: "#a8b2bd" }}>
+      <span className="font-mono text-[10px]" style={{ color: "#5a6e82" }}>
         Last updated&nbsp;{time}&ensp;·&ensp;Retrying
       </span>
     );
@@ -102,7 +102,7 @@ export function LastUpdated() {
   });
 
   return (
-    <span className="font-mono text-[10px]" style={{ color: "#a8b2bd" }}>
+    <span className="font-mono text-[10px]" style={{ color: "#5a6e82" }}>
       Updated&nbsp;{time}
     </span>
   );

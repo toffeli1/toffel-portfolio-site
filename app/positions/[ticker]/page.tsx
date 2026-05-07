@@ -154,11 +154,11 @@ export default async function PositionPage({
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
           <Link
             href={primarySleeve ? `/portfolio/${primarySleeve.slug}` : "/"}
-            className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+            className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
           >
             ← {primarySleeve?.title ?? "Overview"}
           </Link>
-          <span className="hidden font-mono text-[11px] text-[#a8b2bd] sm:block">
+          <span className="hidden font-mono text-[11px] text-[#5a6e82] sm:block">
             {ticker}&ensp;·&ensp;{company}
           </span>
         </div>
@@ -247,7 +247,7 @@ export default async function PositionPage({
                       boxShadow: "0 1px 8px rgba(15,30,53,0.05)",
                     }}
                   >
-                    <p className="mb-3 font-mono text-[9px] uppercase tracking-[0.28em] text-[#a8b2bd]">
+                    <p className="mb-3 font-mono text-[9px] uppercase tracking-[0.28em] text-[#5a6e82]">
                       Live Quote
                     </p>
                     <div className="flex items-baseline gap-4">
@@ -263,7 +263,7 @@ export default async function PositionPage({
                       >
                         <div className="flex items-start justify-between gap-6">
                           <div>
-                            <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em] text-[#a8b2bd]">
+                            <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5a6e82]">
                               Avg Cost
                             </p>
                             <p className="font-mono text-sm font-medium text-[#0f1e35]">
@@ -271,7 +271,7 @@ export default async function PositionPage({
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em] text-[#a8b2bd]">
+                            <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5a6e82]">
                               Total Return
                             </p>
                             <LiveReturnBadge ticker={ticker} avgCost={avgCost} />
@@ -297,7 +297,7 @@ export default async function PositionPage({
                         boxShadow: "0 1px 8px rgba(15,30,53,0.05)",
                       }}
                     >
-                      <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.28em] text-[#a8b2bd]">
+                      <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.28em] text-[#5a6e82]">
                         In Your Sleeves
                       </p>
                       <div className="space-y-3">
@@ -379,7 +379,7 @@ export default async function PositionPage({
                 )}
                 {detail.whyThisSleeve && (
                   <div className="mt-8">
-                    <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                    <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                       Why This Sleeve
                     </p>
                     <p className="max-w-2xl text-[14px] leading-[1.8] text-[#5a6e82]">
@@ -447,7 +447,7 @@ export default async function PositionPage({
                     <li key={i} className="flex gap-5">
                       <span
                         className="mt-0.5 shrink-0 font-mono text-[10px] tabular-nums"
-                        style={{ color: "#a8b2bd" }}
+                        style={{ color: "#5a6e82" }}
                       >
                         {String(i + 1).padStart(2, "0")}
                       </span>
@@ -492,11 +492,11 @@ export default async function PositionPage({
           <div className="flex items-center justify-between">
             <Link
               href={primarySleeve ? `/portfolio/${primarySleeve.slug}` : "/"}
-              className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#a8b2bd] transition-colors hover:text-[#0f1e35]"
+              className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
             >
               ← {primarySleeve?.title ?? "Overview"}
             </Link>
-            <p className="font-mono text-[10px] text-[#a8b2bd]">
+            <p className="font-mono text-[10px] text-[#5a6e82]">
               For informational purposes only. Not financial advice.
             </p>
           </div>
@@ -539,7 +539,7 @@ function TrimEventCard({ event }: { event: TrimEvent }) {
     >
       <div className="mb-5 flex items-start justify-between gap-8">
         <div>
-          <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+          <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
             {formatDetailDate(event.date)}
           </p>
           {event.pricePerShare !== undefined && (

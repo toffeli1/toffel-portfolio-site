@@ -27,7 +27,7 @@ export function LiveReturnBadge({
   return (
     <div className="flex flex-col items-end gap-0.5">
       {loading && q === undefined ? (
-        <span className="font-mono text-[11px] animate-pulse" style={{ color: "#a8b2bd" }}>
+        <span className="font-mono text-[11px] animate-pulse" style={{ color: "#5a6e82" }}>
           ···
         </span>
       ) : liveReturn !== null ? (
@@ -39,12 +39,12 @@ export function LiveReturnBadge({
           {liveReturn.toFixed(2)}%
         </span>
       ) : (
-        <span className="font-mono text-[11px]" style={{ color: "#a8b2bd" }}>
+        <span className="font-mono text-[11px]" style={{ color: "#5a6e82" }}>
           —
         </span>
       )}
       {!loading && q?.changePercent != null && (
-        <span className="font-mono text-[9px] tabular-nums" style={{ color: "#a8b2bd" }}>
+        <span className="font-mono text-[9px] tabular-nums" style={{ color: "#5a6e82" }}>
           {q.changePercent >= 0 ? "+" : ""}
           {q.changePercent.toFixed(2)}% today
         </span>

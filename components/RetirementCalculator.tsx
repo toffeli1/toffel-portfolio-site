@@ -69,7 +69,7 @@ function FieldLabel({
 }) {
   return (
     <div className="mb-1.5 flex items-baseline justify-between">
-      <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#a8b2bd]">
+      <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#5a6e82]">
         {children}
       </span>
       {note && (
@@ -314,7 +314,7 @@ function MetricCard({
     >
       <p
         className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em]"
-        style={{ color: "#a8b2bd" }}
+        style={{ color: "#5a6e82" }}
       >
         {label}
       </p>
@@ -328,7 +328,7 @@ function MetricCard({
         {value}
       </p>
       {sub && (
-        <p className="mt-1.5 font-mono text-[9px]" style={{ color: "#a8b2bd" }}>
+        <p className="mt-1.5 font-mono text-[9px]" style={{ color: "#5a6e82" }}>
           {sub}
         </p>
       )}
@@ -573,7 +573,7 @@ export function RetirementCalculator() {
             className="flex items-baseline justify-between rounded border px-4 py-3"
             style={{ borderColor: "rgba(15,30,53,0.07)", background: "rgba(26,74,46,0.03)" }}
           >
-            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#a8b2bd]">
+            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#5a6e82]">
               Total contributions
             </span>
             <span className="font-mono text-[11px] font-semibold text-[#3d4f66]">
@@ -591,7 +591,7 @@ export function RetirementCalculator() {
           >
             <p
               className="mb-4 px-3 font-mono text-[9px] uppercase tracking-[0.22em]"
-              style={{ color: "#a8b2bd" }}
+              style={{ color: "#5a6e82" }}
             >
               Balance over time
             </p>
@@ -620,14 +620,14 @@ export function RetirementCalculator() {
 
                 <XAxis
                   dataKey="age"
-                  tick={{ fill: "#a8b2bd", fontSize: 9, fontFamily: "var(--font-geist-mono)" }}
+                  tick={{ fill: "#5a6e82", fontSize: 9, fontFamily: "var(--font-geist-mono)" }}
                   axisLine={false}
                   tickLine={false}
                   minTickGap={30}
                 />
                 <YAxis
                   tickFormatter={fmtYAxis}
-                  tick={{ fill: "#a8b2bd", fontSize: 9, fontFamily: "var(--font-geist-mono)" }}
+                  tick={{ fill: "#5a6e82", fontSize: 9, fontFamily: "var(--font-geist-mono)" }}
                   axisLine={false}
                   tickLine={false}
                   width={52}
@@ -641,7 +641,7 @@ export function RetirementCalculator() {
                   label={{
                     value: `Retire ${retirementAge}`,
                     position: "insideTopRight",
-                    fill: "#a8b2bd",
+                    fill: "#5a6e82",
                     fontSize: 8,
                     fontFamily: "var(--font-geist-mono)",
                     dy: 4,
@@ -655,7 +655,7 @@ export function RetirementCalculator() {
                   type="monotone"
                   dataKey="taxable"
                   name="Taxable"
-                  stroke="#a8b2bd"
+                  stroke="#5a6e82"
                   strokeWidth={1.5}
                   fill="url(#taxGrad)"
                   dot={false}
@@ -678,7 +678,7 @@ export function RetirementCalculator() {
             <div className="mt-3 flex items-center gap-5 px-3">
               {[
                 { label: "Roth IRA", color: "#1a4a2e" },
-                { label: "Taxable Account", color: "#a8b2bd" },
+                { label: "Taxable Account", color: "#5a6e82" },
               ].map(({ label, color }) => (
                 <div key={label} className="flex items-center gap-1.5">
                   <span
@@ -714,7 +714,7 @@ export function RetirementCalculator() {
         >
           Methodology &amp; Assumptions
         </p>
-        <p className="font-mono text-[10px] leading-[1.8]" style={{ color: "#a8b2bd" }}>
+        <p className="font-mono text-[10px] leading-[1.8]" style={{ color: "#5a6e82" }}>
           Roth IRA compounds at the gross return rate tax-free. The taxable account
           applies an annual tax drag — {(ANNUAL_REALIZATION_RATE * 100).toFixed(0)}% of annual gains are
           assumed realized each year (dividends &amp; turnover) and taxed at your

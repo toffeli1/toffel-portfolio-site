@@ -89,7 +89,7 @@ export function ReturnChart({
               style={
                 range === r.key
                   ? { background: "rgba(15,30,53,0.07)", color: "#0f1e35" }
-                  : { color: "#a8b2bd" }
+                  : { color: "#5a6e82" }
               }
               onMouseEnter={(e) => {
                 if (range !== r.key)
@@ -97,7 +97,7 @@ export function ReturnChart({
               }}
               onMouseLeave={(e) => {
                 if (range !== r.key)
-                  (e.currentTarget as HTMLButtonElement).style.color = "#a8b2bd";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#5a6e82";
               }}
             >
               {r.label}
@@ -114,7 +114,7 @@ export function ReturnChart({
           />
         ) : chartData.length === 0 ? (
           <div className="flex h-full items-center justify-center">
-            <p className="font-mono text-[11px] text-[#a8b2bd]">
+            <p className="font-mono text-[11px] text-[#5a6e82]">
               Historical data unavailable for this range
             </p>
           </div>
@@ -134,7 +134,7 @@ export function ReturnChart({
               <XAxis
                 dataKey="label"
                 tick={{
-                  fill: "#a8b2bd",
+                  fill: "#5a6e82",
                   fontSize: 9,
                   fontFamily: "var(--font-geist-mono)",
                 }}
@@ -146,7 +146,7 @@ export function ReturnChart({
 
               <YAxis
                 tick={{
-                  fill: "#a8b2bd",
+                  fill: "#5a6e82",
                   fontSize: 9,
                   fontFamily: "var(--font-geist-mono)",
                 }}

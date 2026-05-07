@@ -97,7 +97,7 @@ export default function DecisionLogPage() {
                   >
                     {value}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#a8b2bd]">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5a6e82]">
                     {label}
                   </span>
                 </div>
@@ -119,7 +119,7 @@ export default function DecisionLogPage() {
 
       <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
         <div className="mx-auto max-w-4xl px-6 py-8 lg:px-12">
-          <p className="font-mono text-[10px] text-[#a8b2bd]">
+          <p className="font-mono text-[10px] text-[#5a6e82]">
             For informational purposes only. Not financial advice.
           </p>
         </div>

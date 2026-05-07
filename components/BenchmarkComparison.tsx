@@ -265,7 +265,7 @@ export function BenchmarkComparison({
   }, [holdingsOnly]);
 
   const colorOf = useCallback(
-    (ticker: string) => BENCHMARK_COLORS[ticker] ?? holdingColors[ticker] ?? "#a8b2bd",
+    (ticker: string) => BENCHMARK_COLORS[ticker] ?? holdingColors[ticker] ?? "#5a6e82",
     [holdingColors]
   );
 
@@ -469,7 +469,7 @@ export function BenchmarkComparison({
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#7a8799]">
             {rangeLabel} Relative Performance
           </p>
-          <p className="mt-1.5 font-mono text-[10px] text-[#a8b2bd]">
+          <p className="mt-1.5 font-mono text-[10px] text-[#5a6e82]">
             Normalized to 100 at start of period · VOO &amp; QQQ as benchmarks ·{" "}
             {useLog ? "log scale" : "linear scale"} · click holdings below to overlay
           </p>
@@ -488,7 +488,7 @@ export function BenchmarkComparison({
                 onClick={() => setRange(key)}
                 className="rounded px-3 py-1 font-mono text-[10px] transition-all duration-150"
                 style={{
-                  color: isActive ? "#0f1e35" : "#a8b2bd",
+                  color: isActive ? "#0f1e35" : "#5a6e82",
                   background: isActive ? "#ffffff" : "transparent",
                   boxShadow: isActive
                     ? "0 1px 3px rgba(15,30,53,0.12)"
@@ -512,7 +512,7 @@ export function BenchmarkComparison({
           />
         ) : chartData.length === 0 ? (
           <div className="flex h-full items-center justify-center">
-            <p className="font-mono text-[11px] text-[#a8b2bd]">
+            <p className="font-mono text-[11px] text-[#5a6e82]">
               Historical data unavailable
             </p>
           </div>
@@ -525,7 +525,7 @@ export function BenchmarkComparison({
               <XAxis
                 dataKey="label"
                 tick={{
-                  fill: "#a8b2bd",
+                  fill: "#5a6e82",
                   fontSize: 9,
                   fontFamily: "var(--font-geist-mono)",
                 }}
@@ -540,7 +540,7 @@ export function BenchmarkComparison({
                 {...(logTicks ? { ticks: logTicks } : {})}
                 allowDataOverflow={false}
                 tick={{
-                  fill: "#a8b2bd",
+                  fill: "#5a6e82",
                   fontSize: 9,
                   fontFamily: "var(--font-geist-mono)",
                 }}
@@ -612,7 +612,7 @@ export function BenchmarkComparison({
           {/* Benchmark labels */}
           {presentBenchmarks.length > 0 && (
             <div className="flex flex-wrap items-center gap-4">
-              <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+              <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                 Benchmarks
               </span>
               {presentBenchmarks.map((ticker) => (
@@ -641,19 +641,19 @@ export function BenchmarkComparison({
           {presentHoldings.length > 0 && (
             <div>
               <div className="mb-2.5 flex items-center gap-2.5">
-                <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#a8b2bd]">
+                <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                   Holdings
                 </span>
                 <button
                   onClick={selectAll}
-                  className="font-mono text-[9px] text-[#a8b2bd] transition-colors hover:text-[#5a6e82]"
+                  className="font-mono text-[9px] text-[#5a6e82] transition-colors hover:text-[#5a6e82]"
                 >
                   select all
                 </button>
                 <span className="font-mono text-[9px] text-[#c8d0d8]">·</span>
                 <button
                   onClick={clearAll}
-                  className="font-mono text-[9px] text-[#a8b2bd] transition-colors hover:text-[#5a6e82]"
+                  className="font-mono text-[9px] text-[#5a6e82] transition-colors hover:text-[#5a6e82]"
                 >
                   clear
                 </button>
@@ -674,7 +674,7 @@ export function BenchmarkComparison({
                       }
                       className="flex items-center gap-1.5 rounded px-2.5 py-1 font-mono text-[10px] transition-all"
                       style={{
-                        color: isActive ? color : "#a8b2bd",
+                        color: isActive ? color : "#5a6e82",
                         background: isActive ? `${color}14` : "transparent",
                         border: `1px solid ${
                           isActive ? `${color}55` : "rgba(15,30,53,0.1)"
@@ -730,7 +730,7 @@ export function BenchmarkComparison({
         </div>
       )}
 
-      <p className="mt-4 font-mono text-[9px] leading-[1.5] text-[#a8b2bd]">
+      <p className="mt-4 font-mono text-[9px] leading-[1.5] text-[#5a6e82]">
         Normalized relative performance · not based on actual position size ·
         past performance does not guarantee future results
       </p>

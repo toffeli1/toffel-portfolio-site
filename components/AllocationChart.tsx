@@ -38,7 +38,7 @@ export default function AllocationChart() {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="font-mono text-3xl font-bold text-[#0f1e35]">{totalPositions}</span>
-          <span className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.2em] text-[#a8b2bd]">
+          <span className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5a6e82]">
             holdings
           </span>
         </div>
