@@ -114,7 +114,7 @@ export default function OverviewPage() {
                   Hello, I&apos;m Isaac Toffel, an Economics and Data Science student at
                   Northeastern University. I&apos;m currently in the midst of my first
                   Co-op at State Street. I&apos;m also pursuing the CFA designation,
-                  sitting for the first exam this fall.
+                  sitting for the Level I exam in February 2027.
                 </p>
                 <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
                   This site is a live record of how I think about capital allocation.
@@ -142,7 +142,7 @@ export default function OverviewPage() {
                   {[
                     { label: "Education",    value: "Northeastern University" },
                     { label: "Experience",   value: "State Street" },
-                    { label: "Certification",value: "CFA Level I Candidate" },
+                    { label: "Certification",value: "CFA Level I Candidate, Feb 2027 sitting" },
                     { label: "LinkedIn",     value: "Isaac Toffel", href: "https://www.linkedin.com/in/isaac-toffel" },
                     { label: "Email",        value: "toffel.i@northeastern.edu", href: "mailto:toffel.i@northeastern.edu" },
                   ].map(({ label, value, href }) => (
@@ -235,7 +235,7 @@ export default function OverviewPage() {
                 role="Tax-advantaged account designed for long-duration compounding, account-level allocation, and lower turnover."
                 color="#1a4a2e"
                 themes={["Core Market", "Compounders", "Thematic Growth"]}
-                holdingCount={rothIraHoldings.length}
+                holdingCount={rothIraHoldings.filter((h) => h.portfolioWeightPct > 0).length}
               />
             </div>
           </div>

@@ -105,6 +105,9 @@ export default function DecisionLogPage() {
         {/* Feed */}
         <section>
           <div className="mx-auto max-w-4xl px-6 py-10 lg:px-12">
+            <p className="mb-8 max-w-2xl text-[12px] italic leading-[1.7] text-[#5a6e82]">
+              Return % shown on each entry reflects the realized return on the position at the time of the decision (trim, exit, or buy lot). Current returns on remaining shares are tracked separately on the Analytics page and may differ.
+            </p>
             <DecisionLogFeed entries={decisionLog} />
           </div>
         </section>
