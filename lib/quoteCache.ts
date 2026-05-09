@@ -31,6 +31,11 @@ export function getCachedQuote(symbol: string): Quote | null {
 }
 
 export function setCachedQuote(symbol: string, quote: Quote): void {
+  // Never cache an empty quote — Finnhub returns a Quote object with
+  // price: null when a per-ticker fetch fails. Caching that for 60s
+  // poisons the cache and locks the ticker into a missing-quote state
+  // until the TTL expires. Skip the write so the next request retries.
+  if (quote.price === null) return;
   cache.set(symbol, { quote, ts: Date.now() });
 }
 

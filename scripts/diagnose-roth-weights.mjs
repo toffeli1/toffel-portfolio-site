@@ -50,57 +50,89 @@ const prices = Object.fromEntries(
   await Promise.all(tickers.map(async (t) => [t, await fetchPrice(t)]))
 );
 
-let total = 0;
-const liveValues = {};
-const fallbacks = [];
-for (const t of tickers) {
-  const p = prices[t];
-  if (p && p > 0) {
-    liveValues[t] = SHARES[t] * p;
-    total += liveValues[t];
-  } else {
-    fallbacks.push(t);
+// Mirrors lib/portfolioCalculations.ts:deriveSleeveHoldings — Option B math.
+// Sum of weights is guaranteed ~100% in all three coverage branches.
+function derive(suppressed = new Set()) {
+  const liveValues = {};
+  let totalLiveValue = 0;
+  let staticPctLive = 0;
+  let staticPctTotal = 0;
+  const fallbacks = [];
+
+  for (const t of tickers) {
+    staticPctTotal += FALLBACK[t];
+    const p = suppressed.has(t) ? null : prices[t];
+    if (p && p > 0) {
+      liveValues[t] = SHARES[t] * p;
+      totalLiveValue += liveValues[t];
+      staticPctLive += FALLBACK[t];
+    } else {
+      fallbacks.push(t);
+    }
   }
+  let impliedTotal = 0;
+  let totalAll;
+  let mode;
+  if (totalLiveValue > 0 && staticPctLive > 0) {
+    impliedTotal = totalLiveValue / (staticPctLive / 100);
+    totalAll = (impliedTotal * staticPctTotal) / 100;
+    mode = fallbacks.length === 0 ? "all-live" : "mixed";
+  } else {
+    totalAll = staticPctTotal;
+    mode = "static-only";
+  }
+  const rows = tickers.map((t) => {
+    const liveVal = liveValues[t];
+    let value;
+    if (liveVal !== undefined) value = liveVal;
+    else if (mode === "static-only") value = FALLBACK[t];
+    else value = impliedTotal * (FALLBACK[t] / 100);
+    const pct = totalAll > 0 ? (value / totalAll) * 100 : FALLBACK[t];
+    return { t, p: prices[t], suppressed: suppressed.has(t), liveVal, pct };
+  });
+  return { rows, mode, fallbacks, totalLiveValue, impliedTotal, totalAll };
 }
 
 const colW = (s, w) => String(s).padEnd(w);
 const colN = (n, w, dec = 2) => (typeof n === "number" ? n.toFixed(dec) : "—").padStart(w);
 
-console.log();
-console.log("ROTH WEIGHT DIAGNOSTIC");
-console.log("=".repeat(95));
-console.log(
-  colW("ticker", 8) +
-  colN("shares", 9) +
-  colN("livePrice", 12) +
-  colN("currentVal", 14) +
-  colN("portfolioPct", 14) +
-  colN("fallbackPct", 14) +
-  "  isFallback"
-);
-console.log("-".repeat(95));
-
-let derivedSum = 0;
-for (const t of tickers) {
-  const p = prices[t];
-  const v = liveValues[t];
-  const pct = v ? (v / total) * 100 : FALLBACK[t];
-  const isFb = !v;
-  derivedSum += pct;
+function printTable(title, result) {
+  console.log();
+  console.log(title);
+  console.log("=".repeat(98));
   console.log(
-    colW(t, 8) +
-    colN(SHARES[t], 9) +
-    colN(p, 12) +
-    colN(v, 14) +
-    colN(pct, 14) +
-    colN(FALLBACK[t], 14) +
-    "  " + (isFb ? "TRUE" : "")
+    colW("ticker", 8) +
+    colN("shares", 9) +
+    colN("livePrice", 12) +
+    colN("currentVal", 14) +
+    colN("portfolioPct", 14) +
+    colN("fallbackPct", 14) +
+    "  isFallback"
   );
+  console.log("-".repeat(98));
+  let sum = 0;
+  for (const r of result.rows) {
+    sum += r.pct;
+    const isFb = r.liveVal === undefined;
+    console.log(
+      colW(r.t, 8) +
+      colN(SHARES[r.t], 9) +
+      colN(r.suppressed ? null : r.p, 12) +
+      colN(r.liveVal, 14) +
+      colN(r.pct, 14) +
+      colN(FALLBACK[r.t], 14) +
+      "  " + (isFb ? "TRUE" : "")
+    );
+  }
+  console.log("-".repeat(98));
+  console.log(`mode=${result.mode}  totalLive=$${result.totalLiveValue.toFixed(2)}  impliedTotal=$${result.impliedTotal.toFixed(2)}  totalAll=$${result.totalAll.toFixed(2)}`);
+  console.log(`sum=${sum.toFixed(2)}%  fallbackCount=${result.fallbacks.length}` +
+    (result.fallbacks.length > 0 ? `  (${result.fallbacks.join(", ")})` : ""));
 }
-console.log("-".repeat(95));
-console.log(`Total live value: $${total.toFixed(2)}`);
-console.log(`Sum of derived %: ${derivedSum.toFixed(2)}%`);
-if (fallbacks.length) {
-  console.log(`Fallback tickers: ${fallbacks.join(", ")}`);
-}
+
+printTable("ROTH WEIGHT DIAGNOSTIC — full live coverage", derive());
+printTable(
+  "ROTH WEIGHT DIAGNOSTIC — partial coverage (AMD, NU, RKLB, AVEX simulated missing)",
+  derive(new Set(["AMD", "NU", "RKLB", "AVEX"]))
+);
 console.log();
