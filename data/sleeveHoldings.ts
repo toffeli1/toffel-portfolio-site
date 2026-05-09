@@ -26,6 +26,12 @@ export interface SleeveHolding {
    * source of truth for displayed weights when live data is present.
    */
   portfolioWeightPct: number;
+  /**
+   * Manually-maintained current share count. Source of truth for live-derived
+   * weights (shares × livePrice / Σ shares × livePrice). Internal only — never
+   * displayed publicly. Update when shares change due to buys/sells/splits.
+   */
+  shares?: number;
   /** Manually-maintained fallback return %. Live computed when avgCost + quote available. */
   returnPct?: number;
   /** Decimal target weight (0.10 = 10%). Drives weight-status banding when set. */
@@ -55,6 +61,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "VOO",
     company: "Vanguard S&P 500 ETF",
     portfolioWeightPct: 31.60,
+    shares: 16.83,
     returnPct: 8.05,
     country: "US",
     marketCap: "Mega Cap",
@@ -67,6 +74,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "AMD",
     company: "AMD",
     portfolioWeightPct: 9.55,
+    shares: 8.46,
     returnPct: 95.08,
     targetWeight: 0.10,
     maxWeight: 0.115,
@@ -82,6 +90,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "UNH",
     company: "UnitedHealth",
     portfolioWeightPct: 4.71,
+    shares: 3.82,
     returnPct: 25.57,
     country: "US",
     marketCap: "Mega Cap",
@@ -94,6 +103,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "NBIS",
     company: "Nebius Group",
     portfolioWeightPct: 4.16,
+    shares: 7.47,
     returnPct: 276.84,
     country: "International",
     marketCap: "Mid Cap",
@@ -106,6 +116,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "DLO",
     company: "dLocal",
     portfolioWeightPct: 3.61,
+    shares: 77.09,
     returnPct: 20.22,
     country: "Latin America",
     marketCap: "Mid Cap",
@@ -118,6 +129,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "GOOGL",
     company: "Alphabet Class A",
     portfolioWeightPct: 5.06,
+    shares: 4.33,
     returnPct: 110.54,
     country: "US",
     marketCap: "Mega Cap",
@@ -130,6 +142,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "FBTC",
     company: "Fidelity Wise Origin Bitcoin Fund",
     portfolioWeightPct: 7.69,
+    shares: 34.09,
     returnPct: -8.40,
     country: "US",
     // marketCap intentionally omitted — crypto-linked ETF
@@ -142,6 +155,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "MELI",
     company: "MercadoLibre",
     portfolioWeightPct: 6.54,
+    shares: 1.00,
     returnPct: -6.16,
     country: "Latin America",
     marketCap: "Large Cap",
@@ -154,6 +168,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "NU",
     company: "Nu Holdings",
     portfolioWeightPct: 1.98,
+    shares: 37.62,
     returnPct: 8.95,
     country: "Latin America",
     marketCap: "Large Cap",
@@ -166,6 +181,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "META",
     company: "Meta Platforms",
     portfolioWeightPct: 4.67,
+    shares: 1.99,
     returnPct: -6.38,
     country: "US",
     marketCap: "Mega Cap",
@@ -178,6 +194,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "RKLB",
     company: "Rocket Lab",
     portfolioWeightPct: 3.90,
+    shares: 12.75,
     returnPct: 5.43,
     country: "US",
     marketCap: "Mid Cap",
@@ -190,6 +207,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "SMH",
     company: "VanEck Semiconductor ETF",
     portfolioWeightPct: 2.90,
+    shares: 3.25,
     returnPct: 37.91,
     country: "US",
     marketCap: "Large Cap",
@@ -202,6 +220,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "ASTS",
     company: "AST SpaceMobile",
     portfolioWeightPct: 1.67,
+    shares: 8.00,
     returnPct: -28.00,
     country: "US",
     marketCap: "Mid Cap",
@@ -214,6 +233,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "AVEX",
     company: "AEVEX Corp.",
     portfolioWeightPct: 1.33,
+    shares: 13.74,
     returnPct: -28.24,
     country: "US",
     marketCap: "Small Cap",

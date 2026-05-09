@@ -93,19 +93,15 @@ export function computeWeightStatus(
 // ── Derive ───────────────────────────────────────────────────────────────────
 
 /**
- * Derive sleeve holdings from raw + live quote data + cost basis lookup.
+ * Derive sleeve holdings directly from raw shares × live price.
  *
- * Weight derivation strategy:
- * - For each holding with both surviving shares (positionLots) and a live quote,
- *   compute its market value internally.
- * - Anchor an "implied total" using the tracked subset's static fallback weight
- *   share: implied_total = trackedValue / (trackedStaticPct / 100).
- *   This lets untracked holdings stay at their fallback static weight while
- *   tracked holdings move with prices.
- * - Each holding's derived weight is its value / impliedTotal × 100, where
- *   value = live for tracked, or impliedTotal × (fallbackPct/100) for untracked.
- * - If no holdings are tracked at all (cold start, all quotes missing), every
- *   holding uses its static fallback weight unchanged. isLive=false everywhere.
+ * Source of truth: each holding's manually-maintained `shares` field combined
+ * with its live quote. No inference from partial coverage — every ticker with
+ * shares + a valid live quote contributes to the live denominator. Tickers
+ * without shares OR without a quote fall back to their static
+ * portfolioWeightPct *for that ticker only*; the live denominator is not
+ * shrunk. A development-only console.warn names the fallback tickers so
+ * silent drift gets noticed.
  *
  * Returns derived holdings in the same order as rawHoldings.
  */
@@ -114,51 +110,42 @@ export function deriveSleeveHoldings(
   quoteMap: QuoteMap | null,
   avgCostFor: (ticker: string) => number | null
 ): DerivedSleeveHolding[] {
-  // Pass 1: collect tracked values + static-pct anchor.
-  let trackedValueSum = 0;
-  let trackedStaticPctSum = 0;
-  const valueByTicker: Record<string, number> = {};
+  // Pass 1: compute per-ticker live value when shares + quote are both present.
+  const liveValues: Record<string, number> = {};
+  let totalLiveValue = 0;
+  const fallbackTickers: string[] = [];
 
   for (const h of rawHoldings) {
-    const shares = getSurvivingShares(h.ticker);
-    const quote = quoteMap?.[h.ticker];
-    const price = quote?.price ?? null;
-    if (shares !== undefined && price !== null && price > 0) {
-      const value = shares * price;
-      valueByTicker[h.ticker] = value;
-      trackedValueSum += value;
-      trackedStaticPctSum += h.portfolioWeightPct;
+    const price = quoteMap?.[h.ticker]?.price ?? null;
+    if (h.shares !== undefined && price !== null && price > 0) {
+      const value = h.shares * price;
+      liveValues[h.ticker] = value;
+      totalLiveValue += value;
+    } else {
+      fallbackTickers.push(h.ticker);
     }
   }
 
-  // Implied total: only meaningful when at least one holding is tracked
-  // and the tracked subset has non-zero static-pct anchor.
-  const impliedTotal =
-    trackedValueSum > 0 && trackedStaticPctSum > 0
-      ? trackedValueSum * (100 / trackedStaticPctSum)
-      : null;
+  if (fallbackTickers.length > 0 && process.env.NODE_ENV !== "production") {
+    console.warn(
+      `[deriveSleeveHoldings] Falling back to static weights for: ${fallbackTickers.join(", ")} (missing shares or live quote)`
+    );
+  }
 
   // Pass 2: build derived rows.
   return rawHoldings.map((h): DerivedSleeveHolding => {
     const quote: Quote | undefined = quoteMap?.[h.ticker];
     const price = quote?.price ?? null;
     const avgCost = avgCostFor(h.ticker);
-
-    const hasLiveShares = h.ticker in valueByTicker;
-    const trackedValue = hasLiveShares ? valueByTicker[h.ticker] : null;
+    const liveValue = liveValues[h.ticker];
+    const hasLiveShares = liveValue !== undefined;
 
     // Resolve weight.
     let portfolioPct: number;
     let isLive: boolean;
-    if (impliedTotal !== null && trackedValue !== null) {
-      portfolioPct = (trackedValue / impliedTotal) * 100;
+    if (hasLiveShares && totalLiveValue > 0) {
+      portfolioPct = (liveValue / totalLiveValue) * 100;
       isLive = true;
-    } else if (impliedTotal !== null) {
-      // Untracked ticker but other tickers ARE tracked — keep at fallback weight
-      // (static), but mark isLive=true at the sleeve level so consumers know
-      // the picture is partial. We surface hasLiveShares=false to differentiate.
-      portfolioPct = h.portfolioWeightPct;
-      isLive = false;
     } else {
       portfolioPct = h.portfolioWeightPct;
       isLive = false;
