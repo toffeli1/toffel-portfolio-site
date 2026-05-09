@@ -83,7 +83,7 @@ export const holdings: Holding[] = [
     returnPct: 101.65,
     category: 'Equities',
     subcategory: 'Semiconductor Equity',
-    entryPrice: 300,
+    entryPrice: 330,
     thesis: 'Memory cycle recovery and AI-related DRAM/HBM demand.',
   },
 ];

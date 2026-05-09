@@ -460,6 +460,7 @@ export const positionAverageCost: Record<string, number> = {
   // SCHD removed — position fully exited Apr 30, 2026 @ $31.95; lots preserved in previousHoldings
   ASTS:   98.16,
   RKLB:   80.29,
+  MU:    330.00,  // Brokerage avg cost — drives chart cost-basis line + return %
   // SMH (Brokerage) intentionally excluded: Brokerage SMH cost basis differs from
   // the Roth lot. Roth-specific cost basis is tracked under SMH_ROTH below.
   // Lookups by plain "SMH" return undefined → callers fall back to static returnPct.
