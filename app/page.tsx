@@ -431,8 +431,10 @@ function SleeveCard({
             View →
           </span>
         </div>
-        <p className="mt-2 font-mono text-[10px] text-[#5a6e82]">
-          Data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}
+        <p className="mt-2 font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
+          {slug === "roth-ira"
+            ? `Share counts last updated ${fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}. Weights use live delayed prices where available.`
+            : `Holdings data as of ${fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}.`}
         </p>
       </div>
     </Link>

@@ -33,8 +33,8 @@ export default function AnalyticsPage() {
             Attribution, exposure breakdown, and concentration metrics across account and exposure views.
             Individual Brokerage attribution is unavailable.
           </p>
-          <p className="mt-4 font-mono text-[10px] text-[#5a6e82]">
-            Data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}
+          <p className="mt-4 max-w-md font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
+            Holdings data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}. Roth weights use live delayed prices where available.
           </p>
         </div>
       </section>

@@ -99,7 +99,7 @@ function RetailView() {
               Individual Brokerage
             </h1>
             <p className="mt-2 font-mono text-[10px] text-[#5a6e82]">
-              Data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}
+              Holdings data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}.
             </p>
             <p className="mt-4 max-w-xl text-[14px] leading-[1.7] text-[#3d4f66]">
               Taxable brokerage account focused on ETF-based market exposure,
@@ -180,8 +180,8 @@ function RothIraView() {
                   >
                     Roth Retirement Account
                   </h1>
-                  <p className="mt-2 font-mono text-[10px] text-[#5a6e82]">
-                    Data as of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}
+                  <p className="mt-2 max-w-md font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
+                    Share counts last updated {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}. Weights use live delayed prices where available.
                   </p>
                   <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
                     Roth IRA · Long-Term Compounding · Tax-Advantaged Growth

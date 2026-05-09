@@ -217,7 +217,7 @@ function AttributionChart({
   title,
   data,
   color,
-  returnLabel = "Account return",
+  returnLabel = "Est. contribution",
 }: {
   title: string;
   data: ReturnType<typeof computeAttribution>;
@@ -504,16 +504,17 @@ export default function AnalyticsDashboard() {
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
           <SectionLabel>Return Attribution</SectionLabel>
           <h2 className="mb-2 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
-            Estimated Weighted Return Contribution
+            Estimated Return Contribution by Holding
           </h2>
           <p className="mb-3 max-w-2xl text-[13px] leading-[1.8]" style={{ color: MUTED }}>
-            Each bar shows a holding&apos;s percentage-point contribution to the account&apos;s
-            total weighted return — weight × individual return. Individual Brokerage holdings
-            are excluded because position-level return data is not tracked for that account.
+            Each bar shows a holding&apos;s percentage-point contribution — weight ×
+            individual return. Individual Brokerage holdings are excluded because
+            position-level return data is not tracked for that account.
           </p>
           <p className="mb-10 max-w-2xl text-[12px] italic leading-[1.7]" style={{ color: MUTED }}>
-            Based on current position weights and return estimates. This is not a time-weighted
-            or money-weighted account return.
+            Contribution is calculated as current portfolio weight × return since entry.
+            This is an estimated contribution view, not a time-weighted account return,
+            money-weighted account return, or full historical attribution.
           </p>
 
           <div className="grid gap-14">
