@@ -84,7 +84,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     theme: "AI / Semiconductors",
     subcategory: "Semiconductors / AI",
     thesis: "AI compute and semiconductor exposure.",
-    notes: "Position trimmed 2% on Apr 30, 2026 to maintain ≤10% max position size.",
+    notes: "Current weight is above target sizing band after appreciation.",
   },
   {
     ticker: "UNH",
@@ -226,8 +226,8 @@ export const rothIraHoldings: SleeveHolding[] = [
     marketCap: "Mid Cap",
     assetType: "Equity",
     theme: "Space / Defense",
-    subcategory: "Space / Communications",
-    thesis: "Speculative direct-to-cell satellite connectivity exposure.",
+    subcategory: "Satellite Communications",
+    thesis: "Satellite-to-cellular connectivity platform.",
   },
   {
     ticker: "AVEX",
@@ -239,8 +239,8 @@ export const rothIraHoldings: SleeveHolding[] = [
     marketCap: "Small Cap",
     assetType: "Equity",
     theme: "Space / Defense",
-    subcategory: "Defense Technology / Unmanned Systems",
-    thesis: "Defense technology contractor and unmanned systems exposure tied to UAS, ISR, and defense modernization demand.",
+    subcategory: "Defense Technology",
+    thesis: "Small, long-duration defense technology and unmanned systems exposure.",
   },
 ];
 
