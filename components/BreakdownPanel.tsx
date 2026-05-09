@@ -1,14 +1,21 @@
+"use client";
+
+import { useMemo } from "react";
 import type { SleeveHolding, AssetType, MarketCapBucket, CountryBucket } from "@/data/sleeveHoldings";
+import { useQuotes } from "./QuotesProvider";
+import { deriveSleeveHoldings } from "@/lib/portfolioCalculations";
+import { getAvgCost } from "@/lib/costBasis";
 
 // ── weight helpers ────────────────────────────────────────────────────────────
 
 function weightedItems<T extends string>(
   holdings: SleeveHolding[],
+  weightOf: (h: SleeveHolding) => number,
   getValue: (h: SleeveHolding) => T | undefined,
   order: T[]
 ): { label: T; weightPct: number; count: number }[] {
   const eligible = holdings.filter((h) => getValue(h) !== undefined);
-  const totalWeight = eligible.reduce((s, h) => s + h.portfolioWeightPct, 0);
+  const totalWeight = eligible.reduce((s, h) => s + weightOf(h), 0);
 
   return order
     .map((label) => {
@@ -16,7 +23,7 @@ function weightedItems<T extends string>(
       return {
         label,
         weightPct: totalWeight > 0
-          ? (matched.reduce((s, h) => s + h.portfolioWeightPct, 0) / totalWeight) * 100
+          ? (matched.reduce((s, h) => s + weightOf(h), 0) / totalWeight) * 100
           : 0,
         count: matched.length,
       };
@@ -111,29 +118,47 @@ function BreakdownSection({
 // ── BreakdownPanel ────────────────────────────────────────────────────────────
 
 export default function BreakdownPanel({ holdings }: { holdings: SleeveHolding[] }) {
+  // Resolve per-holding weight: prefer derived (live shares × price), fall
+  // back to manually-maintained portfolioWeightPct when live data isn't
+  // available for a given ticker.
+  const { quotes } = useQuotes();
+  const weightOf = useMemo(() => {
+    const derived = deriveSleeveHoldings(
+      holdings,
+      quotes ?? null,
+      (t) => getAvgCost(t, "roth-ira")
+    );
+    const byTicker = new Map(derived.map((d) => [d.ticker, d.portfolioPct]));
+    return (h: SleeveHolding): number =>
+      byTicker.get(h.ticker) ?? h.portfolioWeightPct;
+  }, [holdings, quotes]);
+
   const countryItems = weightedItems<CountryBucket>(
     holdings,
+    weightOf,
     (h) => h.country,
     ["US", "Latin America", "International"]
   );
 
   const capItems = weightedItems<MarketCapBucket>(
     holdings,
+    weightOf,
     (h) => h.marketCap,
     ["Mega Cap", "Large Cap", "Mid Cap", "Small Cap"]
   );
 
   const typeItems = weightedItems<AssetType>(
     holdings,
+    weightOf,
     (h) => h.assetType,
     ["Equity", "ETF", "Crypto-linked ETF"]
   );
 
   // note how much weight is uncategorized by market cap (e.g. crypto ETFs)
-  const totalWeight = holdings.reduce((s, h) => s + h.portfolioWeightPct, 0);
+  const totalWeight = holdings.reduce((s, h) => s + weightOf(h), 0);
   const capCoveredWeight = holdings
     .filter((h) => h.marketCap !== undefined)
-    .reduce((s, h) => s + h.portfolioWeightPct, 0);
+    .reduce((s, h) => s + weightOf(h), 0);
   const capUncovered = totalWeight - capCoveredWeight;
   const capNote =
     capUncovered > 0.5

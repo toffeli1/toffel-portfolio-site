@@ -3,6 +3,9 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { SleeveHolding } from "@/data/sleeveHoldings";
+import { useQuotes } from "./QuotesProvider";
+import { deriveSleeveHoldings } from "@/lib/portfolioCalculations";
+import { getAvgCost } from "@/lib/costBasis";
 
 const THEME_COLORS: Record<string, string> = {
   "Core Market":         "#1a4a2e",
@@ -30,9 +33,24 @@ export default function RothThemeChart({
 }) {
   const [selected, setSelected] = useState<string | null>(null);
 
+  // Live-derived per-ticker weight (falls back to raw fallbackPortfolioPct
+  // when shares × price aren't both available).
+  const { quotes } = useQuotes();
+  const derivedPctByTicker = useMemo(() => {
+    const d = deriveSleeveHoldings(
+      holdings,
+      quotes ?? null,
+      (t) => getAvgCost(t, "roth-ira")
+    );
+    return new Map(d.map((x) => [x.ticker, x.portfolioPct]));
+  }, [holdings, quotes]);
+  const effectiveWeight = (h: SleeveHolding): number =>
+    derivedPctByTicker.get(h.ticker) ?? h.portfolioWeightPct;
+
   const totalWeight = useMemo(
-    () => holdings.reduce((s, h) => s + h.portfolioWeightPct, 0) || 1,
-    [holdings]
+    () => holdings.reduce((s, h) => s + effectiveWeight(h), 0) || 1,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [holdings, derivedPctByTicker]
   );
 
   const slices = useMemo<ThemeSlice[]>(() => {
@@ -45,12 +63,13 @@ export default function RothThemeChart({
     return Array.from(map.entries())
       .map(([theme, hs]) => ({
         theme,
-        pct: (hs.reduce((s, h) => s + h.portfolioWeightPct, 0) / totalWeight) * 100,
+        pct: (hs.reduce((s, h) => s + effectiveWeight(h), 0) / totalWeight) * 100,
         color: THEME_COLORS[theme] ?? FALLBACK_COLOR,
         holdings: hs,
       }))
       .sort((a, b) => b.pct - a.pct);
-  }, [holdings, totalWeight]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [holdings, totalWeight, derivedPctByTicker]);
 
   const selectedSlice = slices.find((s) => s.theme === selected) ?? null;
 
@@ -182,10 +201,9 @@ export default function RothThemeChart({
             </p>
             <div className="divide-y" style={{ borderColor: "rgba(15,30,53,0.06)" }}>
               {selectedSlice.holdings
-                .sort((a, b) => b.portfolioWeightPct - a.portfolioWeightPct)
+                .sort((a, b) => effectiveWeight(b) - effectiveWeight(a))
                 .map((h) => {
-                  const normPct =
-                    (h.portfolioWeightPct / totalWeight) * 100;
+                  const normPct = (effectiveWeight(h) / totalWeight) * 100;
                   return (
                     <div
                       key={h.ticker}
