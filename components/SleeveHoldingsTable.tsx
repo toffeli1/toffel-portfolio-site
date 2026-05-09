@@ -6,6 +6,8 @@ import { etfProfiles } from "@/data/etfConstituents";
 import { ClickableRow } from "./ClickableRow";
 import { useQuotes } from "./QuotesProvider";
 import { getAvgCost, computeReturnPct } from "@/lib/costBasis";
+import { deriveSleeveHoldings } from "@/lib/portfolioCalculations";
+import WeightStatusBadge from "./WeightStatusBadge";
 
 // ── type styles ───────────────────────────────────────────────────────────────
 
@@ -129,8 +131,17 @@ export default function SleeveHoldingsTable({
   holdings: SleeveHolding[];
   sleeve: string;
 }) {
-  const totalWeight = holdings.reduce((s, h) => s + h.portfolioWeightPct, 0) || 1;
-  const maxWeight = Math.max(...holdings.map((h) => h.portfolioWeightPct / totalWeight * 100), 1);
+  const { quotes } = useQuotes();
+  const derived = deriveSleeveHoldings(
+    holdings,
+    quotes ?? null,
+    (ticker) => getAvgCost(ticker, sleeve)
+  );
+  const derivedByTicker = new Map(derived.map((d) => [d.ticker, d]));
+
+  // Bar-scaling: normalize against the largest derived weight in the sleeve
+  // so the longest bar fills its track regardless of total summing to 100%.
+  const maxBarPct = Math.max(...derived.map((d) => d.portfolioPct), 1);
 
   return (
     <div
@@ -221,16 +232,25 @@ export default function SleeveHoldingsTable({
 
                 {/* Weight */}
                 <td className="px-5 py-4">
-                  <WeightBar
-                    pct={h.portfolioWeightPct / totalWeight * 100}
-                    max={maxWeight}
-                    color={typeColor}
-                  />
-                  {h.notes && (
-                    <p className="mt-0.5 font-mono text-[9px] text-[#5a6e82]">
-                      {h.notes}
-                    </p>
-                  )}
+                  {(() => {
+                    const d = derivedByTicker.get(h.ticker);
+                    const pct = d?.portfolioPct ?? h.portfolioWeightPct;
+                    return (
+                      <>
+                        <WeightBar pct={pct} max={maxBarPct} color={typeColor} />
+                        {d?.weightStatus && d.weightStatus !== "No target" && (
+                          <div className="mt-1.5">
+                            <WeightStatusBadge status={d.weightStatus} />
+                          </div>
+                        )}
+                        {h.notes && (
+                          <p className="mt-0.5 font-mono text-[9px] text-[#5a6e82]">
+                            {h.notes}
+                          </p>
+                        )}
+                      </>
+                    );
+                  })()}
                 </td>
 
                 {/* Return % */}

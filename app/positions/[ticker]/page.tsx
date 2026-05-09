@@ -10,6 +10,7 @@ import { PriceCell, ChangeCell, LastUpdated } from "@/components/QuoteCell";
 import { LiveReturnBadge } from "@/components/LiveReturnBadge";
 import { ChartWrapper } from "@/components/ChartWrapper";
 import { ReturnSinceSection } from "@/components/ReturnSinceSection";
+import DerivedRothWeight from "@/components/DerivedRothWeight";
 import { positionLots, positionAverageCost } from "@/lib/positionLots";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -280,9 +281,17 @@ export default async function PositionPage({
                               {s.title}
                             </span>
                             <div className="flex items-center gap-4">
-                              <span className="font-mono text-[11px] tabular-nums text-[#3d4f66]">
-                                {s.weightPct.toFixed(1)}%
-                              </span>
+                              {s.slug === "roth-ira" ? (
+                                <DerivedRothWeight
+                                  ticker={ticker}
+                                  fallbackPct={s.weightPct}
+                                  showStatus
+                                />
+                              ) : (
+                                <span className="font-mono text-[11px] tabular-nums text-[#3d4f66]">
+                                  {s.weightPct.toFixed(1)}%
+                                </span>
+                              )}
                               <LiveReturnBadge ticker={ticker} sleeve={s.slug} />
                             </div>
                           </Link>

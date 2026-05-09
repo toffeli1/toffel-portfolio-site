@@ -19,10 +19,19 @@ export type CountryBucket = "US" | "Latin America" | "International";
 export interface SleeveHolding {
   ticker: string;
   company: string;
-  /** Portfolio weight % within this sleeve */
+  /**
+   * Manually-maintained fallback weight % within this sleeve.
+   * Treated as a fallback when live derivation (shares × price) is unavailable
+   * for this holding. The derived layer (lib/portfolioCalculations.ts) is the
+   * source of truth for displayed weights when live data is present.
+   */
   portfolioWeightPct: number;
-  /** Total return % since purchase — public-safe, no dollar amounts */
+  /** Manually-maintained fallback return %. Live computed when avgCost + quote available. */
   returnPct?: number;
+  /** Decimal target weight (0.10 = 10%). Drives weight-status banding when set. */
+  targetWeight?: number;
+  /** Decimal max-band weight (0.115 = 11.5%). Defaults to targetWeight × 1.15 if omitted. */
+  maxWeight?: number;
   country?: CountryBucket;
   /** Omit for ETFs / crypto-linked ETFs with no clear market cap bucket */
   marketCap?: MarketCapBucket;
@@ -59,6 +68,8 @@ export const rothIraHoldings: SleeveHolding[] = [
     company: "AMD",
     portfolioWeightPct: 9.55,
     returnPct: 95.08,
+    targetWeight: 0.10,
+    maxWeight: 0.115,
     country: "US",
     marketCap: "Large Cap",
     assetType: "Equity",

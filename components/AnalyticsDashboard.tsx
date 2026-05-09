@@ -13,6 +13,9 @@ import {
 } from "recharts";
 import { holdings, categoryAllocations } from "@/data/holdings";
 import { rothIraHoldings, type SleeveHolding } from "@/data/sleeveHoldings";
+import { useQuotes } from "./QuotesProvider";
+import { deriveSleeveHoldings, hasAnyLiveData } from "@/lib/portfolioCalculations";
+import { getAvgCost } from "@/lib/costBasis";
 
 // ── constants ─────────────────────────────────────────────────────────────────
 
@@ -352,15 +355,26 @@ function AttributionChart({
 // ── main dashboard ─────────────────────────────────────────────────────────────
 
 export default function AnalyticsDashboard() {
-  // ── Roth weight normalization (raw weights may sum < 100) ──────────────────
-  const rothTotal = useMemo(
-    () => rothIraHoldings.reduce((s, h) => s + h.portfolioWeightPct, 0) || 1,
-    []
+  // ── Roth weights: derived from live shares × price where available, else
+  //    static fallback. Result is normalized to sum to 100% so downstream
+  //    attribution / concentration / exposure math is well-conditioned.
+  const { quotes } = useQuotes();
+  const derivedRoth = useMemo(
+    () => deriveSleeveHoldings(rothIraHoldings, quotes ?? null, (t) => getAvgCost(t, "roth-ira")),
+    [quotes]
   );
-  const rothNormalized = useMemo(
-    () => rothIraHoldings.map((h) => ({ ...h, portfolioWeightPct: (h.portfolioWeightPct / rothTotal) * 100 })),
-    [rothTotal]
-  );
+  const isRothLive = useMemo(() => hasAnyLiveData(derivedRoth), [derivedRoth]);
+  const rothNormalized = useMemo(() => {
+    const total = derivedRoth.reduce((s, d) => s + d.portfolioPct, 0) || 1;
+    return rothIraHoldings.map((h, i) => {
+      const d = derivedRoth[i];
+      return {
+        ...h,
+        portfolioWeightPct: (d.portfolioPct / total) * 100,
+        returnPct: d.returnPct ?? h.returnPct,
+      };
+    });
+  }, [derivedRoth]);
 
   // ── attribution ────────────────────────────────────────────────────────────
   const rothAttribution = useMemo(() => computeAttribution(rothNormalized), [rothNormalized]);
@@ -417,14 +431,19 @@ export default function AnalyticsDashboard() {
       <section className="border-b" style={{ borderColor: BORDER }}>
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
           <SectionLabel>Overview</SectionLabel>
+          {!isRothLive && (
+            <p className="mb-4 font-mono text-[10px] italic" style={{ color: DIM }}>
+              Live pricing unavailable — Roth metrics use fallback weights.
+            </p>
+          )}
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {[
               {
-                label: "Roth Return",
+                label: "Est. Weighted Return Contribution",
                 value: pp(rothReturn),
                 positive: rothReturn >= 0,
-                sub: "weighted avg",
+                sub: "Roth · derived",
               },
               {
                 label: "Brokerage Positions",
@@ -485,12 +504,16 @@ export default function AnalyticsDashboard() {
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
           <SectionLabel>Return Attribution</SectionLabel>
           <h2 className="mb-2 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
-            Weighted Contribution by Holding
+            Estimated Weighted Return Contribution
           </h2>
-          <p className="mb-10 max-w-2xl text-[13px] leading-[1.8]" style={{ color: MUTED }}>
+          <p className="mb-3 max-w-2xl text-[13px] leading-[1.8]" style={{ color: MUTED }}>
             Each bar shows a holding&apos;s percentage-point contribution to the account&apos;s
             total weighted return — weight × individual return. Individual Brokerage holdings
             are excluded because position-level return data is not tracked for that account.
+          </p>
+          <p className="mb-10 max-w-2xl text-[12px] italic leading-[1.7]" style={{ color: MUTED }}>
+            Based on current position weights and return estimates. This is not a time-weighted
+            or money-weighted account return.
           </p>
 
           <div className="grid gap-14">

@@ -1,4 +1,5 @@
 import AnalyticsDashboard from "@/components/AnalyticsDashboard";
+import { QuotesProvider } from "@/components/QuotesProvider";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 
 export const metadata = {
@@ -38,7 +39,9 @@ export default function AnalyticsPage() {
         </div>
       </section>
 
-      <AnalyticsDashboard />
+      <QuotesProvider>
+        <AnalyticsDashboard />
+      </QuotesProvider>
 
     </div>
   );
