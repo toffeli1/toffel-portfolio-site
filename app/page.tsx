@@ -266,6 +266,55 @@ export default function OverviewPage() {
           </div>
         </section>
 
+        {/* ── Investment Policy ──────────────────────────────────────────────── */}
+        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <div className="mx-auto max-w-7xl px-6 py-24 lg:px-12">
+            <div className="mb-10">
+              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+                Discipline
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight text-[#0f1e35]">
+                Investment Policy
+              </h2>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              {[
+                {
+                  title: "Position sizing",
+                  body: "Core ETFs anchor the portfolio and can hold larger weights because they represent diversified market exposure. Individual equities are sized based on conviction, volatility, thesis maturity, and correlation with the rest of the portfolio. High-conviction individual equities generally have a 10% target weight and an 11.5% max review band unless the thesis is explicitly re-underwritten.",
+                },
+                {
+                  title: "Account role",
+                  body: "The Roth IRA is used for long-duration compounding, asymmetric growth, and tax-advantaged upside. The taxable brokerage account is used for flexible ETF exposure, thematic allocation, and liquidity. Account structure matters because the same holding can play a different role depending on tax treatment, time horizon, and rebalancing flexibility.",
+                },
+                {
+                  title: "Trim / re-underwrite",
+                  body: "A position moving above its target weight is not an automatic sell signal. It is a review signal. If the thesis has improved enough to justify the larger weight, the position can be re-underwritten. If price appreciation has outpaced thesis improvement, the position can be trimmed back toward target.",
+                },
+                {
+                  title: "Sell discipline",
+                  body: "Positions can be reduced or exited when the thesis breaks, valuation outruns evidence, a better opportunity emerges, or position size exceeds the intended risk budget. The goal is not to avoid volatility, but to make sure each position’s size still matches its evidence, upside, and downside risk.",
+                },
+              ].map(({ title, body }) => (
+                <div
+                  key={title}
+                  className="rounded-2xl p-7"
+                  style={{
+                    background: "#ffffff",
+                    border: "1px solid rgba(15,30,53,0.09)",
+                    boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+                  }}
+                >
+                  <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[#7a8799]">
+                    {title}
+                  </p>
+                  <p className="text-[14px] leading-[1.85] text-[#2d3d52]">{body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
       </main>
 

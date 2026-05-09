@@ -150,6 +150,46 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
 
                 {/* Note */}
                 <p className="text-[14px] leading-[1.9] text-[#3d4f66]">{entry.note}</p>
+
+                {/* Structured metadata grid (only renders provided fields) */}
+                {(() => {
+                  const rows: { label: string; value: string }[] = [
+                    ["Action", entry.decisionAction],
+                    ["Holding", entry.holding],
+                    ["Trigger", entry.trigger],
+                    ["Old weight", entry.oldWeight],
+                    ["New weight", entry.newWeight],
+                    ["Target weight", entry.targetWeight],
+                    ["Max band", entry.maxWeight],
+                    ["Thesis change", entry.thesisChange],
+                    ["Decision", entry.decision],
+                    ["Capital destination", entry.capitalDestination],
+                    ["Lesson", entry.lesson],
+                  ]
+                    .filter((r): r is [string, string] => typeof r[1] === "string" && r[1].length > 0)
+                    .map(([label, value]) => ({ label, value }));
+                  if (rows.length === 0) return null;
+                  return (
+                    <dl
+                      className="mt-5 grid gap-x-6 gap-y-3 rounded-xl px-5 py-4 sm:grid-cols-2"
+                      style={{
+                        background: "rgba(15,30,53,0.025)",
+                        border: "1px solid rgba(15,30,53,0.07)",
+                      }}
+                    >
+                      {rows.map(({ label, value }) => (
+                        <div key={label}>
+                          <dt className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">
+                            {label}
+                          </dt>
+                          <dd className="mt-0.5 text-[12.5px] leading-[1.55] text-[#2d3d52]">
+                            {value}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  );
+                })()}
               </div>
             </div>
           );

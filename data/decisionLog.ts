@@ -17,6 +17,29 @@ export interface DecisionEntry {
   href: string;
   /** Return % since entry — positive or negative; omit if unavailable */
   returnPct?: number;
+  // ── Optional structured metadata (rendered in the decision card grid) ─────
+  /** Decision type label, e.g. "Trim / Review", "Add", "Full exit". */
+  decisionAction?: string;
+  /** Specific holding name when distinct from ticker, e.g. "AMD". */
+  holding?: string;
+  /** What triggered the review/decision. */
+  trigger?: string;
+  /** Pre-decision weight as a string ("12.5%"). */
+  oldWeight?: string;
+  /** Post-decision weight as a string ("10.0%"). */
+  newWeight?: string;
+  /** Target weight as a string ("10.0%"). */
+  targetWeight?: string;
+  /** Max review-band weight as a string ("11.5%"). */
+  maxWeight?: string;
+  /** Whether the thesis itself changed. */
+  thesisChange?: string;
+  /** Decision summary, e.g. "Review for trim or re-underwrite". */
+  decision?: string;
+  /** Where freed capital went. */
+  capitalDestination?: string;
+  /** One-line process lesson. */
+  lesson?: string;
 }
 
 // Reverse-chronological order — newest first.
@@ -52,6 +75,16 @@ export const decisionLog: DecisionEntry[] = [
     note: "Trimmed AMD in the Roth Retirement Account on May 1, 2026 after a significant run to bring the position back toward my 10% max position-size discipline. This was not a thesis reversal. The core AMD thesis remains intact, but the trim reflected concentration control, risk management, and a preference to preserve gains after the position had outgrown its intended role.",
     href: "/positions/AMD",
     returnPct: 71.53,
+    decisionAction: "Trim / Review",
+    holding: "AMD",
+    trigger: "Position moved above max review band after rapid appreciation",
+    oldWeight: "12.5%",
+    targetWeight: "10.0%",
+    maxWeight: "11.5%",
+    thesisChange: "No thesis break; review driven by sizing discipline",
+    decision: "Review for trim or re-underwrite",
+    capitalDestination: "Diversified/core exposure or cash pending review",
+    lesson: "A strong thesis does not eliminate sizing discipline. Position size must still match evidence, valuation, and portfolio risk.",
   },
   {
     date: "2026-05-01",
