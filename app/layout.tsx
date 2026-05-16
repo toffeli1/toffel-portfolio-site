@@ -9,7 +9,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 const SITE_URL = "https://toffelcapital.com";
 const SITE_DESCRIPTION =
-  "Isaac Toffel's documented investment process. A concentrated, conviction-based portfolio across ETFs, semiconductors, Bitcoin, and select compounders.";
+  "A public investment portfolio tracking account-level allocation, position sizing, thesis updates, and decision quality across ETFs, equities, Bitcoin exposure, and long-term thematic holdings.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

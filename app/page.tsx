@@ -66,27 +66,16 @@ export default function OverviewPage() {
               {/* Text */}
               <div className="flex-1">
                 <p className="text-[15px] leading-[2.0] text-[#2d3d52]">
-                  Hello, I&apos;m Isaac Toffel, an Economics and Data Science student at
-                  Northeastern University. I&apos;m currently in the midst of my first
-                  Co-op at State Street. I&apos;m also pursuing the CFA designation,
-                  sitting for the Level I exam in February 2027.
+                  I&apos;m Isaac Toffel, an Economics and Data Science student at
+                  Northeastern University and a State Street co-op. This site
+                  documents how I think about portfolio construction, position sizing,
+                  and thesis-driven investing across my taxable brokerage and Roth IRA.
                 </p>
                 <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
-                  This site is a live record of how I think about capital allocation.
-                  Working in finance has sharpened how I approach portfolio
-                  construction — not just which names to own, but how conviction gets
-                  sized, when a thesis should be updated, and what makes a
-                  reallocation defensible. The CFA process has pushed that further.
-                  The portfolio here is where those frameworks get applied directly.
-                </p>
-                <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
-                  The goal isn&apos;t to be right about every position. It&apos;s to be
-                  disciplined enough to know whether I was right for the right
-                  reasons. Each holding has a testable thesis, each account has a
-                  role, and the site documents both. I think building a serious
-                  process early — rather than collecting interesting-sounding
-                  ideas — is what compounds over time. This is that attempt, in
-                  public.
+                  The goal is not to be right on every position. It is to build a
+                  repeatable process, track decisions honestly, and understand whether
+                  outcomes came from sound reasoning or luck. This site documents that
+                  process in public.
                 </p>
 
                 {/* Identity strip */}
@@ -176,18 +165,16 @@ export default function OverviewPage() {
                 slug="retail-with-friends"
                 subtitle="Taxable Account"
                 title="Individual Brokerage"
-                description="Taxable brokerage account focused on ETF-based market exposure, semiconductor cyclicality, Bitcoin exposure, and select high-conviction individual equities."
-                role="Active brokerage account used for flexible allocation across broad-market ETFs, thematic ETFs, digital asset exposure, and selected individual equities."
+                description="ETF-heavy taxable brokerage account focused on broad market, semiconductor, Bitcoin, and select equity exposure."
                 color="#1a3a5c"
                 themes={["ETFs", "Semiconductors", "Bitcoin"]}
                 holdingCount={holdings.length}
               />
               <SleeveCard
                 slug="roth-ira"
-                subtitle="Retirement Account"
+                subtitle="Roth IRA"
                 title="Roth Retirement Account"
-                description="Roth IRA focused on broad market exposure, durable compounders, and select long-term thematic growth."
-                role="Tax-advantaged account designed for long-duration compounding, account-level allocation, and lower turnover."
+                description="Long-duration account focused on core market exposure, compounders, and selective thematic growth."
                 color="#1a4a2e"
                 themes={["Core Market", "Compounders", "Thematic Growth"]}
                 holdingCount={rothIraHoldings.filter((h) => h.portfolioWeightPct > 0).length}
@@ -210,45 +197,35 @@ export default function OverviewPage() {
 
             <div className="max-w-3xl space-y-7">
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                This portfolio is built as a system, not a collection of disconnected
-                ideas. Every position has a role, every account has a job, and sizing
-                reflects conviction, risk, time horizon, and how directly a name
-                expresses the underlying theme. The goal is not to own a large number
-                of interesting companies. The goal is to concentrate capital where the
-                upside is asymmetric, the thesis is understandable, and the portfolio
-                construction makes sense at the total-book level.
+                The portfolio is built as a system. Every position has a role,
+                every account has a job, and sizing reflects conviction, time
+                horizon, and how directly a name expresses the underlying thesis.
+                The goal is not to own a large number of interesting companies.
+                It is to concentrate capital where the upside is asymmetric and
+                the construction makes sense at the total-book level.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                The portfolio is organized around two primary accounts. The first
-                is the Individual Brokerage, where capital is allocated to ETF-based
-                market exposure, semiconductor cyclicality, Bitcoin exposure, and select
-                high-conviction individual equities. The second is the Roth Retirement
-                Account, which blends core market exposure with selective growth and
-                measured speculative positions inside a tax-advantaged wrapper. ETF
-                Exposure is tracked separately as a supporting look-through view for
-                evaluating index, thematic ETF, and benchmark-like exposures — not
-                treated as a third primary account.
+                The book is organized around two accounts. The Individual Brokerage
+                holds ETF-based market exposure, semiconductor cyclicality, Bitcoin
+                exposure, and select high-conviction equities. The Roth Retirement
+                Account blends core market exposure with selective growth and
+                measured speculative positions inside a tax-advantaged wrapper.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
                 Position size is intentional. Larger weights are reserved for names
-                that sit closest to the center of the thesis, where the business model,
-                demand driver, and reason for owning it are most direct. Smaller
-                weights are used for emerging ideas, more speculative expressions, or
-                positions where the upside may be meaningful but the path is less
-                certain. This means a 10% position is not just a stock I like more.
-                It is a position that has earned a larger share of risk budget. A 1%
-                to 3% position, by contrast, is often an option on being right without
-                needing to underwrite full-size exposure on day one.
+                closest to the center of the thesis. Smaller weights are used for
+                emerging ideas or more speculative expressions where the upside may
+                be meaningful but the path is less certain. A 10% position is not
+                a stock I like more; it is a position that has earned a larger
+                share of risk budget.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                Diversification here is not simply sector diversification. It is
-                diversification by driver, maturity, and expression. Two companies may
-                both sit under an AI label while being exposed to very different parts
-                of the value chain, different customers, different margin structures,
-                and different failure modes. The same logic applies across defense,
-                energy, fintech, and space. What matters is not whether names look
-                different on the surface. What matters is whether they fail for the
-                same reason.
+                Diversification here is not just sector diversification. It is
+                diversification by driver, maturity, and expression. Two AI-labeled
+                companies can sit on very different parts of the value chain, with
+                different customers, margin structures, and failure modes. What
+                matters is not whether names look different on the surface, but
+                whether they fail for the same reason.
               </p>
               <p
                 className="border-t pt-7 text-[15px] font-medium leading-[1.9]"
@@ -365,7 +342,6 @@ function SleeveCard({
   title,
   subtitle,
   description,
-  role,
   color,
   themes,
   holdingCount,
@@ -374,7 +350,6 @@ function SleeveCard({
   title: string;
   subtitle: string;
   description: string;
-  role: string;
   color: string;
   themes: string[];
   holdingCount: number;
@@ -399,9 +374,6 @@ function SleeveCard({
         </h2>
         <p className="mt-3 text-[12.5px] leading-[1.65] text-[#5a6e82]">
           {description}
-        </p>
-        <p className="mt-2.5 font-mono text-[10px] leading-[1.6] text-[#7a8799]">
-          {role}
         </p>
 
         <div
