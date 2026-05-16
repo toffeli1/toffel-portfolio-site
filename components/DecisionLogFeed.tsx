@@ -15,17 +15,17 @@ const FILTERS: { key: Filter; label: string }[] = [
 
 function matchesFilter(entry: DecisionEntry, filter: Filter): boolean {
   if (filter === "all") return true;
-  if (filter === "buy")  return entry.action === "Buy" || entry.action === "Market buy";
-  if (filter === "risk") return entry.action === "Trim";
-  if (filter === "exit") return entry.action === "Full exit";
+  if (filter === "buy")  return entry.action === "Add";
+  if (filter === "risk") return entry.action === "Trim" || entry.action === "Rebalance";
+  if (filter === "exit") return entry.action === "Exit";
   return true;
 }
 
 const ACCENT: Record<string, string> = {
-  "Buy":        "#1a4a2e",
-  "Market buy": "#1a4a2e",
-  "Trim":       "#7a4520",
-  "Full exit":  "#8b2530",
+  Add:        "#1a4a2e",
+  Trim:       "#7a4520",
+  Rebalance:  "#7a4520",
+  Exit:       "#8b2530",
 };
 
 function fmtReturn(v: number): string {
