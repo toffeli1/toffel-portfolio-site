@@ -499,12 +499,12 @@ export function ToffelAI() {
                   Suggested
                 </p>
               </div>
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2.5">
                 {suggestedPrompts.map((prompt) => (
                   <button
                     key={prompt}
                     onClick={() => sendMessage(prompt)}
-                    className="w-full text-left px-4 py-3 rounded-xl border border-[#e8e4de] text-[12.5px] text-[#374151] hover:border-[#0f1e35] hover:bg-[#f8f6f2] transition-all duration-150 leading-snug"
+                    className="block w-full text-left px-4 py-3 rounded-xl border border-[#e8e4de] text-[12.5px] text-[#374151] hover:border-[#0f1e35] hover:bg-[#f8f6f2] transition-all duration-150 leading-[1.5]"
                   >
                     {prompt}
                   </button>

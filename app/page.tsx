@@ -302,24 +302,26 @@ export default function OverviewPage() {
             <p className="font-mono text-[10px] text-[#5a6e82]">
               Isaac Toffel · For informational purposes only. Not financial advice.
             </p>
-            <div className="flex items-center gap-5">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] text-[#5a6e82]">
               <a
                 href="https://www.linkedin.com/in/isaac-toffel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block py-2 font-mono text-[10px] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
+                className="inline-block py-2 transition-colors hover:text-[#0f1e35]"
                 style={{ textDecoration: "none" }}
               >
                 LinkedIn ↗
               </a>
+              <span aria-hidden="true" className="text-[#a8b2bd]">·</span>
               <a
                 href="mailto:toffel.i@northeastern.edu"
-                className="inline-block py-2 font-mono text-[10px] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
+                className="inline-block py-2 transition-colors hover:text-[#0f1e35]"
                 style={{ textDecoration: "none" }}
               >
                 toffel.i@northeastern.edu
               </a>
-              <span className="font-mono text-[10px] text-[#7a8799]">
+              <span aria-hidden="true" className="text-[#a8b2bd]">·</span>
+              <span className="text-[#7a8799]">
                 {new Date().getFullYear()}
               </span>
             </div>
