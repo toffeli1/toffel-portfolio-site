@@ -14,7 +14,7 @@ import {
 import { holdings, categoryAllocations } from "@/data/holdings";
 import { rothIraHoldings, type SleeveHolding } from "@/data/sleeveHoldings";
 import { useQuotes } from "./QuotesProvider";
-import { deriveSleeveHoldings, hasAnyLiveData } from "@/lib/portfolioCalculations";
+import { deriveSleeveHoldings } from "@/lib/portfolioCalculations";
 import { getAvgCost } from "@/lib/costBasis";
 
 // ── constants ─────────────────────────────────────────────────────────────────
@@ -363,7 +363,6 @@ export default function AnalyticsDashboard() {
     () => deriveSleeveHoldings(rothIraHoldings, quotes ?? null, (t) => getAvgCost(t, "roth-ira")),
     [quotes]
   );
-  const isRothLive = useMemo(() => hasAnyLiveData(derivedRoth), [derivedRoth]);
   const rothNormalized = useMemo(() => {
     const total = derivedRoth.reduce((s, d) => s + d.portfolioPct, 0) || 1;
     return rothIraHoldings.map((h, i) => {
@@ -431,16 +430,11 @@ export default function AnalyticsDashboard() {
       <section className="border-b" style={{ borderColor: BORDER }}>
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
           <SectionLabel>Overview</SectionLabel>
-          {!isRothLive && (
-            <p className="mb-4 font-mono text-[10px] italic" style={{ color: DIM }}>
-              Live pricing unavailable — Roth metrics use fallback weights.
-            </p>
-          )}
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {[
               {
-                label: "Est. Weighted Return Contribution",
+                label: "Estimated Contribution Since Entry",
                 value: pp(rothReturn),
                 positive: rothReturn >= 0,
                 sub: "Roth · derived",
@@ -504,17 +498,16 @@ export default function AnalyticsDashboard() {
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
           <SectionLabel>Return Attribution</SectionLabel>
           <h2 className="mb-2 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
-            Estimated Return Contribution by Holding
+            Estimated Contribution Since Entry
           </h2>
           <p className="mb-3 max-w-2xl text-[13px] leading-[1.8]" style={{ color: MUTED }}>
-            Each bar shows a holding&apos;s percentage-point contribution — weight ×
-            individual return. Individual Brokerage holdings are excluded because
-            position-level return data is not tracked for that account.
+            Each bar shows a holding&apos;s percentage-point contribution, calculated as
+            current portfolio weight times return since entry. Individual Brokerage
+            holdings are excluded because position-level return data is not tracked
+            for that account.
           </p>
           <p className="mb-10 max-w-2xl text-[12px] italic leading-[1.7]" style={{ color: MUTED }}>
-            Contribution is calculated as current portfolio weight × return since entry.
-            This is an estimated contribution view, not a time-weighted account return,
-            money-weighted account return, or full historical attribution.
+            This is not a time-weighted or money-weighted account return.
           </p>
 
           <div className="grid gap-14">
@@ -620,13 +613,16 @@ export default function AnalyticsDashboard() {
       <section>
         <div className="mx-auto max-w-7xl px-6 py-10 lg:px-12">
           <p className="font-mono text-[9px] leading-[1.8]" style={{ color: DIM }}>
-            <span className="uppercase tracking-[0.18em]">Methodology</span> · Return figures
-            are total return since initial purchase as manually recorded; they are not
-            time-weighted or annualized. Attribution uses simple arithmetic weighting
-            (holding weight × total return). Individual Brokerage attribution is unavailable —
-            position-level returns are not tracked for that account. Weights reflect
-            approximate intra-account allocation, not absolute dollar amounts. Data is
-            updated manually and may lag current positions.
+            <span className="uppercase tracking-[0.18em]">Methodology</span> · Weights are
+            calculated from manually recorded share counts and delayed market prices when
+            available. When pricing is unavailable, the site uses manually maintained
+            fallback weights. Return figures are total return since entry as manually
+            recorded and are not time weighted or annualized. Contribution uses simple
+            arithmetic weighting (holding weight × total return) and is not a
+            time-weighted or money-weighted account return. Individual Brokerage
+            attribution is unavailable because position-level returns are not tracked
+            for that account. Weights reflect approximate intra-account allocation, not
+            absolute dollar amounts.
           </p>
         </div>
       </section>
