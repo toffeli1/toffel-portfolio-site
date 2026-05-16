@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { holdings, categoryAllocations } from "@/data/holdings";
+import { holdings } from "@/data/holdings";
 import { rothIraHoldings, type SleeveHolding } from "@/data/sleeveHoldings";
 import { useQuotes } from "./QuotesProvider";
 import { deriveSleeveHoldings } from "@/lib/portfolioCalculations";
@@ -411,12 +411,11 @@ export default function AnalyticsDashboard() {
   );
 
   // ── exposure: Retail ───────────────────────────────────────────────────────
+  // Weight-based, sourced from holdings.portfolioPct so the split matches the
+  // Brokerage account page (ETFs ~94%, Equity ~6%) instead of the stale 80/20
+  // target band from data/holdings.ts:categoryAllocations.
   const retailByCategory = useMemo(
-    () =>
-      categoryAllocations.map((c) => ({
-        label: c.category,
-        weight: c.pct,
-      })),
+    () => groupWeights(holdings.map((h) => ({ value: h.category, weight: h.portfolioPct }))),
     []
   );
   const retailBySubcategory = useMemo(
@@ -435,7 +434,7 @@ export default function AnalyticsDashboard() {
             {[
               {
                 label: "Estimated Contribution Since Entry",
-                value: pp(rothReturn),
+                value: `${sign(rothReturn)}${fmt1(rothReturn)} pp`,
                 positive: rothReturn >= 0,
                 sub: "Roth · derived",
               },
@@ -507,7 +506,8 @@ export default function AnalyticsDashboard() {
             for that account.
           </p>
           <p className="mb-10 max-w-2xl text-[12px] italic leading-[1.7]" style={{ color: MUTED }}>
-            This is not a time-weighted or money-weighted account return.
+            Not a portfolio return. This estimate uses current weight and position-level
+            return, not full time-weighted or money-weighted account history.
           </p>
 
           <div className="grid gap-14">
@@ -552,12 +552,12 @@ export default function AnalyticsDashboard() {
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
           <SectionLabel>Individual Brokerage Exposure</SectionLabel>
           <h2 className="mb-10 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
-            Thematic Category · Subcategory
+            Category · Subcategory
           </h2>
 
           <div className="grid gap-10 sm:grid-cols-2">
             <ExposureGroup
-              title="By Theme"
+              title="By Category"
               items={retailByCategory}
               color={NAVY}
             />
@@ -613,16 +613,12 @@ export default function AnalyticsDashboard() {
       <section>
         <div className="mx-auto max-w-7xl px-6 py-10 lg:px-12">
           <p className="font-mono text-[9px] leading-[1.8]" style={{ color: DIM }}>
-            <span className="uppercase tracking-[0.18em]">Methodology</span> · Weights are
-            calculated from manually recorded share counts and delayed market prices when
-            available. When pricing is unavailable, the site uses manually maintained
-            fallback weights. Return figures are total return since entry as manually
-            recorded and are not time weighted or annualized. Contribution uses simple
-            arithmetic weighting (holding weight × total return) and is not a
-            time-weighted or money-weighted account return. Individual Brokerage
-            attribution is unavailable because position-level returns are not tracked
-            for that account. Weights reflect approximate intra-account allocation, not
-            absolute dollar amounts.
+            <span className="uppercase tracking-[0.18em]">Methodology</span> · Weights use
+            manually recorded share counts and delayed market prices when available, with
+            fallback weights when pricing is unavailable. Return figures are total return
+            since entry as manually recorded. Individual Brokerage attribution is unavailable
+            because position-level returns are not tracked for that account. Weights reflect
+            approximate intra-account allocation, not absolute dollar amounts.
           </p>
         </div>
       </section>
