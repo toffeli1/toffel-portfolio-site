@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { etfProfiles } from "@/data/etfConstituents";
 import { ChartWrapper } from "@/components/ChartWrapper";
 import { positionLots, positionAverageCost } from "@/lib/positionLots";
+import { fmtPortfolioDate } from "@/lib/config";
 
 export function generateStaticParams() {
   return Object.keys(etfProfiles).map((ticker) => ({ ticker }));
@@ -87,9 +88,14 @@ export default async function EtfDetailPage({
           return (
             <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
               <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-                <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Sector Allocation
-                </p>
+                <div className="mb-8 flex items-end justify-between gap-6">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+                    Sector Allocation
+                  </p>
+                  <p className="font-mono text-[9px] text-[#5a6e82]">
+                    ETF allocation data as of {fmtPortfolioDate(profile.asOf)}. Representative only.
+                  </p>
+                </div>
                 <div
                   className="overflow-x-auto rounded-2xl"
                   style={{
@@ -146,11 +152,9 @@ export default async function EtfDetailPage({
                 <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
                   Top Holdings
                 </p>
-                {profile.constituentsNote && (
-                  <p className="font-mono text-[9px] text-[#5a6e82]">
-                    {profile.constituentsNote}
-                  </p>
-                )}
+                <p className="max-w-md font-mono text-[9px] leading-[1.55] text-[#5a6e82]">
+                  ETF allocation data as of {fmtPortfolioDate(profile.asOf)}.{profile.constituentsNote ? ` ${profile.constituentsNote}` : ""}
+                </p>
               </div>
               <div
                 className="overflow-x-auto rounded-2xl"

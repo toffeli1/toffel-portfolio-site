@@ -18,7 +18,16 @@ export interface EtfProfile {
   constituentsNote: string;
   /** When present, rendered as the primary breakdown instead of individual constituents. */
   sectorBreakdown?: SectorAllocation[];
+  /**
+   * Manually-maintained as-of date for the constituent / sector data on this
+   * ETF, in "YYYY-MM-DD" form. Refresh when issuer-published holdings update.
+   */
+  asOf: string;
 }
+
+// TODO: replace each profile's asOf with the issuer-published as-of date from
+// the official fund factsheet on next refresh. Current value matches
+// PORTFOLIO_UPDATED_AT and reflects the last manual data refresh.
 
 export const etfProfiles: Record<string, EtfProfile> = {
   QQQM: {
@@ -26,8 +35,9 @@ export const etfProfiles: Record<string, EtfProfile> = {
     fullName: "Invesco Nasdaq-100 ETF",
     description:
       "Tracks the Nasdaq-100 Index, comprising 100 of the largest non-financial companies listed on the Nasdaq Stock Market.",
+    asOf: "2026-05-06",
     constituentsNote:
-      "Representative top-10 holdings shown. Actual weights shift with market prices.",
+      "Representative top holdings shown. Actual weights shift with market prices and index changes.",
     constituents: [
       { ticker: "MSFT",  company: "Microsoft",       weightPct: 8.5, sector: "Technology" },
       { ticker: "AAPL",  company: "Apple",            weightPct: 8.2, sector: "Technology" },
@@ -47,8 +57,9 @@ export const etfProfiles: Record<string, EtfProfile> = {
     fullName: "VanEck Semiconductor ETF",
     description:
       "Tracks the MVIS US Listed Semiconductor 25 Index, providing targeted exposure to global semiconductor equipment, materials, and chip leaders.",
+    asOf: "2026-05-06",
     constituentsNote:
-      "Representative top-10 holdings shown. Actual weights shift with market prices.",
+      "Representative top holdings shown. Actual weights shift with market prices and index changes.",
     constituents: [
       { ticker: "NVDA",  company: "NVIDIA",                  weightPct: 19.8, sector: "GPUs / AI" },
       { ticker: "TSM",   company: "Taiwan Semiconductor",    weightPct: 11.6, sector: "Foundry" },
@@ -67,7 +78,8 @@ export const etfProfiles: Record<string, EtfProfile> = {
     ticker: "VOO",
     fullName: "Vanguard S&P 500 ETF",
     description:
-      "Tracks the S&P 500 Index, providing broad, low-cost exposure to 500 of the largest U.S. publicly traded companies across all sectors — technology, financials, healthcare, consumer, industrials, communication services, energy, utilities, materials, and real estate.",
+      "Tracks the S&P 500 Index, providing broad, low-cost exposure to 500 of the largest U.S. publicly traded companies across all sectors including technology, financials, healthcare, consumer, industrials, communication services, energy, utilities, materials, and real estate.",
+    asOf: "2026-05-06",
     constituentsNote: "",
     constituents: [],
     sectorBreakdown: [
