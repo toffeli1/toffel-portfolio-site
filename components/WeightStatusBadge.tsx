@@ -7,8 +7,8 @@ const STATUS_STYLE: Record<WeightStatus, { color: string; bg: string; label: str
   "No target":        { color: "#5a6e82", bg: "rgba(15,30,53,0.06)", label: "" },
   Underweight:        { color: "#5a6e82", bg: "rgba(15,30,53,0.06)", label: "Below target band" },
   "In range":         { color: "#15542e", bg: "rgba(26,74,46,0.08)", label: "Within target band" },
-  Watch:              { color: "#7a4520", bg: "rgba(122,69,32,0.10)", label: "Near target band" },
-  "Review for trim":  { color: "#8b1a1a", bg: "rgba(139,26,26,0.10)", label: "Above target band" },
+  Watch:              { color: "#7a4520", bg: "rgba(122,69,32,0.10)", label: "Above target, within review band" },
+  "Review for trim":  { color: "#8b1a1a", bg: "rgba(139,26,26,0.10)", label: "Above review band" },
 };
 
 export default function WeightStatusBadge({

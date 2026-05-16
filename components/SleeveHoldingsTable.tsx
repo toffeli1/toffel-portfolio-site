@@ -59,7 +59,7 @@ function ReturnCell({ ticker, sleeve }: { ticker: string; sleeve: string }) {
       )}
       {avgCost !== null && (
         <span className="font-mono text-[9px] tabular-nums" style={{ color: "#b0bac5" }}>
-          avg ${avgCost.toFixed(2)}
+          Avg cost: ${avgCost.toFixed(2)}
         </span>
       )}
     </div>
@@ -166,7 +166,7 @@ export default function SleeveHoldingsTable({
               "Weight",
               "Return",
               "Subcategory",
-              "Country",
+              "Geo Exposure",
               "Mkt Cap",
               "Type",
             ].map((h) => (

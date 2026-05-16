@@ -44,6 +44,11 @@ const CAP_COLORS: Record<MarketCapBucket, string> = {
   "Small Cap": "#1a4a2e",
 };
 
+const CAP_COLORS_EXT: Record<string, string> = {
+  ...CAP_COLORS,
+  "Crypto-linked": "#8b5e3c",
+};
+
 const TYPE_COLORS: Record<AssetType, string> = {
   Equity: "#1a3a5c",
   ETF: "#1a4a2e",
@@ -140,11 +145,17 @@ export default function BreakdownPanel({ holdings }: { holdings: SleeveHolding[]
     ["US", "Latin America", "International"]
   );
 
-  const capItems = weightedItems<MarketCapBucket>(
+  // Market cap with an explicit "Crypto-linked" bucket so the breakdown sums
+  // to ~100% without an awkward "X% uncategorized" footnote. Crypto-linked
+  // ETFs (e.g. FBTC) have no market-cap classification but are real exposure.
+  type CapBucketExt = MarketCapBucket | "Crypto-linked";
+  const capItems = weightedItems<CapBucketExt>(
     holdings,
     weightOf,
-    (h) => h.marketCap,
-    ["Mega Cap", "Large Cap", "Mid Cap", "Small Cap"]
+    (h) =>
+      h.marketCap ??
+      (h.assetType === "Crypto-linked ETF" ? "Crypto-linked" : undefined),
+    ["Mega Cap", "Large Cap", "Mid Cap", "Small Cap", "Crypto-linked"]
   );
 
   const typeItems = weightedItems<AssetType>(
@@ -154,29 +165,18 @@ export default function BreakdownPanel({ holdings }: { holdings: SleeveHolding[]
     ["Equity", "ETF", "Crypto-linked ETF"]
   );
 
-  // note how much weight is uncategorized by market cap (e.g. crypto ETFs)
-  const totalWeight = holdings.reduce((s, h) => s + weightOf(h), 0);
-  const capCoveredWeight = holdings
-    .filter((h) => h.marketCap !== undefined)
-    .reduce((s, h) => s + weightOf(h), 0);
-  const capUncovered = totalWeight - capCoveredWeight;
-  const capNote =
-    capUncovered > 0.5
-      ? `weighted by portfolio weight % · ${capUncovered.toFixed(1)}% uncategorized`
-      : "weighted by portfolio weight %";
-
   return (
     <div className="grid gap-5 md:grid-cols-3">
       <BreakdownSection
-        title="By Country"
+        title="By Geographic Exposure"
         items={countryItems}
+        note="Primary business exposure, not listing venue or headquarters."
         colors={COUNTRY_COLORS}
       />
       <BreakdownSection
         title="By Market Cap"
         items={capItems}
-        note={capNote}
-        colors={CAP_COLORS}
+        colors={CAP_COLORS_EXT}
       />
       <BreakdownSection
         title="By Asset Type"
