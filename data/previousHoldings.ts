@@ -36,6 +36,72 @@ export interface PreviousHolding {
 
 export const previousHoldings: PreviousHolding[] = [
   {
+    ticker: "AVEX",
+    company: "AEVEX Corp.",
+    sleeve: "roth-ira",
+    subcategory: "Defense Technology",
+    country: "US",
+    marketCap: "Small Cap",
+    assetType: "Equity",
+    ownedFrom: "2026-01-26",
+    ownedTo: "2026-06-01",
+    exitType: "Reallocation to higher-conviction holdings",
+    summaryReason:
+      "Small speculative defense-tech position exited as portfolio focus shifted to higher-conviction names.",
+    originalThesis:
+      "Defense technology and unmanned systems exposure tied to DoD modernization demand and the structural shift toward autonomous ISR.",
+    whatChanged:
+      "Position size remained small relative to overall portfolio exposure, and the ongoing monitoring requirement for an early-stage holding became less attractive than reallocating capital toward higher-conviction names.",
+    whyExited: "Reallocated capital toward higher-conviction Roth positions with clearer near-term catalysts.",
+    lesson:
+      "Small speculative positions require ongoing conviction reviews. Continued sleeve presence has to be justified, not assumed.",
+    estimatedEntryPrice: 36.40,
+  },
+  {
+    ticker: "DLO",
+    company: "dLocal",
+    sleeve: "roth-ira",
+    subcategory: "Fintech / Payments",
+    country: "Latin America",
+    marketCap: "Mid Cap",
+    assetType: "Equity",
+    ownedFrom: "2025-07-15",
+    ownedTo: "2026-06-01",
+    exitType: "Reallocation",
+    summaryReason:
+      "Cross-border payments position exited at a modest gain. Capital reallocated toward higher-conviction holdings.",
+    originalThesis:
+      "Cross-border payments exposure in emerging markets with a high-growth processing volume profile.",
+    whatChanged:
+      "The thesis matured into a slower-growth profile relative to other Latin America fintech expressions, and capital was better deployed elsewhere in the Roth.",
+    whyExited: "Reallocated to higher-conviction holdings.",
+    lesson:
+      "A modest gain on a slower-growth thesis is still a fair recycle point when better opportunities exist.",
+    estimatedEntryPrice: 11.67,
+  },
+  {
+    ticker: "NU",
+    company: "Nu Holdings",
+    sleeve: "roth-ira",
+    subcategory: "Fintech",
+    country: "Latin America",
+    marketCap: "Large Cap",
+    assetType: "Equity",
+    ownedFrom: "2025-08-18",
+    ownedTo: "2026-06-01",
+    exitType: "Reallocation",
+    summaryReason:
+      "Digital banking position exited at a small loss. Capital reallocated toward higher-conviction Latin America and growth holdings.",
+    originalThesis:
+      "Digital banking and consumer fintech exposure in Latin America with a long runway for unit growth.",
+    whatChanged:
+      "The pace of margin expansion and the share-price re-rate combined to make the risk/reward less attractive than other Latin America platform names.",
+    whyExited: "Reallocated to higher-conviction holdings.",
+    lesson:
+      "Concentration matters more than diversification within a single regional theme. Capital is better used in one expression than spread thin across overlapping ones.",
+    estimatedEntryPrice: 13.29,
+  },
+  {
     ticker: "IREN",
     company: "IREN",
     sleeve: "roth-ira",

@@ -27,14 +27,14 @@ if (!KEY) {
 }
 
 const SHARES = {
-  VOO: 16.83,  AMD: 8.46,   UNH: 3.82,  NBIS: 7.47,  DLO: 77.09,
-  GOOGL: 4.33, FBTC: 34.09, MELI: 1.00, NU: 37.62,   META: 1.99,
-  RKLB: 12.75, SMH: 3.25,   ASTS: 8.00, AVEX: 13.74,
+  VOO: 16.828, SMH: 3.591,  AMD: 4,      FBTC: 34.437, NBIS: 7.467,
+  GOOGL: 5.326, MELI: 1,    CRWD: 2.06,  RKLB: 12.746, META: 2.5,
+  NOW: 11.386, UNH: 3.818,  PENG: 13.283, ASTS: 8,
 };
 const FALLBACK = {
-  VOO: 31.60,  AMD: 9.55,   UNH: 4.71,  NBIS: 4.16,  DLO: 3.61,
-  GOOGL: 5.06, FBTC: 7.69,  MELI: 6.54, NU: 1.98,    META: 4.67,
-  RKLB: 3.90,  SMH: 2.90,   ASTS: 1.67, AVEX: 1.33,
+  VOO: 35.42, SMH: 6.84,  AMD: 6.27,  FBTC: 6.03, NBIS: 5.84,
+  GOOGL: 5.81, MELI: 5.04, CRWD: 4.98, RKLB: 4.74, META: 4.53,
+  NOW: 4.46,  UNH: 4.34,  PENG: 2.86, ASTS: 2.84,
 };
 
 async function fetchPrice(ticker) {

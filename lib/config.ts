@@ -1,7 +1,7 @@
 // ─── Site-wide config ────────────────────────────────────────────────────────
 // Update this date when you refresh holdings, weights, or returnPct values.
 
-export const PORTFOLIO_UPDATED_AT = "2026-05-06";
+export const PORTFOLIO_UPDATED_AT = "2026-06-02";
 
 export function fmtPortfolioDate(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);

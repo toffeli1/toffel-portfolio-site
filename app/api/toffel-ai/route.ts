@@ -41,8 +41,8 @@ const MAX_TOOL_HOPS = 3;
 // response can never delay the AI reply by more than 3 seconds; on timeout we
 // proceed and the static returnPct fallback in source data is used instead.
 const ROTH_TICKERS = [
-  "VOO", "AMD", "UNH", "NBIS", "DLO", "GOOGL",
-  "FBTC", "MELI", "NU", "META", "RKLB", "SMH", "ASTS", "AVEX",
+  "VOO", "SMH", "AMD", "FBTC", "NBIS", "GOOGL", "MELI",
+  "CRWD", "RKLB", "META", "NOW", "UNH", "PENG", "ASTS",
 ];
 const BROKERAGE_TICKERS = ["QQQM", "SMH", "VOO", "FBTC", "MU"];
 const PREWARM_TICKERS = [...new Set([...ROTH_TICKERS, ...BROKERAGE_TICKERS])];

@@ -190,26 +190,7 @@ export const positionLots: Record<string, PurchaseLot[]> = {
     },
   ],
 
-  DLO: [
-    {
-      date: "2025-07-15",
-      shares: 22.60847,
-      pricePerShare: 11.06,
-      amountUsd: 250.00,
-    },
-    {
-      date: "2025-07-15",
-      shares: 22.5858,
-      pricePerShare: 11.07,
-      amountUsd: 250.00,
-    },
-    {
-      date: "2026-02-18",
-      shares: 31.897926,
-      pricePerShare: 12.54,
-      amountUsd: 400.00,
-    },
-  ],
+  // DLO removed — position fully exited Jun 1, 2026; archived to previousHoldings.
 
   // ── GOOGL ─────────────────────────────────────────────────────────────────
   // 6 original buys, 1 sell (1 sh @ $330.12 on Jan 23, 2026)
@@ -361,15 +342,7 @@ export const positionLots: Record<string, PurchaseLot[]> = {
   ],
 
   // ── NU ────────────────────────────────────────────────────────────────────
-  // Single lot, no sells
-  NU: [
-    {
-      date: "2025-08-18",
-      shares: 37.618796,
-      pricePerShare: 13.29,
-      amountUsd: 500.00,
-    },
-  ],
+  // NU removed — position fully exited Jun 1, 2026; archived to previousHoldings.
 
   // ── META ──────────────────────────────────────────────────────────────────
   // 2 buys, 0 sells → all lots survive
@@ -445,24 +418,24 @@ export const positionLots: Record<string, PurchaseLot[]> = {
 // ── Weighted average cost per share for each fully-tracked position ───────────
 // Computed from surviving lots only (post-FIFO).
 export const positionAverageCost: Record<string, number> = {
-  VOO:   624.40,  // broker-provided weighted average
-  AMD:   216.01,  // broker-provided weighted average
+  VOO:   624.40,
+  AMD:   225.20,
   UNH:   292.48,
   NBIS:   51.77,
-  DLO:    11.67,
-  GOOGL: 189.06,
-  FBTC:   77.42,
+  GOOGL: 221.85,
+  FBTC:   77.34,
   MELI: 1962.06,
-  NU:     13.29,
-  // IREN removed — position fully exited Apr 30, 2026; lots preserved in previousHoldings
-  AVEX:   36.40,  // Roth IRA avg cost
-  META:  654.66,
-  // SCHD removed — position fully exited Apr 30, 2026 @ $31.95; lots preserved in previousHoldings
+  // DLO, NU, AVEX removed — positions fully exited Jun 1, 2026; archived to previousHoldings.
+  // IREN, SCHD, PLTR, SATL removed earlier; archived to previousHoldings.
+  META:  635.48,
   ASTS:   98.16,
   RKLB:   80.29,
-  MU:    330.00,  // Brokerage avg cost — drives chart cost-basis line + return %
+  MU:    330.00,     // Brokerage avg cost — drives chart cost-basis line + return %
   // SMH (Brokerage) intentionally excluded: Brokerage SMH cost basis differs from
   // the Roth lot. Roth-specific cost basis is tracked under SMH_ROTH below.
-  // Lookups by plain "SMH" return undefined → callers fall back to static returnPct.
-  SMH_ROTH: 446.58,  // Roth IRA SMH cost basis — used by computeReturnPct via avgCostOverride
+  SMH_ROTH: 464.76,  // Roth IRA SMH cost basis
+  // New Roth positions, May 2026:
+  NOW:   102.89,
+  PENG:   49.90,
+  CRWD:  671.55,
 };
