@@ -35,7 +35,9 @@
       "Bash(mkdir -p /Users/isaactoffel/investment-portfolio-site/public/logos && cp \"/Users/isaactoffel/Downloads/portfolio_logos_png \\(1\\) \\(1\\)/\"*.png /Users/isaactoffel/investment-portfolio-site/public/logos/ && ls -la /Users/isaactoffel/investment-portfolio-site/public/logos/)",
       "Bash(git commit -m 'Add 10 logo PNGs for 2027 + 2028 Roth Fund holding circles *)",
       "Bash(git commit -m 'TickerLogo: per-ticker scale map for bigger circle presence *)",
-      "Bash(git commit -m 'Roth IRA: drop Relative Performance + Retirement Calculator sections *)"
+      "Bash(git commit -m 'Roth IRA: drop Relative Performance + Retirement Calculator sections *)",
+      "Bash(find ~/Downloads ~/Desktop -maxdepth 3 -mmin -180 -iname \"*.png\" 2>/dev/null | head -25)",
+      "Read(//Users/isaactoffel/Downloads/**)"
     ],
     "additionalDirectories": [
       "/Users/isaactoffel/Downloads/portfolio_logos_png (1) (1)"
