@@ -1,13 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { holdings } from "@/data/holdings";
-import { rothIraHoldings } from "@/data/sleeveHoldings";
-import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
-
-const HOLDING_COUNTS: Record<string, number> = {
-  "retail-with-friends": holdings.length,
-  "roth-ira": rothIraHoldings.length,
-};
 
 export default function OverviewPage() {
   return (
@@ -165,19 +157,13 @@ export default function OverviewPage() {
                 slug="retail-with-friends"
                 subtitle="Taxable Account"
                 title="Individual Brokerage"
-                description="ETF-heavy taxable brokerage account focused on broad market, semiconductor, Bitcoin, and select equity exposure."
                 color="#1a3a5c"
-                themes={["ETFs", "Semiconductors", "Bitcoin"]}
-                holdingCount={holdings.length}
               />
               <SleeveCard
                 slug="roth-ira"
                 subtitle="Roth IRA"
                 title="Roth Retirement Account"
-                description="Long-duration account focused on core market exposure, compounders, and selective thematic growth."
                 color="#1a4a2e"
-                themes={["Core Market", "Compounders", "Thematic Growth"]}
-                holdingCount={rothIraHoldings.filter((h) => h.portfolioWeightPct > 0).length}
               />
             </div>
           </div>
@@ -335,79 +321,42 @@ export default function OverviewPage() {
 
 // ── Sleeve card ───────────────────────────────────────────────────────────────
 
-function formatPositionCount(count: number): string {
-  return `${count} ${count === 1 ? "position" : "positions"}`;
-}
-
 function SleeveCard({
   slug,
   title,
   subtitle,
-  description,
   color,
-  themes,
-  holdingCount,
 }: {
   slug: string;
   title: string;
   subtitle: string;
-  description: string;
   color: string;
-  themes: string[];
-  holdingCount: number;
 }) {
   return (
     <Link href={`/portfolio/${slug}`} className="group block h-full">
       <div
-        className="flex h-full flex-col rounded-2xl p-9 transition-colors bg-white hover:bg-[#fdfaf6]"
+        className="flex h-full flex-col justify-between rounded-2xl bg-white p-9 transition-colors hover:bg-[#fdfaf6]"
         style={{
           borderLeft: `3px solid ${color}`,
           boxShadow: "0 1px 4px rgba(15,30,53,0.06)",
         }}
       >
-        <p
-          className="mb-2 font-mono text-[10px] uppercase tracking-[0.22em]"
-          style={{ color }}
-        >
-          {subtitle}
-        </p>
-        <h2 className="text-xl font-bold leading-tight tracking-tight text-[#0f1e35]">
-          {title}
-        </h2>
-        <p className="mt-3 text-[12.5px] leading-[1.65] text-[#5a6e82]">
-          {description}
-        </p>
-
-        <div
-          className="my-6 h-px"
-          style={{ background: "rgba(15,30,53,0.07)" }}
-        />
-
-        <div className="mb-5 flex flex-wrap gap-1.5">
-          {themes.map((t) => (
-            <span
-              key={t}
-              className="rounded px-2.5 py-1 font-mono text-[9px] text-[#7a8799]"
-              style={{ border: "1px solid rgba(15,30,53,0.09)" }}
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-auto flex items-center justify-between">
-          <span className="font-mono text-[11px] text-[#7a8799]">
-            {formatPositionCount(holdingCount)}
-          </span>
-          <span
-            className="font-mono text-[11px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]"
+        <div>
+          <p
+            className="mb-2 font-mono text-[10px] uppercase tracking-[0.22em]"
+            style={{ color }}
           >
+            {subtitle}
+          </p>
+          <h2 className="text-xl font-bold leading-tight tracking-tight text-[#0f1e35]">
+            {title}
+          </h2>
+        </div>
+        <div className="mt-8 flex justify-end">
+          <span className="font-mono text-[11px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]">
             View →
           </span>
         </div>
-        <p className="mt-2 font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
-          Weights use manually recorded share counts and delayed market prices when available, with fallback weights when pricing is unavailable. As of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}.
-        </p>
       </div>
     </Link>
   );
