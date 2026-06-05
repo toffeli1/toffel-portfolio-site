@@ -38,7 +38,7 @@ function buildSleeveOwnerships(ticker: string): SleeveOwnership[] {
   if (retail) {
     result.push({
       slug: "retail-with-friends",
-      title: "Speculative Individual Stocks",
+      title: retail.sleeve,
       color: "#1a3a5c",
       weightPct: retail.portfolioPct,
     });

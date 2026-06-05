@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { portfolios, getPortfolio } from "@/data/portfolios";
-import { holdings } from "@/data/holdings";
+import { holdings, type Holding } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
-import HoldingsTable from "@/components/HoldingsTable";
+import TickerLogo from "@/components/TickerLogo";
 import SleeveHoldingsTable from "@/components/SleeveHoldingsTable";
 import BreakdownPanel from "@/components/BreakdownPanel";
 import { BenchmarkComparisonWrapper } from "@/components/BenchmarkComparisonWrapper";
@@ -71,8 +71,7 @@ function SleeveFooter() {
 
 function RetailView() {
   const color = "#1a3a5c";
-  const etfPct = holdings.filter(h => h.category === "ETFs").reduce((s, h) => s + h.portfolioPct, 0);
-  const equityPct = holdings.filter(h => h.category === "Equities").reduce((s, h) => s + h.portfolioPct, 0);
+  const fund2027 = holdings.filter((h) => h.sleeve === "2027 Roth Fund");
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
@@ -90,7 +89,7 @@ function RetailView() {
               className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
               style={{ color }}
             >
-              Taxable Account&ensp;·&ensp;Active Research
+              Taxable Account
             </p>
             <h1
               className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
@@ -99,48 +98,143 @@ function RetailView() {
               Individual Brokerage
             </h1>
             <p className="mt-2 max-w-xl font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
-              Weights use manually recorded share counts and delayed market prices when available, with fallback weights when pricing is unavailable. As of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}.
+              Weights and returns are sleeve-scoped. As of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}.
             </p>
             <p className="mt-4 max-w-xl text-[14px] leading-[1.7] text-[#3d4f66]">
-              Taxable brokerage account focused on ETF-based market exposure,
-              semiconductor cyclicality, Bitcoin exposure, and select high-conviction
-              individual equities.
+              Taxable brokerage account organized into funding sleeves used to
+              build future Roth IRA contributions.
             </p>
-            <p className="mt-2 font-mono text-[11px] text-[#7a8799]">
-              {holdings.length} active holdings&ensp;·&ensp;ETF-based market exposure&ensp;·&ensp;Select individual equities
-            </p>
+          </div>
+        </section>
 
-            {/* Summary pills */}
-            <div className="mt-6 flex flex-wrap gap-2">
-              {[
-                { label: `ETFs ${etfPct.toFixed(1)}%` },
-                { label: `Equity ${equityPct.toFixed(1)}%` },
-                { label: `${holdings.length} holdings` },
-              ].map((p) => (
-                <span
-                  key={p.label}
-                  className="rounded px-3 py-1 font-mono text-[10px] text-[#5a6e82]"
-                  style={{ border: "1px solid rgba(15,30,53,0.09)" }}
-                >
-                  {p.label}
-                </span>
-              ))}
+        {/* 2027 Roth Fund box */}
+        {fund2027.length > 0 && (
+          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+            <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
+              <FundBox
+                title="2027 Roth Fund"
+                subtitle="Taxable brokerage sleeve used for future Roth funding"
+                holdings={fund2027}
+              />
             </div>
-          </div>
-        </section>
-
-        {/* Holdings table */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-            <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-              Holdings
-            </p>
-            <HoldingsTable holdings={holdings} showCategory />
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
       <SleeveFooter />
+    </div>
+  );
+}
+
+// ── 2027 Roth Fund box ────────────────────────────────────────────────────────
+// Public-safe holdings card. Renders only ticker, name, shares, weight, return,
+// and purchase date. Never renders averageCost, dollar values, or market value.
+
+function fmtPurchaseDate(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function fmtShares(n: number): string {
+  return Number.isInteger(n) ? n.toString() : n.toFixed(6).replace(/\.?0+$/, "");
+}
+
+function FundBox({
+  title,
+  subtitle,
+  holdings,
+}: {
+  title: string;
+  subtitle: string;
+  holdings: Holding[];
+}) {
+  return (
+    <div
+      className="overflow-hidden rounded-2xl"
+      style={{
+        background: "#ffffff",
+        border: "1px solid rgba(15,30,53,0.09)",
+        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+      }}
+    >
+      {/* Box header */}
+      <div
+        className="px-7 py-6"
+        style={{ borderBottom: "1px solid rgba(15,30,53,0.07)" }}
+      >
+        <p className="mb-1 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+          Funding sleeve
+        </p>
+        <h2 className="text-[22px] font-bold leading-none tracking-tight text-[#0f1e35]">
+          {title}
+        </h2>
+        <p className="mt-2 text-[12.5px] text-[#5a6e82]">{subtitle}</p>
+      </div>
+
+      {/* Holdings table */}
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[720px] border-collapse">
+          <thead>
+            <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
+              <th className="px-5 py-3 text-left font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Ticker</th>
+              <th className="px-5 py-3 text-left font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Name</th>
+              <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Shares</th>
+              <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Weight</th>
+              <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Total Return</th>
+              <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Purchased</th>
+            </tr>
+          </thead>
+          <tbody>
+            {holdings.map((h, i) => {
+              const isLast = i === holdings.length - 1;
+              const isPos = h.returnPct >= 0;
+              return (
+                <tr
+                  key={h.sourceKey}
+                  style={
+                    isLast
+                      ? undefined
+                      : { borderBottom: "1px solid rgba(15,30,53,0.05)" }
+                  }
+                >
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-2.5">
+                      <TickerLogo ticker={h.ticker} name={h.company} size="sm" />
+                      <Link
+                        href={`/positions/${h.ticker}`}
+                        className="font-mono text-[12px] font-bold hover:underline"
+                        style={{ color: "#1a3a5c" }}
+                      >
+                        {h.ticker}
+                      </Link>
+                    </div>
+                  </td>
+                  <td className="px-5 py-4 text-[13px] text-[#2d3d52]">{h.company}</td>
+                  <td className="px-5 py-4 text-right font-mono text-[12px] tabular-nums text-[#3d4f66]">
+                    {fmtShares(h.shares)}
+                  </td>
+                  <td className="px-5 py-4 text-right font-mono text-[12px] tabular-nums text-[#3d4f66]">
+                    {h.portfolioPct.toFixed(2)}%
+                  </td>
+                  <td
+                    className="px-5 py-4 text-right font-mono text-[12px] font-semibold tabular-nums"
+                    style={{ color: isPos ? "#1a4a2e" : "#8b2530" }}
+                  >
+                    {isPos ? "+" : ""}{h.returnPct.toFixed(2)}%
+                  </td>
+                  <td className="px-5 py-4 text-right font-mono text-[11px] text-[#5a6e82]">
+                    {fmtPurchaseDate(h.purchaseDate)}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

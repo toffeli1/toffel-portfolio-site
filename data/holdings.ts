@@ -1,4 +1,7 @@
-// ─── Edit this file to update holdings, weights, or thesis notes ────────────
+// ─── 2027 Roth Fund (Individual Brokerage funding sleeve) ─────────────────────
+// All entries are held in the taxable brokerage account, earmarked for a
+// future Roth IRA funding cycle. Privacy: dollar values may be stored here
+// for internal calculation but never rendered publicly.
 
 export type Category = 'ETFs' | 'Equities';
 
@@ -7,27 +10,36 @@ export type Subcategory =
   | 'Broad Market ETF'
   | 'Semiconductors ETF'
   | 'Bitcoin ETF'
+  | 'Quantum / Emerging Tech ETF'
   | 'Semiconductor Equity';
 
 export interface Purchase {
-  costBasis: number;    // per-share average cost
+  costBasis: number;
   shares: number;
   totalInvested: number;
-  date?: number;        // unix timestamp (optional)
+  date?: number;
 }
 
 export interface Holding {
+  /** Stable sleeve-scoped key for cross-sleeve disambiguation (e.g. VOO_2027_ROTH_FUND). */
+  sourceKey: string;
   ticker: string;
   company: string;
+  /** Funding sleeve label rendered in the box header / position-page sleeve row. */
+  sleeve: string;
+  /** Public-safe weight % within this sleeve. */
   portfolioPct: number;
+  shares: number;
+  /** Internal only. Used for derivation; never rendered publicly. */
+  averageCost: number;
+  returnPct: number;
+  /** YYYY-MM-DD — shown publicly in the holdings box. */
+  purchaseDate: string;
   category: Category;
   subcategory: Subcategory;
   thesis: string;
-  /** Manually-maintained return-since-entry percentage (positive or negative). */
-  returnPct?: number;
-  /** Explicit entry / average cost per share for this holding (numeric). */
+  // ── Legacy optional fields kept for compatibility with unrelated consumers ──
   entryPrice?: number;
-  /** Set to false to suppress live market data for this holding. Defaults to true. */
   livePricing?: boolean;
   purchase?: Purchase;
   confirmedPurchaseDate?: string;
@@ -36,55 +48,76 @@ export interface Holding {
   purchaseDateSource?: "confirmed" | "estimated" | "unknown";
 }
 
-// Weights are placeholder equal-weight (20% each) pending exact account weights.
 export const holdings: Holding[] = [
-  // ─── ETFs (80%) ──────────────────────────────────────────────────────────────
   {
+    sourceKey: 'QQQM_2027_ROTH_FUND',
     ticker: 'QQQM',
-    company: 'Invesco Nasdaq-100 ETF',
-    portfolioPct: 22.68,
-    returnPct: 30.84,
+    company: 'Invesco NASDAQ 100 ETF',
+    sleeve: '2027 Roth Fund',
+    portfolioPct: 12.28,
+    shares: 3,
+    averageCost: 229.17,
+    returnPct: 31.51,
+    purchaseDate: '2025-08-01',
     category: 'ETFs',
     subcategory: 'Large-Cap Growth ETF',
     thesis: 'Nasdaq / large-cap growth exposure.',
   },
   {
+    sourceKey: 'SMH_2027_ROTH_FUND',
     ticker: 'SMH',
     company: 'VanEck Semiconductor ETF',
-    portfolioPct: 19.70,
-    returnPct: 90.76,
+    sleeve: '2027 Roth Fund',
+    portfolioPct: 29.52,
+    shares: 3.56071,
+    averageCost: 286.74,
+    returnPct: 113.08,
+    purchaseDate: '2025-08-01',
     category: 'ETFs',
     subcategory: 'Semiconductors ETF',
     thesis: 'Broad semiconductor cycle / AI infrastructure exposure.',
   },
   {
+    sourceKey: 'VOO_2027_ROTH_FUND',
     ticker: 'VOO',
     company: 'Vanguard S&P 500 ETF',
-    portfolioPct: 35.96,
-    returnPct: 17.57,
+    sleeve: '2027 Roth Fund',
+    portfolioPct: 47.01,
+    shares: 5,
+    averageCost: 573.84,
+    returnPct: 20.75,
+    purchaseDate: '2025-08-01',
     category: 'ETFs',
     subcategory: 'Broad Market ETF',
     thesis: 'Core U.S. equity market exposure.',
   },
   {
+    sourceKey: 'FBTC_2027_ROTH_FUND',
     ticker: 'FBTC',
     company: 'Fidelity Wise Origin Bitcoin Fund',
-    portfolioPct: 15.78,
-    returnPct: -20.50,
+    sleeve: '2027 Roth Fund',
+    portfolioPct: 6.83,
+    shares: 9.27927,
+    averageCost: 89.75,
+    returnPct: -39.58,
+    purchaseDate: '2025-08-01',
     category: 'ETFs',
     subcategory: 'Bitcoin ETF',
     thesis: 'Bitcoin exposure through ETF structure.',
   },
-  // ─── Equities (20%) ──────────────────────────────────────────────────────────
   {
-    ticker: 'MU',
-    company: 'Micron Technology',
-    portfolioPct: 5.89,
-    returnPct: 101.65,
-    category: 'Equities',
-    subcategory: 'Semiconductor Equity',
-    entryPrice: 330,
-    thesis: 'Memory cycle recovery and AI-related DRAM/HBM demand.',
+    sourceKey: 'QTUM_2027_ROTH_FUND',
+    ticker: 'QTUM',
+    company: 'Defiance Quantum ETF',
+    sleeve: '2027 Roth Fund',
+    portfolioPct: 4.35,
+    shares: 1.967597,
+    averageCost: 141.80,
+    returnPct: 15.01,
+    purchaseDate: '2025-05-07',
+    category: 'ETFs',
+    subcategory: 'Quantum / Emerging Tech ETF',
+    thesis: 'Quantum computing and emerging compute exposure.',
   },
 ];
 
@@ -97,13 +130,13 @@ export const categoryAllocations: {
 }[] = [
   {
     category: 'ETFs',
-    pct: 80,
+    pct: 100,
     color: '#1a3a5c',
     description: 'Broad-market, thematic, and digital asset ETF exposure.',
   },
   {
     category: 'Equities',
-    pct: 20,
+    pct: 0,
     color: '#1a4a2e',
     description: 'High-conviction individual equity positions.',
   },
