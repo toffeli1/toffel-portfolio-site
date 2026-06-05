@@ -8,10 +8,12 @@ export const metadata = {
 };
 
 export default function DecisionLogPage() {
+  // Action vocabulary mirrors DecisionLogFeed filters: Add → Buys/Adds,
+  // Trim/Rebalance → Risk Management, Exit → Exits.
   const total = decisionLog.length;
-  const buys  = decisionLog.filter((e) => e.action === "Buy" || e.action === "Market buy").length;
-  const risk  = decisionLog.filter((e) => e.action === "Trim").length;
-  const exits = decisionLog.filter((e) => e.action === "Full exit").length;
+  const buys  = decisionLog.filter((e) => e.action === "Add").length;
+  const risk  = decisionLog.filter((e) => e.action === "Trim" || e.action === "Rebalance").length;
+  const exits = decisionLog.filter((e) => e.action === "Exit").length;
 
   const stats = [
     { label: "Total Decisions", value: total },

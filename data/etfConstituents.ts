@@ -35,7 +35,7 @@ export const etfProfiles: Record<string, EtfProfile> = {
     fullName: "Invesco Nasdaq-100 ETF",
     description:
       "Tracks the Nasdaq-100 Index, comprising 100 of the largest non-financial companies listed on the Nasdaq Stock Market.",
-    asOf: "2026-05-06",
+    asOf: "2026-06-02",
     constituentsNote:
       "Representative top holdings shown. Actual weights shift with market prices and index changes.",
     constituents: [
@@ -57,7 +57,7 @@ export const etfProfiles: Record<string, EtfProfile> = {
     fullName: "VanEck Semiconductor ETF",
     description:
       "Tracks the MVIS US Listed Semiconductor 25 Index, providing targeted exposure to global semiconductor equipment, materials, and chip leaders.",
-    asOf: "2026-05-06",
+    asOf: "2026-06-02",
     constituentsNote:
       "Representative top holdings shown. Actual weights shift with market prices and index changes.",
     constituents: [
@@ -79,7 +79,7 @@ export const etfProfiles: Record<string, EtfProfile> = {
     fullName: "Vanguard S&P 500 ETF",
     description:
       "Tracks the S&P 500 Index, providing broad, low-cost exposure to 500 of the largest U.S. publicly traded companies across all sectors including technology, financials, healthcare, consumer, industrials, communication services, energy, utilities, materials, and real estate.",
-    asOf: "2026-05-06",
+    asOf: "2026-06-02",
     constituentsNote: "",
     constituents: [],
     sectorBreakdown: [

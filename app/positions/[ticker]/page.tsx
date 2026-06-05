@@ -88,7 +88,9 @@ export default async function PositionPage({
 }: {
   params: Promise<{ ticker: string }>;
 }) {
-  const { ticker } = await params;
+  const { ticker: rawTicker } = await params;
+  // Defensive normalization — every other data store keys on uppercase tickers.
+  const ticker = rawTicker.toUpperCase();
 
   // Gather data from all sources.
   const retailHolding = holdings.find((h) => h.ticker === ticker);

@@ -41,11 +41,11 @@ export interface PurchaseLot {
 // NOW: 11 buys (9 May statement + 2 same-date Jun 2 adds), 0 sells → all lots survive
 //   Reconciles to 11.385656 sh @ $102.89 avg ($1,171.50 total cost).
 //
-// PENG: 5 buys (3 May statement + 2 same-date Jun 2 fills incl. one assumed
-//   0.6-sh bridge at $69.64), 0 sells → all lots survive.
-//   Reconciles to 13.6 sh @ $50.33 avg ($684.55 total cost).
-//   Broker aggregate (13.849 sh @ $50.75) reflects an additional ~0.249 sh
-//   not captured in the activity log; treated as acceptable per user.
+// PENG: 6 buys (3 May statement + 2 same-date Jun 2 fills + 1 Jun 4 bridge),
+//   0 sells → all lots survive. The 0.6-sh Jun 2 and 0.249-sh Jun 4 lots are
+//   estimated bridges (per user instruction) at provided prices that
+//   reconcile the activity log to the broker aggregate.
+//   Reconciles to 13.849 sh @ $50.75 avg ($702.88 total cost).
 
 export const positionLots: Record<string, PurchaseLot[]> = {
   AMD: [
@@ -512,12 +512,11 @@ export const positionLots: Record<string, PurchaseLot[]> = {
   ],
 
   // ── PENG ──────────────────────────────────────────────────────────────────
-  // 5 buys, 0 sells → all lots survive. Two same-date Jun 2 fills will cluster.
-  // The 0.6-sh Jun 2 fill is an assumed bridge (per user instruction) at the
-  // same $69.64 price as the same-date 2-sh fill, used to approximate a small
-  // residual that does not appear in the activity log.
-  // Weighted avg cost = $50.33 across 13.6 sh; broker aggregate is 13.849 sh
-  // @ $50.75 — small residual accepted.
+  // 6 buys, 0 sells → all lots survive. Two same-date Jun 2 fills will cluster.
+  // The 0.6-sh Jun 2 lot and the 0.249-sh Jun 4 lot are estimated bridges
+  // (per user instruction) used to reconcile activity-log totals to the
+  // broker aggregate. The Jun 4 lot price ($73.69) was provided by the user.
+  // Reconciles to 13.849 sh @ $50.75 avg.
   PENG: [
     {
       date: "2026-05-18",
@@ -548,6 +547,12 @@ export const positionLots: Record<string, PurchaseLot[]> = {
       shares: 0.6,
       pricePerShare: 69.64,
       amountUsd: 41.78,
+    },
+    {
+      date: "2026-06-04",
+      shares: 0.249,
+      pricePerShare: 73.69,
+      amountUsd: 18.35,
     },
   ],
 
@@ -596,6 +601,6 @@ export const positionAverageCost: Record<string, number> = {
   SMH_ROTH: 464.76,  // Roth IRA SMH cost basis
   // New Roth positions (May 2026 initiate + Jun 2 add):
   NOW:   102.89,
-  PENG:   50.33,    // Lot-derived ($684.55 / 13.6 sh); broker aggregate ~$50.75
+  PENG:   50.75,    // Lot-derived ($702.88 / 13.849 sh) — matches broker aggregate
   CRWD:  671.55,
 };

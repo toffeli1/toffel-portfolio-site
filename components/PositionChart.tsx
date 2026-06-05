@@ -157,6 +157,12 @@ interface ChartPoint {
 function findNearestPoint(date: string, chartData: ChartPoint[]): ChartPoint | null {
   if (chartData.length === 0) return null;
   const targetSec = parseLocalDate(date).getTime() / 1000;
+  // Prefer the first chart point on or after the target date so a purchase
+  // dot lands on the closest available trading session forward of the buy.
+  // Fall back to the overall nearest point if no on-or-after point exists
+  // (e.g. when the lot is past the most recent chart sample).
+  const onOrAfter = chartData.find((p) => p.t >= targetSec);
+  if (onOrAfter) return onOrAfter;
   return chartData.reduce((closest, point) =>
     Math.abs(point.t - targetSec) < Math.abs(closest.t - targetSec) ? point : closest
   );
@@ -295,7 +301,7 @@ export function PositionChart({
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#7a8799]">
             Price Chart
           </p>
-          {purchaseLots && purchaseLots.length > 0 && (
+          {visibleClusters.length > 0 && (
             <p className="font-mono text-[9px] text-[#5a6e82]">
               ◎&ensp;purchase events
             </p>
