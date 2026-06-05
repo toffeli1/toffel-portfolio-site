@@ -254,7 +254,7 @@ function RothIraView() {
               <p className="mb-10 font-mono text-[10px] text-[#5a6e82]">
                 Weights aggregated across the Roth IRA active holdings.
               </p>
-              <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
                 <MiniDonut title="Theme" data={themeData} />
                 <MiniDonut title="Market Cap" data={capData} />
                 <MiniDonut title="Asset Type" data={typeData} />

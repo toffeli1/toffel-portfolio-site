@@ -24,25 +24,25 @@ export default function MiniDonut({
 
   return (
     <div
-      className="flex flex-col rounded-2xl p-6"
+      className="flex flex-col rounded-2xl p-8"
       style={{
         background: "#ffffff",
         border: "1px solid rgba(15,30,53,0.09)",
         boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
       }}
     >
-      <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+      <p className="mb-5 font-mono text-[11px] uppercase tracking-[0.28em] text-[#7a8799]">
         {title}
       </p>
-      <div className="h-[180px]">
+      <div className="h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
-          <PieChart margin={{ top: 8, right: 8, bottom: 8, left: 8 }}>
+          <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
             <Pie
               data={slices}
               dataKey="value"
               nameKey="name"
               innerRadius="55%"
-              outerRadius="85%"
+              outerRadius="86%"
               paddingAngle={1.5}
               stroke="#ffffff"
               strokeWidth={2}
@@ -56,18 +56,18 @@ export default function MiniDonut({
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="mt-4 space-y-1.5">
+      <div className="mt-6 space-y-2">
         {slices.map((s) => (
           <div key={s.name} className="flex items-center justify-between gap-3">
-            <span className="flex min-w-0 items-center gap-2">
+            <span className="flex min-w-0 items-center gap-2.5">
               <span
-                className="inline-block h-2 w-2 shrink-0 rounded-full"
+                className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
                 style={{ background: s.color }}
                 aria-hidden
               />
-              <span className="truncate text-[11.5px] text-[#3d4f66]">{s.name}</span>
+              <span className="truncate text-[12.5px] text-[#3d4f66]">{s.name}</span>
             </span>
-            <span className="shrink-0 font-mono text-[11px] tabular-nums text-[#7a8799]">
+            <span className="shrink-0 font-mono text-[11.5px] tabular-nums text-[#7a8799]">
               {s.value.toFixed(2)}%
             </span>
           </div>

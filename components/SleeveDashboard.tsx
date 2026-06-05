@@ -5,7 +5,9 @@
 // No shares, no dollar values, no average cost.
 
 import Link from "next/link";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import TickerLogo from "./TickerLogo";
 
 export interface SleeveDashboardHolding {
@@ -15,8 +17,81 @@ export interface SleeveDashboardHolding {
   portfolioWeightPct: number;
 }
 
-// Muted but distinct palette tuned to the cream page background.
-const SLICE_COLORS = ["#1a2845", "#7a8da3", "#a5b7c9", "#abc1b1", "#cdd182"];
+// Muted but distinct palette tuned to the cream page background. Cycles for
+// sleeves with more than 5 holdings (e.g. Roth IRA has 14).
+const SLICE_COLORS = [
+  "#1a2845",
+  "#7a8da3",
+  "#a5b7c9",
+  "#abc1b1",
+  "#cdd182",
+  "#c5a572",
+  "#3d5a80",
+  "#9aa9ba",
+  "#b8c6b5",
+  "#d8c98a",
+  "#2f4663",
+  "#869eb3",
+  "#bcc9d4",
+  "#c2d4a8",
+];
+
+interface PiePoint {
+  ticker: string;
+  name: string;
+  href: string;
+  value: number;
+  color: string;
+}
+
+function CustomTooltip({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: Array<{ payload: PiePoint }>;
+}) {
+  if (!active || !payload || payload.length === 0) return null;
+  const d = payload[0].payload;
+  return (
+    <div
+      style={{
+        background: "#ffffff",
+        border: "1px solid rgba(15,30,53,0.12)",
+        borderRadius: 8,
+        padding: "10px 14px",
+        boxShadow: "0 4px 16px rgba(15,30,53,0.08)",
+        minWidth: 140,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: "var(--font-geist-mono)",
+          fontSize: 13,
+          fontWeight: 700,
+          color: "#0f1e35",
+          letterSpacing: "0.04em",
+        }}
+      >
+        {d.ticker}
+      </div>
+      <div style={{ marginTop: 2, fontSize: 12, color: "#3d4f66" }}>
+        {d.name}
+      </div>
+      <div
+        style={{
+          marginTop: 6,
+          fontFamily: "var(--font-geist-mono)",
+          fontSize: 12,
+          color: "#5a6e82",
+          letterSpacing: "0.04em",
+        }}
+      >
+        {d.value.toFixed(2)}% weight
+      </div>
+    </div>
+  );
+}
 
 export default function SleeveDashboard({
   label = "Sleeve View",
@@ -34,11 +109,16 @@ export default function SleeveDashboard({
   /** When true, the portfolio-weighting donut spans the full section width. */
   donutWide?: boolean;
 }) {
+  const router = useRouter();
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+
   // Hide outer slice labels when the donut has too many slices to label cleanly.
   const showSliceLabels = holdings.length <= 10;
   const total = holdings.reduce((s, h) => s + h.portfolioWeightPct, 0);
-  const pieData = holdings.map((h, i) => ({
-    name: h.ticker,
+  const pieData: PiePoint[] = holdings.map((h, i) => ({
+    ticker: h.ticker,
+    name: h.name,
+    href: h.href,
     value: h.portfolioWeightPct,
     color: SLICE_COLORS[i % SLICE_COLORS.length],
   }));
@@ -111,19 +191,37 @@ export default function SleeveDashboard({
           <p className="text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[#5a6e82]">
             Portfolio Weighting
           </p>
-          <div className={donutWide ? "mx-auto mt-6 h-[420px] w-full" : "mx-auto mt-6 h-[340px] w-full max-w-xl"}>
+          <div
+            className={
+              donutWide
+                ? "mx-auto mt-6 h-[520px] w-full"
+                : "mx-auto mt-6 h-[340px] w-full max-w-xl"
+            }
+          >
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart margin={{ top: 28, right: 28, bottom: 28, left: 28 }}>
+              <PieChart margin={{ top: 32, right: 32, bottom: 32, left: 32 }}>
+                <Tooltip
+                  content={<CustomTooltip />}
+                  wrapperStyle={{ outline: "none" }}
+                  cursor={false}
+                />
                 <Pie
                   data={pieData}
                   dataKey="value"
-                  nameKey="name"
-                  innerRadius="55%"
-                  outerRadius="78%"
+                  nameKey="ticker"
+                  innerRadius={donutWide ? "52%" : "55%"}
+                  outerRadius={donutWide ? "82%" : "78%"}
                   paddingAngle={1.5}
                   stroke="#faf7f2"
                   strokeWidth={2}
                   isAnimationActive={false}
+                  onMouseEnter={(_, idx) => setActiveIdx(idx)}
+                  onMouseLeave={() => setActiveIdx(null)}
+                  onClick={(_, idx) => {
+                    const href = pieData[idx]?.href;
+                    if (href) router.push(href);
+                  }}
+                  style={{ cursor: "pointer" }}
                   label={
                     showSliceLabels
                       ? ({ value }) => `${value.toFixed(2)}%`
@@ -135,29 +233,48 @@ export default function SleeveDashboard({
                       : false
                   }
                 >
-                  {pieData.map((d) => (
-                    <Cell key={d.name} fill={d.color} />
-                  ))}
+                  {pieData.map((d, i) => {
+                    const dimmed = activeIdx !== null && activeIdx !== i;
+                    return (
+                      <Cell
+                        key={d.ticker}
+                        fill={d.color}
+                        fillOpacity={dimmed ? 0.35 : 1}
+                        style={{ cursor: "pointer", outline: "none" }}
+                      />
+                    );
+                  })}
                 </Pie>
               </PieChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Legend */}
+          {/* Legend — hover dims non-matching slices; click routes to the holding page */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {pieData.map((d) => (
-              <span key={d.name} className="flex items-center gap-2">
-                <span
-                  className="inline-block h-2.5 w-2.5 rounded-full"
-                  style={{ background: d.color }}
-                  aria-hidden
-                />
-                <span className="font-mono text-[11px] tracking-[0.08em] text-[#3d4f66]">
-                  {d.name}{" "}
-                  <span className="text-[#7a8799]">{d.value.toFixed(2)}%</span>
-                </span>
-              </span>
-            ))}
+            {pieData.map((d, i) => {
+              const dimmed = activeIdx !== null && activeIdx !== i;
+              return (
+                <Link
+                  key={d.ticker}
+                  href={d.href}
+                  onMouseEnter={() => setActiveIdx(i)}
+                  onMouseLeave={() => setActiveIdx(null)}
+                  className="flex items-center gap-2 transition-opacity"
+                  style={{ opacity: dimmed ? 0.4 : 1 }}
+                  aria-label={`${d.name} (${d.ticker})`}
+                >
+                  <span
+                    className="inline-block h-2.5 w-2.5 rounded-full"
+                    style={{ background: d.color }}
+                    aria-hidden
+                  />
+                  <span className="font-mono text-[11px] tracking-[0.08em] text-[#3d4f66]">
+                    {d.ticker}{" "}
+                    <span className="text-[#7a8799]">{d.value.toFixed(2)}%</span>
+                  </span>
+                </Link>
+              );
+            })}
           </div>
           {/* Sanity check — if total !== ~100, surface a quiet note (debug only) */}
           {Math.abs(total - 100) > 0.5 && (

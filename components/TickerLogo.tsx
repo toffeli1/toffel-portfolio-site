@@ -61,18 +61,30 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
 // container box). Compact marks can run larger; wide wordmarks stay smaller
 // so they don't crowd the circle edges. Unmapped tickers use DEFAULT_SCALE.
 const TICKER_LOGO_SCALE: Record<string, string> = {
-  QQQM: "74%",
-  SMH:  "70%",
-  VOO:  "62%",
-  FBTC: "68%",
-  QTUM: "74%",
-  MU:   "74%",
-  OUST: "74%",
-  PENG: "72%",
-  NVTS: "72%",
-  FLY:  "72%",
+  // 2027 / 2028 sleeves
+  QQQM: "86%",
+  SMH:  "80%",
+  VOO:  "74%",
+  FBTC: "82%",
+  QTUM: "84%",
+  MU:   "86%",
+  OUST: "86%",
+  PENG: "86%",
+  NVTS: "86%",
+  FLY:  "82%",
+  // Roth IRA active holdings
+  AMD:  "86%",
+  NBIS: "88%",
+  GOOGL:"84%",
+  MELI: "86%",
+  CRWD: "92%",   // square red bg — let it fill
+  RKLB: "88%",   // dark bg mark
+  META: "84%",
+  NOW:  "92%",   // dark bg wordmark
+  UNH:  "74%",   // compact U mark — keep restrained
+  ASTS: "92%",   // dark bg wordmark
 };
-const DEFAULT_SCALE = "72%";
+const DEFAULT_SCALE = "82%";
 
 export default function TickerLogo({
   ticker,
