@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { portfolios, getPortfolio } from "@/data/portfolios";
 import { holdings, type Holding } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
-import { getSleeveThesis } from "@/data/sleeveTheses";
+import { getSleeveThesis, type SleeveThesis } from "@/data/sleeveTheses";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
 import TickerLogo from "@/components/TickerLogo";
@@ -134,6 +134,27 @@ function RetailView() {
             </div>
           </section>
         )}
+
+        {/* 2028 Roth Fund Thesis Notes */}
+        {fund2028.length > 0 && (
+          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+            <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+                2028 Roth Fund · Thesis Notes
+              </p>
+              <p className="mb-8 font-mono text-[10px] text-[#5a6e82]">
+                Position-level commentary for each 2028 holding.
+              </p>
+              <div className="grid gap-5 md:grid-cols-2">
+                {fund2028.map((h) => {
+                  const t = getSleeveThesis(h.sourceKey);
+                  if (!t) return null;
+                  return <ThesisCard key={h.sourceKey} ticker={h.ticker} thesis={t} />;
+                })}
+              </div>
+            </div>
+          </section>
+        )}
       </main>
 
       <SleeveFooter />
@@ -256,6 +277,61 @@ function FundBox({
   );
 }
 
+// ── Thesis card (sleeve-scoped position commentary) ───────────────────────────
+
+function ThesisCard({ ticker, thesis }: { ticker: string; thesis: SleeveThesis }) {
+  return (
+    <div
+      className="flex flex-col rounded-2xl p-6"
+      style={{
+        background: "#ffffff",
+        border: "1px solid rgba(15,30,53,0.09)",
+        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+      }}
+    >
+      <div className="mb-3 flex items-center gap-2.5">
+        <span
+          className="font-mono text-[13px] font-bold leading-none"
+          style={{ color: "#1a3a5c" }}
+        >
+          {ticker}
+        </span>
+        <span className="text-[13px] font-medium leading-none text-[#0f1e35]">
+          {thesis.name}
+        </span>
+      </div>
+      <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
+        {thesis.roleInPortfolio}
+      </p>
+      <p className="mb-4 text-[12.5px] leading-[1.75] text-[#3d4f66]">{thesis.thesis}</p>
+      <p className="mb-4 text-[12.5px] leading-[1.75] text-[#3d4f66]">{thesis.whyIOwnIt}</p>
+
+      <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
+        Key risks
+      </p>
+      <ul className="mb-4 ml-4 list-disc space-y-1 text-[12px] leading-[1.65] text-[#3d4f66]">
+        {thesis.keyRisks.map((r, i) => (
+          <li key={i}>{r}</li>
+        ))}
+      </ul>
+
+      <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
+        What I am watching
+      </p>
+      <ul className="mb-4 ml-4 list-disc space-y-1 text-[12px] leading-[1.65] text-[#3d4f66]">
+        {thesis.whatIAmWatching.map((w, i) => (
+          <li key={i}>{w}</li>
+        ))}
+      </ul>
+
+      <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
+        Sizing view
+      </p>
+      <p className="text-[12.5px] leading-[1.75] text-[#3d4f66]">{thesis.sizingView}</p>
+    </div>
+  );
+}
+
 // ── Roth IRA view ─────────────────────────────────────────────────────────────
 
 function RothIraView() {
@@ -323,161 +399,6 @@ function RothIraView() {
                 Holdings
               </p>
               <SleeveHoldingsTable holdings={rothIraHoldings} sleeve="roth-ira" />
-            </div>
-          </section>
-
-          {/* Account Thesis + Key Risks */}
-          <section
-            className="border-b"
-            style={{ borderColor: "rgba(15,30,53,0.08)" }}
-          >
-            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Account Thesis
-              </p>
-              <p className="mb-10 font-mono text-[10px] text-[#5a6e82]">
-                How the Roth IRA is currently positioned and why.
-              </p>
-
-              <div className="max-w-3xl space-y-6 text-[14px] leading-[1.7] text-[#3d4f66]">
-                <p>
-                  The Roth IRA has been repositioned toward a cleaner mix of
-                  broad-market exposure, AI infrastructure, software,
-                  cybersecurity, and selective higher-risk growth. The goal is
-                  not to chase every AI-related name, but to own businesses
-                  that sit near durable enterprise spending pools and can
-                  compound through multiple cycles.
-                </p>
-
-                <div>
-                  <p
-                    className="mb-2 font-mono text-[11px] uppercase tracking-[0.22em]"
-                    style={{ color }}
-                  >
-                    CRWD · Cybersecurity and Platform Consolidation
-                  </p>
-                  <p>
-                    CrowdStrike strengthens the cybersecurity sleeve. My thesis
-                    is that endpoint security, identity protection, cloud
-                    security, and next-generation SIEM remain critical spend
-                    areas as enterprises face more complex attack surfaces.
-                    CrowdStrike&apos;s Falcon platform benefits from
-                    consolidation, where customers can adopt more modules over
-                    time instead of managing separate point solutions. Falcon
-                    Flex also supports the thesis because it gives large
-                    customers a more flexible way to expand usage across the
-                    platform, which can help drive larger commitments and
-                    stronger retention. This is a premium multiple stock, so
-                    the risk I am watching is that expectations are already
-                    high, but the business remains one of the cleaner ways to
-                    express long-term cybersecurity demand.
-                  </p>
-                </div>
-
-                <div>
-                  <p
-                    className="mb-2 font-mono text-[11px] uppercase tracking-[0.22em]"
-                    style={{ color }}
-                  >
-                    NOW · Enterprise Workflow Automation
-                  </p>
-                  <p>
-                    ServiceNow strengthens the enterprise software sleeve. My
-                    thesis is that ServiceNow is becoming a core workflow and
-                    automation layer across large organizations, not just an
-                    IT service management vendor. Its value comes from being
-                    embedded into business processes, where switching costs
-                    can grow as more departments use the platform. The AI
-                    angle is also more practical than speculative: ServiceNow
-                    can use AI to improve internal productivity, automate
-                    enterprise workflows, and increase the value of its
-                    existing platform. The main risk I am watching is that
-                    software multiples remain under pressure and investors
-                    question whether AI will help or disrupt traditional SaaS
-                    models. Still, ServiceNow&apos;s recurring revenue base,
-                    enterprise customer relationships, and workflow depth make
-                    it a high-quality compounder candidate.
-                  </p>
-                </div>
-
-                <div>
-                  <p
-                    className="mb-2 font-mono text-[11px] uppercase tracking-[0.22em]"
-                    style={{ color }}
-                  >
-                    PENG · AI Infrastructure, Memory, and Compute
-                  </p>
-                  <p>
-                    Penguin Solutions is the higher-risk AI infrastructure
-                    position. My thesis is different from the megacap and
-                    software holdings. Penguin gives the Roth exposure to AI
-                    compute infrastructure, memory-intensive workloads, and
-                    the buildout of systems that support inference and
-                    enterprise AI deployment. The upside case is that AI
-                    infrastructure demand broadens beyond the largest
-                    hyperscalers and creates demand for specialized
-                    integration, memory, and compute solutions. This is not a
-                    core anchor position. I view it as a speculative,
-                    research-driven holding with more execution risk, more
-                    volatility, and greater dependence on AI infrastructure
-                    spending cycles.
-                  </p>
-                </div>
-
-                <p>
-                  Together, CRWD, NOW, and PENG improve the portfolio&apos;s
-                  exposure to three connected but distinct parts of the AI and
-                  enterprise technology stack:
-                </p>
-                <ul className="ml-5 list-disc space-y-1.5">
-                  <li>CRWD: cybersecurity and platform consolidation</li>
-                  <li>
-                    NOW: enterprise workflow automation and AI-enabled
-                    productivity
-                  </li>
-                  <li>
-                    PENG: AI infrastructure, memory, and compute deployment
-                  </li>
-                </ul>
-
-                <p>
-                  This update makes the Roth more intentional. The core
-                  remains broad-market and high-quality growth exposure, while
-                  the newer additions focus on cybersecurity, enterprise
-                  software, and AI infrastructure. I want the portfolio to
-                  stay aggressive, but not random. The goal is to own names
-                  where I can explain the thesis, track the key risks, and
-                  size the positions based on conviction.
-                </p>
-              </div>
-
-              <div className="mt-14 max-w-3xl">
-                <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Key Risks I&apos;m Watching
-                </p>
-                <ul className="ml-5 list-disc space-y-3 text-[14px] leading-[1.7] text-[#3d4f66]">
-                  <li>
-                    The portfolio is still heavily exposed to technology, AI,
-                    software, and semiconductors.
-                  </li>
-                  <li>
-                    CRWD and NOW trade at premium valuations, so execution
-                    misses or multiple compression could hurt returns.
-                  </li>
-                  <li>
-                    PENG is more speculative and depends on AI infrastructure
-                    demand, customer timing, and execution.
-                  </li>
-                  <li>
-                    If AI capex sentiment cools, several holdings could be
-                    pressured at the same time.
-                  </li>
-                  <li>
-                    The portfolio needs enough VOO and other broad exposure to
-                    avoid becoming only an AI-beta portfolio.
-                  </li>
-                </ul>
-              </div>
             </div>
           </section>
 
