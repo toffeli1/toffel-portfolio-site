@@ -156,7 +156,7 @@ export default function SleeveHoldingsTable({
               borderBottom: "1px solid rgba(15,30,53,0.07)",
             }}
           >
-            {["Position", "Weight", "Return", "Category", "Type"].map((h) => (
+            {["Position", "Weight", "Return", "Category"].map((h) => (
               <th
                 key={h}
                 className="px-5 py-3.5 text-left font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]"
@@ -252,11 +252,6 @@ export default function SleeveHoldingsTable({
                       {h.subcategory}
                     </span>
                   )}
-                </td>
-
-                {/* Type */}
-                <td className="px-5 py-5">
-                  <Tag label={h.assetType} color={typeColor} bg={typeBg} />
                 </td>
               </ClickableRow>
             );
