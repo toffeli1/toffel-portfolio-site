@@ -25,10 +25,14 @@ export default function SleeveDashboard({
   holdings,
 }: {
   label?: string;
-  title: string;
-  subtitle: string;
+  /** Optional. Omit when the page already provides its own title block. */
+  title?: string;
+  /** Optional. Only renders when set. */
+  subtitle?: string;
   holdings: SleeveDashboardHolding[];
 }) {
+  // Hide outer slice labels when the donut has too many slices to label cleanly.
+  const showSliceLabels = holdings.length <= 10;
   const total = holdings.reduce((s, h) => s + h.portfolioWeightPct, 0);
   const pieData = holdings.map((h, i) => ({
     name: h.ticker,
@@ -38,29 +42,44 @@ export default function SleeveDashboard({
 
   return (
     <div>
-      {/* Header */}
-      <p
-        className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em]"
-        style={{ color: "#1a4a2e" }}
-      >
-        {label}
-      </p>
-      <h2
-        className="font-bold leading-[0.95] tracking-tight text-[#0f1e35]"
-        style={{ fontSize: "clamp(2rem,3.5vw,2.75rem)" }}
-      >
-        {title}
-      </h2>
-      <p className="mt-3 max-w-xl text-[13.5px] leading-[1.7] text-[#3d4f66]">
-        {subtitle}
-      </p>
-      <p className="mt-4 font-mono text-[11px] text-[#5a6e82]">
-        {holdings.length} Positions
-      </p>
+      {/* Header — only renders when a title is supplied. Pages that already
+          render their own page header can omit title/subtitle and just pass
+          the section label. */}
+      {title ? (
+        <>
+          <p
+            className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em]"
+            style={{ color: "#1a4a2e" }}
+          >
+            {label}
+          </p>
+          <h2
+            className="font-bold leading-[0.95] tracking-tight text-[#0f1e35]"
+            style={{ fontSize: "clamp(2rem,3.5vw,2.75rem)" }}
+          >
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="mt-3 max-w-xl text-[13.5px] leading-[1.7] text-[#3d4f66]">
+              {subtitle}
+            </p>
+          )}
+          <p className="mt-4 font-mono text-[11px] text-[#5a6e82]">
+            {holdings.length} Positions
+          </p>
+        </>
+      ) : (
+        <p
+          className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em]"
+          style={{ color: "#1a4a2e" }}
+        >
+          {label}
+        </p>
+      )}
 
       <div
-        className="mt-10 border-t pt-12"
-        style={{ borderColor: "rgba(15,30,53,0.08)" }}
+        className={title ? "mt-10 border-t pt-12" : ""}
+        style={title ? { borderColor: "rgba(15,30,53,0.08)" } : undefined}
       >
         {/* Circular holding tiles */}
         <div className="flex flex-wrap items-start justify-center gap-x-10 gap-y-10 sm:gap-x-14">
@@ -102,10 +121,16 @@ export default function SleeveDashboard({
                   stroke="#faf7f2"
                   strokeWidth={2}
                   isAnimationActive={false}
-                  label={({ name, value }) =>
-                    `${value.toFixed(2)}%`
+                  label={
+                    showSliceLabels
+                      ? ({ value }) => `${value.toFixed(2)}%`
+                      : false
                   }
-                  labelLine={{ stroke: "#5a6e82", strokeWidth: 0.75 }}
+                  labelLine={
+                    showSliceLabels
+                      ? { stroke: "#5a6e82", strokeWidth: 0.75 }
+                      : false
+                  }
                 >
                   {pieData.map((d) => (
                     <Cell key={d.name} fill={d.color} />

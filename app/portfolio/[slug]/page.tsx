@@ -7,7 +7,6 @@ import { etfProfiles } from "@/data/etfConstituents";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
 import SleeveDashboard from "@/components/SleeveDashboard";
-import SleeveHoldingsTable from "@/components/SleeveHoldingsTable";
 import BreakdownPanel from "@/components/BreakdownPanel";
 import { getPreviousHoldingsBySleeve } from "@/data/previousHoldings";
 import RothThemeChart from "@/components/RothThemeChart";
@@ -208,16 +207,21 @@ function RothIraView() {
             </div>
           </section>
 
-          {/* Holdings table */}
+          {/* Holdings — circular tiles + portfolio weighting donut */}
           <section
             className="border-b"
             style={{ borderColor: "rgba(15,30,53,0.08)" }}
           >
             <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-              <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Holdings
-              </p>
-              <SleeveHoldingsTable holdings={rothIraHoldings} sleeve="roth-ira" />
+              <SleeveDashboard
+                label="Holdings"
+                holdings={rothIraHoldings.map((h) => ({
+                  ticker: h.ticker,
+                  name: h.company,
+                  href: h.ticker in etfProfiles ? `/etfs/${h.ticker}` : `/positions/${h.ticker}`,
+                  portfolioWeightPct: h.portfolioWeightPct,
+                }))}
+              />
             </div>
           </section>
 
