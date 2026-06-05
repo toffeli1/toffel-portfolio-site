@@ -149,36 +149,38 @@ function RetailView() {
 }
 
 // ── Roth IRA color system ─────────────────────────────────────────────────────
-// One color per category. The same value drives the tile background AND the
-// matching donut slice so the page reads as one coordinated visual. Tech
-// categories share a coordinated blue family; non-tech accents stay muted
-// (olive for digital assets, warm sand for healthcare). Keep this list in
-// sync with the `categorize` mapping inside RothIraView.
+// Brand-derived colors per ticker. Each value is normalized toward the
+// company's primary identity color while staying muted enough to read as one
+// premium palette on the cream page background. The donut and the sector key
+// both use these values directly.
 
-const CATEGORY_COLORS: Record<string, string> = {
-  "Core Market":          "#1a2845",
-  "AI / Semiconductors":  "#6a82a3",
-  "Internet / AI":        "#4a6c8c",
-  "Platform Tech":        "#5d7ea0",
-  "Cybersecurity":        "#7a8694",
-  "Enterprise Software":  "#4d7a82",
-  "Space / Defense":      "#7a9088",
-  "Digital Assets":       "#b5a96a",
-  "Healthcare":           "#c19a72",
+const TICKER_BRAND_COLORS: Record<string, string> = {
+  VOO:   "#b8202e",  // Vanguard red
+  SMH:   "#1a3a7a",  // VanEck navy blue
+  AMD:   "#2d2d33",  // AMD black / charcoal
+  FBTC:  "#f7931a",  // Bitcoin orange (kept vivid)
+  NBIS:  "#c8de4a",  // Nebius lime
+  GOOGL: "#3a78d8",  // Google blue
+  MELI:  "#ffd400",  // MercadoLibre yellow
+  CRWD:  "#d22229",  // CrowdStrike red
+  RKLB:  "#2a1f1f",  // Rocket Lab dark charcoal with red warmth
+  META:  "#2870e8",  // Meta blue
+  NOW:   "#2a6e62",  // ServiceNow dark teal
+  UNH:   "#1a4789",  // UnitedHealth deep blue
+  PENG:  "#f0bc3d",  // Penguin gold
+  ASTS:  "#1a2a4a",  // AST SpaceMobile dark navy
 };
 
-// Display order for the legend / color key (also used to filter to categories
-// actually present in the current Roth holdings).
-const CATEGORY_ORDER = [
-  "Core Market",
-  "AI / Semiconductors",
-  "Internet / AI",
-  "Platform Tech",
-  "Cybersecurity",
-  "Enterprise Software",
-  "Space / Defense",
-  "Digital Assets",
-  "Healthcare",
+// Sector groups for the donut order and the sector key below it. Within each
+// sector, holdings are sorted by weight (desc) at render time so the largest
+// position in each group leads.
+const ROTH_SECTORS: { sector: string; tickers: string[] }[] = [
+  { sector: "Core Market",                         tickers: ["VOO"] },
+  { sector: "AI / Semis / Infrastructure",         tickers: ["SMH", "AMD", "NBIS", "PENG"] },
+  { sector: "Platform Tech / Internet / Software", tickers: ["GOOGL", "META", "NOW", "MELI", "CRWD"] },
+  { sector: "Space / Defense / Connectivity",      tickers: ["RKLB", "ASTS"] },
+  { sector: "Digital Assets",                      tickers: ["FBTC"] },
+  { sector: "Healthcare",                          tickers: ["UNH"] },
 ];
 
 // ── Roth IRA view ─────────────────────────────────────────────────────────────
@@ -186,24 +188,25 @@ const CATEGORY_ORDER = [
 function RothIraView() {
   const color = "#1a4a2e";
 
-  // Category color system. Each holding maps to one bucket below; the same
-  // color drives the tile background AND the matching donut slice so the
-  // page reads as one coordinated visual system. Tech buckets stay in a
-  // coordinated blue family; non-tech buckets use restrained warm accents.
-  const categorize = (h: typeof rothIraHoldings[number]): string => {
-    if (h.subcategory === "Internet / AI") return "Internet / AI";
-    if (h.subcategory === "Cybersecurity") return "Cybersecurity";
-    if (h.subcategory === "Enterprise SaaS") return "Enterprise Software";
-    return h.theme ?? "Other";
-  };
-  const tickersByCategory = new Map<string, string[]>();
-  for (const h of rothIraHoldings) {
-    const c = categorize(h);
-    const arr = tickersByCategory.get(c) ?? [];
-    arr.push(h.ticker);
-    tickersByCategory.set(c, arr);
-  }
-  const visibleCategories = CATEGORY_ORDER.filter((c) => tickersByCategory.has(c));
+  // Order holdings by sector group, weight-desc within each group. This
+  // controls both the visual order of the donut slices and the order of the
+  // sector key below it, so related names sit next to each other.
+  const byTicker = new Map(rothIraHoldings.map((h) => [h.ticker, h] as const));
+  const orderedHoldings = ROTH_SECTORS.flatMap(({ tickers }) =>
+    tickers
+      .map((t) => byTicker.get(t))
+      .filter((h): h is NonNullable<typeof h> => !!h)
+      .sort((a, b) => b.portfolioWeightPct - a.portfolioWeightPct)
+  );
+  // Sector → present-in-portfolio tickers, in the same weight-desc order.
+  const sectorGroups = ROTH_SECTORS.map(({ sector, tickers }) => ({
+    sector,
+    tickers: tickers
+      .map((t) => byTicker.get(t))
+      .filter((h): h is NonNullable<typeof h> => !!h)
+      .sort((a, b) => b.portfolioWeightPct - a.portfolioWeightPct)
+      .map((h) => h.ticker),
+  })).filter((g) => g.tickers.length > 0);
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
@@ -258,9 +261,10 @@ function RothIraView() {
           </section>
 
           {/* Holdings — circular tiles + full-width portfolio weighting donut.
-              Per-holding color drives both the tile background and the donut
-              slice. The per-ticker legend is suppressed; the page renders its
-              own category color key below. */}
+              Slice colors come from each holding's brand identity. Holdings
+              are ordered by sector group so related names sit next to each
+              other in contiguous arcs. The per-ticker legend is suppressed;
+              the sector key below carries the labels. */}
           <section
             className="border-b"
             style={{ borderColor: "rgba(15,30,53,0.08)" }}
@@ -270,48 +274,57 @@ function RothIraView() {
                 label="Holdings"
                 donutWide
                 showLegend={false}
-                holdings={rothIraHoldings.map((h) => ({
+                holdings={orderedHoldings.map((h) => ({
                   ticker: h.ticker,
                   name: h.company,
                   href: h.ticker in etfProfiles ? `/etfs/${h.ticker}` : `/positions/${h.ticker}`,
                   portfolioWeightPct: h.portfolioWeightPct,
-                  color: CATEGORY_COLORS[categorize(h)] ?? "#5a6e82",
+                  color: TICKER_BRAND_COLORS[h.ticker] ?? "#5a6e82",
                 }))}
               />
             </div>
           </section>
 
-          {/* Category color key — one row per sector with swatch, name, and
-              tickers in that bucket. Mirrors the colors used in the tiles
-              and donut so the page reads as one coordinated system. */}
+          {/* Sector key — groups the active Roth holdings by sector and
+              renders each ticker as a brand-color chip. Mirrors the donut's
+              arc order so the page reads as one coordinated system. */}
           <section
             className="border-b"
             style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
           >
             <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
               <p className="mb-2 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[#5a6e82]">
-                Color Key · Sector &amp; Category
+                Sectors
               </p>
               <p className="mb-10 text-center font-mono text-[10px] text-[#7a8799]">
-                Tech buckets share a coordinated blue family. Non-tech buckets use restrained warm accents.
+                Slice colors come from each holding&apos;s brand identity. Holdings are arranged by sector so related names sit next to each other.
               </p>
-              <div className="mx-auto grid max-w-5xl gap-x-8 gap-y-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                {visibleCategories.map((cat) => (
-                  <div key={cat} className="flex items-center gap-3">
-                    <span
-                      className="inline-block h-3 w-3 shrink-0 rounded-full"
-                      style={{
-                        background: CATEGORY_COLORS[cat],
-                        boxShadow: "0 0 0 1px rgba(15,30,53,0.06)",
-                      }}
-                      aria-hidden
-                    />
-                    <div className="min-w-0">
-                      <p className="text-[12.5px] font-medium text-[#0f1e35]">{cat}</p>
-                      <p className="font-mono text-[10px] tracking-[0.06em] text-[#7a8799]">
-                        {(tickersByCategory.get(cat) ?? []).join(" · ")}
-                      </p>
-                    </div>
+              <div className="mx-auto grid max-w-5xl gap-x-10 gap-y-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {sectorGroups.map(({ sector, tickers }) => (
+                  <div key={sector} className="min-w-0">
+                    <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[#5a6e82]">
+                      {sector}
+                    </p>
+                    <ul className="space-y-1.5">
+                      {tickers.map((t) => (
+                        <li key={t} className="flex items-center gap-2.5">
+                          <span
+                            className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+                            style={{
+                              background: TICKER_BRAND_COLORS[t] ?? "#5a6e82",
+                              boxShadow: "0 0 0 1px rgba(15,30,53,0.08)",
+                            }}
+                            aria-hidden
+                          />
+                          <span className="font-mono text-[11.5px] tracking-[0.06em] text-[#0f1e35]">
+                            {t}
+                          </span>
+                          <span className="truncate text-[11px] text-[#5a6e82]">
+                            {byTicker.get(t)?.company}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 ))}
               </div>
