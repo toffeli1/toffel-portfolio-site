@@ -34,6 +34,18 @@ export interface PurchaseLot {
 //   Surviving: 1 lot
 //
 // DLO: 3 buys, 0 sells → all lots survive
+//
+// CRWD: 5 buys (4 May statement + 1 Jun 2 add), 0 sells → all lots survive
+//   Reconciles to 2.06 sh @ $671.55 avg ($1,383.40 total cost).
+//
+// NOW: 11 buys (9 May statement + 2 same-date Jun 2 adds), 0 sells → all lots survive
+//   Reconciles to 11.385656 sh @ $102.89 avg ($1,171.50 total cost).
+//
+// PENG: 5 buys (3 May statement + 2 same-date Jun 2 fills incl. one assumed
+//   0.6-sh bridge at $69.64), 0 sells → all lots survive.
+//   Reconciles to 13.6 sh @ $50.33 avg ($684.55 total cost).
+//   Broker aggregate (13.849 sh @ $50.75) reflects an additional ~0.249 sh
+//   not captured in the activity log; treated as acceptable per user.
 
 export const positionLots: Record<string, PurchaseLot[]> = {
   AMD: [
@@ -391,6 +403,154 @@ export const positionLots: Record<string, PurchaseLot[]> = {
     },
   ],
 
+  // ── CRWD ──────────────────────────────────────────────────────────────────
+  // 5 buys, 0 sells → all lots survive
+  // Weighted avg cost = $671.55 across 2.06 sh
+  CRWD: [
+    {
+      date: "2026-05-14",
+      shares: 0.52602,
+      pricePerShare: 570.32,
+      amountUsd: 300.00,
+    },
+    {
+      date: "2026-05-15",
+      shares: 0.4,
+      pricePerShare: 582.19,
+      amountUsd: 232.88,
+    },
+    {
+      date: "2026-05-21",
+      shares: 0.07398,
+      pricePerShare: 651.03,
+      amountUsd: 48.16,
+    },
+    {
+      date: "2026-05-27",
+      shares: 0.06,
+      pricePerShare: 645.32,
+      amountUsd: 38.72,
+    },
+    {
+      date: "2026-06-02",
+      shares: 1,
+      pricePerShare: 763.64,
+      amountUsd: 763.64,
+    },
+  ],
+
+  // ── NOW ───────────────────────────────────────────────────────────────────
+  // 11 buys, 0 sells → all lots survive. Two same-date Jun 2 fills will cluster.
+  // Weighted avg cost = $102.89 across 11.385656 sh
+  NOW: [
+    {
+      date: "2026-05-14",
+      shares: 5,
+      pricePerShare: 88.835,
+      amountUsd: 444.18,
+    },
+    {
+      date: "2026-05-15",
+      shares: 0.20763,
+      pricePerShare: 96.325,
+      amountUsd: 20.00,
+    },
+    {
+      date: "2026-05-18",
+      shares: 0.192326,
+      pricePerShare: 103.99,
+      amountUsd: 20.00,
+    },
+    {
+      date: "2026-05-19",
+      shares: 0.195723,
+      pricePerShare: 102.185,
+      amountUsd: 20.00,
+    },
+    {
+      date: "2026-05-20",
+      shares: 0.195755,
+      pricePerShare: 102.1681,
+      amountUsd: 20.00,
+    },
+    {
+      date: "2026-05-20",
+      shares: 2,
+      pricePerShare: 101.84,
+      amountUsd: 203.68,
+    },
+    {
+      date: "2026-05-21",
+      shares: 0.19958,
+      pricePerShare: 100.21,
+      amountUsd: 20.00,
+    },
+    {
+      date: "2026-05-22",
+      shares: 0.197482,
+      pricePerShare: 101.275,
+      amountUsd: 20.00,
+    },
+    {
+      date: "2026-05-26",
+      shares: 0.19716,
+      pricePerShare: 101.44,
+      amountUsd: 20.00,
+    },
+    {
+      date: "2026-06-02",
+      shares: 1,
+      pricePerShare: 127.86,
+      amountUsd: 127.86,
+    },
+    {
+      date: "2026-06-02",
+      shares: 2,
+      pricePerShare: 127.89,
+      amountUsd: 255.78,
+    },
+  ],
+
+  // ── PENG ──────────────────────────────────────────────────────────────────
+  // 5 buys, 0 sells → all lots survive. Two same-date Jun 2 fills will cluster.
+  // The 0.6-sh Jun 2 fill is an assumed bridge (per user instruction) at the
+  // same $69.64 price as the same-date 2-sh fill, used to approximate a small
+  // residual that does not appear in the activity log.
+  // Weighted avg cost = $50.33 across 13.6 sh; broker aggregate is 13.849 sh
+  // @ $50.75 — small residual accepted.
+  PENG: [
+    {
+      date: "2026-05-18",
+      shares: 3,
+      pricePerShare: 47.59,
+      amountUsd: 142.77,
+    },
+    {
+      date: "2026-05-19",
+      shares: 5,
+      pricePerShare: 43.10,
+      amountUsd: 215.50,
+    },
+    {
+      date: "2026-05-20",
+      shares: 3,
+      pricePerShare: 48.40,
+      amountUsd: 145.20,
+    },
+    {
+      date: "2026-06-02",
+      shares: 2,
+      pricePerShare: 69.64,
+      amountUsd: 139.28,
+    },
+    {
+      date: "2026-06-02",
+      shares: 0.6,
+      pricePerShare: 69.64,
+      amountUsd: 41.78,
+    },
+  ],
+
   // ── RKLB ──────────────────────────────────────────────────────────────────
   // 3 buys, 0 sells → all lots survive
   RKLB: [
@@ -434,8 +594,8 @@ export const positionAverageCost: Record<string, number> = {
   // SMH (Brokerage) intentionally excluded: Brokerage SMH cost basis differs from
   // the Roth lot. Roth-specific cost basis is tracked under SMH_ROTH below.
   SMH_ROTH: 464.76,  // Roth IRA SMH cost basis
-  // New Roth positions, May 2026:
+  // New Roth positions (May 2026 initiate + Jun 2 add):
   NOW:   102.89,
-  PENG:   49.90,
+  PENG:   50.33,    // Lot-derived ($684.55 / 13.6 sh); broker aggregate ~$50.75
   CRWD:  671.55,
 };

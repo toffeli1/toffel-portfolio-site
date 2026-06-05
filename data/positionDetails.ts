@@ -1564,6 +1564,179 @@ export const positionDetails: Record<string, PositionDetail> = {
     ],
   },
 
+  // ─── Roth IRA — Cybersecurity / Enterprise SaaS / AI Infrastructure ──────
+
+  CRWD: {
+    whyIOwnIt:
+      "CrowdStrike is in the Roth IRA as the portfolio's primary cybersecurity expression. Endpoint security, identity protection, cloud workload protection, and next-generation SIEM remain critical enterprise spend areas, and Falcon sits at the consolidation point of all four. My thesis is that platform consolidation, where customers add modules over time instead of managing separate point solutions, is the dominant trend in enterprise security buying, and CrowdStrike is one of the cleanest ways to express it. Falcon Flex reinforces that pattern by giving large customers a more flexible way to expand usage across the platform, which can help drive larger commitments and stronger retention.",
+    whyThisSleeve:
+      "CRWD is in the Roth IRA because the consolidation thesis plays out over multiple land-and-expand cycles, and tax-free compounding on a premium-multiple platform name is exactly what the account is structured for. The valuation is rich, which means quarterly results will drive meaningful short-term price action. Holding it in the Roth removes the temptation to manage it tactically around earnings prints.",
+    longDescription:
+      "CrowdStrike operates the Falcon cybersecurity platform, a cloud-delivered architecture that started with next-generation endpoint detection and response and has expanded into identity protection, cloud workload protection, exposure management, log and SIEM, and AI-assisted security operations. The single-agent, single-data-lake architecture is what lets Falcon add new modules to existing customers with very low friction, and it is the structural reason CrowdStrike has been able to grow net new ARR across multiple product lines simultaneously.",
+    thesisP2:
+      "Falcon Flex is the commercial mechanism that accelerates the platform consolidation story. Flex agreements let large customers commit to a pool of Falcon consumption that can be deployed across any module, removing the procurement friction of buying each capability individually. The practical result is that customers concentrate spend on Falcon as their security platform, expand modules over time, and become structurally harder to displace. My base case is that this combination of platform architecture and flexible commercial terms supports durable compounding in net new ARR and operating leverage even if the valuation multiple compresses from current levels.",
+    bullCase: {
+      title: "Platform Consolidation Accelerates",
+      summary:
+        "Enterprises broadly adopt Falcon as the single security platform, lifting module attach rates and stretching net retention well above current levels.",
+      assumptions: [
+        "Falcon Flex commitments expand the share of customers running five-or-more modules",
+        "Next-generation SIEM and cloud security drive incremental land deals beyond core EDR replacement",
+        "Net new ARR sustains durable mid-to-high 20% growth",
+        "Operating leverage drives meaningful free cash flow margin expansion",
+      ],
+    },
+    baseCase: {
+      title: "Steady Module Expansion",
+      summary:
+        "Consolidation continues at the current pace, with module count per customer rising and retention staying above peers.",
+      assumptions: [
+        "Net retention stays above 110% as customers add modules over time",
+        "Cloud security and identity protection lead module attach growth",
+        "Free cash flow margin expands gradually as G&A leverage builds",
+        "Falcon Flex penetration deepens within the largest enterprise accounts",
+      ],
+    },
+    bearCase: {
+      title: "Multiple Compresses on Premium Valuation",
+      summary:
+        "Execution remains good but the multiple compresses as software valuations reset and competition intensifies.",
+      assumptions: [
+        "SentinelOne, Microsoft Defender, and Palo Alto Cortex pressure new logo growth",
+        "Premium SaaS multiples compress further across the security software peer group",
+        "Macro slowdown leads customers to delay module expansion or restructure commitments",
+        "Module attach rates plateau and net retention drifts toward the low 100s",
+      ],
+    },
+    risks: [
+      "Premium valuation leaves little room for execution misses. Quarterly net new ARR misses can drive meaningful share-price volatility.",
+      "Competition is intensifying from Microsoft, Palo Alto Cortex, and SentinelOne in overlapping module categories.",
+      "Larger Falcon Flex deals concentrate revenue across fewer accounts, creating churn or commitment-restructure risk.",
+      "Software multiples could reset broadly even when business fundamentals remain intact.",
+    ],
+    watchList: [
+      "Net new ARR each quarter, the single best progress metric on consolidation.",
+      "Module attach rates and the percentage of customers running five-or-more modules.",
+      "Falcon Flex deal volume and average deal size across large enterprise accounts.",
+      "Cloud security and identity protection growth as next-leg expansion vectors.",
+      "Operating margin and free cash flow margin trajectory as scale leverage builds.",
+    ],
+  },
+
+  NOW: {
+    whyIOwnIt:
+      "ServiceNow is in the Roth IRA as the portfolio's primary enterprise software expression. My thesis is that ServiceNow has moved well beyond IT service management and is becoming a core workflow and automation layer across large organizations, not just an IT service management vendor. Its value comes from being embedded into business processes, where switching costs can grow as more departments use the platform. The AI angle is also more practical than speculative: ServiceNow can use AI to improve internal productivity, automate enterprise workflows, and increase the value of its existing platform.",
+    whyThisSleeve:
+      "NOW is in the Roth IRA because the workflow expansion thesis is a multi-year platform compounding story rather than a quarter-to-quarter trade. Tax-free compounding inside the Roth is the right structure for a premium-multiple, durable-growth name where near-term price action will be driven by software-multiple regime more than by the underlying business.",
+    longDescription:
+      "ServiceNow operates a cloud platform that organizes and automates digital workflows across large enterprises. The original wedge was IT service management, where ServiceNow displaced ticketing-era incumbents by giving IT departments a modern platform of record. Over the last several years, the platform has expanded into HR service delivery, customer service management, security operations, governance risk and compliance, and procurement, with each expansion deepening the workflow footprint inside customer organizations. The Now Platform underlies all of these workflows, and the data and process knowledge it captures is what makes the platform sticky.",
+    thesisP2:
+      "Now Assist is the natural next chapter in the platform story. Rather than being a separate AI product, Now Assist embeds AI directly into existing workflows, summarizing incidents, drafting agent responses, surfacing recommended actions, and increasingly orchestrating agentic workflows that complete tasks end-to-end. My thesis is that this practical, workflow-anchored AI use case is harder to disrupt than horizontal AI offerings because the value is tied to the data and processes ServiceNow already owns. The main risk I am watching is that software multiples remain under pressure and investors question whether AI will help or disrupt traditional SaaS pricing models. Even so, ServiceNow's recurring revenue base, enterprise customer relationships, and workflow depth make it a high-quality compounder candidate.",
+    bullCase: {
+      title: "Now Assist Drives ARR Re-Acceleration",
+      summary:
+        "AI-attached workflows lift seat economics and module attach rates, pushing subscription growth back into the high 20s.",
+      assumptions: [
+        "Now Assist Pro Plus deals accelerate as agentic workflows ship and prove ROI",
+        "Workflow expansion into customer service, security operations, and HR continues at the current pace",
+        "Federal and large-enterprise commitments lengthen contract duration and average deal size",
+        "Operating margin expands as platform leverage compounds across modules",
+      ],
+    },
+    baseCase: {
+      title: "Durable Subscription Compounding",
+      summary:
+        "Subscription revenue compounds in the low-to-mid 20s as workflow expansion and AI attach layer in gradually.",
+      assumptions: [
+        "Net new ACV remains durable across IT, employee, customer, and creator workflows",
+        "Now Assist attach rates rise steadily and contribute gradually rather than abruptly",
+        "Operating margin and free cash flow margin continue their multi-year expansion",
+        "Federal vertical remains a meaningful incremental growth contributor",
+      ],
+    },
+    bearCase: {
+      title: "SaaS Multiples Reset and Seat Pricing Weakens",
+      summary:
+        "AI raises questions about seat-based pricing models and software multiples compress meaningfully.",
+      assumptions: [
+        "Customers push back on per-seat pricing as AI agents reduce required headcount",
+        "Enterprise software multiples reset lower as macro conditions weigh on growth equities",
+        "Now Assist monetization comes in slower than premium pricing assumes",
+        "Macro-driven IT budget compression delays platform expansion deals",
+      ],
+    },
+    risks: [
+      "Premium SaaS valuation creates meaningful downside risk if growth slows or multiples compress.",
+      "AI could disrupt traditional seat-based SaaS pricing models, an active investor debate I am tracking.",
+      "Workflow expansion outside IT requires sustained execution against domain-specific competitors in HR, security operations, and customer service.",
+      "Federal and large-enterprise customer concentration creates lumpy quarterly results.",
+    ],
+    watchList: [
+      "Net new ACV and subscription revenue growth each quarter.",
+      "Now Assist attach rate disclosures and named customer wins.",
+      "Operating margin and free cash flow margin trajectory.",
+      "Remaining performance obligations as a forward-revenue signal.",
+      "Management commentary on seat-based pricing under agentic workflows.",
+    ],
+  },
+
+  PENG: {
+    whyIOwnIt:
+      "Penguin Solutions is the Roth's higher-risk AI infrastructure position, sized modestly. My thesis is different from the megacap and software holdings: instead of owning the hyperscaler beneficiaries, Penguin gives the Roth exposure to the specialized integration, advanced memory, and systems work that supports inference and enterprise AI deployment further down the stack. The upside case is that AI infrastructure demand broadens beyond the largest hyperscalers and creates demand for specialists in high-performance computing, memory-intensive workloads, and turnkey AI systems. I view this as a speculative, research-driven holding with more execution risk, more volatility, and greater dependence on AI infrastructure spending cycles than the rest of the sleeve.",
+    whyThisSleeve:
+      "PENG is in the Roth IRA because the small-cap AI infrastructure thesis is multi-year by nature and is best held in a tax-advantaged account where I can size it modestly and avoid managing it around short-term volatility. The Roth is also the right home for speculative compounding candidates where the asymmetric upside, if it plays out, is captured tax-free.",
+    longDescription:
+      "Penguin Solutions builds advanced computing, memory, and integration systems for AI training, AI inference, and other memory-intensive enterprise workloads. The business spans high-performance memory products used in servers and networking gear, integrated AI systems designed and deployed for enterprise customers, and specialized engineering services that help customers stand up AI infrastructure at scale. Penguin sits in a part of the AI value chain that is less covered than the headline GPU and hyperscaler trades but is structurally tied to the same overall buildout.",
+    thesisP2:
+      "My base case is that as AI workloads spread from hyperscaler training clusters into enterprise inference and on-premises deployments, demand for specialized integrators with hardware design depth, memory expertise, and operational support broadens meaningfully. Penguin's combination of memory products and integrated AI systems is well positioned for that environment, but the execution requirements are real. The company is small relative to the customers and competitors it serves, the AI systems business is project-driven, and customer concentration in any given quarter can drive variability in results. The position is sized to reflect that asymmetric profile rather than treated as a core anchor.",
+    bullCase: {
+      title: "AI Infrastructure Demand Broadens",
+      summary:
+        "Enterprise AI deployment scales meaningfully, lifting demand for specialized integration, memory, and turnkey systems.",
+      assumptions: [
+        "Enterprise inference workloads grow into a meaningful share of total AI infrastructure spend",
+        "Penguin captures a larger share of enterprise AI systems deployments as a specialist integrator",
+        "Advanced memory mix continues to grow as a percentage of total revenue",
+        "Operating margin improves as scale builds across higher-value AI systems work",
+      ],
+    },
+    baseCase: {
+      title: "Steady AI Systems Cadence",
+      summary:
+        "AI systems deployments and memory mix sustain mid-teens to twenties growth without a step-change in customer concentration.",
+      assumptions: [
+        "AI systems revenue grows as existing enterprise customers expand deployments",
+        "Memory product mix continues to shift toward higher-value advanced memory",
+        "Margins improve gradually as scale builds",
+        "Customer concentration creates quarter-to-quarter variability but smooths over multi-year periods",
+      ],
+    },
+    bearCase: {
+      title: "AI Capex Slows and Execution Risk Surfaces",
+      summary:
+        "Enterprise AI spending cools or a major project slips, exposing the position to small-cap volatility and customer concentration risk.",
+      assumptions: [
+        "Enterprise AI capex sentiment cools and project timing slips into out-quarters",
+        "Customer concentration shows up as a meaningful quarterly miss",
+        "Competition from larger systems integrators pressures pricing and margin",
+        "Small-cap multiples compress alongside broader AI-beta drawdowns",
+      ],
+    },
+    risks: [
+      "AI infrastructure demand is the central thesis driver, so the position is highly exposed to AI capex sentiment and timing.",
+      "Customer concentration in AI systems projects creates lumpy revenue and meaningful single-customer risk in any given quarter.",
+      "Small-cap volatility. The position will react more sharply than the rest of the sleeve to AI-related drawdowns.",
+      "Execution risk on enterprise AI deployments, which are complex, multi-quarter projects that depend on tight coordination with customers.",
+    ],
+    watchList: [
+      "AI systems backlog, design wins, and named enterprise customer commentary on each earnings call.",
+      "Advanced memory mix as a percentage of total revenue.",
+      "Gross margin and operating margin trajectory as AI systems scale.",
+      "Customer concentration disclosures and large-deal timing commentary.",
+      "Broader AI capex environment and enterprise inference adoption signals from hyperscaler results.",
+    ],
+  },
+
   // ─── SMH ───────────────────────────────────────────────────────────────────
   SMH: {
     trimEvents: [
