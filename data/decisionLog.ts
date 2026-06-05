@@ -137,7 +137,7 @@ export const decisionLog: DecisionEntry[] = [
   {
     date: "2026-05-31",
     ticker: "AMD",
-    company: "AMD",
+    company: "Advanced Micro Devices",
     account: "Roth Retirement Account",
     action: "Trim",
     type: "Position sizing / risk management",
@@ -210,7 +210,7 @@ export const decisionLog: DecisionEntry[] = [
   {
     date: "2026-05-01",
     ticker: "AMD",
-    company: "AMD",
+    company: "Advanced Micro Devices",
     account: "Roth Retirement Account",
     action: "Trim",
     type: "Position sizing / risk management",

@@ -16,9 +16,9 @@ export interface Scenario {
 
 export interface TrimEvent {
   date: string;           // "YYYY-MM-DD"
-  quantity?: number;      // shares sold/bought — internal, not displayed publicly
-  amountUsd?: number;     // internal, not displayed publicly
-  pricePerShare?: number; // shown publicly if present
+  quantity?: number;      // shares sold/bought — internal only, never rendered publicly
+  amountUsd?: number;     // internal only, never rendered publicly
+  pricePerShare?: number; // internal only, never rendered publicly
   type: "partial_trim" | "add" | "recurring_add" | "pending_stop_loss";
   explanation: string;
   inferred?: boolean;
@@ -871,24 +871,8 @@ export const positionDetails: Record<string, PositionDetail> = {
       "Quarterly data center GPU revenue as a percentage of total — the most direct thesis progress metric.",
       "NVIDIA Blackwell/Rubin performance benchmarks that set the competitive bar AMD must meet.",
     ],
-    trimEvents: [
-      {
-        date: "2026-05-01",
-        type: "partial_trim",
-        explanation:
-          "Trimmed AMD in the Roth Retirement Account on May 1, 2026 after a significant run to bring the position back toward my 10% max position-size discipline. This was not a thesis reversal. The core AMD thesis remains intact, but the trim reflected concentration control, risk management, and a preference to preserve gains after the position had outgrown its intended role.",
-      },
-      {
-        date: "2026-04-30",
-        quantity: 0.197783,
-        amountUsd: 70.00,
-        pricePerShare: 354.00,
-        type: "partial_trim",
-        explanation:
-          "Trimmed AMD by 2% in the Roth IRA at $354 on April 30. The position had appreciated beyond my intended risk limit, so I reduced exposure to keep AMD near my 10% maximum position size. This was not a thesis reversal. The trim was a portfolio construction decision focused on position discipline, concentration control, and preserving gains after significant appreciation.",
-        inferred: false,
-      },
-    ],
+    // AMD trim history is now derived from positionEvents.AMD.sells via
+    // lib/positionChanges. The legacy static trimEvents have been removed.
   },
 
   UNH: {

@@ -88,7 +88,7 @@ export const rothIraHoldings: SleeveHolding[] = [
   },
   {
     ticker: "AMD",
-    company: "AMD",
+    company: "Advanced Micro Devices",
     portfolioWeightPct: 6.27,
     shares: 4,
     returnPct: 131.13,

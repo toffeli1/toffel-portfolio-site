@@ -13,6 +13,12 @@ import TickerLogo from "@/components/TickerLogo";
 import { ReturnSinceSection } from "@/components/ReturnSinceSection";
 import DerivedRothWeight from "@/components/DerivedRothWeight";
 import { positionLots, positionAverageCost, positionEvents } from "@/lib/positionLots";
+import {
+  getPositionChanges,
+  formatPositionChangeDate,
+  positionChangeLabel,
+  type PositionChangeCard,
+} from "@/lib/positionChanges";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -125,6 +131,12 @@ export default async function PositionPage({
   const lots = events?.buys ?? positionLots[ticker];
   const sellEvents = events?.sells;
   const avgCost = positionAverageCost[ticker];
+
+  // Position Changes: derive from events when available so the section auto-
+  // updates with every sell/trim. Fall back to legacy curated trimEvents for
+  // tickers that don't have full transaction history yet.
+  const derivedChanges = getPositionChanges(ticker);
+  const useDerivedChanges = derivedChanges.length > 0;
 
   // Entry marker: only used when no per-lot data is available.
   const entryPrice =
@@ -335,16 +347,20 @@ export default async function PositionPage({
           )}
 
           {/* ── Position Changes ──────────────────────────────────────────── */}
-          {detail?.trimEvents && detail.trimEvents.length > 0 && (
+          {(useDerivedChanges || (detail?.trimEvents && detail.trimEvents.length > 0)) && (
             <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
               <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
                 <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
                   Position Changes
                 </p>
                 <div className="space-y-5">
-                  {detail.trimEvents.map((event, i) => (
-                    <TrimEventCard key={i} event={event} />
-                  ))}
+                  {useDerivedChanges
+                    ? derivedChanges.map((card, i) => (
+                        <DerivedChangeCard key={i} card={card} />
+                      ))
+                    : detail!.trimEvents!.map((event, i) => (
+                        <TrimEventCard key={i} event={event} />
+                      ))}
                 </div>
               </div>
             </section>
@@ -513,6 +529,8 @@ const EVENT_TYPE_LABEL: Record<TrimEvent["type"], string> = {
 };
 
 function TrimEventCard({ event }: { event: TrimEvent }) {
+  // Privacy contract: this card MUST NOT render pricePerShare, quantity, or
+  // amountUsd. Public surfaces are date + qualitative action + explanation.
   return (
     <div
       className="max-w-2xl rounded-2xl p-7"
@@ -523,16 +541,9 @@ function TrimEventCard({ event }: { event: TrimEvent }) {
       }}
     >
       <div className="mb-5 flex items-start justify-between gap-8">
-        <div>
-          <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
-            {formatDetailDate(event.date)}
-          </p>
-          {event.pricePerShare !== undefined && (
-            <p className="font-mono text-[13px] font-semibold text-[#0f1e35]">
-              ${event.pricePerShare.toFixed(2)}/sh
-            </p>
-          )}
-        </div>
+        <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
+          {formatDetailDate(event.date)}
+        </p>
         <span
           className="shrink-0 rounded font-mono text-[8px] uppercase tracking-[0.18em]"
           style={{
@@ -554,6 +565,49 @@ function TrimEventCard({ event }: { event: TrimEvent }) {
       )}
     </div>
   );
+}
+
+// ── Derived position-change card ──────────────────────────────────────────────
+// Renders cards produced by lib/positionChanges from positionEvents data.
+// Strictly public-safe — no shares, prices, or dollar amounts.
+
+function DerivedChangeCard({ card }: { card: PositionChangeCard }) {
+  return (
+    <div
+      className="max-w-2xl rounded-2xl p-7"
+      style={{
+        background: "#ffffff",
+        border: "1px solid rgba(15,30,53,0.09)",
+        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+      }}
+    >
+      <div className="mb-5 flex items-start justify-between gap-8">
+        <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
+          {formatPositionChangeDate(card)}
+        </p>
+        <span
+          className="shrink-0 rounded font-mono text-[8px] uppercase tracking-[0.18em]"
+          style={{
+            color: "#5a6e82",
+            backgroundColor: "rgba(15,30,53,0.05)",
+            padding: "3px 8px",
+          }}
+        >
+          {positionChangeLabel(card)}
+        </span>
+      </div>
+      <p className="text-[13px] leading-[1.85] text-[#3d4f66]">
+        {card.note ?? defaultChangeCopy(card)}
+      </p>
+    </div>
+  );
+}
+
+function defaultChangeCopy(card: PositionChangeCard): string {
+  if (card.kind === "exit") return "Position fully exited.";
+  if (card.kind === "trim_series")
+    return "Multiple small trims through the month to bring the position closer to target sizing.";
+  return "Partial trim to bring the position closer to target sizing.";
 }
 
 // ── Scenario card ──────────────────────────────────────────────────────────────
