@@ -92,6 +92,7 @@ export default function TickerLogo({
   size = "md",
   className,
   accentColor,
+  accentStyle = "fill",
 }: {
   ticker: string;
   /** Optional full company name; used for the image alt text. */
@@ -99,17 +100,22 @@ export default function TickerLogo({
   size?: "sm" | "md" | "lg" | "xl";
   className?: string;
   /**
-   * Optional category color used as the tile background. When set, the tile
-   * reads as a colored badge instead of a plain white disk. Defaults to
-   * white when omitted so prior callers stay unchanged.
+   * Optional accent color. With "fill" it becomes the tile background; with
+   * "ring" the tile stays white and the color renders as a soft outer halo.
    */
   accentColor?: string;
+  /** "fill" paints the whole tile in accentColor; "ring" keeps the tile
+   *  white and wraps it in a colored halo. */
+  accentStyle?: "fill" | "ring";
 }) {
   const { box, font, radius } = SIZE_MAP[size];
   const upper = ticker.toUpperCase();
   const assetFile = TICKER_LOGO_ASSETS[upper];
   const [imgFailed, setImgFailed] = useState(false);
   const useImage = !!assetFile && !imgFailed;
+
+  const filled = !!accentColor && accentStyle === "fill";
+  const ringed = !!accentColor && accentStyle === "ring";
 
   const containerStyle: React.CSSProperties = {
     display: "inline-flex",
@@ -118,11 +124,15 @@ export default function TickerLogo({
     width: box,
     height: box,
     borderRadius: radius,
-    background: accentColor ?? "#ffffff",
-    border: accentColor
+    background: filled ? accentColor : "#ffffff",
+    border: filled
       ? "1px solid rgba(15,30,53,0.18)"
       : "1px solid rgba(15,30,53,0.10)",
-    boxShadow: accentColor
+    // Ring treatment: 2px colored halo via box-shadow so the inner 112px stays
+    // fully white. Drop shadow stays subtle in both modes.
+    boxShadow: ringed
+      ? `0 0 0 2px ${accentColor}, 0 2px 6px rgba(15,30,53,0.08)`
+      : filled
       ? "0 2px 6px rgba(15,30,53,0.10)"
       : "0 1px 2px rgba(15,30,53,0.04)",
     overflow: "hidden",

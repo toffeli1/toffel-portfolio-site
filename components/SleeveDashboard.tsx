@@ -15,8 +15,10 @@ export interface SleeveDashboardHolding {
   name: string;
   href: string;
   portfolioWeightPct: number;
-  /** Optional category color used for the tile background and donut slice. */
+  /** Optional category color used for the tile background/halo and donut slice. */
   color?: string;
+  /** "fill" paints the tile in `color`; "ring" keeps it white with a colored halo. */
+  accentStyle?: "fill" | "ring";
 }
 
 // Muted but distinct palette tuned to the cream page background. Cycles for
@@ -185,6 +187,7 @@ export default function SleeveDashboard({
                   name={h.name}
                   size="xl"
                   accentColor={h.color}
+                  accentStyle={h.accentStyle}
                 />
               </span>
               <span

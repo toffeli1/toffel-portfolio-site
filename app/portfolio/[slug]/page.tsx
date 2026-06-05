@@ -155,20 +155,43 @@ function RetailView() {
 // both use these values directly.
 
 const TICKER_BRAND_COLORS: Record<string, string> = {
-  VOO:   "#b8202e",  // Vanguard red
-  SMH:   "#1a3a7a",  // VanEck navy blue
-  AMD:   "#2d2d33",  // AMD black / charcoal
+  // Muted brand-derived hues. Used for donut slices, legend dots, and the
+  // tile halo/ring or fill. Saturation is dialed down so the donut reads
+  // cohesively; only FBTC stays vivid per spec.
+  VOO:   "#a85460",  // dusty Vanguard red
+  SMH:   "#3c5b8e",  // muted VanEck navy
+  AMD:   "#3d3d44",  // slate charcoal
   FBTC:  "#f7931a",  // Bitcoin orange (kept vivid)
-  NBIS:  "#c8de4a",  // Nebius lime
-  GOOGL: "#3a78d8",  // Google blue
-  MELI:  "#ffd400",  // MercadoLibre yellow
-  CRWD:  "#d22229",  // CrowdStrike red
-  RKLB:  "#2a1f1f",  // Rocket Lab dark charcoal with red warmth
-  META:  "#2870e8",  // Meta blue
-  NOW:   "#2a6e62",  // ServiceNow dark teal
-  UNH:   "#1a4789",  // UnitedHealth deep blue
-  PENG:  "#f0bc3d",  // Penguin gold
-  ASTS:  "#1a2a4a",  // AST SpaceMobile dark navy
+  NBIS:  "#1c2336",  // deep navy (logo designed for dark bg + lime accent)
+  GOOGL: "#5a82b8",  // muted Google blue
+  MELI:  "#d4b540",  // muted MercadoLibre gold-yellow
+  CRWD:  "#b85056",  // muted CrowdStrike red
+  RKLB:  "#2a2424",  // dark charcoal with warmth
+  META:  "#5179c4",  // muted Meta blue
+  NOW:   "#2a4f5e",  // deep ServiceNow teal
+  UNH:   "#486b96",  // muted UnitedHealth blue
+  PENG:  "#d8af50",  // muted Penguin gold
+  ASTS:  "#1c2a4a",  // dark navy
+};
+
+// Per-holding tile treatment. "ring" keeps the tile white with a soft
+// colored halo (better for color-rich/light logos); "fill" paints the tile
+// in the brand color (used for logos designed for dark/colored backgrounds).
+const TICKER_LOGO_TREATMENT: Record<string, "ring" | "fill"> = {
+  VOO:   "ring",
+  SMH:   "ring",
+  AMD:   "ring",
+  GOOGL: "ring",
+  MELI:  "ring",
+  CRWD:  "ring",
+  META:  "ring",
+  UNH:   "ring",
+  FBTC:  "fill",
+  NBIS:  "fill",
+  NOW:   "fill",
+  RKLB:  "fill",
+  ASTS:  "fill",
+  PENG:  "fill",
 };
 
 // Sector groups for the donut order and the sector key below it. Within each
@@ -280,6 +303,7 @@ function RothIraView() {
                   href: h.ticker in etfProfiles ? `/etfs/${h.ticker}` : `/positions/${h.ticker}`,
                   portfolioWeightPct: h.portfolioWeightPct,
                   color: TICKER_BRAND_COLORS[h.ticker] ?? "#5a6e82",
+                  accentStyle: TICKER_LOGO_TREATMENT[h.ticker] ?? "ring",
                 }))}
               />
             </div>
