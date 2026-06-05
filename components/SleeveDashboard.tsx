@@ -15,6 +15,8 @@ export interface SleeveDashboardHolding {
   name: string;
   href: string;
   portfolioWeightPct: number;
+  /** Optional category color used for the tile background and donut slice. */
+  color?: string;
 }
 
 // Muted but distinct palette tuned to the cream page background. Cycles for
@@ -99,6 +101,7 @@ export default function SleeveDashboard({
   subtitle,
   holdings,
   donutWide = false,
+  showLegend = true,
 }: {
   label?: string;
   /** Optional. Omit when the page already provides its own title block. */
@@ -108,6 +111,9 @@ export default function SleeveDashboard({
   holdings: SleeveDashboardHolding[];
   /** When true, the portfolio-weighting donut spans the full section width. */
   donutWide?: boolean;
+  /** When false, the per-ticker legend below the donut is suppressed
+   *  (useful when the page renders its own category color key). */
+  showLegend?: boolean;
 }) {
   const router = useRouter();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
@@ -120,7 +126,7 @@ export default function SleeveDashboard({
     name: h.name,
     href: h.href,
     value: h.portfolioWeightPct,
-    color: SLICE_COLORS[i % SLICE_COLORS.length],
+    color: h.color ?? SLICE_COLORS[i % SLICE_COLORS.length],
   }));
 
   return (
@@ -174,7 +180,12 @@ export default function SleeveDashboard({
               className="group flex flex-col items-center"
             >
               <span className="block transition-transform group-hover:-translate-y-0.5">
-                <TickerLogo ticker={h.ticker} name={h.name} size="xl" />
+                <TickerLogo
+                  ticker={h.ticker}
+                  name={h.name}
+                  size="xl"
+                  accentColor={h.color}
+                />
               </span>
               <span
                 className="mt-4 font-mono text-[13px] font-semibold tracking-[0.1em]"
@@ -249,33 +260,36 @@ export default function SleeveDashboard({
             </ResponsiveContainer>
           </div>
 
-          {/* Legend — hover dims non-matching slices; click routes to the holding page */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {pieData.map((d, i) => {
-              const dimmed = activeIdx !== null && activeIdx !== i;
-              return (
-                <Link
-                  key={d.ticker}
-                  href={d.href}
-                  onMouseEnter={() => setActiveIdx(i)}
-                  onMouseLeave={() => setActiveIdx(null)}
-                  className="flex items-center gap-2 transition-opacity"
-                  style={{ opacity: dimmed ? 0.4 : 1 }}
-                  aria-label={`${d.name} (${d.ticker})`}
-                >
-                  <span
-                    className="inline-block h-2.5 w-2.5 rounded-full"
-                    style={{ background: d.color }}
-                    aria-hidden
-                  />
-                  <span className="font-mono text-[11px] tracking-[0.08em] text-[#3d4f66]">
-                    {d.ticker}{" "}
-                    <span className="text-[#7a8799]">{d.value.toFixed(2)}%</span>
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
+          {/* Legend — hover dims non-matching slices; click routes to the holding page.
+              Pages that render their own category color key can suppress this via showLegend={false}. */}
+          {showLegend && (
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              {pieData.map((d, i) => {
+                const dimmed = activeIdx !== null && activeIdx !== i;
+                return (
+                  <Link
+                    key={d.ticker}
+                    href={d.href}
+                    onMouseEnter={() => setActiveIdx(i)}
+                    onMouseLeave={() => setActiveIdx(null)}
+                    className="flex items-center gap-2 transition-opacity"
+                    style={{ opacity: dimmed ? 0.4 : 1 }}
+                    aria-label={`${d.name} (${d.ticker})`}
+                  >
+                    <span
+                      className="inline-block h-2.5 w-2.5 rounded-full"
+                      style={{ background: d.color }}
+                      aria-hidden
+                    />
+                    <span className="font-mono text-[11px] tracking-[0.08em] text-[#3d4f66]">
+                      {d.ticker}{" "}
+                      <span className="text-[#7a8799]">{d.value.toFixed(2)}%</span>
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
           {/* Sanity check — if total !== ~100, surface a quiet note (debug only) */}
           {Math.abs(total - 100) > 0.5 && (
             <p className="mt-3 text-center font-mono text-[9px] text-[#b0bac5]">

@@ -91,12 +91,19 @@ export default function TickerLogo({
   name,
   size = "md",
   className,
+  accentColor,
 }: {
   ticker: string;
   /** Optional full company name; used for the image alt text. */
   name?: string;
   size?: "sm" | "md" | "lg" | "xl";
   className?: string;
+  /**
+   * Optional category color used as the tile background. When set, the tile
+   * reads as a colored badge instead of a plain white disk. Defaults to
+   * white when omitted so prior callers stay unchanged.
+   */
+  accentColor?: string;
 }) {
   const { box, font, radius } = SIZE_MAP[size];
   const upper = ticker.toUpperCase();
@@ -111,9 +118,13 @@ export default function TickerLogo({
     width: box,
     height: box,
     borderRadius: radius,
-    background: "#ffffff",
-    border: "1px solid rgba(15,30,53,0.10)",
-    boxShadow: "0 1px 2px rgba(15,30,53,0.04)",
+    background: accentColor ?? "#ffffff",
+    border: accentColor
+      ? "1px solid rgba(15,30,53,0.18)"
+      : "1px solid rgba(15,30,53,0.10)",
+    boxShadow: accentColor
+      ? "0 2px 6px rgba(15,30,53,0.10)"
+      : "0 1px 2px rgba(15,30,53,0.04)",
     overflow: "hidden",
     flexShrink: 0,
   };

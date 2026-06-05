@@ -7,7 +7,6 @@ import { etfProfiles } from "@/data/etfConstituents";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
 import SleeveDashboard from "@/components/SleeveDashboard";
-import MiniDonut from "@/components/MiniDonut";
 import { getPreviousHoldingsBySleeve } from "@/data/previousHoldings";
 
 export function generateStaticParams() {
@@ -149,27 +148,62 @@ function RetailView() {
   );
 }
 
+// ── Roth IRA color system ─────────────────────────────────────────────────────
+// One color per category. The same value drives the tile background AND the
+// matching donut slice so the page reads as one coordinated visual. Tech
+// categories share a coordinated blue family; non-tech accents stay muted
+// (olive for digital assets, warm sand for healthcare). Keep this list in
+// sync with the `categorize` mapping inside RothIraView.
+
+const CATEGORY_COLORS: Record<string, string> = {
+  "Core Market":          "#1a2845",
+  "AI / Semiconductors":  "#6a82a3",
+  "Internet / AI":        "#4a6c8c",
+  "Platform Tech":        "#5d7ea0",
+  "Cybersecurity":        "#7a8694",
+  "Enterprise Software":  "#4d7a82",
+  "Space / Defense":      "#7a9088",
+  "Digital Assets":       "#b5a96a",
+  "Healthcare":           "#c19a72",
+};
+
+// Display order for the legend / color key (also used to filter to categories
+// actually present in the current Roth holdings).
+const CATEGORY_ORDER = [
+  "Core Market",
+  "AI / Semiconductors",
+  "Internet / AI",
+  "Platform Tech",
+  "Cybersecurity",
+  "Enterprise Software",
+  "Space / Defense",
+  "Digital Assets",
+  "Healthcare",
+];
+
 // ── Roth IRA view ─────────────────────────────────────────────────────────────
 
 function RothIraView() {
   const color = "#1a4a2e";
 
-  // Category aggregations for the sub-donut row. Group weights by theme,
-  // market cap, and asset type. Holdings without a marketCap (crypto-linked
-  // ETFs) bucket as "Crypto-linked".
-  const aggregate = (keyFn: (h: typeof rothIraHoldings[number]) => string) => {
-    const m = new Map<string, number>();
-    for (const h of rothIraHoldings) {
-      const k = keyFn(h);
-      m.set(k, (m.get(k) ?? 0) + h.portfolioWeightPct);
-    }
-    return [...m.entries()]
-      .map(([name, value]) => ({ name, value }))
-      .sort((a, b) => b.value - a.value);
+  // Category color system. Each holding maps to one bucket below; the same
+  // color drives the tile background AND the matching donut slice so the
+  // page reads as one coordinated visual system. Tech buckets stay in a
+  // coordinated blue family; non-tech buckets use restrained warm accents.
+  const categorize = (h: typeof rothIraHoldings[number]): string => {
+    if (h.subcategory === "Internet / AI") return "Internet / AI";
+    if (h.subcategory === "Cybersecurity") return "Cybersecurity";
+    if (h.subcategory === "Enterprise SaaS") return "Enterprise Software";
+    return h.theme ?? "Other";
   };
-  const themeData = aggregate((h) => h.theme ?? "Other");
-  const capData = aggregate((h) => h.marketCap ?? "Crypto-linked");
-  const typeData = aggregate((h) => h.assetType);
+  const tickersByCategory = new Map<string, string[]>();
+  for (const h of rothIraHoldings) {
+    const c = categorize(h);
+    const arr = tickersByCategory.get(c) ?? [];
+    arr.push(h.ticker);
+    tickersByCategory.set(c, arr);
+  }
+  const visibleCategories = CATEGORY_ORDER.filter((c) => tickersByCategory.has(c));
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
@@ -223,7 +257,10 @@ function RothIraView() {
             </div>
           </section>
 
-          {/* Holdings — circular tiles + full-width portfolio weighting donut */}
+          {/* Holdings — circular tiles + full-width portfolio weighting donut.
+              Per-holding color drives both the tile background and the donut
+              slice. The per-ticker legend is suppressed; the page renders its
+              own category color key below. */}
           <section
             className="border-b"
             style={{ borderColor: "rgba(15,30,53,0.08)" }}
@@ -232,32 +269,51 @@ function RothIraView() {
               <SleeveDashboard
                 label="Holdings"
                 donutWide
+                showLegend={false}
                 holdings={rothIraHoldings.map((h) => ({
                   ticker: h.ticker,
                   name: h.company,
                   href: h.ticker in etfProfiles ? `/etfs/${h.ticker}` : `/positions/${h.ticker}`,
                   portfolioWeightPct: h.portfolioWeightPct,
+                  color: CATEGORY_COLORS[categorize(h)] ?? "#5a6e82",
                 }))}
               />
             </div>
           </section>
 
-          {/* Composition: three sub-donut breakdowns */}
+          {/* Category color key — one row per sector with swatch, name, and
+              tickers in that bucket. Mirrors the colors used in the tiles
+              and donut so the page reads as one coordinated system. */}
           <section
             className="border-b"
             style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
           >
-            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Composition
+            <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
+              <p className="mb-2 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[#5a6e82]">
+                Color Key · Sector &amp; Category
               </p>
-              <p className="mb-10 font-mono text-[10px] text-[#5a6e82]">
-                Weights aggregated across the Roth IRA active holdings.
+              <p className="mb-10 text-center font-mono text-[10px] text-[#7a8799]">
+                Tech buckets share a coordinated blue family. Non-tech buckets use restrained warm accents.
               </p>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-                <MiniDonut title="Theme" data={themeData} />
-                <MiniDonut title="Market Cap" data={capData} />
-                <MiniDonut title="Asset Type" data={typeData} />
+              <div className="mx-auto grid max-w-5xl gap-x-8 gap-y-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {visibleCategories.map((cat) => (
+                  <div key={cat} className="flex items-center gap-3">
+                    <span
+                      className="inline-block h-3 w-3 shrink-0 rounded-full"
+                      style={{
+                        background: CATEGORY_COLORS[cat],
+                        boxShadow: "0 0 0 1px rgba(15,30,53,0.06)",
+                      }}
+                      aria-hidden
+                    />
+                    <div className="min-w-0">
+                      <p className="text-[12.5px] font-medium text-[#0f1e35]">{cat}</p>
+                      <p className="font-mono text-[10px] tracking-[0.06em] text-[#7a8799]">
+                        {(tickersByCategory.get(cat) ?? []).join(" · ")}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
