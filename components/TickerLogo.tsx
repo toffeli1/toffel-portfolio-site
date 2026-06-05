@@ -57,6 +57,23 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
   SATL:  "/logos/satellogic.svg",
 };
 
+// Per-ticker scale tuning (max width/height of the logo image as a % of the
+// container box). Compact marks can run larger; wide wordmarks stay smaller
+// so they don't crowd the circle edges. Unmapped tickers use DEFAULT_SCALE.
+const TICKER_LOGO_SCALE: Record<string, string> = {
+  QQQM: "74%",
+  SMH:  "70%",
+  VOO:  "62%",
+  FBTC: "68%",
+  QTUM: "74%",
+  MU:   "74%",
+  OUST: "74%",
+  PENG: "72%",
+  NVTS: "72%",
+  FLY:  "72%",
+};
+const DEFAULT_SCALE = "72%";
+
 export default function TickerLogo({
   ticker,
   name,
@@ -90,19 +107,24 @@ export default function TickerLogo({
   };
 
   if (useImage) {
+    const scale = TICKER_LOGO_SCALE[upper] ?? DEFAULT_SCALE;
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={assetFile}
-        alt={name ? `${name} logo` : `${upper} logo`}
-        onError={() => setImgFailed(true)}
-        className={className}
-        style={{
-          ...containerStyle,
-          objectFit: "contain",
-          padding: Math.round(box * 0.12),
-        }}
-      />
+      <span className={className} style={containerStyle}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={assetFile}
+          alt={name ? `${name} logo` : `${upper} logo`}
+          onError={() => setImgFailed(true)}
+          style={{
+            maxWidth: scale,
+            maxHeight: scale,
+            width: "auto",
+            height: "auto",
+            objectFit: "contain",
+            display: "block",
+          }}
+        />
+      </span>
     );
   }
 
