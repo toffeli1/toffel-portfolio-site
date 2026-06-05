@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { portfolios, getPortfolio } from "@/data/portfolios";
 import { holdings, type Holding } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
+import { getSleeveThesis } from "@/data/sleeveTheses";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
 import TickerLogo from "@/components/TickerLogo";
@@ -213,7 +214,17 @@ function FundBox({
                       </Link>
                     </div>
                   </td>
-                  <td className="px-5 py-4 text-[13px] text-[#2d3d52]">{h.company}</td>
+                  <td className="px-5 py-4">
+                    <p className="text-[13px] text-[#2d3d52]">{h.company}</p>
+                    {(() => {
+                      const t = getSleeveThesis(h.sourceKey);
+                      return t?.roleInPortfolio ? (
+                        <p className="mt-0.5 text-[10.5px] leading-[1.5] text-[#7a8799]">
+                          {t.roleInPortfolio}
+                        </p>
+                      ) : null;
+                    })()}
+                  </td>
                   <td className="px-5 py-4 text-right font-mono text-[12px] tabular-nums text-[#3d4f66]">
                     {fmtShares(h.shares)}
                   </td>
