@@ -194,6 +194,10 @@ const TICKER_LOGO_TREATMENT: Record<string, "ring" | "fill"> = {
   PENG:  "fill",
 };
 
+// Tickers whose ring should render thinner / lower-opacity for a cleaner,
+// less-strong border. Applies only when the ticker uses the "ring" treatment.
+const TICKER_RING_SOFT: Set<string> = new Set(["GOOGL", "META"]);
+
 // Sector groups for the donut order and the sector key below it. Within each
 // sector, holdings are sorted by weight (desc) at render time so the largest
 // position in each group leads.
@@ -304,6 +308,7 @@ function RothIraView() {
                   portfolioWeightPct: h.portfolioWeightPct,
                   color: TICKER_BRAND_COLORS[h.ticker] ?? "#5a6e82",
                   accentStyle: TICKER_LOGO_TREATMENT[h.ticker] ?? "ring",
+                  accentRingSoft: TICKER_RING_SOFT.has(h.ticker),
                 }))}
               />
             </div>

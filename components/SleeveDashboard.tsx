@@ -19,6 +19,8 @@ export interface SleeveDashboardHolding {
   color?: string;
   /** "fill" paints the tile in `color`; "ring" keeps it white with a colored halo. */
   accentStyle?: "fill" | "ring";
+  /** When ringed, render a softer / thinner halo. */
+  accentRingSoft?: boolean;
 }
 
 // Muted but distinct palette tuned to the cream page background. Cycles for
@@ -188,6 +190,7 @@ export default function SleeveDashboard({
                   size="xl"
                   accentColor={h.color}
                   accentStyle={h.accentStyle}
+                  accentRingSoft={h.accentRingSoft}
                 />
               </span>
               <span

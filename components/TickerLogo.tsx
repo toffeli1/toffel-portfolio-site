@@ -65,7 +65,7 @@ const TICKER_LOGO_SCALE: Record<string, string> = {
   QQQM: "86%",
   SMH:  "122%",  // ring tile — VanEck wordmark zoomed further
   VOO:  "118%",  // ring tile — bigger Vanguard V
-  FBTC: "100%",  // fill tile — Bitcoin symbol fills the orange circle
+  FBTC: "138%",  // fill tile — orange Bitcoin coin fills the badge, white padding around the PNG clips out
   QTUM: "84%",
   MU:   "86%",
   OUST: "86%",
@@ -75,16 +75,25 @@ const TICKER_LOGO_SCALE: Record<string, string> = {
   // Roth IRA active holdings
   AMD:  "86%",
   NBIS: "88%",
-  GOOGL:"84%",
+  GOOGL: "116%",  // ring tile — bigger Google G
   MELI: "86%",
   CRWD: "96%",   // ring tile — let the eagle badge fill the circle
   RKLB: "130%",  // fill tile — Rocket Lab mark runs to the edges
-  META: "78%",   // ring tile — slightly smaller so the infinity isn't cropped
+  META: "106%",  // ring tile — slightly larger but not cropped
   NOW:  "122%",  // fill tile — wordmark fills the teal badge
   UNH:  "74%",   // compact U mark — keep restrained
   ASTS: "92%",   // dark bg wordmark
 };
 const DEFAULT_SCALE = "82%";
+
+function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace("#", "");
+  if (h.length !== 6) return hex;
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 export default function TickerLogo({
   ticker,
@@ -93,6 +102,7 @@ export default function TickerLogo({
   className,
   accentColor,
   accentStyle = "fill",
+  accentRingSoft = false,
 }: {
   ticker: string;
   /** Optional full company name; used for the image alt text. */
@@ -107,6 +117,9 @@ export default function TickerLogo({
   /** "fill" paints the whole tile in accentColor; "ring" keeps the tile
    *  white and wraps it in a colored halo. */
   accentStyle?: "fill" | "ring";
+  /** When ringed, render a thinner / lower-opacity halo so the border feels
+   *  softer (used for tickers whose ring read as too strong). */
+  accentRingSoft?: boolean;
 }) {
   const { box, font, radius } = SIZE_MAP[size];
   const upper = ticker.toUpperCase();
@@ -131,7 +144,9 @@ export default function TickerLogo({
     // Ring treatment: 2px colored halo via box-shadow so the inner 112px stays
     // fully white. Drop shadow stays subtle in both modes.
     boxShadow: ringed
-      ? `0 0 0 2px ${accentColor}, 0 2px 6px rgba(15,30,53,0.08)`
+      ? accentRingSoft
+        ? `0 0 0 1.5px ${hexToRgba(accentColor!, 0.55)}, 0 2px 6px rgba(15,30,53,0.06)`
+        : `0 0 0 2px ${accentColor}, 0 2px 6px rgba(15,30,53,0.08)`
       : filled
       ? "0 2px 6px rgba(15,30,53,0.10)"
       : "0 1px 2px rgba(15,30,53,0.04)",
