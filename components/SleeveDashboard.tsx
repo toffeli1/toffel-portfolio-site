@@ -6,7 +6,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import TickerLogo from "./TickerLogo";
 
@@ -106,6 +106,7 @@ export default function SleeveDashboard({
   holdings,
   donutWide = false,
   showLegend = true,
+  donutSidePanel,
 }: {
   label?: string;
   /** Optional. Omit when the page already provides its own title block. */
@@ -118,6 +119,9 @@ export default function SleeveDashboard({
   /** When false, the per-ticker legend below the donut is suppressed
    *  (useful when the page renders its own category color key). */
   showLegend?: boolean;
+  /** Optional content rendered alongside the donut inside the same card.
+   *  When provided, the panel switches to a 2-column layout on md+. */
+  donutSidePanel?: ReactNode;
 }) {
   const router = useRouter();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
@@ -203,68 +207,136 @@ export default function SleeveDashboard({
           ))}
         </div>
 
-        {/* Portfolio weighting donut */}
-        <div className="mt-14">
-          <p className="text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[#5a6e82]">
-            Portfolio Weighting
-          </p>
-          <div
-            className={
-              donutWide
-                ? "mx-auto mt-6 h-[520px] w-full"
-                : "mx-auto mt-6 h-[340px] w-full max-w-xl"
-            }
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart margin={{ top: 32, right: 32, bottom: 32, left: 32 }}>
-                <Tooltip
-                  content={<CustomTooltip />}
-                  wrapperStyle={{ outline: "none" }}
-                  cursor={false}
-                />
-                <Pie
-                  data={pieData}
-                  dataKey="value"
-                  nameKey="ticker"
-                  innerRadius={donutWide ? "52%" : "55%"}
-                  outerRadius={donutWide ? "82%" : "78%"}
-                  paddingAngle={1.5}
-                  stroke="#faf7f2"
-                  strokeWidth={2}
-                  isAnimationActive={false}
-                  onMouseEnter={(_, idx) => setActiveIdx(idx)}
-                  onMouseLeave={() => setActiveIdx(null)}
-                  onClick={(_, idx) => {
-                    const href = pieData[idx]?.href;
-                    if (href) router.push(href);
-                  }}
-                  style={{ cursor: "pointer" }}
-                  label={
-                    showSliceLabels
-                      ? ({ value }) => `${value.toFixed(2)}%`
-                      : false
-                  }
-                  labelLine={
-                    showSliceLabels
-                      ? { stroke: "#5a6e82", strokeWidth: 0.75 }
-                      : false
-                  }
-                >
-                  {pieData.map((d, i) => {
-                    const dimmed = activeIdx !== null && activeIdx !== i;
-                    return (
-                      <Cell
-                        key={d.ticker}
-                        fill={d.color}
-                        fillOpacity={dimmed ? 0.35 : 1}
-                        style={{ cursor: "pointer", outline: "none" }}
+        {/* Portfolio weighting — single card containing title, donut, and an
+            optional side panel (e.g. sector key) so the section reads as one
+            unified visual rather than separate floating pieces. */}
+        <div
+          className="mt-14 rounded-2xl"
+          style={{
+            background: "#ffffff",
+            border: "1px solid rgba(15,30,53,0.09)",
+            boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+          }}
+        >
+          <div className="px-7 py-8 lg:px-12 lg:py-10">
+            <p className="text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[#5a6e82]">
+              Portfolio Weighting
+            </p>
+
+            {donutSidePanel ? (
+              <div className="mt-8 grid gap-8 md:gap-10 lg:gap-14 md:grid-cols-[42%_minmax(0,1fr)]">
+                <div className="h-[380px] md:h-[460px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart margin={{ top: 20, right: 16, bottom: 20, left: 16 }}>
+                      <Tooltip
+                        content={<CustomTooltip />}
+                        wrapperStyle={{ outline: "none" }}
+                        cursor={false}
                       />
-                    );
-                  })}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                      <Pie
+                        data={pieData}
+                        dataKey="value"
+                        nameKey="ticker"
+                        innerRadius="55%"
+                        outerRadius="86%"
+                        paddingAngle={1.5}
+                        stroke="#ffffff"
+                        strokeWidth={2}
+                        isAnimationActive={false}
+                        onMouseEnter={(_, idx) => setActiveIdx(idx)}
+                        onMouseLeave={() => setActiveIdx(null)}
+                        onClick={(_, idx) => {
+                          const href = pieData[idx]?.href;
+                          if (href) router.push(href);
+                        }}
+                        style={{ cursor: "pointer" }}
+                        label={
+                          showSliceLabels
+                            ? ({ value }) => `${value.toFixed(2)}%`
+                            : false
+                        }
+                        labelLine={
+                          showSliceLabels
+                            ? { stroke: "#5a6e82", strokeWidth: 0.75 }
+                            : false
+                        }
+                      >
+                        {pieData.map((d, i) => {
+                          const dimmed = activeIdx !== null && activeIdx !== i;
+                          return (
+                            <Cell
+                              key={d.ticker}
+                              fill={d.color}
+                              fillOpacity={dimmed ? 0.35 : 1}
+                              style={{ cursor: "pointer", outline: "none" }}
+                            />
+                          );
+                        })}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="self-center">{donutSidePanel}</div>
+              </div>
+            ) : (
+              <div
+                className={
+                  donutWide
+                    ? "mx-auto mt-6 h-[520px] w-full"
+                    : "mx-auto mt-6 h-[340px] w-full max-w-xl"
+                }
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart margin={{ top: 32, right: 32, bottom: 32, left: 32 }}>
+                    <Tooltip
+                      content={<CustomTooltip />}
+                      wrapperStyle={{ outline: "none" }}
+                      cursor={false}
+                    />
+                    <Pie
+                      data={pieData}
+                      dataKey="value"
+                      nameKey="ticker"
+                      innerRadius={donutWide ? "52%" : "55%"}
+                      outerRadius={donutWide ? "82%" : "78%"}
+                      paddingAngle={1.5}
+                      stroke="#faf7f2"
+                      strokeWidth={2}
+                      isAnimationActive={false}
+                      onMouseEnter={(_, idx) => setActiveIdx(idx)}
+                      onMouseLeave={() => setActiveIdx(null)}
+                      onClick={(_, idx) => {
+                        const href = pieData[idx]?.href;
+                        if (href) router.push(href);
+                      }}
+                      style={{ cursor: "pointer" }}
+                      label={
+                        showSliceLabels
+                          ? ({ value }) => `${value.toFixed(2)}%`
+                          : false
+                      }
+                      labelLine={
+                        showSliceLabels
+                          ? { stroke: "#5a6e82", strokeWidth: 0.75 }
+                          : false
+                      }
+                    >
+                      {pieData.map((d, i) => {
+                        const dimmed = activeIdx !== null && activeIdx !== i;
+                        return (
+                          <Cell
+                            key={d.ticker}
+                            fill={d.color}
+                            fillOpacity={dimmed ? 0.35 : 1}
+                            style={{ cursor: "pointer", outline: "none" }}
+                          />
+                        );
+                      })}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            )}
 
           {/* Legend — hover dims non-matching slices; click routes to the holding page.
               Pages that render their own category color key can suppress this via showLegend={false}. */}
@@ -302,6 +374,7 @@ export default function SleeveDashboard({
               Weights sum to {total.toFixed(2)}%
             </p>
           )}
+          </div>
         </div>
       </div>
     </div>

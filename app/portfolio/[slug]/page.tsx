@@ -310,53 +310,45 @@ function RothIraView() {
                   accentStyle: TICKER_LOGO_TREATMENT[h.ticker] ?? "ring",
                   accentRingSoft: TICKER_RING_SOFT.has(h.ticker),
                 }))}
-              />
-            </div>
-          </section>
-
-          {/* Sector key — groups the active Roth holdings by sector and
-              renders each ticker as a brand-color chip. Mirrors the donut's
-              arc order so the page reads as one coordinated system. */}
-          <section
-            className="border-b"
-            style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
-          >
-            <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
-              <p className="mb-2 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[#5a6e82]">
-                Sectors
-              </p>
-              <p className="mb-10 text-center font-mono text-[10px] text-[#7a8799]">
-                Slice colors come from each holding&apos;s brand identity. Holdings are arranged by sector so related names sit next to each other.
-              </p>
-              <div className="mx-auto grid max-w-5xl gap-x-10 gap-y-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                {sectorGroups.map(({ sector, tickers }) => (
-                  <div key={sector} className="min-w-0">
-                    <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.22em] text-[#5a6e82]">
-                      {sector}
-                    </p>
-                    <ul className="space-y-1.5">
-                      {tickers.map((t) => (
-                        <li key={t} className="flex items-center gap-2.5">
-                          <span
-                            className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
-                            style={{
-                              background: TICKER_BRAND_COLORS[t] ?? "#5a6e82",
-                              boxShadow: "0 0 0 1px rgba(15,30,53,0.08)",
-                            }}
-                            aria-hidden
-                          />
-                          <span className="font-mono text-[11.5px] tracking-[0.06em] text-[#0f1e35]">
-                            {t}
-                          </span>
-                          <span className="truncate text-[11px] text-[#5a6e82]">
-                            {byTicker.get(t)?.company}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
+                donutSidePanel={
+                  <div className="space-y-5">
+                    {sectorGroups.map(({ sector, tickers }) => (
+                      <div key={sector}>
+                        <p className="mb-2 font-mono text-[9.5px] uppercase tracking-[0.22em] text-[#7a8799]">
+                          {sector}
+                        </p>
+                        <ul className="space-y-1.5">
+                          {tickers.map((t) => {
+                            const h = byTicker.get(t);
+                            if (!h) return null;
+                            return (
+                              <li key={t} className="flex items-center gap-3">
+                                <span
+                                  className="inline-block h-2 w-2 shrink-0 rounded-full"
+                                  style={{
+                                    background: TICKER_BRAND_COLORS[t] ?? "#5a6e82",
+                                    boxShadow: "0 0 0 1px rgba(15,30,53,0.08)",
+                                  }}
+                                  aria-hidden
+                                />
+                                <span className="w-11 shrink-0 font-mono text-[11px] font-semibold tracking-[0.04em] text-[#0f1e35]">
+                                  {t}
+                                </span>
+                                <span className="min-w-0 flex-1 truncate text-[11.5px] text-[#3d4f66]">
+                                  {h.company}
+                                </span>
+                                <span className="shrink-0 font-mono text-[10.5px] tabular-nums text-[#7a8799]">
+                                  {h.portfolioWeightPct.toFixed(2)}%
+                                </span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                }
+              />
             </div>
           </section>
 
