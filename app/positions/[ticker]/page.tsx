@@ -11,7 +11,7 @@ import { LiveReturnBadge } from "@/components/LiveReturnBadge";
 import { ChartWrapper } from "@/components/ChartWrapper";
 import { ReturnSinceSection } from "@/components/ReturnSinceSection";
 import DerivedRothWeight from "@/components/DerivedRothWeight";
-import { positionLots, positionAverageCost } from "@/lib/positionLots";
+import { positionLots, positionAverageCost, positionEvents } from "@/lib/positionLots";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -118,7 +118,11 @@ export default async function PositionPage({
   const chartTicker = detail?.chartSymbol ?? ticker;
 
   // Purchase lots take priority over the legacy single entry marker.
-  const lots = positionLots[ticker];
+  // Prefer full historical events when present so chart markers include all
+  // buys and sells (independent of FIFO). Fall back to FIFO-survivor lots.
+  const events = positionEvents[ticker];
+  const lots = events?.buys ?? positionLots[ticker];
+  const sellEvents = events?.sells;
   const avgCost = positionAverageCost[ticker];
 
   // Entry marker: only used when no per-lot data is available.
@@ -310,7 +314,7 @@ export default async function PositionPage({
           {/* ── Chart ─────────────────────────────────────────────────────── */}
           <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
             <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-              <ChartWrapper ticker={chartTicker} entryMarker={entryMarker} purchaseLots={lots} averageCost={avgCost} />
+              <ChartWrapper ticker={chartTicker} entryMarker={entryMarker} purchaseLots={lots} sellEvents={sellEvents} averageCost={avgCost} />
             </div>
           </section>
 

@@ -11,12 +11,45 @@ export interface PurchaseLot {
   isRecurring?: boolean; // automatic recurring investment
 }
 
+// Full historical transactions (buys + sells) for chart marker rendering.
+// Kept separate from `positionLots` because chart markers must show all
+// historical events — including sells — independent of FIFO accounting.
+// When a ticker has a `positionEvents` entry, the chart uses it instead of
+// `positionLots` for buy dots, and uses `.sells` for the open square markers.
+// Tickers without `positionEvents` keep falling back to `positionLots`.
+
+export interface SellEvent {
+  date: string;          // "YYYY-MM-DD"
+  shares: number;        // sold share count
+  pricePerShare: number; // execution price
+  amountUsd: number;     // proceeds in USD
+}
+
+export interface PositionEvents {
+  buys: PurchaseLot[];   // original buy events (no FIFO consumption)
+  sells: SellEvent[];    // original sell events
+}
+
 // ── FIFO audit summary ───────────────────────────────────────────────────────
 //
-// AMD: 7 buys, 2 sells
-//   Sell 1: 0.306495 sh @ $163.13 on Aug 21, 2025 — FIFO: Jul 8 lot (1 sh @ $136.54) partially consumed → 0.693505 sh survive
-//   Sell 2: 0.197783 sh @ $354.00 on Apr 30, 2026 (2% trim; 10% max position rule) — FIFO: Jul 8 partial further consumed → 0.495722 sh survive
-//   Surviving: 7 lots (Jul 8 partial, Jul 15 ×2, Jan 26, Feb 3, Feb 4 ×2)
+// AMD: 7 buys, 6 sells. Total bought 10.15206 sh, total sold 6.15206 sh,
+//   surviving 4 sh @ $225.20 avg ($900.79 total cost).
+//   FIFO consumption chain (buy lots in chronological order A-G):
+//     A: 1.0     @ $136.54  (Jul 8 2025)
+//     B: 1.60525 @ $155.74  (Jul 15 2025)
+//     C: 1.04681 @ $156.67  (Jul 15 2025)
+//     D: 1.5     @ $254.24  (Jan 26 2026)
+//     E: 3.0     @ $238.90  (Feb 3 2026)
+//     F: 1.0     @ $220.00  (Feb 4 2026)
+//     G: 1.0     @ $202.99  (Feb 4 2026)
+//   Aug 21 sell (0.306495)  → A partially consumed → A: 0.693505 left
+//   Apr 30 sell (1.38873)   → A fully + B partially → B: 0.910025 left
+//   May 11 sell (0.456835)  → B further consumed → B: 0.453190 left
+//   May 14 sell (1.0)       → B fully + C partially → C: 0.500000 left
+//   May 18 sell (1.0)       → C fully + D partially → D: 1.000000 left
+//   May 31 sell (2.0)       → D fully + E partially → E: 2.000000 left
+//   Surviving lots: E (2.0), F (1.0), G (1.0) = 4 sh
+//   Full event history is stored in `positionEvents.AMD` for chart markers.
 //
 // VOO: 4 known buys + 23 recurring + 6 sells
 //   Pre-history sells (Jul 7/12/29, Aug 21 ×2) consumed pre-dataset lots
@@ -48,37 +81,15 @@ export interface PurchaseLot {
 //   Reconciles to 13.849 sh @ $50.75 avg ($702.88 total cost).
 
 export const positionLots: Record<string, PurchaseLot[]> = {
+  // Post-6-sells FIFO survivors. Full history (incl. buys consumed by sells)
+  // lives in positionEvents.AMD and drives chart markers.
   AMD: [
     {
-      date: "2025-07-08",
-      shares: 0.495722,
-      pricePerShare: 136.54,
-      amountUsd: 67.70,
-      isPartial: true,
-    },
-    {
-      date: "2025-07-15",
-      shares: 1.60525,
-      pricePerShare: 155.74,
-      amountUsd: 250.00,
-    },
-    {
-      date: "2025-07-15",
-      shares: 1.04681,
-      pricePerShare: 156.67,
-      amountUsd: 164.00,
-    },
-    {
-      date: "2026-01-26",
-      shares: 1.5,
-      pricePerShare: 254.24,
-      amountUsd: 381.35,
-    },
-    {
       date: "2026-02-03",
-      shares: 3,
+      shares: 2,
       pricePerShare: 238.90,
-      amountUsd: 716.70,
+      amountUsd: 477.80,
+      isPartial: true,
     },
     {
       date: "2026-02-04",
@@ -603,4 +614,31 @@ export const positionAverageCost: Record<string, number> = {
   NOW:   102.89,
   PENG:   50.75,    // Lot-derived ($702.88 / 13.849 sh) — matches broker aggregate
   CRWD:  671.55,
+};
+
+// ── Full historical event log (buys + sells) ─────────────────────────────────
+// Source of truth for chart markers. When a ticker is present here, the chart
+// renders dots from `.buys` and open square markers from `.sells`, regardless
+// of FIFO consumption. Tickers absent from this map fall back to positionLots
+// for buy dots (no sell markers).
+export const positionEvents: Record<string, PositionEvents> = {
+  AMD: {
+    buys: [
+      { date: "2025-07-08", shares: 1,       pricePerShare: 136.54, amountUsd: 136.54 },
+      { date: "2025-07-15", shares: 1.60525, pricePerShare: 155.74, amountUsd: 250.00 },
+      { date: "2025-07-15", shares: 1.04681, pricePerShare: 156.67, amountUsd: 164.00 },
+      { date: "2026-01-26", shares: 1.5,     pricePerShare: 254.24, amountUsd: 381.35 },
+      { date: "2026-02-03", shares: 3,       pricePerShare: 238.90, amountUsd: 716.70 },
+      { date: "2026-02-04", shares: 1,       pricePerShare: 220.00, amountUsd: 220.00 },
+      { date: "2026-02-04", shares: 1,       pricePerShare: 202.99, amountUsd: 202.99 },
+    ],
+    sells: [
+      { date: "2025-08-21", shares: 0.306495, pricePerShare: 163.13, amountUsd:   50.00 },
+      { date: "2026-04-30", shares: 1.38873,  pricePerShare: 354.59, amountUsd:  492.43 },
+      { date: "2026-05-11", shares: 0.456835, pricePerShare: 458.40, amountUsd:  209.41 },
+      { date: "2026-05-14", shares: 1,        pricePerShare: 447.91, amountUsd:  447.91 },
+      { date: "2026-05-18", shares: 1,        pricePerShare: 423.17, amountUsd:  423.17 },
+      { date: "2026-05-31", shares: 2,        pricePerShare: 513.00, amountUsd: 1025.97 },
+    ],
+  },
 };

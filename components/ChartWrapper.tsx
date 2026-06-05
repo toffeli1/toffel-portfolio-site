@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import type { EntryMarker, ExitMarker } from "./PositionChart";
-import type { PurchaseLot } from "@/lib/positionLots";
+import type { PurchaseLot, SellEvent } from "@/lib/positionLots";
 
 // Recharts uses browser-only APIs — load client-side only.
 const DynamicChart = dynamic(
@@ -16,6 +16,7 @@ export function ChartWrapper({
   ticker,
   entryMarker,
   purchaseLots,
+  sellEvents,
   averageCost,
   exitMarker,
   defaultRange,
@@ -23,6 +24,7 @@ export function ChartWrapper({
   ticker: string;
   entryMarker?: EntryMarker;
   purchaseLots?: PurchaseLot[];
+  sellEvents?: SellEvent[];
   averageCost?: number;
   exitMarker?: ExitMarker;
   defaultRange?: Range;
@@ -32,6 +34,7 @@ export function ChartWrapper({
       ticker={ticker}
       entryMarker={entryMarker}
       purchaseLots={purchaseLots}
+      sellEvents={sellEvents}
       averageCost={averageCost}
       exitMarker={exitMarker}
       defaultRange={defaultRange}

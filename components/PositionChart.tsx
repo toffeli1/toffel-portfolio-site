@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { HistoricalPoint } from "@/lib/types";
-import type { PurchaseLot } from "@/lib/positionLots";
+import type { PurchaseLot, SellEvent } from "@/lib/positionLots";
 
 // ── types ─────────────────────────────────────────────────────────────────────
 
@@ -179,6 +179,7 @@ export function PositionChart({
   ticker,
   entryMarker,
   purchaseLots,
+  sellEvents,
   averageCost,
   exitMarker,
   defaultRange,
@@ -186,6 +187,7 @@ export function PositionChart({
   ticker: string;
   entryMarker?: EntryMarker;
   purchaseLots?: PurchaseLot[];
+  sellEvents?: SellEvent[];
   averageCost?: number;
   exitMarker?: ExitMarker;
   defaultRange?: Range;
@@ -250,6 +252,20 @@ export function PositionChart({
     );
   }, [purchaseLots, chartData]);
 
+  // ── sell events ────────────────────────────────────────────────────────────
+  // Sells live in a parallel data store (positionEvents) and survive FIFO,
+  // so they keep rendering on the chart even when the lots they consumed are
+  // gone from positionLots.
+  const visibleSells = useMemo(() => {
+    if (!sellEvents || sellEvents.length === 0 || chartData.length === 0) return [];
+    const rangeStart = chartData[0].t;
+    const rangeEnd = chartData[chartData.length - 1].t;
+    return sellEvents.filter((s) => {
+      const t = parseLocalDate(s.date).getTime() / 1000;
+      return t >= rangeStart && t <= rangeEnd;
+    });
+  }, [sellEvents, chartData]);
+
   // ── y-range for event line bottoms ─────────────────────────────────────────
 
   const lineBottom = useMemo(() => {
@@ -304,6 +320,11 @@ export function PositionChart({
           {visibleClusters.length > 0 && (
             <p className="font-mono text-[9px] text-[#5a6e82]">
               ◎&ensp;purchase events
+            </p>
+          )}
+          {visibleSells.length > 0 && (
+            <p className="font-mono text-[9px] text-[#5a6e82]">
+              □&ensp;sell / exit events
             </p>
           )}
           {averageCost && (
@@ -623,6 +644,42 @@ export function PositionChart({
                   />
                 );
               })}
+
+              {/* Sell event markers — open red squares snapped to nearest chart point */}
+              {visibleSells.map((sell, idx) => {
+                const point = findNearestPoint(sell.date, chartData);
+                if (!point) return null;
+                return (
+                  <ReferenceDot
+                    key={`sell-${idx}`}
+                    x={point.t}
+                    y={point.c}
+                    r={0}
+                    fill="none"
+                    stroke="none"
+                    shape={((props: { cx?: number; cy?: number }) => {
+                      const cx = props.cx ?? 0;
+                      const cy = props.cy ?? 0;
+                      const s = 4.5;  // half-side; matches buy dot radius for visual parity
+                      return (
+                        <g style={{ opacity: 0.85 }}>
+                          <rect
+                            x={cx - s}
+                            y={cy - s}
+                            width={s * 2}
+                            height={s * 2}
+                            fill="none"
+                            stroke="#8b2530"
+                            strokeWidth={1.5}
+                            style={{ pointerEvents: "none" }}
+                          />
+                        </g>
+                      );
+                    }) as never}
+                  />
+                );
+              })}
+
               {/* Exit marker — vertical line + × dot */}
               {exitPoint && (
                 <>
