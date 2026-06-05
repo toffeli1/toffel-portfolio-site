@@ -70,12 +70,6 @@ export default function NavBar() {
             </Link>
           ))}
           <Link
-            href="/analytics"
-            className={navLinkClass(pathname === "/analytics")}
-          >
-            Analytics
-          </Link>
-          <Link
             href="/decision-log"
             className={navLinkClass(pathname === "/decision-log")}
           >

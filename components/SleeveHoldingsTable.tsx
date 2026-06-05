@@ -58,11 +58,6 @@ function ReturnCell({ ticker, sleeve }: { ticker: string; sleeve: string }) {
           {q.changePercent >= 0 ? "+" : ""}{q.changePercent.toFixed(2)}% today
         </span>
       )}
-      {avgCost !== null && (
-        <span className="font-mono text-[9px] tabular-nums" style={{ color: "#b0bac5" }}>
-          Avg cost: ${avgCost.toFixed(2)}
-        </span>
-      )}
     </div>
   );
 }
@@ -161,16 +156,7 @@ export default function SleeveHoldingsTable({
               borderBottom: "1px solid rgba(15,30,53,0.07)",
             }}
           >
-            {[
-              "Ticker",
-              "Company",
-              "Weight",
-              "Return",
-              "Subcategory",
-              "Geo Exposure",
-              "Mkt Cap",
-              "Type",
-            ].map((h) => (
+            {["Position", "Weight", "Return", "Category", "Type"].map((h) => (
               <th
                 key={h}
                 className="px-5 py-3.5 text-left font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]"
@@ -201,41 +187,43 @@ export default function SleeveHoldingsTable({
                 }
                 hoverStyle={{ background: "rgba(15,30,53,0.025)" }}
               >
-                {/* Ticker */}
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-2.5">
+                {/* Position: logo + ticker + company + short subtitle */}
+                <td className="px-5 py-5">
+                  <div className="flex items-start gap-3">
                     <TickerLogo ticker={h.ticker} name={h.company} size="sm" />
-                    {hasEtfDetail ? (
-                      <Link
-                        href={`/etfs/${h.ticker}`}
-                        className="font-mono text-[12px] font-bold hover:underline"
-                        style={{ color: typeColor }}
-                      >
-                        {h.ticker}
-                      </Link>
-                    ) : (
-                      <span
-                        className="font-mono text-[12px] font-bold"
-                        style={{ color: typeColor }}
-                      >
-                        {h.ticker}
-                      </span>
-                    )}
+                    <div className="min-w-0">
+                      <div className="flex items-baseline gap-2">
+                        {hasEtfDetail ? (
+                          <Link
+                            href={`/etfs/${h.ticker}`}
+                            className="font-mono text-[12px] font-bold hover:underline"
+                            style={{ color: typeColor }}
+                          >
+                            {h.ticker}
+                          </Link>
+                        ) : (
+                          <span
+                            className="font-mono text-[12px] font-bold"
+                            style={{ color: typeColor }}
+                          >
+                            {h.ticker}
+                          </span>
+                        )}
+                        <span className="text-[13px] font-medium text-[#0f1e35]">
+                          {h.company}
+                        </span>
+                      </div>
+                      {h.thesis && (
+                        <p className="mt-0.5 max-w-[320px] text-[11px] leading-[1.55] text-[#5a6e82]">
+                          {h.thesis}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </td>
 
-                {/* Company + optional thesis tooltip */}
-                <td className="px-5 py-4">
-                  <p className="text-[13px] text-[#2d3d52]">{h.company}</p>
-                  {h.thesis && (
-                    <p className="mt-0.5 max-w-[220px] text-[10px] leading-[1.5] text-[#5a6e82]">
-                      {h.thesis}
-                    </p>
-                  )}
-                </td>
-
                 {/* Weight */}
-                <td className="px-5 py-4">
+                <td className="px-5 py-5">
                   {(() => {
                     const d = derivedByTicker.get(h.ticker);
                     const pct = d?.portfolioPct ?? h.portfolioWeightPct;
@@ -247,23 +235,18 @@ export default function SleeveHoldingsTable({
                             <WeightStatusBadge status={d.weightStatus} />
                           </div>
                         )}
-                        {h.notes && (
-                          <p className="mt-0.5 font-mono text-[9px] text-[#5a6e82]">
-                            {h.notes}
-                          </p>
-                        )}
                       </>
                     );
                   })()}
                 </td>
 
                 {/* Return % */}
-                <td className="px-5 py-4">
+                <td className="px-5 py-5">
                   <ReturnCell ticker={h.ticker} sleeve={sleeve} />
                 </td>
 
-                {/* Subcategory */}
-                <td className="px-5 py-4">
+                {/* Category: subcategory becomes the single visible category label */}
+                <td className="px-5 py-5">
                   {h.subcategory && (
                     <span className="font-mono text-[11px] text-[#5a6e82]">
                       {h.subcategory}
@@ -271,18 +254,8 @@ export default function SleeveHoldingsTable({
                   )}
                 </td>
 
-                {/* Country */}
-                <td className="px-5 py-4">
-                  {h.country && <Tag label={h.country} />}
-                </td>
-
-                {/* Market Cap */}
-                <td className="px-5 py-4">
-                  {h.marketCap && <Tag label={h.marketCap} />}
-                </td>
-
                 {/* Type */}
-                <td className="px-5 py-4">
+                <td className="px-5 py-5">
                   <Tag label={h.assetType} color={typeColor} bg={typeBg} />
                 </td>
               </ClickableRow>
