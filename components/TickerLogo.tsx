@@ -63,8 +63,8 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
 const TICKER_LOGO_SCALE: Record<string, string> = {
   // 2027 / 2028 sleeves
   QQQM: "86%",
-  SMH:  "80%",
-  VOO:  "74%",
+  SMH:  "96%",   // ring tile — let the VanEck wordmark fill the badge
+  VOO:  "92%",   // ring tile — bigger Vanguard V
   FBTC: "82%",
   QTUM: "84%",
   MU:   "86%",
@@ -77,8 +77,8 @@ const TICKER_LOGO_SCALE: Record<string, string> = {
   NBIS: "88%",
   GOOGL:"84%",
   MELI: "86%",
-  CRWD: "92%",   // square red bg — let it fill
-  RKLB: "88%",   // dark bg mark
+  CRWD: "96%",   // ring tile — let the eagle badge fill the circle
+  RKLB: "96%",   // dark bg mark — let it run to the edge
   META: "84%",
   NOW:  "92%",   // dark bg wordmark
   UNH:  "74%",   // compact U mark — keep restrained
