@@ -30,7 +30,8 @@
       "Bash(git commit -m '2028 Roth Fund: replace table with circular tiles + donut dashboard *)",
       "Bash(git commit -m '2027 Roth Fund: replace table with circular tiles + donut dashboard *)",
       "Bash(git commit -m 'Logo mapping: update QTUM filename, add OUST/NVTS/FLY entries *)",
-      "Bash(git commit -m 'Logo mapping: switch 2027/2028 ticker paths from .svg to .png *)"
+      "Bash(git commit -m 'Logo mapping: switch 2027/2028 ticker paths from .svg to .png *)",
+      "Bash(git commit -m 'Donut: add chart margin so outer % labels don'\\\\''t clip *)"
     ]
   }
 }

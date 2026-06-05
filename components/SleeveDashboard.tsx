@@ -89,15 +89,15 @@ export default function SleeveDashboard({
           <p className="text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[#5a6e82]">
             Portfolio Weighting
           </p>
-          <div className="mx-auto mt-6 h-[300px] w-full max-w-xl">
+          <div className="mx-auto mt-6 h-[340px] w-full max-w-xl">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
+              <PieChart margin={{ top: 28, right: 28, bottom: 28, left: 28 }}>
                 <Pie
                   data={pieData}
                   dataKey="value"
                   nameKey="name"
-                  innerRadius="58%"
-                  outerRadius="85%"
+                  innerRadius="55%"
+                  outerRadius="78%"
                   paddingAngle={1.5}
                   stroke="#faf7f2"
                   strokeWidth={2}
