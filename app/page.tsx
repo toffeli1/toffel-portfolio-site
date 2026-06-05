@@ -132,56 +132,21 @@ export default function OverviewPage() {
           </div>
         </section>
 
-        {/* ── Sleeve Grid ──────────────────────────────────────────────────── */}
-        <section
-          className="border-b"
-          style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
-        >
-          <div className="mx-auto max-w-7xl px-6 py-24 lg:px-12">
-            <div className="mb-12 flex items-end justify-between">
-              <div>
-                <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Account Views
-                </p>
-                <h2 className="text-3xl font-bold tracking-tight text-[#0f1e35]">
-                  Two Accounts
-                </h2>
-              </div>
-              <p className="hidden font-mono text-sm text-[#7a8799] sm:block">
-                Account-level research views
-              </p>
-            </div>
-
-            <div className="grid items-start gap-5 sm:grid-cols-2">
-              <SleeveCard
-                slug="retail-with-friends"
-                subtitle="Taxable Account"
-                title="Individual Brokerage"
-                color="#1a3a5c"
-              />
-              <SleeveCard
-                slug="roth-ira"
-                subtitle="Roth IRA"
-                title="Roth Retirement Account"
-                color="#1a4a2e"
-              />
-            </div>
-          </div>
-        </section>
-
         {/* ── Portfolio as a System ─────────────────────────────────────────── */}
         <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
           <div className="mx-auto max-w-7xl px-6 py-24 lg:px-12">
-            <div className="mb-12">
-              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Framework
-              </p>
-              <h2 className="text-3xl font-bold tracking-tight text-[#0f1e35]">
-                Portfolio as a System
-              </h2>
-            </div>
+            <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-16">
+              <div>
+                <div className="mb-12">
+                  <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+                    Framework
+                  </p>
+                  <h2 className="text-3xl font-bold tracking-tight text-[#0f1e35]">
+                    Portfolio as a System
+                  </h2>
+                </div>
 
-            <div className="max-w-3xl space-y-7">
+                <div className="max-w-3xl space-y-7">
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
                 The portfolio is built as a system. Every position has a role,
                 every account has a job, and sizing reflects conviction, time
@@ -225,6 +190,36 @@ export default function OverviewPage() {
                 to reflect not only what I own, but the logic that holds the portfolio
                 together.
               </p>
+                </div>
+              </div>
+
+              {/* Account buttons — stacked vertically on md+, below on mobile */}
+              <div className="flex flex-col gap-3 md:min-w-[240px] md:pt-1">
+                <Link
+                  href="/portfolio/retail-with-friends"
+                  className="group flex items-center justify-between rounded-xl border bg-white px-5 py-3.5 transition-colors hover:bg-[#fdfaf6]"
+                  style={{ borderColor: "rgba(15,30,53,0.12)" }}
+                >
+                  <span className="text-[14px] font-medium text-[#0f1e35]">
+                    Individual Brokerage
+                  </span>
+                  <span className="font-mono text-[12px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]">
+                    →
+                  </span>
+                </Link>
+                <Link
+                  href="/portfolio/roth-ira"
+                  className="group flex items-center justify-between rounded-xl border bg-white px-5 py-3.5 transition-colors hover:bg-[#fdfaf6]"
+                  style={{ borderColor: "rgba(15,30,53,0.12)" }}
+                >
+                  <span className="text-[14px] font-medium text-[#0f1e35]">
+                    Roth IRA
+                  </span>
+                  <span className="font-mono text-[12px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]">
+                    →
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -319,45 +314,3 @@ export default function OverviewPage() {
   );
 }
 
-// ── Sleeve card ───────────────────────────────────────────────────────────────
-
-function SleeveCard({
-  slug,
-  title,
-  subtitle,
-  color,
-}: {
-  slug: string;
-  title: string;
-  subtitle: string;
-  color: string;
-}) {
-  return (
-    <Link href={`/portfolio/${slug}`} className="group block h-full">
-      <div
-        className="flex h-full flex-col justify-between rounded-2xl bg-white p-9 transition-colors hover:bg-[#fdfaf6]"
-        style={{
-          borderLeft: `3px solid ${color}`,
-          boxShadow: "0 1px 4px rgba(15,30,53,0.06)",
-        }}
-      >
-        <div>
-          <p
-            className="mb-2 font-mono text-[10px] uppercase tracking-[0.22em]"
-            style={{ color }}
-          >
-            {subtitle}
-          </p>
-          <h2 className="text-xl font-bold leading-tight tracking-tight text-[#0f1e35]">
-            {title}
-          </h2>
-        </div>
-        <div className="mt-8 flex justify-end">
-          <span className="font-mono text-[11px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]">
-            View →
-          </span>
-        </div>
-      </div>
-    </Link>
-  );
-}
