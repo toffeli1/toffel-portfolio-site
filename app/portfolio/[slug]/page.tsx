@@ -7,9 +7,8 @@ import { etfProfiles } from "@/data/etfConstituents";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
 import SleeveDashboard from "@/components/SleeveDashboard";
-import BreakdownPanel from "@/components/BreakdownPanel";
+import MiniDonut from "@/components/MiniDonut";
 import { getPreviousHoldingsBySleeve } from "@/data/previousHoldings";
-import RothThemeChart from "@/components/RothThemeChart";
 
 export function generateStaticParams() {
   return portfolios.map((p) => ({ slug: p.slug }));
@@ -155,6 +154,23 @@ function RetailView() {
 function RothIraView() {
   const color = "#1a4a2e";
 
+  // Category aggregations for the sub-donut row. Group weights by theme,
+  // market cap, and asset type. Holdings without a marketCap (crypto-linked
+  // ETFs) bucket as "Crypto-linked".
+  const aggregate = (keyFn: (h: typeof rothIraHoldings[number]) => string) => {
+    const m = new Map<string, number>();
+    for (const h of rothIraHoldings) {
+      const k = keyFn(h);
+      m.set(k, (m.get(k) ?? 0) + h.portfolioWeightPct);
+    }
+    return [...m.entries()]
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value);
+  };
+  const themeData = aggregate((h) => h.theme ?? "Other");
+  const capData = aggregate((h) => h.marketCap ?? "Crypto-linked");
+  const typeData = aggregate((h) => h.assetType);
+
   return (
     <div className="min-h-screen bg-[#faf7f2]">
       <QuotesProvider>
@@ -207,7 +223,7 @@ function RothIraView() {
             </div>
           </section>
 
-          {/* Holdings — circular tiles + portfolio weighting donut */}
+          {/* Holdings — circular tiles + full-width portfolio weighting donut */}
           <section
             className="border-b"
             style={{ borderColor: "rgba(15,30,53,0.08)" }}
@@ -215,6 +231,7 @@ function RothIraView() {
             <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
               <SleeveDashboard
                 label="Holdings"
+                donutWide
                 holdings={rothIraHoldings.map((h) => ({
                   ticker: h.ticker,
                   name: h.company,
@@ -225,7 +242,27 @@ function RothIraView() {
             </div>
           </section>
 
-          {/* Previous Holdings */}
+          {/* Composition: three sub-donut breakdowns */}
+          <section
+            className="border-b"
+            style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
+          >
+            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+                Composition
+              </p>
+              <p className="mb-10 font-mono text-[10px] text-[#5a6e82]">
+                Weights aggregated across the Roth IRA active holdings.
+              </p>
+              <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                <MiniDonut title="Theme" data={themeData} />
+                <MiniDonut title="Market Cap" data={capData} />
+                <MiniDonut title="Asset Type" data={typeData} />
+              </div>
+            </div>
+          </section>
+
+          {/* Previous Holdings — moved to the bottom */}
           {getPreviousHoldingsBySleeve("roth-ira").length > 0 && (
             <section
               className="border-b"
@@ -285,25 +322,6 @@ function RothIraView() {
               </div>
             </section>
           )}
-
-          {/* Theme composition + Breakdown */}
-          <section
-            className="border-b"
-            style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
-          >
-            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-              <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Account Themes
-              </p>
-              <RothThemeChart holdings={rothIraHoldings} />
-              <div className="mt-16">
-                <p className="mb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Portfolio Composition
-                </p>
-                <BreakdownPanel holdings={rothIraHoldings} />
-              </div>
-            </div>
-          </section>
 
         </main>
       </QuotesProvider>

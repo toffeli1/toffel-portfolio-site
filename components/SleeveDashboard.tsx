@@ -23,6 +23,7 @@ export default function SleeveDashboard({
   title,
   subtitle,
   holdings,
+  donutWide = false,
 }: {
   label?: string;
   /** Optional. Omit when the page already provides its own title block. */
@@ -30,6 +31,8 @@ export default function SleeveDashboard({
   /** Optional. Only renders when set. */
   subtitle?: string;
   holdings: SleeveDashboardHolding[];
+  /** When true, the portfolio-weighting donut spans the full section width. */
+  donutWide?: boolean;
 }) {
   // Hide outer slice labels when the donut has too many slices to label cleanly.
   const showSliceLabels = holdings.length <= 10;
@@ -108,7 +111,7 @@ export default function SleeveDashboard({
           <p className="text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[#5a6e82]">
             Portfolio Weighting
           </p>
-          <div className="mx-auto mt-6 h-[340px] w-full max-w-xl">
+          <div className={donutWide ? "mx-auto mt-6 h-[420px] w-full" : "mx-auto mt-6 h-[340px] w-full max-w-xl"}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart margin={{ top: 28, right: 28, bottom: 28, left: 28 }}>
                 <Pie
