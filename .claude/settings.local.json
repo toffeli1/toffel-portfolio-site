@@ -37,7 +37,12 @@
       "Bash(git commit -m 'TickerLogo: per-ticker scale map for bigger circle presence *)",
       "Bash(git commit -m 'Roth IRA: drop Relative Performance + Retirement Calculator sections *)",
       "Bash(find ~/Downloads ~/Desktop -maxdepth 3 -mmin -180 -iname \"*.png\" 2>/dev/null | head -25)",
-      "Read(//Users/isaactoffel/Downloads/**)"
+      "Read(//Users/isaactoffel/Downloads/**)",
+      "Bash(find ~/Downloads ~/Desktop -maxdepth 3 -iname \"*roth*\" -o -iname \"*logo*\" 2>/dev/null | head -20; echo \"---recent zips/folders---\"; find ~/Downloads -maxdepth 2 -mmin -60 2>/dev/null | head -20)",
+      "Read(//Users/isaactoffel/Desktop/**)",
+      "Bash(find ~/Downloads ~/Desktop ~/Documents /tmp -maxdepth 4 -iname \"roth*\" -o -iname \"*ira_logo*\" 2>/dev/null | head -10; echo \"---all zips mod last 24h---\"; find ~/Downloads ~/Desktop ~/Documents -maxdepth 3 -name \"*.zip\" -mtime -1 2>/dev/null | head -10)",
+      "Read(//Users/isaactoffel/Documents/**)",
+      "Bash(git commit -m 'Registry: FBTC -> /logos/fbtc.png *)"
     ],
     "additionalDirectories": [
       "/Users/isaactoffel/Downloads/portfolio_logos_png (1) (1)"

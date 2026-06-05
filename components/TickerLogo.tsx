@@ -29,7 +29,7 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
   AMD:   "/logos/amd.png",
   VOO:   "/logos/vanguard.png",
   SMH:   "/logos/vaneck.png",
-  FBTC:  "/logos/fidelity.png",
+  FBTC:  "/logos/fbtc.png",
   NBIS:  "/logos/nebius.png",
   GOOGL: "/logos/alphabet.png",
   MELI:  "/logos/mercadolibre.png",
