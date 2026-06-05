@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { portfolios, getPortfolio } from "@/data/portfolios";
-import { holdings, type Holding } from "@/data/holdings";
+import { holdings } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
-import { getSleeveThesis } from "@/data/sleeveTheses";
+import { etfProfiles } from "@/data/etfConstituents";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
-import TickerLogo from "@/components/TickerLogo";
 import SleeveDashboard from "@/components/SleeveDashboard";
 import SleeveHoldingsTable from "@/components/SleeveHoldingsTable";
 import BreakdownPanel from "@/components/BreakdownPanel";
@@ -110,14 +109,20 @@ function RetailView() {
           </div>
         </section>
 
-        {/* 2027 Roth Fund box */}
+        {/* 2027 Roth Fund — visual sleeve dashboard */}
         {fund2027.length > 0 && (
           <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-            <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-              <FundBox
+            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+              <SleeveDashboard
+                label="Sleeve View"
                 title="2027 Roth Fund"
-                subtitle="Taxable brokerage sleeve used for future Roth funding"
-                holdings={fund2027}
+                subtitle="Taxable brokerage sleeve used for future Roth funding."
+                holdings={fund2027.map((h) => ({
+                  ticker: h.ticker,
+                  name: h.company,
+                  href: h.ticker in etfProfiles ? `/etfs/${h.ticker}` : `/positions/${h.ticker}`,
+                  portfolioWeightPct: h.portfolioPct,
+                }))}
               />
             </div>
           </section>
@@ -144,121 +149,6 @@ function RetailView() {
       </main>
 
       <SleeveFooter />
-    </div>
-  );
-}
-
-// ── 2027 Roth Fund box ────────────────────────────────────────────────────────
-// Public-safe holdings card. Renders only ticker, name, shares, weight, return,
-// and purchase date. Never renders averageCost, dollar values, or market value.
-
-function fmtPurchaseDate(iso: string): string {
-  const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-function FundBox({
-  title,
-  subtitle,
-  holdings,
-}: {
-  title: string;
-  subtitle: string;
-  holdings: Holding[];
-}) {
-  return (
-    <div
-      className="overflow-hidden rounded-2xl"
-      style={{
-        background: "#ffffff",
-        border: "1px solid rgba(15,30,53,0.09)",
-        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-      }}
-    >
-      {/* Box header */}
-      <div
-        className="px-7 py-6"
-        style={{ borderBottom: "1px solid rgba(15,30,53,0.07)" }}
-      >
-        <p className="mb-1 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-          Funding sleeve
-        </p>
-        <h2 className="text-[22px] font-bold leading-none tracking-tight text-[#0f1e35]">
-          {title}
-        </h2>
-        <p className="mt-2 text-[12.5px] text-[#5a6e82]">{subtitle}</p>
-      </div>
-
-      {/* Holdings table */}
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[720px] border-collapse">
-          <thead>
-            <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
-              <th className="px-5 py-3 text-left font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Ticker</th>
-              <th className="px-5 py-3 text-left font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Name</th>
-              <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Weight</th>
-              <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Total Return</th>
-              <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Purchased</th>
-            </tr>
-          </thead>
-          <tbody>
-            {holdings.map((h, i) => {
-              const isLast = i === holdings.length - 1;
-              const isPos = h.returnPct >= 0;
-              return (
-                <tr
-                  key={h.sourceKey}
-                  style={
-                    isLast
-                      ? undefined
-                      : { borderBottom: "1px solid rgba(15,30,53,0.05)" }
-                  }
-                >
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-2.5">
-                      <TickerLogo ticker={h.ticker} name={h.company} size="sm" />
-                      <Link
-                        href={`/positions/${h.ticker}`}
-                        className="font-mono text-[12px] font-bold hover:underline"
-                        style={{ color: "#1a3a5c" }}
-                      >
-                        {h.ticker}
-                      </Link>
-                    </div>
-                  </td>
-                  <td className="px-5 py-4">
-                    <p className="text-[13px] text-[#2d3d52]">{h.company}</p>
-                    {(() => {
-                      const t = getSleeveThesis(h.sourceKey);
-                      return t?.roleInPortfolio ? (
-                        <p className="mt-0.5 text-[10.5px] leading-[1.5] text-[#7a8799]">
-                          {t.roleInPortfolio}
-                        </p>
-                      ) : null;
-                    })()}
-                  </td>
-                  <td className="px-5 py-4 text-right font-mono text-[12px] tabular-nums text-[#3d4f66]">
-                    {h.portfolioPct.toFixed(2)}%
-                  </td>
-                  <td
-                    className="px-5 py-4 text-right font-mono text-[12px] font-semibold tabular-nums"
-                    style={{ color: isPos ? "#1a4a2e" : "#8b2530" }}
-                  >
-                    {isPos ? "+" : ""}{h.returnPct.toFixed(2)}%
-                  </td>
-                  <td className="px-5 py-4 text-right font-mono text-[11px] text-[#5a6e82]">
-                    {fmtPurchaseDate(h.purchaseDate)}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
