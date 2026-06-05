@@ -3,10 +3,11 @@ import { notFound } from "next/navigation";
 import { portfolios, getPortfolio } from "@/data/portfolios";
 import { holdings, type Holding } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
-import { getSleeveThesis, type SleeveThesis } from "@/data/sleeveTheses";
+import { getSleeveThesis } from "@/data/sleeveTheses";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
 import TickerLogo from "@/components/TickerLogo";
+import SleeveDashboard from "@/components/SleeveDashboard";
 import SleeveHoldingsTable from "@/components/SleeveHoldingsTable";
 import BreakdownPanel from "@/components/BreakdownPanel";
 import { BenchmarkComparisonWrapper } from "@/components/BenchmarkComparisonWrapper";
@@ -122,36 +123,21 @@ function RetailView() {
           </section>
         )}
 
-        {/* 2028 Roth Fund box */}
+        {/* 2028 Roth Fund — visual sleeve dashboard */}
         {fund2028.length > 0 && (
           <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-            <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-              <FundBox
+            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+              <SleeveDashboard
+                label="Sleeve View"
                 title="2028 Roth Fund"
-                subtitle="Taxable brokerage sleeve used for future Roth funding"
-                holdings={fund2028}
+                subtitle="Growth-focused sleeve with high-conviction ideas and long-term potential."
+                holdings={fund2028.map((h) => ({
+                  ticker: h.ticker,
+                  name: h.company,
+                  href: `/positions/${h.ticker}`,
+                  portfolioWeightPct: h.portfolioPct,
+                }))}
               />
-            </div>
-          </section>
-        )}
-
-        {/* 2028 Roth Fund Thesis Notes */}
-        {fund2028.length > 0 && (
-          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-            <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                2028 Roth Fund · Thesis Notes
-              </p>
-              <p className="mb-8 font-mono text-[10px] text-[#5a6e82]">
-                Position-level commentary for each 2028 holding.
-              </p>
-              <div className="grid gap-5 md:grid-cols-2">
-                {fund2028.map((h) => {
-                  const t = getSleeveThesis(h.sourceKey);
-                  if (!t) return null;
-                  return <ThesisCard key={h.sourceKey} ticker={h.ticker} thesis={t} />;
-                })}
-              </div>
             </div>
           </section>
         )}
@@ -273,61 +259,6 @@ function FundBox({
           </tbody>
         </table>
       </div>
-    </div>
-  );
-}
-
-// ── Thesis card (sleeve-scoped position commentary) ───────────────────────────
-
-function ThesisCard({ ticker, thesis }: { ticker: string; thesis: SleeveThesis }) {
-  return (
-    <div
-      className="flex flex-col rounded-2xl p-6"
-      style={{
-        background: "#ffffff",
-        border: "1px solid rgba(15,30,53,0.09)",
-        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-      }}
-    >
-      <div className="mb-3 flex items-center gap-2.5">
-        <span
-          className="font-mono text-[13px] font-bold leading-none"
-          style={{ color: "#1a3a5c" }}
-        >
-          {ticker}
-        </span>
-        <span className="text-[13px] font-medium leading-none text-[#0f1e35]">
-          {thesis.name}
-        </span>
-      </div>
-      <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
-        {thesis.roleInPortfolio}
-      </p>
-      <p className="mb-4 text-[12.5px] leading-[1.75] text-[#3d4f66]">{thesis.thesis}</p>
-      <p className="mb-4 text-[12.5px] leading-[1.75] text-[#3d4f66]">{thesis.whyIOwnIt}</p>
-
-      <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
-        Key risks
-      </p>
-      <ul className="mb-4 ml-4 list-disc space-y-1 text-[12px] leading-[1.65] text-[#3d4f66]">
-        {thesis.keyRisks.map((r, i) => (
-          <li key={i}>{r}</li>
-        ))}
-      </ul>
-
-      <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
-        What I am watching
-      </p>
-      <ul className="mb-4 ml-4 list-disc space-y-1 text-[12px] leading-[1.65] text-[#3d4f66]">
-        {thesis.whatIAmWatching.map((w, i) => (
-          <li key={i}>{w}</li>
-        ))}
-      </ul>
-
-      <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
-        Sizing view
-      </p>
-      <p className="text-[12.5px] leading-[1.75] text-[#3d4f66]">{thesis.sizingView}</p>
     </div>
   );
 }

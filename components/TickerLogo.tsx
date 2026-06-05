@@ -13,10 +13,12 @@
 
 import { useState } from "react";
 
-const SIZE_MAP: Record<"sm" | "md" | "lg", { box: number; font: number; radius: number }> = {
+const SIZE_MAP: Record<"sm" | "md" | "lg" | "xl", { box: number; font: number; radius: number }> = {
   sm: { box: 24, font: 8.5, radius: 6 },
   md: { box: 32, font: 10,  radius: 7 },
   lg: { box: 56, font: 14,  radius: 10 },
+  // xl is a perfect-circle tile for sleeve dashboards (radius = box/2).
+  xl: { box: 112, font: 22, radius: 56 },
 };
 
 // Ticker → file path in /public/logos/. Drop the matching SVG/PNG into that
@@ -60,7 +62,7 @@ export default function TickerLogo({
   ticker: string;
   /** Optional full company name; used for the image alt text. */
   name?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   className?: string;
 }) {
   const { box, font, radius } = SIZE_MAP[size];
