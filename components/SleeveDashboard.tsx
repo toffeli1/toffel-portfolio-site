@@ -213,9 +213,9 @@ export default function SleeveDashboard({
         <div
           className="mt-14 rounded-2xl"
           style={{
-            background: "#ffffff",
-            border: "1px solid rgba(15,30,53,0.09)",
-            boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+            background: "rgba(250, 247, 242, 0.55)",
+            border: "1px solid rgba(15, 30, 53, 0.07)",
+            boxShadow: "none",
           }}
         >
           <div className="px-7 py-8 lg:px-12 lg:py-10">
@@ -240,7 +240,7 @@ export default function SleeveDashboard({
                         innerRadius="55%"
                         outerRadius="86%"
                         paddingAngle={1.5}
-                        stroke="#ffffff"
+                        stroke="#faf7f2"
                         strokeWidth={2}
                         isAnimationActive={false}
                         onMouseEnter={(_, idx) => setActiveIdx(idx)}

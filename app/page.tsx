@@ -194,30 +194,32 @@ export default function OverviewPage() {
               </div>
 
               {/* Account buttons — stacked vertically on md+, below on mobile */}
-              <div className="flex flex-col gap-3 md:min-w-[240px] md:pt-1">
+              <div className="flex flex-col gap-3 md:min-w-[260px] md:pt-1">
                 <Link
                   href="/portfolio/retail-with-friends"
-                  className="group flex items-center justify-between rounded-xl border bg-white px-5 py-3.5 transition-colors hover:bg-[#fdfaf6]"
-                  style={{ borderColor: "rgba(15,30,53,0.12)" }}
+                  className="block rounded-xl border text-[16px] font-semibold text-[#0f1e35] transition-all duration-150 ease-out hover:-translate-y-[1px] hover:bg-[rgba(15,30,53,0.045)]"
+                  style={{
+                    minWidth: 220,
+                    padding: "14px 18px",
+                    borderColor: "rgba(15,30,53,0.16)",
+                    background: "rgba(250,247,242,0.8)",
+                    boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+                  }}
                 >
-                  <span className="text-[14px] font-medium text-[#0f1e35]">
-                    Individual Brokerage
-                  </span>
-                  <span className="font-mono text-[12px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]">
-                    →
-                  </span>
+                  Individual Brokerage
                 </Link>
                 <Link
                   href="/portfolio/roth-ira"
-                  className="group flex items-center justify-between rounded-xl border bg-white px-5 py-3.5 transition-colors hover:bg-[#fdfaf6]"
-                  style={{ borderColor: "rgba(15,30,53,0.12)" }}
+                  className="block rounded-xl border text-[16px] font-semibold text-[#0f1e35] transition-all duration-150 ease-out hover:-translate-y-[1px] hover:bg-[rgba(15,30,53,0.045)]"
+                  style={{
+                    minWidth: 220,
+                    padding: "14px 18px",
+                    borderColor: "rgba(15,30,53,0.16)",
+                    background: "rgba(250,247,242,0.8)",
+                    boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+                  }}
                 >
-                  <span className="text-[14px] font-medium text-[#0f1e35]">
-                    Roth IRA
-                  </span>
-                  <span className="font-mono text-[12px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]">
-                    →
-                  </span>
+                  Roth IRA
                 </Link>
               </div>
             </div>

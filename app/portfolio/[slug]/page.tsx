@@ -7,7 +7,6 @@ import { etfProfiles } from "@/data/etfConstituents";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import { QuotesProvider } from "@/components/QuotesProvider";
 import SleeveDashboard from "@/components/SleeveDashboard";
-import { getPreviousHoldingsBySleeve } from "@/data/previousHoldings";
 
 export function generateStaticParams() {
   return portfolios.map((p) => ({ slug: p.slug }));
@@ -351,67 +350,6 @@ function RothIraView() {
               />
             </div>
           </section>
-
-          {/* Previous Holdings — moved to the bottom */}
-          {getPreviousHoldingsBySleeve("roth-ira").length > 0 && (
-            <section
-              className="border-b"
-              style={{ borderColor: "rgba(15,30,53,0.08)" }}
-            >
-              <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-                <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Previous Holdings
-                </p>
-                <p className="mb-10 font-mono text-[10px] text-[#5a6e82]">
-                  Archived positions — research records with full exit analysis.
-                </p>
-                <div className="divide-y" style={{ borderColor: "rgba(15,30,53,0.07)" }}>
-                  {getPreviousHoldingsBySleeve("roth-ira").map((h) => {
-                    const [fy, fm, fd] = h.ownedFrom.split("-").map(Number);
-                    const [ty, tm, td] = h.ownedTo.split("-").map(Number);
-                    const from = new Date(fy, fm - 1, fd).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    });
-                    const to = new Date(ty, tm - 1, td).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    });
-                    return (
-                      <Link
-                        key={h.ticker}
-                        href={`/archive/${h.ticker}`}
-                        className="group flex items-center justify-between gap-6 py-5 transition-colors"
-                      >
-                        <div className="flex items-baseline gap-4">
-                          <span className="font-mono text-[15px] font-semibold text-[#0f1e35] transition-colors group-hover:text-[#1a4a2e]">
-                            {h.ticker}
-                          </span>
-                          <span className="hidden text-[13px] text-[#5a6e82] sm:block">
-                            {h.company}
-                          </span>
-                        </div>
-                        <div className="flex shrink-0 items-center gap-6">
-                          <span className="hidden font-mono text-[10px] text-[#5a6e82] sm:block">
-                            {from} → {to}
-                          </span>
-                          <span
-                            className="font-mono text-[10px]"
-                            style={{ color: "#8b2530", opacity: 0.7 }}
-                          >
-                            {h.exitType}
-                          </span>
-                          <span className="font-mono text-[10px] text-[#5a6e82] transition-colors group-hover:text-[#0f1e35]">
-                            →
-                          </span>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-          )}
 
         </main>
       </QuotesProvider>
