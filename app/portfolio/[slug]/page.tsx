@@ -9,8 +9,6 @@ import { QuotesProvider } from "@/components/QuotesProvider";
 import SleeveDashboard from "@/components/SleeveDashboard";
 import SleeveHoldingsTable from "@/components/SleeveHoldingsTable";
 import BreakdownPanel from "@/components/BreakdownPanel";
-import { BenchmarkComparisonWrapper } from "@/components/BenchmarkComparisonWrapper";
-import { RetirementCalculatorWrapper } from "@/components/RetirementCalculatorWrapper";
 import { getPreviousHoldingsBySleeve } from "@/data/previousHoldings";
 import RothThemeChart from "@/components/RothThemeChart";
 
@@ -303,33 +301,6 @@ function RothIraView() {
             </div>
           </section>
 
-          {/* Benchmark comparison */}
-          <section
-            className="border-b"
-            style={{ borderColor: "rgba(15,30,53,0.08)" }}
-          >
-            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Relative Performance
-              </p>
-              <p className="mb-8 font-mono text-[10px] text-[#5a6e82]">
-                Normalized price performance vs. VOO and QQQ benchmarks.
-              </p>
-              <BenchmarkComparisonWrapper
-                holdingTickers={rothIraHoldings.map((h) => h.ticker)}
-              />
-            </div>
-          </section>
-
-          {/* Retirement Calculator */}
-          <section
-            className="border-b"
-            style={{ borderColor: "rgba(15,30,53,0.08)" }}
-          >
-            <div className="mx-auto max-w-7xl px-6 py-20 lg:px-12">
-              <RetirementCalculatorWrapper />
-            </div>
-          </section>
         </main>
       </QuotesProvider>
 

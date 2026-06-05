@@ -34,7 +34,8 @@
       "Bash(git commit -m 'Donut: add chart margin so outer % labels don'\\\\''t clip *)",
       "Bash(mkdir -p /Users/isaactoffel/investment-portfolio-site/public/logos && cp \"/Users/isaactoffel/Downloads/portfolio_logos_png \\(1\\) \\(1\\)/\"*.png /Users/isaactoffel/investment-portfolio-site/public/logos/ && ls -la /Users/isaactoffel/investment-portfolio-site/public/logos/)",
       "Bash(git commit -m 'Add 10 logo PNGs for 2027 + 2028 Roth Fund holding circles *)",
-      "Bash(git commit -m 'TickerLogo: per-ticker scale map for bigger circle presence *)"
+      "Bash(git commit -m 'TickerLogo: per-ticker scale map for bigger circle presence *)",
+      "Bash(git commit -m 'Roth IRA: drop Relative Performance + Retirement Calculator sections *)"
     ],
     "additionalDirectories": [
       "/Users/isaactoffel/Downloads/portfolio_logos_png (1) (1)"
