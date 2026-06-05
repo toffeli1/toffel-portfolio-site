@@ -42,7 +42,12 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
   ASTS:  "/logos/ast-spacemobile.svg",
   // Active 2027 Roth Fund holdings (issuer logos for ETFs)
   QQQM:  "/logos/invesco.svg",
-  QTUM:  "/logos/defiance-etfs.svg",
+  QTUM:  "/logos/defiance.svg",
+  // Active 2028 Roth Fund holdings
+  MU:    "/logos/micron.svg",
+  OUST:  "/logos/ouster.svg",
+  NVTS:  "/logos/navitas.svg",
+  FLY:   "/logos/firefly-aerospace.svg",
   // Archive / previous holdings
   AVEX:  "/logos/aevex.svg",
   DLO:   "/logos/dlocal.svg",
@@ -50,7 +55,6 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
   SCHD:  "/logos/schwab.svg",
   IREN:  "/logos/iren.svg",
   SATL:  "/logos/satellogic.svg",
-  MU:    "/logos/micron.svg",
 };
 
 export default function TickerLogo({
