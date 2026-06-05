@@ -27,9 +27,9 @@ const SIZE_MAP: Record<"sm" | "md" | "lg" | "xl", { box: number; font: number; r
 export const TICKER_LOGO_ASSETS: Record<string, string> = {
   // Active Roth IRA holdings
   AMD:   "/logos/amd.svg",
-  VOO:   "/logos/vanguard.svg",
-  SMH:   "/logos/vaneck.svg",
-  FBTC:  "/logos/fidelity.svg",
+  VOO:   "/logos/vanguard.png",
+  SMH:   "/logos/vaneck.png",
+  FBTC:  "/logos/fidelity.png",
   NBIS:  "/logos/nebius.svg",
   GOOGL: "/logos/alphabet.svg",
   MELI:  "/logos/mercadolibre.svg",
@@ -38,16 +38,16 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
   META:  "/logos/meta.svg",
   NOW:   "/logos/servicenow.svg",
   UNH:   "/logos/unitedhealth.svg",
-  PENG:  "/logos/penguin-solutions.svg",
+  PENG:  "/logos/penguin-solutions.png",
   ASTS:  "/logos/ast-spacemobile.svg",
   // Active 2027 Roth Fund holdings (issuer logos for ETFs)
-  QQQM:  "/logos/invesco.svg",
-  QTUM:  "/logos/defiance.svg",
+  QQQM:  "/logos/invesco.png",
+  QTUM:  "/logos/defiance.png",
   // Active 2028 Roth Fund holdings
-  MU:    "/logos/micron.svg",
-  OUST:  "/logos/ouster.svg",
-  NVTS:  "/logos/navitas.svg",
-  FLY:   "/logos/firefly-aerospace.svg",
+  MU:    "/logos/micron.png",
+  OUST:  "/logos/ouster.png",
+  NVTS:  "/logos/navitas.png",
+  FLY:   "/logos/firefly-aerospace.png",
   // Archive / previous holdings
   AVEX:  "/logos/aevex.svg",
   DLO:   "/logos/dlocal.svg",
