@@ -63,13 +63,13 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
 const TICKER_LOGO_SCALE: Record<string, string> = {
   // 2027 / 2028 sleeves
   QQQM: "86%",
-  SMH:  "100%",  // ring tile — VanEck wordmark spans the badge
-  VOO:  "100%",  // ring tile — bigger Vanguard V
+  SMH:  "122%",  // ring tile — VanEck wordmark zoomed further
+  VOO:  "118%",  // ring tile — bigger Vanguard V
   FBTC: "100%",  // fill tile — Bitcoin symbol fills the orange circle
   QTUM: "84%",
   MU:   "86%",
   OUST: "86%",
-  PENG: "100%",  // fill tile — penguin mark dominates the gold circle
+  PENG: "122%",  // fill tile — penguin mark dominates the gold circle
   NVTS: "86%",
   FLY:  "82%",
   // Roth IRA active holdings
@@ -78,9 +78,9 @@ const TICKER_LOGO_SCALE: Record<string, string> = {
   GOOGL:"84%",
   MELI: "86%",
   CRWD: "96%",   // ring tile — let the eagle badge fill the circle
-  RKLB: "100%",  // fill tile — Rocket Lab mark runs to the edges
+  RKLB: "130%",  // fill tile — Rocket Lab mark runs to the edges
   META: "78%",   // ring tile — slightly smaller so the infinity isn't cropped
-  NOW:  "100%",  // fill tile — wordmark fills the teal badge
+  NOW:  "122%",  // fill tile — wordmark fills the teal badge
   UNH:  "74%",   // compact U mark — keep restrained
   ASTS: "92%",   // dark bg wordmark
 };
