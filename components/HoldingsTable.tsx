@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Holding, Category } from "@/data/holdings";
 import { ClickableRow } from "./ClickableRow";
+import TickerLogo from "./TickerLogo";
 
 const COLOR: Record<Category, string> = {
   ETFs: "#1a3a5c",
@@ -66,7 +67,10 @@ export default function HoldingsTable({
 
                 {/* Company */}
                 <td className="px-5 py-5 text-sm font-medium text-[#0f1e35]">
-                  {h.company}
+                  <div className="flex items-center gap-3">
+                    <TickerLogo ticker={h.ticker} name={h.company} size="sm" />
+                    <span>{h.company}</span>
+                  </div>
                 </td>
 
                 {/* Weight */}

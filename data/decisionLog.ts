@@ -2,6 +2,8 @@
 // Privacy: no share counts, quantities, total dollar amounts, or market values.
 
 export interface DecisionEntry {
+  /** Optional stable identifier (kebab-case) for cross-linking from transaction events. */
+  id?: string;
   /** "YYYY-MM-DD" or "YYYY-MM" for month-resolution entries */
   date: string;
   ticker: string;
@@ -215,14 +217,14 @@ export const decisionLog: DecisionEntry[] = [
     note: "Trimmed AMD in the Roth Retirement Account on May 1, 2026 after a significant run to bring the position back toward my 10% max position-size discipline. This was not a thesis reversal. The core AMD thesis remains intact, but the trim reflected concentration control, risk management, and a preference to preserve gains after the position had outgrown its intended role.",
     href: "/positions/AMD",
     returnPct: 71.53,
-    decisionAction: "Trim / Review",
+    decisionAction: "Trim",
     holding: "AMD",
-    trigger: "Position moved above max review band after rapid appreciation",
+    trigger: "Position moved above target sizing after rapid appreciation",
     oldWeight: "12.5%",
     targetWeight: "10.0%",
     maxWeight: "11.5%",
     thesisChange: "No thesis break; review driven by sizing discipline",
-    decision: "Review for trim or re-underwrite",
+    decision: "Trim to restore target sizing",
     capitalDestination: "Diversified/core exposure or cash pending review",
     lesson: "A strong thesis does not eliminate sizing discipline. Position size must still match evidence, valuation, and portfolio risk.",
   },

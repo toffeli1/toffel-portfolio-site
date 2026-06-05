@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { DecisionEntry } from "@/data/decisionLog";
+import TickerLogo from "./TickerLogo";
 
 type Filter = "all" | "buy" | "risk" | "exit";
 
@@ -92,6 +93,7 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
                 {/* Top row: ticker + company + action badge + return */}
                 <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-2.5">
+                    <TickerLogo ticker={entry.ticker} name={entry.company} size="sm" />
                     <Link
                       href={entry.href}
                       className="font-mono text-[16px] font-bold leading-none transition-opacity hover:opacity-70"
@@ -160,7 +162,7 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
                     ["Old weight", entry.oldWeight],
                     ["New weight", entry.newWeight],
                     ["Target weight", entry.targetWeight],
-                    ["Max band", entry.maxWeight],
+                    ["Max sizing", entry.maxWeight],
                     ["Thesis change", entry.thesisChange],
                     ["Decision", entry.decision],
                     ["Capital destination", entry.capitalDestination],

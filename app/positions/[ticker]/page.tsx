@@ -9,6 +9,7 @@ import { PositionQuoteProvider } from "@/components/PositionQuoteProvider";
 import { PriceCell, ChangeCell, LastUpdated } from "@/components/QuoteCell";
 import { LiveReturnBadge } from "@/components/LiveReturnBadge";
 import { ChartWrapper } from "@/components/ChartWrapper";
+import TickerLogo from "@/components/TickerLogo";
 import { ReturnSinceSection } from "@/components/ReturnSinceSection";
 import DerivedRothWeight from "@/components/DerivedRothWeight";
 import { positionLots, positionAverageCost, positionEvents } from "@/lib/positionLots";
@@ -194,12 +195,15 @@ export default async function PositionPage({
 
                 {/* Left: identity */}
                 <div>
-                  <h1
-                    className="font-bold leading-[0.88] tracking-[-0.03em] text-[#0f1e35]"
-                    style={{ fontSize: "clamp(4.5rem,10vw,9rem)" }}
-                  >
-                    {ticker}
-                  </h1>
+                  <div className="flex items-center gap-4">
+                    <TickerLogo ticker={ticker} name={company} size="lg" />
+                    <h1
+                      className="font-bold leading-[0.88] tracking-[-0.03em] text-[#0f1e35]"
+                      style={{ fontSize: "clamp(4.5rem,10vw,9rem)" }}
+                    >
+                      {ticker}
+                    </h1>
+                  </div>
                   <p
                     className="mt-5 font-medium text-[#3d4f66]"
                     style={{ fontSize: "clamp(1.1rem,2.5vw,1.5rem)" }}

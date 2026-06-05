@@ -9,6 +9,8 @@ export interface PurchaseLot {
   amountUsd: number;   // dollar amount of this lot
   isPartial?: boolean; // FIFO-consumed partial lot
   isRecurring?: boolean; // automatic recurring investment
+  /** Optional reference to a Decision Log entry that motivated this buy. */
+  decisionId?: string;
 }
 
 // Full historical transactions (buys + sells) for chart marker rendering.
@@ -23,6 +25,8 @@ export interface SellEvent {
   shares: number;        // sold share count
   pricePerShare: number; // execution price
   amountUsd: number;     // proceeds in USD
+  /** Optional reference to a Decision Log entry that motivated this sell. */
+  decisionId?: string;
 }
 
 export interface PositionEvents {

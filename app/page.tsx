@@ -259,7 +259,7 @@ export default function OverviewPage() {
               {[
                 {
                   title: "Position sizing",
-                  body: "Core ETFs anchor the portfolio and can hold larger weights because they represent diversified market exposure. Individual equities are sized based on conviction, volatility, thesis maturity, and correlation with the rest of the portfolio. High-conviction individual equities generally have a 10% target weight and an 11.5% max review band unless the thesis is explicitly re-underwritten.",
+                  body: "Core ETFs anchor the portfolio and can hold larger weights because they represent diversified market exposure. Individual equities are sized based on conviction, volatility, thesis maturity, and correlation with the rest of the portfolio. High-conviction individual equities generally target around 10% with a soft 11.5% upper bound unless the thesis is explicitly re-underwritten.",
                 },
                 {
                   title: "Account role",

@@ -16,6 +16,7 @@ import { rothIraHoldings, type SleeveHolding } from "@/data/sleeveHoldings";
 import { useQuotes } from "./QuotesProvider";
 import { deriveSleeveHoldings } from "@/lib/portfolioCalculations";
 import { getAvgCost } from "@/lib/costBasis";
+import TickerLogo from "./TickerLogo";
 
 // ── constants ─────────────────────────────────────────────────────────────────
 
@@ -326,7 +327,10 @@ function AttributionChart({
                 }}
               >
                 <td className="px-3 py-1.5 font-mono text-[10px] font-medium" style={{ color: TEXT }}>
-                  {row.ticker}
+                  <div className="flex items-center gap-2">
+                    <TickerLogo ticker={row.ticker} size="sm" />
+                    <span>{row.ticker}</span>
+                  </div>
                 </td>
                 <td className="px-3 py-1.5 font-mono text-[10px]" style={{ color: MUTED }}>
                   {pct(row.weight)}

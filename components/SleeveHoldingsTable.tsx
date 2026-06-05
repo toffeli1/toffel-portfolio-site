@@ -8,6 +8,7 @@ import { useQuotes } from "./QuotesProvider";
 import { getAvgCost, computeReturnPct } from "@/lib/costBasis";
 import { deriveSleeveHoldings } from "@/lib/portfolioCalculations";
 import WeightStatusBadge from "./WeightStatusBadge";
+import TickerLogo from "./TickerLogo";
 
 // ── type styles ───────────────────────────────────────────────────────────────
 
@@ -202,22 +203,25 @@ export default function SleeveHoldingsTable({
               >
                 {/* Ticker */}
                 <td className="px-5 py-4">
-                  {hasEtfDetail ? (
-                    <Link
-                      href={`/etfs/${h.ticker}`}
-                      className="font-mono text-[12px] font-bold hover:underline"
-                      style={{ color: typeColor }}
-                    >
-                      {h.ticker}
-                    </Link>
-                  ) : (
-                    <span
-                      className="font-mono text-[12px] font-bold"
-                      style={{ color: typeColor }}
-                    >
-                      {h.ticker}
-                    </span>
-                  )}
+                  <div className="flex items-center gap-2.5">
+                    <TickerLogo ticker={h.ticker} name={h.company} size="sm" />
+                    {hasEtfDetail ? (
+                      <Link
+                        href={`/etfs/${h.ticker}`}
+                        className="font-mono text-[12px] font-bold hover:underline"
+                        style={{ color: typeColor }}
+                      >
+                        {h.ticker}
+                      </Link>
+                    ) : (
+                      <span
+                        className="font-mono text-[12px] font-bold"
+                        style={{ color: typeColor }}
+                      >
+                        {h.ticker}
+                      </span>
+                    )}
+                  </div>
                 </td>
 
                 {/* Company + optional thesis tooltip */}
