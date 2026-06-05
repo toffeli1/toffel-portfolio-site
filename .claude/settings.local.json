@@ -22,7 +22,8 @@
       "Read(//opt/homebrew/bin/**)",
       "Bash(/opt/homebrew/bin/gh auth *)",
       "Bash(git commit -m 'Replace Individual Brokerage holdings with 2027 Roth Fund box *)",
-      "Bash(git commit -m 'Add sleeve thesis blocks for 2027 + 2028 Roth Fund holdings *)"
+      "Bash(git commit -m 'Add sleeve thesis blocks for 2027 + 2028 Roth Fund holdings *)",
+      "Bash(git commit -m 'Individual Brokerage: render 2027 + 2028 Roth Fund sleeves, drop Shares column *)"
     ]
   }
 }

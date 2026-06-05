@@ -73,6 +73,7 @@ function SleeveFooter() {
 function RetailView() {
   const color = "#1a3a5c";
   const fund2027 = holdings.filter((h) => h.sleeve === "2027 Roth Fund");
+  const fund2028 = holdings.filter((h) => h.sleeve === "2028 Roth Fund");
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
@@ -120,6 +121,19 @@ function RetailView() {
             </div>
           </section>
         )}
+
+        {/* 2028 Roth Fund box */}
+        {fund2028.length > 0 && (
+          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+            <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
+              <FundBox
+                title="2028 Roth Fund"
+                subtitle="Taxable brokerage sleeve used for future Roth funding"
+                holdings={fund2028}
+              />
+            </div>
+          </section>
+        )}
       </main>
 
       <SleeveFooter />
@@ -138,10 +152,6 @@ function fmtPurchaseDate(iso: string): string {
     day: "numeric",
     year: "numeric",
   });
-}
-
-function fmtShares(n: number): string {
-  return Number.isInteger(n) ? n.toString() : n.toFixed(6).replace(/\.?0+$/, "");
 }
 
 function FundBox({
@@ -183,7 +193,6 @@ function FundBox({
             <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
               <th className="px-5 py-3 text-left font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Ticker</th>
               <th className="px-5 py-3 text-left font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Name</th>
-              <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Shares</th>
               <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Weight</th>
               <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Total Return</th>
               <th className="px-5 py-3 text-right font-mono text-[9px] uppercase tracking-[0.18em] text-[#7a8799]">Purchased</th>
@@ -224,9 +233,6 @@ function FundBox({
                         </p>
                       ) : null;
                     })()}
-                  </td>
-                  <td className="px-5 py-4 text-right font-mono text-[12px] tabular-nums text-[#3d4f66]">
-                    {fmtShares(h.shares)}
                   </td>
                   <td className="px-5 py-4 text-right font-mono text-[12px] tabular-nums text-[#3d4f66]">
                     {h.portfolioPct.toFixed(2)}%
