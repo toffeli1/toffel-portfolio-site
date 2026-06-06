@@ -107,6 +107,7 @@ export default function SleeveDashboard({
   donutWide = false,
   showLegend = true,
   donutSidePanel,
+  layout = "stack",
 }: {
   label?: string;
   /** Optional. Omit when the page already provides its own title block. */
@@ -122,6 +123,10 @@ export default function SleeveDashboard({
   /** Optional content rendered alongside the donut inside the same card.
    *  When provided, the panel switches to a 2-column layout on md+. */
   donutSidePanel?: ReactNode;
+  /** Section layout. "stack" (default) renders tiles above the donut card.
+   *  "side-by-side" wraps tiles + donut in one shared cream-wash card with
+   *  tiles on the left and the donut on the right (md+); stacks on mobile. */
+  layout?: "stack" | "side-by-side";
 }) {
   const router = useRouter();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
@@ -174,10 +179,136 @@ export default function SleeveDashboard({
         </p>
       )}
 
-      <div
-        className={title ? "mt-6 border-t pt-7" : ""}
-        style={title ? { borderColor: "rgba(15,30,53,0.08)" } : undefined}
-      >
+      <div className={title ? "mt-8" : ""}>
+        {layout === "side-by-side" && title ? (
+          <div
+            className="rounded-2xl px-6 py-7 lg:px-10 lg:py-9"
+            style={{
+              background: "rgba(250, 247, 242, 0.55)",
+              border: "1px solid rgba(15, 30, 53, 0.07)",
+            }}
+          >
+            <div className="grid gap-8 md:items-center md:gap-10 lg:gap-12 md:grid-cols-[42%_minmax(0,1fr)]">
+              {/* Tiles — compact 3-col grid (5 holdings flow as 3 + 2) */}
+              <div className="grid grid-cols-3 gap-x-5 gap-y-7 justify-items-center">
+                {holdings.map((h) => (
+                  <Link
+                    key={h.ticker}
+                    href={h.href}
+                    aria-label={`${h.name} (${h.ticker})`}
+                    className="group flex flex-col items-center"
+                  >
+                    <span className="block transition-transform group-hover:-translate-y-0.5">
+                      <TickerLogo
+                        ticker={h.ticker}
+                        name={h.name}
+                        size="xl"
+                        accentColor={h.color}
+                        accentStyle={h.accentStyle}
+                        accentRingSoft={h.accentRingSoft}
+                      />
+                    </span>
+                    <span
+                      className="mt-3 font-mono text-[12px] font-semibold tracking-[0.1em]"
+                      style={{ color: "#0f1e35" }}
+                    >
+                      {h.ticker}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Donut + compact legend below */}
+              <div>
+                <p className="text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[#5a6e82]">
+                  Portfolio Weighting
+                </p>
+                <div className="mt-4 h-[300px] md:h-[380px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart margin={{ top: 20, right: 16, bottom: 20, left: 16 }}>
+                      <Tooltip
+                        content={<CustomTooltip />}
+                        wrapperStyle={{ outline: "none" }}
+                        cursor={false}
+                      />
+                      <Pie
+                        data={pieData}
+                        dataKey="value"
+                        nameKey="ticker"
+                        innerRadius="55%"
+                        outerRadius="86%"
+                        paddingAngle={1.5}
+                        stroke="#faf7f2"
+                        strokeWidth={2}
+                        isAnimationActive={false}
+                        onMouseEnter={(_, idx) => setActiveIdx(idx)}
+                        onMouseLeave={() => setActiveIdx(null)}
+                        onClick={(_, idx) => {
+                          const href = pieData[idx]?.href;
+                          if (href) router.push(href);
+                        }}
+                        style={{ cursor: "pointer" }}
+                        label={
+                          showSliceLabels
+                            ? ({ value }) => `${value.toFixed(2)}%`
+                            : false
+                        }
+                        labelLine={
+                          showSliceLabels
+                            ? { stroke: "#5a6e82", strokeWidth: 0.75 }
+                            : false
+                        }
+                      >
+                        {pieData.map((d, i) => {
+                          const dimmed = activeIdx !== null && activeIdx !== i;
+                          return (
+                            <Cell
+                              key={d.ticker}
+                              fill={d.color}
+                              fillOpacity={dimmed ? 0.35 : 1}
+                              style={{ cursor: "pointer", outline: "none" }}
+                            />
+                          );
+                        })}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                {showLegend && (
+                  <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+                    {pieData.map((d, i) => {
+                      const dimmed = activeIdx !== null && activeIdx !== i;
+                      return (
+                        <Link
+                          key={d.ticker}
+                          href={d.href}
+                          onMouseEnter={() => setActiveIdx(i)}
+                          onMouseLeave={() => setActiveIdx(null)}
+                          className="flex items-center gap-2 transition-opacity"
+                          style={{ opacity: dimmed ? 0.4 : 1 }}
+                          aria-label={`${d.name} (${d.ticker})`}
+                        >
+                          <span
+                            className="inline-block h-2 w-2 rounded-full"
+                            style={{ background: d.color }}
+                            aria-hidden
+                          />
+                          <span className="font-mono text-[10.5px] tracking-[0.08em] text-[#3d4f66]">
+                            {d.ticker}{" "}
+                            <span className="text-[#7a8799]">
+                              {d.value.toFixed(2)}%
+                            </span>
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+        <>
         {/* Circular holding tiles */}
         <div className="flex flex-wrap items-start justify-center gap-x-10 gap-y-10 sm:gap-x-14">
           {holdings.map((h) => (
@@ -376,6 +507,8 @@ export default function SleeveDashboard({
           )}
           </div>
         </div>
+        </>
+        )}
       </div>
     </div>
   );

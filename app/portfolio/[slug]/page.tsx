@@ -105,12 +105,13 @@ function RetailView() {
 
         {/* 2027 Roth Fund — visual sleeve dashboard */}
         {fund2027.length > 0 && (
-          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <section>
             <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
               <SleeveDashboard
                 label="Sleeve View"
                 title="2027 Roth Fund"
                 subtitle="Taxable brokerage sleeve used for future Roth funding."
+                layout="side-by-side"
                 holdings={fund2027.map((h) => ({
                   ticker: h.ticker,
                   name: h.company,
@@ -124,12 +125,13 @@ function RetailView() {
 
         {/* 2028 Roth Fund — visual sleeve dashboard */}
         {fund2028.length > 0 && (
-          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <section>
             <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
               <SleeveDashboard
                 label="Sleeve View"
                 title="2028 Roth Fund"
                 subtitle="Growth-focused sleeve with high-conviction ideas and long-term potential."
+                layout="side-by-side"
                 holdings={fund2028.map((h) => ({
                   ticker: h.ticker,
                   name: h.company,
