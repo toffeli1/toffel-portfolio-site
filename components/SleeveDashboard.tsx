@@ -175,7 +175,7 @@ export default function SleeveDashboard({
       )}
 
       <div
-        className={title ? "mt-10 border-t pt-12" : ""}
+        className={title ? "mt-6 border-t pt-7" : ""}
         style={title ? { borderColor: "rgba(15,30,53,0.08)" } : undefined}
       >
         {/* Circular holding tiles */}
