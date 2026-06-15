@@ -32,8 +32,17 @@ export interface SleeveHolding {
    * displayed publicly. Update when shares change due to buys/sells/splits.
    */
   shares?: number;
-  /** Manually-maintained fallback return %. Live computed when avgCost + quote available. */
+  /** Manually-maintained fallback return %. Live computed when avgCost + quote available.
+   *  Also serves as the "Since Purchase" value for the portfolio heatmap. */
   returnPct?: number;
+  // ── Period returns (%) for the portfolio heatmap ──────────────────────────
+  // Trailing-period total returns. Refresh from historical closes when prices
+  // move materially. `sincePurchaseReturn` falls back to `returnPct` when unset.
+  sincePurchaseReturn?: number;
+  return12M?: number;
+  return6M?: number;
+  return3M?: number;
+  return1M?: number;
   /** Decimal target weight (0.10 = 10%). Drives weight-status banding when set. */
   targetWeight?: number;
   /** Decimal max-band weight (0.115 = 11.5%). Defaults to targetWeight × 1.15 if omitted. */
@@ -66,6 +75,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 35.42,
     shares: 16.828,
     returnPct: 11.91,
+    return1M: -0.07,
+    return3M: 11.96,
+    return6M: 7.88,
+    return12M: 24.27,
     country: "US",
     marketCap: "Mega Cap",
     assetType: "ETF",
@@ -79,6 +92,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 6.84,
     shares: 3.591,
     returnPct: 36.05,
+    return1M: 8.3,
+    return3M: 60.06,
+    return6M: 65.72,
+    return12M: 141.24,
     country: "US",
     marketCap: "Large Cap",
     assetType: "ETF",
@@ -92,6 +109,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 6.27,
     shares: 4,
     returnPct: 131.13,
+    return1M: 14.83,
+    return3M: 164.53,
+    return6M: 131.04,
+    return12M: 340.4,
     targetWeight: 0.10,
     maxWeight: 0.115,
     country: "US",
@@ -107,6 +128,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 6.03,
     shares: 34.437,
     returnPct: -24.83,
+    return1M: -20.13,
+    return3M: -10.7,
+    return6M: -31.38,
+    return12M: -39.7,
     country: "US",
     // marketCap intentionally omitted — crypto-linked ETF
     assetType: "Crypto-linked ETF",
@@ -120,6 +145,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 5.84,
     shares: 7.467,
     returnPct: 401.66,
+    return1M: 12.1,
+    return3M: 105.72,
+    return6M: 148.27,
+    return12M: 393.02,
     country: "International",
     marketCap: "Mid Cap",
     assetType: "Equity",
@@ -133,6 +162,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 5.81,
     shares: 5.326,
     returnPct: 63.27,
+    return1M: -10.67,
+    return3M: 18.99,
+    return6M: 12.33,
+    return12M: 105.92,
     country: "US",
     marketCap: "Mega Cap",
     assetType: "Equity",
@@ -146,6 +179,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 5.04,
     shares: 1,
     returnPct: -14.64,
+    return1M: 1.77,
+    return3M: -4.81,
+    return6M: -19.34,
+    return12M: -32.98,
     country: "Latin America",
     marketCap: "Large Cap",
     assetType: "Equity",
@@ -159,6 +196,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 4.98,
     shares: 2.06,
     returnPct: 6.11,
+    return1M: 21.37,
+    return3M: 54.56,
+    return6M: 31.42,
+    return12M: 42.07,
     country: "US",
     marketCap: "Large Cap",
     assetType: "Equity",
@@ -172,6 +213,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 4.74,
     shares: 12.746,
     returnPct: 53.84,
+    return1M: -17.53,
+    return3M: 49.67,
+    return6M: 78.01,
+    return12M: 302.95,
     country: "US",
     marketCap: "Mid Cap",
     assetType: "Equity",
@@ -185,6 +230,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 4.53,
     shares: 2.5,
     returnPct: -5.35,
+    return1M: -8.05,
+    return3M: -7.61,
+    return6M: -12.79,
+    return12M: -16.97,
     country: "US",
     marketCap: "Mega Cap",
     assetType: "Equity",
@@ -198,6 +247,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 4.46,
     shares: 11.386,
     returnPct: 17.27,
+    return1M: 17.35,
+    return3M: -10.1,
+    return6M: -40.16,
+    return12M: -48.34,
     country: "US",
     marketCap: "Mega Cap",
     assetType: "Equity",
@@ -211,6 +264,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 4.34,
     shares: 3.818,
     returnPct: 29.10,
+    return1M: 1.83,
+    return3M: 44.82,
+    return6M: 24.41,
+    return12M: 30.3,
     country: "US",
     marketCap: "Mega Cap",
     assetType: "Equity",
@@ -224,6 +281,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 2.86,
     shares: 13.849,
     returnPct: 36.71,
+    return1M: 32.86,
+    return3M: 256.67,
+    return6M: 186.17,
+    return12M: 232.62,
     country: "US",
     marketCap: "Small Cap",
     assetType: "Equity",
@@ -237,6 +298,10 @@ export const rothIraHoldings: SleeveHolding[] = [
     portfolioWeightPct: 2.84,
     shares: 8,
     returnPct: 19.96,
+    return1M: 10.16,
+    return3M: -4.55,
+    return6M: 4.25,
+    return12M: 114.78,
     country: "US",
     marketCap: "Mid Cap",
     assetType: "Equity",
