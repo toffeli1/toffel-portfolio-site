@@ -65,6 +65,9 @@ function SleeveFooter() {
 
 // ── Individual Brokerage view ─────────────────────────────────────────────────
 
+// Archived for now — flip to true to restore the 2028 Roth Fund sleeve section.
+const SHOW_2028_SLEEVE = false;
+
 function RetailView() {
   const color = "#1a3a5c";
   const fund2027 = holdings.filter((h) => h.sleeve === "2027 Roth Fund");
@@ -124,8 +127,8 @@ function RetailView() {
           </section>
         )}
 
-        {/* 2028 Roth Fund — visual sleeve dashboard */}
-        {fund2028.length > 0 && (
+        {/* 2028 Roth Fund — visual sleeve dashboard. ARCHIVED via SHOW_2028_SLEEVE. */}
+        {SHOW_2028_SLEEVE && fund2028.length > 0 && (
           <section>
             <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
               <SleeveDashboard
