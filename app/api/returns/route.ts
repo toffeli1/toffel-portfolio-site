@@ -1,16 +1,20 @@
 // Live period-return feed for the portfolio heatmap.
-// Returns a public-safe map: { [ticker]: { return1M, return3M, return6M, return12M } }.
-// Only market-derived trailing returns surface — no prices, shares, or cost basis.
+// Returns a public-safe map: { [ticker]: { sincePurchase, return1M, return3M, return6M, return12M } }.
+// Only percentages surface — no prices, shares, or cost basis.
 //
-// "Since purchase" is intentionally NOT computed here: it depends on curated
-// cost basis, whose price scale doesn't always line up with the live feed, so
-// the client keeps its curated static value for that window and only the four
-// market windows auto-update. Results are cached in-memory per ticker so repeat
+// Trailing (1M/3M/6M/12M) returns come from Yahoo daily closes. "Since purchase"
+// is derived server-side from cost basis (lib/positionLots) vs. the latest close.
+//
+// IMPORTANT: cost basis in positionAverageCost MUST be kept in split-ADJUSTED
+// terms so it lines up with the split-adjusted live feed. A stale pre-split
+// basis produces a nonsensical since-purchase (e.g. CRWD before its 4:1 split
+// adjustment read −72%). Results are cached in-memory per ticker so repeat
 // traffic within the TTL window doesn't re-hit Yahoo.
 
 import { NextResponse } from "next/server";
 import { holdings } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
+import { positionAverageCost } from "@/lib/positionLots";
 import {
   fetchDailyCloses,
   trailingReturns,
@@ -19,10 +23,8 @@ import {
 
 export const dynamic = "force-dynamic";
 
-type MarketReturns = Omit<PeriodReturns, "sincePurchase">;
-
 const TTL_MS = 15 * 60 * 1_000;
-const cache = new Map<string, { data: MarketReturns; ts: number }>();
+const cache = new Map<string, { data: PeriodReturns; ts: number }>();
 
 // Only serve tickers the site actually tracks — never fetch arbitrary symbols.
 const KNOWN = new Set<string>([
@@ -30,20 +32,31 @@ const KNOWN = new Set<string>([
   ...rothIraHoldings.map((h) => h.ticker),
 ]);
 
+// SMH's Roth lot has a distinct cost basis from the brokerage SMH position.
+function costBasisFor(ticker: string): number | undefined {
+  if (ticker === "SMH") return positionAverageCost["SMH_ROTH"];
+  return positionAverageCost[ticker];
+}
+
 const round = (v: number | undefined): number | undefined =>
   v == null || !isFinite(v) ? undefined : Math.round(v * 100) / 100;
 
-async function computeFor(ticker: string): Promise<MarketReturns | null> {
+async function computeFor(ticker: string): Promise<PeriodReturns | null> {
   const points = await fetchDailyCloses(ticker);
   const tr = trailingReturns(points);
   if (!tr) return null;
 
-  return {
+  const data: PeriodReturns = {
     return1M: round(tr.returns.return1M),
     return3M: round(tr.returns.return3M),
     return6M: round(tr.returns.return6M),
     return12M: round(tr.returns.return12M),
   };
+  const avgCost = costBasisFor(ticker);
+  if (avgCost && avgCost > 0) {
+    data.sincePurchase = round(((tr.last - avgCost) / avgCost) * 100);
+  }
+  return data;
 }
 
 export async function GET(request: Request) {
@@ -59,7 +72,7 @@ export async function GET(request: Request) {
   }
 
   const now = Date.now();
-  const result: Record<string, MarketReturns> = {};
+  const result: Record<string, PeriodReturns> = {};
   const toFetch: string[] = [];
 
   for (const t of tickers) {

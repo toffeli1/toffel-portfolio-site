@@ -194,7 +194,7 @@ export const rothIraHoldings: SleeveHolding[] = [
     ticker: "CRWD",
     company: "CrowdStrike Holdings",
     portfolioWeightPct: 4.98,
-    shares: 2.06,
+    shares: 8.24, // 4:1 split-adjusted (was 2.06 pre-split)
     returnPct: 6.11,
     return1M: 21.37,
     return3M: 54.56,

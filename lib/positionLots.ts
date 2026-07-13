@@ -73,7 +73,7 @@ export interface PositionEvents {
 // DLO: 3 buys, 0 sells → all lots survive
 //
 // CRWD: 5 buys (4 May statement + 1 Jun 2 add), 0 sells → all lots survive
-//   Reconciles to 2.06 sh @ $671.55 avg ($1,383.40 total cost).
+//   Reconciles to 8.24 sh @ $167.89 avg ($1,383.40 total cost), 4:1 split-adjusted.
 //
 // NOW: 11 buys (9 May statement + 2 same-date Jun 2 adds), 0 sells → all lots survive
 //   Reconciles to 11.385656 sh @ $102.89 avg ($1,171.50 total cost).
@@ -420,36 +420,37 @@ export const positionLots: Record<string, PurchaseLot[]> = {
 
   // ── CRWD ──────────────────────────────────────────────────────────────────
   // 5 buys, 0 sells → all lots survive
-  // Weighted avg cost = $671.55 across 2.06 sh
+  // 4:1 split-adjusted: shares ×4, per-share prices ÷4 (dollar totals unchanged).
+  // Weighted avg cost = $167.89 across 8.24 sh ($1,383.40 total cost).
   CRWD: [
     {
       date: "2026-05-14",
-      shares: 0.52602,
-      pricePerShare: 570.32,
+      shares: 2.10408,
+      pricePerShare: 142.58,
       amountUsd: 300.00,
     },
     {
       date: "2026-05-15",
-      shares: 0.4,
-      pricePerShare: 582.19,
+      shares: 1.6,
+      pricePerShare: 145.55,
       amountUsd: 232.88,
     },
     {
       date: "2026-05-21",
-      shares: 0.07398,
-      pricePerShare: 651.03,
+      shares: 0.29592,
+      pricePerShare: 162.76,
       amountUsd: 48.16,
     },
     {
       date: "2026-05-27",
-      shares: 0.06,
-      pricePerShare: 645.32,
+      shares: 0.24,
+      pricePerShare: 161.33,
       amountUsd: 38.72,
     },
     {
       date: "2026-06-02",
-      shares: 1,
-      pricePerShare: 763.64,
+      shares: 4,
+      pricePerShare: 190.91,
       amountUsd: 763.64,
     },
   ],
@@ -617,7 +618,7 @@ export const positionAverageCost: Record<string, number> = {
   // New Roth positions (May 2026 initiate + Jun 2 add):
   NOW:   102.89,
   PENG:   50.75,    // Lot-derived ($702.88 / 13.849 sh) — matches broker aggregate
-  CRWD:  671.55,
+  CRWD:  167.89,   // 4:1 split-adjusted ($1,383.40 / 8.24 sh)
 };
 
 // ── Full historical event log (buys + sells) ─────────────────────────────────
