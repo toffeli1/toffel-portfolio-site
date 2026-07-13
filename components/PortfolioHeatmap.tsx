@@ -230,6 +230,44 @@ export default function PortfolioHeatmap({
   const [width, setWidth] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
 
+  // Live period returns, refreshed on an interval. Falls back to each holding's
+  // static `returns` (SSR paint + on any fetch failure) so the map never empties.
+  const [live, setLive] = useState<
+    Record<string, Partial<Record<HeatmapPeriod, number>>>
+  >({});
+  const [liveAt, setLiveAt] = useState<Date | null>(null);
+
+  const tickersKey = useMemo(
+    () => holdings.map((h) => h.ticker).join(","),
+    [holdings]
+  );
+
+  useEffect(() => {
+    if (!tickersKey) return;
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch(
+          `/api/returns?tickers=${encodeURIComponent(tickersKey)}`
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!cancelled && data && typeof data === "object") {
+          setLive(data);
+          setLiveAt(new Date());
+        }
+      } catch {
+        // Keep last-known / static values.
+      }
+    };
+    load();
+    const id = setInterval(load, 5 * 60 * 1_000);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
+  }, [tickersKey]);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -292,9 +330,24 @@ export default function PortfolioHeatmap({
     >
       {/* Controls bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-4 py-3 lg:px-6">
-        <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/45">
-          Portfolio Heatmap
-        </p>
+        <div className="flex items-center gap-2.5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/45">
+            Portfolio Heatmap
+          </p>
+          {liveAt && (
+            <span
+              className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.14em] text-white/35"
+              title={`Returns updated ${liveAt.toLocaleTimeString()}`}
+            >
+              <span
+                className="inline-block h-1.5 w-1.5 rounded-full"
+                style={{ background: "#16a05a", boxShadow: "0 0 6px #16a05a" }}
+                aria-hidden
+              />
+              Live
+            </span>
+          )}
+        </div>
         <div className="flex items-center gap-1 rounded-full bg-white/[0.04] p-1 ring-1 ring-white/10">
           {PERIODS.map((p) => {
             const active = p.key === period;
@@ -346,7 +399,7 @@ export default function PortfolioHeatmap({
 
           {layout?.tiles.map((t) => {
             const h = t.data;
-            const ret = h.returns[period];
+            const ret = live[h.ticker]?.[period] ?? h.returns[period];
             const w = t.w - TGAP;
             const ht = t.h - TGAP;
             if (w <= 1 || ht <= 1) return null;
