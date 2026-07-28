@@ -59,9 +59,10 @@ export default function OverviewPage() {
               <div className="flex-1">
                 <p className="text-[15px] leading-[2.0] text-[#2d3d52]">
                   I&apos;m Isaac Toffel, an Economics and Data Science student at
-                  Northeastern University and a State Street co-op. This site
-                  documents how I think about portfolio construction, position sizing,
-                  and thesis-driven investing in my investment account.
+                  Northeastern University, interested in equity research and asset
+                  management. This site documents how I think about portfolio
+                  construction, position sizing, and thesis-driven investing in my
+                  investment account.
                 </p>
                 <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
                   The goal is not to be right on every position. It is to build a
