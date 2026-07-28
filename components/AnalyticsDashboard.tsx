@@ -11,7 +11,6 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { holdings } from "@/data/holdings";
 import { rothIraHoldings, type SleeveHolding } from "@/data/sleeveHoldings";
 import { useQuotes } from "./QuotesProvider";
 import { deriveSleeveHoldings } from "@/lib/portfolioCalculations";
@@ -359,72 +358,55 @@ function AttributionChart({
 // ── main dashboard ─────────────────────────────────────────────────────────────
 
 export default function AnalyticsDashboard() {
-  // ── Roth weights: derived from live shares × price where available, else
+  // ── Weights: derived from live shares × price where available, else
   //    static fallback. Result is normalized to sum to 100% so downstream
   //    attribution / concentration / exposure math is well-conditioned.
   const { quotes } = useQuotes();
-  const derivedRoth = useMemo(
+  const derivedHoldings = useMemo(
     () => deriveSleeveHoldings(rothIraHoldings, quotes ?? null, (t) => getAvgCost(t, "roth-ira")),
     [quotes]
   );
-  const rothNormalized = useMemo(() => {
-    const total = derivedRoth.reduce((s, d) => s + d.portfolioPct, 0) || 1;
+  const normalizedHoldings = useMemo(() => {
+    const total = derivedHoldings.reduce((s, d) => s + d.portfolioPct, 0) || 1;
     return rothIraHoldings.map((h, i) => {
-      const d = derivedRoth[i];
+      const d = derivedHoldings[i];
       return {
         ...h,
         portfolioWeightPct: (d.portfolioPct / total) * 100,
         returnPct: d.returnPct ?? h.returnPct,
       };
     });
-  }, [derivedRoth]);
+  }, [derivedHoldings]);
 
   // ── attribution ────────────────────────────────────────────────────────────
-  const rothAttribution = useMemo(() => computeAttribution(rothNormalized), [rothNormalized]);
+  const attribution = useMemo(() => computeAttribution(normalizedHoldings), [normalizedHoldings]);
 
-  const rothReturn = rothAttribution.reduce((s, d) => s + d.contribution, 0);
+  const estimatedReturn = attribution.reduce((s, d) => s + d.contribution, 0);
 
   // ── concentration ──────────────────────────────────────────────────────────
-  const retailConc = useMemo(
-    () => computeConcentration(holdings.map((h) => h.portfolioPct)),
-    []
-  );
-  const rothConc = useMemo(
-    () => computeConcentration(rothNormalized.map((h) => h.portfolioWeightPct)),
-    [rothNormalized]
+  const concentration = useMemo(
+    () => computeConcentration(normalizedHoldings.map((h) => h.portfolioWeightPct)),
+    [normalizedHoldings]
   );
 
-  // ── exposure: Roth IRA ─────────────────────────────────────────────────────
-  const rothByGeo = useMemo(
-    () => groupWeights(rothNormalized.map((h) => ({ value: h.country, weight: h.portfolioWeightPct }))),
-    [rothNormalized]
+  // ── exposure ───────────────────────────────────────────────────────────────
+  const byGeo = useMemo(
+    () => groupWeights(normalizedHoldings.map((h) => ({ value: h.country, weight: h.portfolioWeightPct }))),
+    [normalizedHoldings]
   );
-  const rothByMarketCap = useMemo(
+  const byMarketCap = useMemo(
     () =>
       groupWeights(
-        rothNormalized.map((h) => ({
+        normalizedHoldings.map((h) => ({
           value: h.marketCap ?? (h.assetType === "Crypto-linked ETF" ? "Crypto-linked" : undefined),
           weight: h.portfolioWeightPct,
         }))
       ),
-    [rothNormalized]
+    [normalizedHoldings]
   );
-  const rothByAssetType = useMemo(
-    () => groupWeights(rothNormalized.map((h) => ({ value: h.assetType, weight: h.portfolioWeightPct }))),
-    [rothNormalized]
-  );
-
-  // ── exposure: Retail ───────────────────────────────────────────────────────
-  // Weight-based, sourced from holdings.portfolioPct so the split matches the
-  // Brokerage account page (ETFs ~94%, Equity ~6%) instead of the stale 80/20
-  // target band from data/holdings.ts:categoryAllocations.
-  const retailByCategory = useMemo(
-    () => groupWeights(holdings.map((h) => ({ value: h.category, weight: h.portfolioPct }))),
-    []
-  );
-  const retailBySubcategory = useMemo(
-    () => groupWeights(holdings.map((h) => ({ value: h.subcategory, weight: h.portfolioPct }))),
-    []
+  const byAssetType = useMemo(
+    () => groupWeights(normalizedHoldings.map((h) => ({ value: h.assetType, weight: h.portfolioWeightPct }))),
+    [normalizedHoldings]
   );
 
   return (
@@ -434,33 +416,23 @@ export default function AnalyticsDashboard() {
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
           <SectionLabel>Overview</SectionLabel>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {[
               {
                 label: "Estimated Contribution Since Entry",
-                value: `${sign(rothReturn)}${fmt1(rothReturn)} pp`,
-                positive: rothReturn >= 0,
-                sub: "Roth · derived",
+                value: `${sign(estimatedReturn)}${fmt1(estimatedReturn)} pp`,
+                positive: estimatedReturn >= 0,
+                sub: "derived",
               },
               {
-                label: "Brokerage Positions",
-                value: holdings.length.toString(),
-                sub: "holdings",
-              },
-              {
-                label: "Roth Positions",
+                label: "Positions",
                 value: rothIraHoldings.length.toString(),
                 sub: "holdings",
               },
               {
-                label: "Brokerage Eff. N",
-                value: fmt1(retailConc.effectiveN),
-                sub: `HHI ${fmt2(retailConc.hhi)}`,
-              },
-              {
-                label: "Roth Eff. N",
-                value: fmt1(rothConc.effectiveN),
-                sub: `HHI ${fmt2(rothConc.hhi)}`,
+                label: "Effective N",
+                value: fmt1(concentration.effectiveN),
+                sub: `HHI ${fmt2(concentration.hhi)}`,
               },
             ].map(({ label, value, positive, sub }) => (
               <div
@@ -505,9 +477,7 @@ export default function AnalyticsDashboard() {
           </h2>
           <p className="mb-3 max-w-2xl text-[13px] leading-[1.8]" style={{ color: MUTED }}>
             Each bar shows a holding&apos;s percentage-point contribution, calculated as
-            current portfolio weight times return since entry. Individual Brokerage
-            holdings are excluded because position-level return data is not tracked
-            for that account.
+            current portfolio weight times return since entry.
           </p>
           <p className="mb-10 max-w-2xl text-[12px] italic leading-[1.7]" style={{ color: MUTED }}>
             Not a portfolio return. This estimate uses current weight and position-level
@@ -515,18 +485,18 @@ export default function AnalyticsDashboard() {
           </p>
 
           <div className="grid gap-14">
-            <AttributionChart title="Roth Retirement Account" data={rothAttribution} color={GREEN} />
+            <AttributionChart title="Investments" data={attribution} color={GREEN} />
           </div>
         </div>
       </section>
 
-      {/* ── Exposure: Roth IRA ─────────────────────────────────────────────── */}
+      {/* ── Exposure ───────────────────────────────────────────────────────── */}
       <section
         className="border-b"
         style={{ borderColor: BORDER, background: "#f3ede1" }}
       >
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-          <SectionLabel>Roth Retirement Account Exposure</SectionLabel>
+          <SectionLabel>Investments Exposure</SectionLabel>
           <h2 className="mb-10 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
             Geography · Market Cap · Asset Type
           </h2>
@@ -534,41 +504,18 @@ export default function AnalyticsDashboard() {
           <div className="grid gap-10 sm:grid-cols-3">
             <ExposureGroup
               title="By Geography"
-              items={rothByGeo}
+              items={byGeo}
               color={GREEN}
             />
             <ExposureGroup
               title="By Market Cap"
-              items={rothByMarketCap}
+              items={byMarketCap}
               color={NAVY}
             />
             <ExposureGroup
               title="By Asset Type"
-              items={rothByAssetType}
+              items={byAssetType}
               color="#5c3a1a"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Exposure: Retail ───────────────────────────────────────────────── */}
-      <section className="border-b" style={{ borderColor: BORDER }}>
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-          <SectionLabel>Individual Brokerage Exposure</SectionLabel>
-          <h2 className="mb-10 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
-            Category · Subcategory
-          </h2>
-
-          <div className="grid gap-10 sm:grid-cols-2">
-            <ExposureGroup
-              title="By Category"
-              items={retailByCategory}
-              color={NAVY}
-            />
-            <ExposureGroup
-              title="By Subcategory"
-              items={retailBySubcategory}
-              color={NAVY}
             />
           </div>
         </div>
@@ -582,7 +529,7 @@ export default function AnalyticsDashboard() {
         <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
           <SectionLabel>Concentration</SectionLabel>
           <h2 className="mb-2 text-2xl font-bold tracking-tight" style={{ color: TEXT }}>
-            Diversification Metrics by Account
+            Diversification Metrics
           </h2>
           <p className="mb-10 max-w-2xl text-[13px] leading-[1.8]" style={{ color: MUTED }}>
             The Herfindahl-Hirschman Index (HHI) measures concentration: 1/N for equal weights,
@@ -590,25 +537,8 @@ export default function AnalyticsDashboard() {
             positions that would produce the same concentration level.
           </p>
 
-          <div className="grid gap-5 sm:grid-cols-2">
-            <ConcentrationCard label="Individual Brokerage" metrics={retailConc} color={NAVY} />
-            <ConcentrationCard label="Roth Retirement Account" metrics={rothConc} color={GREEN} />
-          </div>
-
-          <div
-            className="mt-8 rounded-lg border p-5 text-[12px] leading-[1.75]"
-            style={{ borderColor: BORDER, color: MUTED }}
-          >
-            <span className="font-mono text-[9px] uppercase tracking-[0.2em]" style={{ color: DIM }}>
-              Note on Individual Brokerage
-            </span>
-            <p className="mt-1">
-              The Individual Brokerage top-1 weight ({pct(retailConc.top1Pct)}) reflects the largest
-              ETF position. The five-holding account is ETF-heavy by design — four ETFs representing
-              broad market, semiconductor, large-cap growth, and Bitcoin exposure — with MU as the
-              sole individual equity. Effective N of {fmt1(retailConc.effectiveN)} reflects this
-              deliberately concentrated, ETF-anchored structure.
-            </p>
+          <div className="max-w-sm">
+            <ConcentrationCard label="Investments" metrics={concentration} color={GREEN} />
           </div>
         </div>
       </section>
@@ -620,9 +550,8 @@ export default function AnalyticsDashboard() {
             <span className="uppercase tracking-[0.18em]">Methodology</span> · Weights use
             manually recorded share counts and delayed market prices when available, with
             fallback weights when pricing is unavailable. Return figures are total return
-            since entry as manually recorded. Individual Brokerage attribution is unavailable
-            because position-level returns are not tracked for that account. Weights reflect
-            approximate intra-account allocation, not absolute dollar amounts.
+            since entry as manually recorded. Weights reflect approximate intra-account
+            allocation, not absolute dollar amounts.
           </p>
         </div>
       </section>

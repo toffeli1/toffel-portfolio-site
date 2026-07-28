@@ -26,7 +26,7 @@ interface ThemeSlice {
   holdings: SleeveHolding[];
 }
 
-export default function RothThemeChart({
+export default function ThemeChart({
   holdings,
 }: {
   holdings: SleeveHolding[];

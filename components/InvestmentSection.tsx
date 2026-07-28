@@ -1,18 +1,19 @@
-import type { RothPublicData, RothPublicHolding } from "@/data/rothPublicPerformance";
+import type { InvestmentPublicData, InvestmentPublicHolding } from "@/data/investmentPerformance";
 import SleeveDashboard, { type SleeveDashboardHolding } from "@/components/SleeveDashboard";
 import { etfProfiles } from "@/data/etfConstituents";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
 
-// Public-safe by construction: renders only weights, unrealized returns, and
-// money-weighted IRR figures from RothPublicData. Never render a dollar
-// amount, balance, or contribution figure here.
+// Public-safe by construction: renders only weights and unrealized returns
+// from InvestmentPublicData. Never render a dollar amount, balance, or
+// contribution figure here. Performance KPIs (IRR, benchmark, excess) live
+// on /performance — see app/performance/page.tsx.
 
 // Weight labels + leader lines only render for slices at or above this
 // threshold; smaller slices still appear in the legend, with no leader line.
 const WEIGHT_LABEL_THRESHOLD_PCT = 4;
 
 // Company display name lookup only — never a source of weight or return
-// values, which always come from RothPublicHolding.weight_pct /
+// values, which always come from InvestmentPublicHolding.weight_pct /
 // unrealized_return_pct. Falls back to the ticker itself if unmapped.
 function companyName(ticker: string): string {
   return rothIraHoldings.find((h) => h.ticker === ticker)?.company ?? ticker;
@@ -36,54 +37,8 @@ function fmtSignedPct(n: number): string {
   return `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
 }
 
-function fmtSignedPts(n: number): string {
-  return `${n >= 0 ? "+" : ""}${n.toFixed(1)} pts`;
-}
-
 function toneColor(n: number): string {
   return n >= 0 ? POSITIVE : NEGATIVE;
-}
-
-// ── Performance summary ──────────────────────────────────────────────────────
-
-function Stat({ label, value, color }: { label: string; value: string; color: string }) {
-  return (
-    <div>
-      <p className="mb-1.5 font-mono text-[9px] uppercase tracking-[0.25em] text-[#5a6e82]">
-        {label}
-      </p>
-      <p
-        className="font-mono font-bold tabular-nums"
-        style={{ fontSize: "clamp(1.5rem,3vw,2.1rem)", color }}
-      >
-        {value}
-      </p>
-    </div>
-  );
-}
-
-function PerformanceSummary({ performance }: { performance: RothPublicData["performance"] }) {
-  return (
-    <div className="rounded-2xl p-8" style={CARD_STYLE}>
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-        <Stat
-          label="IRR Since Inception"
-          value={fmtSignedPct(performance.irr_since_inception_pct)}
-          color={toneColor(performance.irr_since_inception_pct)}
-        />
-        <Stat
-          label="VOO Benchmark IRR"
-          value={fmtSignedPct(performance.voo_benchmark_irr_pct)}
-          color={toneColor(performance.voo_benchmark_irr_pct)}
-        />
-        <Stat
-          label="Annualized Alpha vs. VOO"
-          value={fmtSignedPts(performance.annualized_alpha_pts)}
-          color={toneColor(performance.annualized_alpha_pts)}
-        />
-      </div>
-    </div>
-  );
 }
 
 // ── Weighting (logo grid + donut) ────────────────────────────────────────────
@@ -93,7 +48,7 @@ function PerformanceSummary({ performance }: { performance: RothPublicData["perf
 // take the component's default sequential palette in weight order — no red
 // or green, since those are reserved for return coloring elsewhere on this
 // page.
-function Weighting({ holdings }: { holdings: RothPublicHolding[] }) {
+function Weighting({ holdings }: { holdings: InvestmentPublicHolding[] }) {
   const dashboardHoldings: SleeveDashboardHolding[] = holdings.map((h) => ({
     ticker: h.ticker,
     name: companyName(h.ticker),
@@ -117,7 +72,7 @@ function Weighting({ holdings }: { holdings: RothPublicHolding[] }) {
 
 // ── Holdings table ────────────────────────────────────────────────────────────
 
-function HoldingsTable({ holdings }: { holdings: RothPublicHolding[] }) {
+function HoldingsTable({ holdings }: { holdings: InvestmentPublicHolding[] }) {
   // Defensive sort — holdings are expected sorted desc by weight, but don't rely on it.
   const sorted = [...holdings].sort((a, b) => b.weight_pct - a.weight_pct);
   const maxWeight = Math.max(...sorted.map((h) => h.weight_pct), 1);
@@ -198,7 +153,7 @@ function HoldingsTable({ holdings }: { holdings: RothPublicHolding[] }) {
 
 // ── Section ───────────────────────────────────────────────────────────────────
 
-export default function RothPerformanceSection({ data }: { data: RothPublicData }) {
+export default function InvestmentSection({ data }: { data: InvestmentPublicData }) {
   // Single sorted source of truth — the weighting section and the returns
   // table both render from this, never a second copy.
   const sortedHoldings = [...data.holdings].sort((a, b) => b.weight_pct - a.weight_pct);
@@ -206,17 +161,7 @@ export default function RothPerformanceSection({ data }: { data: RothPublicData 
   return (
     <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-        <p
-          className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em]"
-          style={{ color: ACCENT }}
-        >
-          Performance
-        </p>
-        <PerformanceSummary performance={data.performance} />
-
-        <div className="mt-12">
-          <Weighting holdings={sortedHoldings} />
-        </div>
+        <Weighting holdings={sortedHoldings} />
 
         <p
           className="mb-6 mt-12 font-mono text-[10px] uppercase tracking-[0.28em]"
@@ -227,10 +172,6 @@ export default function RothPerformanceSection({ data }: { data: RothPublicData 
         <HoldingsTable holdings={sortedHoldings} />
 
         <div className="mt-8 space-y-2">
-          <p className="font-mono text-[9px] leading-[1.5] text-[#5a6e82]">
-            Money-weighted (IRR) since account inception, across both custodians. VOO
-            benchmark uses identical contribution timing.
-          </p>
           <p className="font-mono text-[9px] leading-[1.5] text-[#5a6e82]">
             Returns are unrealized and marked at delayed prices. Track record is short
             (~3 years) and spans a strong market. Past performance does not indicate

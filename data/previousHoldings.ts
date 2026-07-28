@@ -18,7 +18,7 @@ export interface PreviousHolding {
   ownedTo: string;
   /** Human-readable exit classification */
   exitType: string;
-  /** One-line reason shown in the Roth IRA section summary card */
+  /** One-line reason shown in the Investments section summary card */
   summaryReason: string;
   // ── Research record ────────────────────────────────────────────────────────
   originalThesis: string;
@@ -52,7 +52,7 @@ export const previousHoldings: PreviousHolding[] = [
       "Defense technology and unmanned systems exposure tied to DoD modernization demand and the structural shift toward autonomous ISR.",
     whatChanged:
       "Position size remained small relative to overall portfolio exposure, and the ongoing monitoring requirement for an early-stage holding became less attractive than reallocating capital toward higher-conviction names.",
-    whyExited: "Reallocated capital toward higher-conviction Roth positions with clearer near-term catalysts.",
+    whyExited: "Reallocated capital toward higher-conviction positions with clearer near-term catalysts.",
     lesson:
       "Small speculative positions require ongoing conviction reviews. Continued sleeve presence has to be justified, not assumed.",
     estimatedEntryPrice: 36.40,
@@ -73,7 +73,7 @@ export const previousHoldings: PreviousHolding[] = [
     originalThesis:
       "Cross-border payments exposure in emerging markets with a high-growth processing volume profile.",
     whatChanged:
-      "The thesis matured into a slower-growth profile relative to other Latin America fintech expressions, and capital was better deployed elsewhere in the Roth.",
+      "The thesis matured into a slower-growth profile relative to other Latin America fintech expressions, and capital was better deployed elsewhere in the portfolio.",
     whyExited: "Reallocated to higher-conviction holdings.",
     lesson:
       "A modest gain on a slower-growth thesis is still a fair recycle point when better opportunities exist.",
@@ -198,7 +198,7 @@ export const previousHoldings: PreviousHolding[] = [
       "The Artificial Intelligence Platform represented the unlock moment — a repeatable way to " +
       "deploy AI on private enterprise data with genuine switching costs and network-effect moats. " +
       "The combination of durable government revenue and accelerating commercial ARR at an early " +
-      "inflection made a speculative position in the Roth IRA compelling.",
+      "inflection made a speculative position compelling.",
     whatChanged:
       "The commercial thesis played out faster and at greater scale than the entry setup anticipated. " +
       "Within 14 months PLTR more than tripled. At those levels the stock was discounting " +

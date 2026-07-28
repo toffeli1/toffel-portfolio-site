@@ -11,7 +11,7 @@ import { LiveReturnBadge } from "@/components/LiveReturnBadge";
 import { ChartWrapper } from "@/components/ChartWrapper";
 import TickerLogo from "@/components/TickerLogo";
 import { ReturnSinceSection } from "@/components/ReturnSinceSection";
-import DerivedRothWeight from "@/components/DerivedRothWeight";
+import DerivedInvestmentWeight from "@/components/DerivedInvestmentWeight";
 import { positionLots, positionAverageCost, positionEvents } from "@/lib/positionLots";
 import {
   getPositionChanges,
@@ -23,10 +23,18 @@ import {
 // ── Types ────────────────────────────────────────────────────────────────────
 
 interface SleeveOwnership {
+  /** URL routing slug — /portfolio/[slug]. */
   slug: string;
+  /** Internal cost-basis/sleeve lookup key (getAvgCost, LiveReturnBadge) — distinct
+   *  from `slug` and intentionally left as "roth-ira", matching the keys used
+   *  throughout lib/costBasis.ts and data/sleeveHoldings.ts. Renaming this would
+   *  silently break sleeve-specific cost-basis overrides (e.g. SMH). */
+  costKey: string;
   title: string;
   color: string;
   weightPct: number;
+  /** False when the sleeve's account page has been unpublished — renders as plain text, not a link. */
+  isLive: boolean;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -34,23 +42,29 @@ interface SleeveOwnership {
 function buildSleeveOwnerships(ticker: string): SleeveOwnership[] {
   const result: SleeveOwnership[] = [];
 
+  // The Individual Brokerage account page is unpublished (see data/portfolios.ts).
+  // Still show sleeve membership for context, but not as a link to a 404.
   const retail = holdings.find((h) => h.ticker === ticker);
   if (retail) {
     result.push({
       slug: "retail-with-friends",
+      costKey: "retail-with-friends",
       title: retail.sleeve,
       color: "#1a3a5c",
       weightPct: retail.portfolioPct,
+      isLive: false,
     });
   }
 
-  const roth = rothIraHoldings.find((h) => h.ticker === ticker);
-  if (roth) {
+  const investment = rothIraHoldings.find((h) => h.ticker === ticker);
+  if (investment) {
     result.push({
-      slug: "roth-ira",
-      title: "Roth IRA",
+      slug: "investments",
+      costKey: "roth-ira",
+      title: "Investments",
       color: "#1a4a2e",
-      weightPct: roth.portfolioWeightPct,
+      weightPct: investment.portfolioWeightPct,
+      isLive: true,
     });
   }
 
@@ -62,12 +76,12 @@ function buildSleeveOwnerships(ticker: string): SleeveOwnership[] {
 export function generateStaticParams() {
   const retailTickers = holdings.map((h) => h.ticker);
 
-  // Roth IRA tickers that don't have their own ETF detail page (/etfs/ route).
-  const rothTickers = rothIraHoldings
+  // Investments-account tickers that don't have their own ETF detail page (/etfs/ route).
+  const investmentTickers = rothIraHoldings
     .filter((h) => !(h.ticker in etfProfiles))
     .map((h) => h.ticker);
 
-  const unique = [...new Set([...retailTickers, ...rothTickers])];
+  const unique = [...new Set([...retailTickers, ...investmentTickers])];
   return unique.map((ticker) => ({ ticker }));
 }
 
@@ -101,8 +115,8 @@ export default async function PositionPage({
 
   // Gather data from all sources.
   const retailHolding = holdings.find((h) => h.ticker === ticker);
-  const rothHolding = rothIraHoldings.find((h) => h.ticker === ticker);
-  const sleeveHolding = rothHolding;
+  const investmentHolding = rothIraHoldings.find((h) => h.ticker === ticker);
+  const sleeveHolding = investmentHolding;
 
   if (!retailHolding && !sleeveHolding) notFound();
 
@@ -290,34 +304,48 @@ export default async function PositionPage({
                         In Your Sleeves
                       </p>
                       <div className="space-y-3">
-                        {sleeveOwnerships.map((s) => (
-                          <Link
-                            key={s.slug}
-                            href={`/portfolio/${s.slug}`}
-                            className="flex items-center justify-between gap-8 group"
-                          >
-                            <span
-                              className="font-mono text-[10px] uppercase tracking-[0.15em] transition-colors group-hover:opacity-70"
-                              style={{ color: s.color }}
+                        {sleeveOwnerships.map((s) => {
+                          const rowContent = (
+                            <>
+                              <span
+                                className="font-mono text-[10px] uppercase tracking-[0.15em] transition-colors group-hover:opacity-70"
+                                style={{ color: s.color }}
+                              >
+                                {s.title}
+                              </span>
+                              <div className="flex items-center gap-4">
+                                {s.slug === "investments" ? (
+                                  <DerivedInvestmentWeight
+                                    ticker={ticker}
+                                    fallbackPct={s.weightPct}
+                                    showStatus
+                                  />
+                                ) : (
+                                  <span className="font-mono text-[11px] tabular-nums text-[#3d4f66]">
+                                    {s.weightPct.toFixed(1)}%
+                                  </span>
+                                )}
+                                <LiveReturnBadge ticker={ticker} sleeve={s.costKey} />
+                              </div>
+                            </>
+                          );
+                          return s.isLive ? (
+                            <Link
+                              key={s.slug}
+                              href={`/portfolio/${s.slug}`}
+                              className="flex items-center justify-between gap-8 group"
                             >
-                              {s.title}
-                            </span>
-                            <div className="flex items-center gap-4">
-                              {s.slug === "roth-ira" ? (
-                                <DerivedRothWeight
-                                  ticker={ticker}
-                                  fallbackPct={s.weightPct}
-                                  showStatus
-                                />
-                              ) : (
-                                <span className="font-mono text-[11px] tabular-nums text-[#3d4f66]">
-                                  {s.weightPct.toFixed(1)}%
-                                </span>
-                              )}
-                              <LiveReturnBadge ticker={ticker} sleeve={s.slug} />
+                              {rowContent}
+                            </Link>
+                          ) : (
+                            <div
+                              key={s.slug}
+                              className="flex items-center justify-between gap-8 group opacity-70"
+                            >
+                              {rowContent}
                             </div>
-                          </Link>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}

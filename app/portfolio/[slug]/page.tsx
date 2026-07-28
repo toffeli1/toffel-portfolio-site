@@ -6,8 +6,8 @@ import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { etfProfiles } from "@/data/etfConstituents";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import SleeveDashboard from "@/components/SleeveDashboard";
-import RothPerformanceSection from "@/components/RothPerformanceSection";
-import { rothPublicData } from "@/data/rothPublicPerformance";
+import InvestmentSection from "@/components/InvestmentSection";
+import { investmentPublicData } from "@/data/investmentPerformance";
 
 export function generateStaticParams() {
   return portfolios.map((p) => ({ slug: p.slug }));
@@ -37,7 +37,7 @@ export default async function PortfolioPage({
   if (!portfolio) notFound();
 
   if (portfolio.type === "retail") return <RetailView />;
-  if (portfolio.type === "roth-ira") return <RothIraView />;
+  if (portfolio.type === "investments") return <InvestmentsView />;
   return notFound();
 }
 
@@ -64,6 +64,9 @@ function SleeveFooter() {
 }
 
 // ── Individual Brokerage view ─────────────────────────────────────────────────
+// Unpublished: no portfolio entry has type "retail" anymore (see
+// data/portfolios.ts), so this is unreachable from any route and is not
+// included in generateStaticParams. Left in place, unreferenced, per request.
 
 // Archived for now — flip to true to restore the 2028 Roth Fund sleeve section.
 const SHOW_2028_SLEEVE = false;
@@ -153,9 +156,9 @@ function RetailView() {
   );
 }
 
-// ── Roth IRA view ─────────────────────────────────────────────────────────────
+// ── Investments view ───────────────────────────────────────────────────────────
 
-function RothIraView() {
+function InvestmentsView() {
   const color = "#1a4a2e";
 
   return (
@@ -185,13 +188,13 @@ function RothIraView() {
                   className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
                   style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
                 >
-                  Roth Retirement Account
+                  Investments
                 </h1>
                 <p className="mt-2 max-w-xl font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
-                  Manually maintained snapshot of portfolio weights and returns — no live pricing. As of {fmtPortfolioDate(rothPublicData.as_of)}.
+                  Manually maintained snapshot of portfolio weights and returns — no live pricing. As of {fmtPortfolioDate(investmentPublicData.as_of)}.
                 </p>
                 <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
-                  Roth IRA · Long-Term Compounding · Tax-Advantaged Growth
+                  Long-Term Compounding
                 </p>
               </div>
               <div className="shrink-0 text-right">
@@ -209,13 +212,13 @@ function RothIraView() {
           </div>
         </section>
 
-        {/* Performance + holdings — percentage-only snapshot from
-            data/toffel_roth_public.json. No dollar amounts, ever. */}
-        <RothPerformanceSection data={rothPublicData} />
+        {/* Holdings, weighting, and returns — percentage-only snapshot from
+            data/toffel_investments_public.json. No dollar amounts, ever.
+            Performance KPIs live on /performance. */}
+        <InvestmentSection data={investmentPublicData} />
       </main>
 
       <SleeveFooter />
     </div>
   );
 }
-

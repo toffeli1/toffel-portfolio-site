@@ -41,7 +41,7 @@ export default function OverviewPage() {
               Dashboard
             </h1>
             <p className="mt-7 max-w-lg text-[15px] leading-[1.75] text-[#3d4f66]">
-              Two accounts. A documented investment process, built in public.
+              A documented investment process, built in public.
             </p>
           </div>
         </section>
@@ -61,7 +61,7 @@ export default function OverviewPage() {
                   I&apos;m Isaac Toffel, an Economics and Data Science student at
                   Northeastern University and a State Street co-op. This site
                   documents how I think about portfolio construction, position sizing,
-                  and thesis-driven investing across my taxable brokerage and Roth IRA.
+                  and thesis-driven investing in my investment account.
                 </p>
                 <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
                   The goal is not to be right on every position. It is to build a
@@ -156,11 +156,9 @@ export default function OverviewPage() {
                 the construction makes sense at the total-book level.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                The book is organized around two accounts. The Individual Brokerage
-                holds ETF-based market exposure, semiconductor cyclicality, Bitcoin
-                exposure, and select high-conviction equities. The Roth Retirement
-                Account blends core market exposure with selective growth and
-                measured speculative positions inside a tax-advantaged wrapper.
+                The account blends core market exposure with selective growth
+                and measured speculative positions, built for long-duration
+                compounding with low turnover by design.
               </p>
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
                 Position size is intentional. Larger weights are reserved for names
@@ -193,10 +191,10 @@ export default function OverviewPage() {
                 </div>
               </div>
 
-              {/* Account buttons — stacked vertically on md+, below on mobile */}
+              {/* Account button */}
               <div className="flex flex-col gap-3 md:min-w-[260px] md:pt-1">
                 <Link
-                  href="/portfolio/retail-with-friends"
+                  href="/portfolio/investments"
                   className="block rounded-xl border text-[16px] font-semibold text-[#0f1e35] transition-all duration-150 ease-out hover:-translate-y-[1px] hover:bg-[rgba(15,30,53,0.045)]"
                   style={{
                     minWidth: 220,
@@ -206,20 +204,7 @@ export default function OverviewPage() {
                     boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
                   }}
                 >
-                  Individual Brokerage
-                </Link>
-                <Link
-                  href="/portfolio/roth-ira"
-                  className="block rounded-xl border text-[16px] font-semibold text-[#0f1e35] transition-all duration-150 ease-out hover:-translate-y-[1px] hover:bg-[rgba(15,30,53,0.045)]"
-                  style={{
-                    minWidth: 220,
-                    padding: "14px 18px",
-                    borderColor: "rgba(15,30,53,0.16)",
-                    background: "rgba(250,247,242,0.8)",
-                    boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-                  }}
-                >
-                  Roth IRA
+                  Investments
                 </Link>
               </div>
             </div>
@@ -246,7 +231,7 @@ export default function OverviewPage() {
                 },
                 {
                   title: "Account role",
-                  body: "The Roth IRA is used for long-duration compounding, asymmetric growth, and tax-advantaged upside. The taxable brokerage account is used for flexible ETF exposure, thematic allocation, and liquidity. Account structure matters because the same holding can play a different role depending on tax treatment, time horizon, and rebalancing flexibility.",
+                  body: "The account is used for long-duration compounding and asymmetric growth, blending core market exposure with selective thematic and speculative positions. Low turnover is by design — a position stays because it keeps earning its size, not out of inertia.",
                 },
                 {
                   title: "Trim / re-underwrite",

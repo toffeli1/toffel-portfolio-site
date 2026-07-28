@@ -14,10 +14,10 @@ interface Message {
 // ── Suggested prompts ─────────────────────────────────────────────────────────
 
 const GLOBAL_PROMPTS = [
-  "How do the Individual Brokerage and Roth Retirement Account differ?",
   "What are the largest sources of portfolio concentration?",
   "How does ETF exposure affect the overall risk profile?",
   "What recent decisions changed the portfolio?",
+  "What is the largest position and why?",
 ];
 
 function getSuggestedPrompts(pathname: string | null): string[] {
@@ -45,21 +45,21 @@ function getSuggestedPrompts(pathname: string | null): string[] {
     ];
   }
 
-  if (pathname.includes("/portfolio/retail-with-friends")) {
+  if (pathname.includes("/portfolio/investments")) {
     return [
-      "How is the brokerage account allocated across ETFs and MU?",
-      "What is the semiconductor exposure through SMH and MU?",
-      "Why use FBTC for Bitcoin exposure?",
-      "How does the brokerage account differ from the Roth Retirement Account?",
+      "What are the largest positions in the account?",
+      "How does the account balance core exposure with compounders?",
+      "Which positions drive the most concentration risk?",
+      "What archived decisions changed the account?",
     ];
   }
 
-  if (pathname.includes("/portfolio/roth-ira")) {
+  if (pathname.includes("/performance")) {
     return [
-      "What are the largest Roth Retirement Account positions?",
-      "How does the Roth balance core exposure with compounders?",
-      "Which positions drive the most concentration risk?",
-      "What archived decisions changed the Roth account?",
+      "How is IRR different from the VOO benchmark?",
+      "What's driving the excess return vs. the benchmark?",
+      "What's the hit rate on closed positions?",
+      "Which positions contributed most to the result?",
     ];
   }
 

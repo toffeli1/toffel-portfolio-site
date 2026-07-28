@@ -94,13 +94,22 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
                 <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-2.5">
                     <TickerLogo ticker={entry.ticker} name={entry.company} size="sm" />
-                    <Link
-                      href={entry.href}
-                      className="font-mono text-[16px] font-bold leading-none transition-opacity hover:opacity-70"
-                      style={{ color: accent }}
-                    >
-                      {entry.ticker}
-                    </Link>
+                    {entry.href ? (
+                      <Link
+                        href={entry.href}
+                        className="font-mono text-[16px] font-bold leading-none transition-opacity hover:opacity-70"
+                        style={{ color: accent }}
+                      >
+                        {entry.ticker}
+                      </Link>
+                    ) : (
+                      <span
+                        className="font-mono text-[16px] font-bold leading-none"
+                        style={{ color: accent }}
+                      >
+                        {entry.ticker}
+                      </span>
+                    )}
                     <span className="text-[14px] font-medium leading-none text-[#0f1e35]">
                       {entry.company}
                     </span>
@@ -156,6 +165,13 @@ export default function DecisionLogFeed({ entries }: { entries: DecisionEntry[] 
                 {/* Structured metadata grid (only renders provided fields) */}
                 {(() => {
                   const rows: { label: string; value: string }[] = [
+                    ["Status", entry.status],
+                    [
+                      "Share of Realized Result",
+                      entry.realizedSharePct !== undefined
+                        ? `${entry.realizedSharePct >= 0 ? "+" : ""}${entry.realizedSharePct.toFixed(2)}%`
+                        : undefined,
+                    ],
                     ["Action", entry.decisionAction],
                     ["Holding", entry.holding],
                     ["Trigger", entry.trigger],

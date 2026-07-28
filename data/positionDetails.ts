@@ -879,7 +879,7 @@ export const positionDetails: Record<string, PositionDetail> = {
     whyIOwnIt:
       "UNH is in the portfolio because healthcare is one of the few sectors that compounds reliably through economic cycles, and UnitedHealth is the best-managed company in managed care by a significant margin. The Optum business is transforming UNH from a pure insurance underwriter into a vertically integrated healthcare technology and services platform — which makes the earnings quality more durable and less dependent on the actuarial volatility that defines traditional insurers. The regulatory risk is real and well-known, but the demographic tailwind of aging baby boomers entering Medicare Advantage is a multi-decade structural driver that offsets most policy risk over a long holding period.",
     whyThisSleeve:
-      "UNH is in the Roth IRA because it's a multi-decade compounder that generates substantial capital appreciation over time — exactly the type of holding that benefits most from tax-free growth. Healthcare is also a sector where I want a long holding period without pressure to manage tax treatment around volatility events, and the Roth IRA provides that structural advantage.",
+      "UNH is in the account because it's a multi-decade compounder that generates substantial capital appreciation over time — exactly the type of holding suited to a long, low-turnover hold. Healthcare is also a sector where I want a long holding period without pressure to manage around short-term volatility events.",
     longDescription:
       "UnitedHealth Group operates two interlocking businesses: UnitedHealthcare (insurance) and Optum (health services, pharmacy, and data analytics). Optum's growing revenue contribution creates diversified earnings streams that reduce reliance on pure insurance underwriting cycles, while also creating data network effects across the healthcare system.",
     thesisP2:
@@ -934,9 +934,9 @@ export const positionDetails: Record<string, PositionDetail> = {
 
   NBIS: {
     whyIOwnIt:
-      "Nebius is the most asymmetric position in the Roth IRA — a small, early-revenue GPU cloud company with a genuinely differentiated positioning in European AI infrastructure. European enterprises face real constraints in using US hyperscalers for sensitive AI workloads: GDPR, data residency requirements, AI Act compliance, and sovereignty concerns all push them toward European-based alternatives. Nebius is the only pure-play European AI cloud with the technical capability to serve frontier AI customers at scale. The corporate structure is clean (Dutch holdco, listed on Nasdaq), and the founding team has deep infrastructure experience from building Yandex Cloud. I sized it small relative to the conviction level — the risk is high, but the potential upside if Nebius becomes the AWS of European AI is substantial.",
+      "Nebius is the most asymmetric position in the account — a small, early-revenue GPU cloud company with a genuinely differentiated positioning in European AI infrastructure. European enterprises face real constraints in using US hyperscalers for sensitive AI workloads: GDPR, data residency requirements, AI Act compliance, and sovereignty concerns all push them toward European-based alternatives. Nebius is the only pure-play European AI cloud with the technical capability to serve frontier AI customers at scale. The corporate structure is clean (Dutch holdco, listed on Nasdaq), and the founding team has deep infrastructure experience from building Yandex Cloud. I sized it small relative to the conviction level — the risk is high, but the potential upside if Nebius becomes the AWS of European AI is substantial.",
     whyThisSleeve:
-      "NBIS is in the Roth IRA because it's a pre-profit, high-growth company that could compound at exceptional rates over a 5-7 year horizon if the European AI cloud thesis plays out. Capital gains on a successful speculative position compound most efficiently in a tax-free account, and the Roth IRA allows me to hold through the multiple capital raise cycles that a business like this will require without creating complex tax events.",
+      "NBIS is in the account because it's a pre-profit, high-growth company that could compound at exceptional rates over a 5-7 year horizon if the European AI cloud thesis plays out. A position like this needs patience through multiple capital-raise cycles and volatility spikes, which fits an account structured for long, low-turnover holds rather than one where I'd be actively trading around news.",
     longDescription:
       "Nebius Group emerged from a restructuring of the former Yandex after geopolitical pressures forced asset sales. The reconstituted Dutch company is now focused on building GPU cloud infrastructure for AI workloads in Europe and Israel, with data center capacity expanding rapidly. Its clean corporate structure and European focus differentiate it from hyperscaler alternatives.",
     thesisP2:
@@ -1050,7 +1050,7 @@ export const positionDetails: Record<string, PositionDetail> = {
     whyIOwnIt:
       "Alphabet is the portfolio's core technology compounding position — a business with durable near-monopoly economics in search advertising, a fast-growing cloud platform, and more AI infrastructure investment underway than nearly any other company. The AI disruption narrative around Search is real but overstated in the near term: the vast majority of advertising revenue ties to commercial intent queries where AI summaries can actually improve ad conversion rates by surfacing higher-quality intent signals. Meanwhile, Gemini's integration across the Google product suite is driving Cloud adoption and creating new monetization surfaces that didn't exist two years ago. I own GOOGL as the application-layer AI compounder — not just chips and inference, but the platform where AI value ultimately gets monetized.",
     whyThisSleeve:
-      "GOOGL is in the Roth IRA because it's a large-cap compounder that benefits from holding through the AI transition cycle without pressure to trade around quarterly volatility. Alphabet's history of generating exceptional capital appreciation — and the multi-decade nature of the AI monetization thesis — makes the tax-free compounding of the Roth account significantly more valuable than managing it in a taxable sleeve.",
+      "GOOGL is in the account because it's a large-cap compounder that benefits from holding through the AI transition cycle without pressure to trade around quarterly volatility. Alphabet's history of generating exceptional capital appreciation, and the multi-decade nature of the AI monetization thesis, is best expressed through a long, low-turnover hold rather than active trading around it.",
     longDescription:
       "Alphabet's durable moat combines Google Search's advertising network, YouTube's video monetization, and Google Cloud's enterprise infrastructure business. The AI transition presents both a threat (search disruption) and an opportunity (Gemini monetization across all products). Waymo's autonomous vehicle program provides long-duration optionality.",
     thesisP2:
@@ -1116,9 +1116,9 @@ export const positionDetails: Record<string, PositionDetail> = {
 
   FBTC: {
     whyIOwnIt:
-      "FBTC is a deliberate, sized allocation to Bitcoin as a non-correlated store of value within a retirement account. Bitcoin's supply schedule is mathematically fixed — 21 million coins, hardcoded into the protocol, enforced by a decentralized network — which means it has a fundamentally different inflation profile from any fiat currency or commodity with elastic supply. I hold it because a fixed-supply, globally accessible, censorship-resistant monetary asset should be worth more over a 10-20 year horizon than it is today, and the ETF wrapper makes it practical to hold within the IRA without the operational complexity of self-custody, private keys, or hardware wallets.",
+      "FBTC is a deliberate, sized allocation to Bitcoin as a non-correlated store of value within the account. Bitcoin's supply schedule is mathematically fixed — 21 million coins, hardcoded into the protocol, enforced by a decentralized network — which means it has a fundamentally different inflation profile from any fiat currency or commodity with elastic supply. I hold it because a fixed-supply, globally accessible, censorship-resistant monetary asset should be worth more over a 10-20 year horizon than it is today, and the ETF wrapper makes it practical to hold without the operational complexity of self-custody, private keys, or hardware wallets.",
     whyThisSleeve:
-      "The Roth IRA is the ideal home for FBTC specifically because of the tax structure. If Bitcoin appreciates significantly over a multi-decade holding period — which is the thesis — all gains compound entirely tax-free. Holding Bitcoin in a taxable account would create capital gains events on every rebalancing trade. The IRA wrapper is meaningfully more valuable here than for almost any other holding in the portfolio.",
+      "This account is the right home for FBTC because it's built for long-duration, low-turnover holds, and Bitcoin's supply-driven, multi-decade thesis is exactly the kind of position that benefits from not needing to trade around short-term volatility. A speculative, non-correlated asset like this earns its place through patience, not frequent rebalancing.",
     longDescription:
       "FBTC provides regulated, institutional-grade Bitcoin exposure through Fidelity's established custody and fund infrastructure. As a spot Bitcoin ETF, it offers direct price tracking without the operational complexity of self-custody. The ETF wrapper makes Bitcoin accessible within IRA and brokerage accounts with standard tax reporting.",
     thesisP2:
@@ -1140,9 +1140,9 @@ export const positionDetails: Record<string, PositionDetail> = {
 
   MELI: {
     whyIOwnIt:
-      "MercadoLibre is the Amazon + PayPal + Shopify of Latin America, compounding faster than any of those US analogues did at the same stage of their growth. The flywheel is the most important thing to understand: the marketplace drives payment volume, payment volume funds lending, lending strengthens merchant relationships, merchant relationships deepen marketplace supply, and marketplace supply drives more consumer transactions. Each rotation increases the barriers to competitive disruption, and the Latin American market is still in early innings of digital commerce and financial services penetration. I own it as the flagship LatAm tech position in the Roth IRA — the best risk-adjusted compounding story I can find in consumer internet outside the US.",
+      "MercadoLibre is the Amazon + PayPal + Shopify of Latin America, compounding faster than any of those US analogues did at the same stage of their growth. The flywheel is the most important thing to understand: the marketplace drives payment volume, payment volume funds lending, lending strengthens merchant relationships, merchant relationships deepen marketplace supply, and marketplace supply drives more consumer transactions. Each rotation increases the barriers to competitive disruption, and the Latin American market is still in early innings of digital commerce and financial services penetration. I own it as the flagship LatAm tech position in the account — the best risk-adjusted compounding story I can find in consumer internet outside the US.",
     whyThisSleeve:
-      "MELI is in the Roth IRA because it's a multi-decade compounding story that plays out over 10+ years as LatAm digital commerce and financial inclusion approach their potential penetration rates. Tax-free growth on that runway is significantly more valuable than managing it in a taxable account where FX volatility would create constant short-term noise.",
+      "MELI is in the account because it's a multi-decade compounding story that plays out over 10+ years as LatAm digital commerce and financial inclusion approach their potential penetration rates. A long, undisturbed hold matters here specifically because FX volatility would otherwise create constant short-term noise that has nothing to do with the underlying thesis.",
     longDescription:
       "MercadoLibre operates the dominant e-commerce marketplace (Mercado Libre) and a rapidly growing fintech platform (Mercado Pago) across Latin America. The two businesses create powerful flywheel dynamics: marketplace drives payment volume, payment volume funds lending, lending strengthens merchant relationships, and merchant relationships deepen marketplace supply. Advertising (Mercado Ads) is emerging as a high-margin third revenue stream.",
     thesisP2:
@@ -1324,7 +1324,7 @@ export const positionDetails: Record<string, PositionDetail> = {
     whyIOwnIt:
       "Meta is the most misunderstood AI infrastructure investment in the portfolio. While NVIDIA gets all the attention as the AI hardware beneficiary, Meta is spending $35-40B+ annually on AI not to compete in the cloud market but to make its own advertising products better — and better advertising products mean higher advertiser ROI, which means more advertiser spend, which means more revenue to fund more AI investment. The flywheel is self-reinforcing in a way that's different from any other AI spending story. I own Meta as the application-layer AI compounder where AI capital expenditure is directly accretive to the core business, not speculative on future monetization.",
     whyThisSleeve:
-      "META is in the Roth IRA as a core large-cap compounder with a 5-10 year horizon. The combination of sustained EPS growth, aggressive buybacks, and AI-driven monetization expansion makes long-duration tax-free compounding significantly more valuable than active management in a taxable account.",
+      "META is in the account as a core large-cap compounder with a 5-10 year horizon. The combination of sustained EPS growth, aggressive buybacks, and AI-driven monetization expansion is best captured by a long, low-turnover hold rather than active trading around it.",
     longDescription:
       "Meta Platforms controls the world's largest social media ecosystem (Facebook, Instagram, WhatsApp, Threads) with 3.3 billion daily active users. Its advertising business is powered by an industry-leading targeting and measurement platform. Large-scale AI infrastructure investments (Llama models, AI assistants) are both improving ad relevance and creating direct monetization opportunities through Meta AI.",
     thesisP2:
@@ -1381,7 +1381,7 @@ export const positionDetails: Record<string, PositionDetail> = {
     whyIOwnIt:
       "Rocket Lab is the best-managed small-to-medium launch company in the world that isn't SpaceX, and it has a business model that doesn't require Neutron to succeed to justify the position. Electron is already the second-most-frequently-launched US rocket, the space systems segment is growing rapidly with spacecraft bus and component contracts, and the company has an operational track record that very few aerospace startups can match. I own it for three distinct reasons: (1) the Electron business generates real, growing revenue today; (2) the space systems segment provides revenue diversification that pure-play launch companies don't have; and (3) Neutron represents asymmetric optionality on the medium-lift market that doesn't cost me anything if it misses schedule — it's either free or transformational.",
     whyThisSleeve:
-      "RKLB is in the Roth IRA as a long-duration aerospace compounder. Neutron's full development and certification timeline extends through 2026-2028, and the complete commercial and national security launch thesis plays out over a decade. Tax-free compounding on a successful long-duration aerospace bet is far more valuable than the same return managed tactically in a taxable account.",
+      "RKLB is in the account as a long-duration aerospace compounder. Neutron's full development and certification timeline extends through 2026-2028, and the complete commercial and national security launch thesis plays out over a decade — a horizon that calls for holding through the volatility rather than managing the position tactically.",
     longDescription:
       "Rocket Lab operates two complementary businesses: the Electron small-launch vehicle (the second most-frequently launched US rocket) and a space systems segment that manufactures spacecraft components and complete missions for government and commercial customers. Neutron, a medium-lift vehicle in development, targets the larger payload market currently dominated by SpaceX Falcon 9.",
     thesisP2:
@@ -1436,9 +1436,9 @@ export const positionDetails: Record<string, PositionDetail> = {
 
   ASTS: {
     whyIOwnIt:
-      "AST SpaceMobile is the most speculative position in the Roth IRA and the one I find most compelling from a pure disruption standpoint. The company is attempting to do something that no one has successfully done at commercial scale: build a satellite network that connects to standard, unmodified smartphones without any special hardware. If the technology works as demonstrated, every mobile phone on earth becomes a satellite-enabled device, and every mobile carrier in the world becomes a potential AST customer. I sized it small relative to the risk profile — this is venture-stage risk in a public market wrapper — but the asymmetry is extraordinary. If it works, the payoff is transformational. If it doesn't, the position size limits the damage.",
+      "AST SpaceMobile is the most speculative position in the account and the one I find most compelling from a pure disruption standpoint. The company is attempting to do something that no one has successfully done at commercial scale: build a satellite network that connects to standard, unmodified smartphones without any special hardware. If the technology works as demonstrated, every mobile phone on earth becomes a satellite-enabled device, and every mobile carrier in the world becomes a potential AST customer. I sized it small relative to the risk profile — this is venture-stage risk in a public market wrapper — but the asymmetry is extraordinary. If it works, the payoff is transformational. If it doesn't, the position size limits the damage.",
     whyThisSleeve:
-      "ASTS is in the Roth IRA because the potential upside, if realized over a 5-7 year horizon, is large enough that tax-free compounding matters enormously. A position that could compound 10-20x in a success case is far more valuable in a tax-free account than the same return in a taxable one.",
+      "ASTS is in the account because a position with this much binary, multi-year risk needs to be held through volatility rather than traded around it. If the 5-7 year thesis plays out, the payoff is large enough that patience matters far more than any tactical management could add.",
     longDescription:
       "AST SpaceMobile is building a direct-to-cell satellite network that enables standard mobile phones to connect directly to orbiting satellites without special hardware. Unlike Starlink terminals, AST's technology uses existing smartphone radios. Partnerships with AT&T, Verizon, and international carriers provide a path to commercial deployment. BlueBird satellites are the initial commercial constellation.",
     thesisP2:
@@ -1548,13 +1548,13 @@ export const positionDetails: Record<string, PositionDetail> = {
     ],
   },
 
-  // ─── Roth IRA — Cybersecurity / Enterprise SaaS / AI Infrastructure ──────
+  // ─── Cybersecurity / Enterprise SaaS / AI Infrastructure ──────
 
   CRWD: {
     whyIOwnIt:
-      "CrowdStrike is in the Roth IRA as the portfolio's primary cybersecurity expression. Endpoint security, identity protection, cloud workload protection, and next-generation SIEM remain critical enterprise spend areas, and Falcon sits at the consolidation point of all four. My thesis is that platform consolidation, where customers add modules over time instead of managing separate point solutions, is the dominant trend in enterprise security buying, and CrowdStrike is one of the cleanest ways to express it. Falcon Flex reinforces that pattern by giving large customers a more flexible way to expand usage across the platform, which can help drive larger commitments and stronger retention.",
+      "CrowdStrike is in the account as the portfolio's primary cybersecurity expression. Endpoint security, identity protection, cloud workload protection, and next-generation SIEM remain critical enterprise spend areas, and Falcon sits at the consolidation point of all four. My thesis is that platform consolidation, where customers add modules over time instead of managing separate point solutions, is the dominant trend in enterprise security buying, and CrowdStrike is one of the cleanest ways to express it. Falcon Flex reinforces that pattern by giving large customers a more flexible way to expand usage across the platform, which can help drive larger commitments and stronger retention.",
     whyThisSleeve:
-      "CRWD is in the Roth IRA because the consolidation thesis plays out over multiple land-and-expand cycles, and tax-free compounding on a premium-multiple platform name is exactly what the account is structured for. The valuation is rich, which means quarterly results will drive meaningful short-term price action. Holding it in the Roth removes the temptation to manage it tactically around earnings prints.",
+      "CRWD is in the account because the consolidation thesis plays out over multiple land-and-expand cycles, and a long, low-turnover hold on a premium-multiple platform name is exactly what this account is structured for. The valuation is rich, which means quarterly results will drive meaningful short-term price action. Holding it here removes the temptation to manage it tactically around earnings prints.",
     longDescription:
       "CrowdStrike operates the Falcon cybersecurity platform, a cloud-delivered architecture that started with next-generation endpoint detection and response and has expanded into identity protection, cloud workload protection, exposure management, log and SIEM, and AI-assisted security operations. The single-agent, single-data-lake architecture is what lets Falcon add new modules to existing customers with very low friction, and it is the structural reason CrowdStrike has been able to grow net new ARR across multiple product lines simultaneously.",
     thesisP2:
@@ -1609,9 +1609,9 @@ export const positionDetails: Record<string, PositionDetail> = {
 
   NOW: {
     whyIOwnIt:
-      "ServiceNow is in the Roth IRA as the portfolio's primary enterprise software expression. My thesis is that ServiceNow has moved well beyond IT service management and is becoming a core workflow and automation layer across large organizations, not just an IT service management vendor. Its value comes from being embedded into business processes, where switching costs can grow as more departments use the platform. The AI angle is also more practical than speculative: ServiceNow can use AI to improve internal productivity, automate enterprise workflows, and increase the value of its existing platform.",
+      "ServiceNow is in the account as the portfolio's primary enterprise software expression. My thesis is that ServiceNow has moved well beyond IT service management and is becoming a core workflow and automation layer across large organizations, not just an IT service management vendor. Its value comes from being embedded into business processes, where switching costs can grow as more departments use the platform. The AI angle is also more practical than speculative: ServiceNow can use AI to improve internal productivity, automate enterprise workflows, and increase the value of its existing platform.",
     whyThisSleeve:
-      "NOW is in the Roth IRA because the workflow expansion thesis is a multi-year platform compounding story rather than a quarter-to-quarter trade. Tax-free compounding inside the Roth is the right structure for a premium-multiple, durable-growth name where near-term price action will be driven by software-multiple regime more than by the underlying business.",
+      "NOW is in the account because the workflow expansion thesis is a multi-year platform compounding story rather than a quarter-to-quarter trade. A long, low-turnover hold is the right structure for a premium-multiple, durable-growth name where near-term price action will be driven by software-multiple regime more than by the underlying business.",
     longDescription:
       "ServiceNow operates a cloud platform that organizes and automates digital workflows across large enterprises. The original wedge was IT service management, where ServiceNow displaced ticketing-era incumbents by giving IT departments a modern platform of record. Over the last several years, the platform has expanded into HR service delivery, customer service management, security operations, governance risk and compliance, and procurement, with each expansion deepening the workflow footprint inside customer organizations. The Now Platform underlies all of these workflows, and the data and process knowledge it captures is what makes the platform sticky.",
     thesisP2:
@@ -1731,7 +1731,7 @@ export const positionDetails: Record<string, PositionDetail> = {
         pricePerShare: 509.50,
         type: "add",
         explanation:
-          "Added to SMH on May 1, 2026 to increase broad semiconductor and AI infrastructure exposure within the Roth Retirement Account.",
+          "Added to SMH on May 1, 2026 to increase broad semiconductor and AI infrastructure exposure within the account.",
       },
     ],
   },
@@ -1753,7 +1753,7 @@ export const positionDetails: Record<string, PositionDetail> = {
         pricePerShare: 664.74,
         type: "add",
         explanation:
-          "Added to VOO on May 1, 2026 to increase core U.S. equity market exposure within the Roth Retirement Account.",
+          "Added to VOO on May 1, 2026 to increase core U.S. equity market exposure within the account.",
       },
     ],
   },

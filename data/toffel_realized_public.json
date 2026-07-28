@@ -1,0 +1,10 @@
+{
+  "as_of": "2026-07-28",
+  "note": "Percentages only. Hit rate and concentration are computed across all realized (closed or trimmed) positions to date. Never a dollar figure.",
+  "closed_positions_count": 29,
+  "hit_rate_pct": 72.4,
+  "top1_contributor_ticker": "AMD",
+  "top1_share_pct": 60.66,
+  "top3_tickers": ["AMD", "VOO", "IREN"],
+  "top3_share_pct": 84.2
+}

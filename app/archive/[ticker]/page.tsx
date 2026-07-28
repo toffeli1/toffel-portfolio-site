@@ -44,8 +44,11 @@ function daysBetween(from: string, to: string): number {
 
 // ── Sleeve nav label ──────────────────────────────────────────────────────────
 
+// Record keys match PreviousHolding["sleeve"] (data/previousHoldings.ts) —
+// an internal categorization key, left as "roth-ira" even though the account
+// is now branded "Investments" at its live URL (/portfolio/investments).
 const SLEEVE_META: Record<string, { label: string; href: string; color: string }> = {
-  "roth-ira": { label: "Roth IRA", href: "/portfolio/roth-ira", color: "#1a4a2e" },
+  "roth-ira": { label: "Investments", href: "/portfolio/investments", color: "#1a4a2e" },
   retail:     { label: "Speculative Individual Stocks", href: "/portfolio/retail-with-friends", color: "#1a3a5c" },
 };
 

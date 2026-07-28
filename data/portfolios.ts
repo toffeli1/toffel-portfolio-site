@@ -1,8 +1,13 @@
 // ─── Sleeve / account metadata ────────────────────────────────────────────────
 // Add a new entry here to add another sleeve.  The `slug` drives the URL at
 // /portfolio/[slug].  The `type` controls which view component renders.
+//
+// The former "retail-with-friends" (Individual Brokerage / 2027 Roth Fund)
+// entry has been removed so the site shows exactly one account. Its component
+// (RetailView in app/portfolio/[slug]/page.tsx) and data files
+// (data/holdings.ts, data/sleeveTheses.ts) remain in the repo, unreferenced.
 
-export type PortfolioType = "retail" | "roth-ira";
+export type PortfolioType = "retail" | "investments";
 
 export interface Portfolio {
   slug: string;
@@ -18,24 +23,13 @@ export interface Portfolio {
 
 export const portfolios: Portfolio[] = [
   {
-    slug: "retail-with-friends",
-    title: "Individual Brokerage",
-    subtitle: "Taxable Account · Active Research",
-    description:
-      "Taxable brokerage account focused on ETF-based market exposure, semiconductor cyclicality, Bitcoin exposure, and select high-conviction individual equities.",
-    role: "Active brokerage account used for flexible allocation across broad-market ETFs, thematic ETFs, digital asset exposure, and selected individual equities.",
-    type: "retail",
-    color: "#1a3a5c",
-    themes: ["ETFs", "Semiconductors", "Bitcoin"],
-  },
-  {
-    slug: "roth-ira",
-    title: "Roth Retirement Account",
-    subtitle: "Roth IRA · Long-Term Compounding · Tax-Advantaged Growth",
+    slug: "investments",
+    title: "Investments",
+    subtitle: "Long-Term Compounding",
     description:
       "Blends core market exposure with compounders, thematic growth, and measured speculative positions.",
-    role: "Long-duration compounders inside a tax-free wrapper. Low turnover by design.",
-    type: "roth-ira",
+    role: "Long-duration compounders held with low turnover by design.",
+    type: "investments",
     color: "#1a4a2e",
     themes: ["US", "Latin America", "International"],
   },

@@ -35,11 +35,11 @@ function deriveOne(ticker: string, quotes: QuoteMap | null, fallbackPct: number)
 }
 
 /**
- * Live-derived Roth weight for a single ticker. On mount, fetches /api/quotes
- * once and re-derives. Falls back to the static fallbackPct until then or on
- * fetch failure.
+ * Live-derived Investments-account weight for a single ticker. On mount,
+ * fetches /api/quotes once and re-derives. Falls back to the static
+ * fallbackPct until then or on fetch failure.
  */
-export default function DerivedRothWeight({
+export default function DerivedInvestmentWeight({
   ticker,
   fallbackPct,
   showStatus = false,
