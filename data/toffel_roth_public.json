@@ -1,0 +1,72 @@
+{
+  "account": "Roth IRA",
+  "as_of": "2026-07-28",
+  "note": "Percentages only. IRR is money-weighted since account inception across both custodians; VOO benchmark uses identical contribution timing.",
+  "performance": {
+    "irr_since_inception_pct": 29.4,
+    "voo_benchmark_irr_pct": 18.1,
+    "annualized_alpha_pts": 11.3
+  },
+  "holdings": [
+    {
+      "ticker": "VOO",
+      "weight_pct": 38.1,
+      "unrealized_return_pct": 26.9
+    },
+    {
+      "ticker": "SMH",
+      "weight_pct": 9.4,
+      "unrealized_return_pct": 6.7
+    },
+    {
+      "ticker": "NOW",
+      "weight_pct": 8.3,
+      "unrealized_return_pct": 12.2
+    },
+    {
+      "ticker": "GOOGL",
+      "weight_pct": 7.8,
+      "unrealized_return_pct": 33.2
+    },
+    {
+      "ticker": "FBTC",
+      "weight_pct": 6.1,
+      "unrealized_return_pct": -28.4
+    },
+    {
+      "ticker": "MELI",
+      "weight_pct": 6.0,
+      "unrealized_return_pct": -5.1
+    },
+    {
+      "ticker": "UNH",
+      "weight_pct": 5.3,
+      "unrealized_return_pct": 46.6
+    },
+    {
+      "ticker": "NBIS",
+      "weight_pct": 5.1,
+      "unrealized_return_pct": 125.3
+    },
+    {
+      "ticker": "CRWD",
+      "weight_pct": 4.8,
+      "unrealized_return_pct": 8.7
+    },
+    {
+      "ticker": "META",
+      "weight_pct": 4.8,
+      "unrealized_return_pct": -6.6
+    },
+    {
+      "ticker": "RKLB",
+      "weight_pct": 2.9,
+      "unrealized_return_pct": -19.8
+    },
+    {
+      "ticker": "ASTS",
+      "weight_pct": 1.4,
+      "unrealized_return_pct": -43.2
+    }
+  ]
+}

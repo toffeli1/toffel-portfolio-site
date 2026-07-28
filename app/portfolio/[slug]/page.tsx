@@ -5,9 +5,9 @@ import { holdings } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { etfProfiles } from "@/data/etfConstituents";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
-import { QuotesProvider } from "@/components/QuotesProvider";
 import SleeveDashboard from "@/components/SleeveDashboard";
-import PortfolioHeatmap from "@/components/PortfolioHeatmap";
+import RothPerformanceSection from "@/components/RothPerformanceSection";
+import { rothPublicData } from "@/data/rothPublicPerformance";
 
 export function generateStaticParams() {
   return portfolios.map((p) => ({ slug: p.slug }));
@@ -153,129 +153,66 @@ function RetailView() {
   );
 }
 
-// ── Roth IRA sector system ─────────────────────────────────────────────────────
-// Sector groups drive the heatmap's grouping + headers. Within each sector,
-// holdings are sorted by weight (desc) at render time so the largest position
-// in each group leads.
-const ROTH_SECTORS: { sector: string; tickers: string[] }[] = [
-  { sector: "Core Market",                         tickers: ["VOO"] },
-  { sector: "AI / Semis / Infrastructure",         tickers: ["SMH", "AMD", "NBIS", "PENG"] },
-  { sector: "Platform Tech / Internet / Software", tickers: ["GOOGL", "META", "NOW", "MELI", "CRWD"] },
-  { sector: "Space / Defense / Connectivity",      tickers: ["RKLB", "ASTS"] },
-  { sector: "Digital Assets",                      tickers: ["FBTC"] },
-  { sector: "Healthcare",                          tickers: ["UNH"] },
-];
-
 // ── Roth IRA view ─────────────────────────────────────────────────────────────
 
 function RothIraView() {
   const color = "#1a4a2e";
 
-  // Order holdings by sector group, weight-desc within each group. This
-  // controls both the visual order of the donut slices and the order of the
-  // sector key below it, so related names sit next to each other.
-  const byTicker = new Map(rothIraHoldings.map((h) => [h.ticker, h] as const));
-  const orderedHoldings = ROTH_SECTORS.flatMap(({ tickers }) =>
-    tickers
-      .map((t) => byTicker.get(t))
-      .filter((h): h is NonNullable<typeof h> => !!h)
-      .sort((a, b) => b.portfolioWeightPct - a.portfolioWeightPct)
-  );
-  // Ticker → display sector, derived from the sector grouping above. Drives the
-  // heatmap's sector grouping + headers.
-  const tickerToSector = new Map<string, string>(
-    ROTH_SECTORS.flatMap(({ sector, tickers }) => tickers.map((t) => [t, sector] as const))
-  );
-  const sectorOrder = ROTH_SECTORS.map((s) => s.sector);
-
   return (
     <div className="min-h-screen bg-[#faf7f2]">
-      <QuotesProvider>
-        <main>
-          {/* Header */}
-          <section
-            className="border-b"
-            style={{ borderColor: "rgba(15,30,53,0.08)" }}
-          >
-            <div
-              style={{
-                height: "2px",
-                background: `linear-gradient(90deg, transparent 0%, ${color}30 15%, ${color}60 50%, ${color}30 85%, transparent 100%)`,
-              }}
-            />
-            <div className="mx-auto max-w-7xl px-6 py-20 lg:px-12">
-              <p
-                className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
-                style={{ color }}
-              >
-                Account View
-              </p>
-              <div className="flex items-end justify-between gap-8">
-                <div className="min-w-0">
-                  <h1
-                    className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
-                    style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
-                  >
-                    Roth Retirement Account
-                  </h1>
-                  <p className="mt-2 max-w-xl font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
-                    Weights use manually recorded share counts and delayed market prices when available, with fallback weights when pricing is unavailable. As of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}.
-                  </p>
-                  <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
-                    Roth IRA · Long-Term Compounding · Tax-Advantaged Growth
-                  </p>
-                </div>
-                <div className="shrink-0 text-right">
-                  <p
-                    className="font-mono font-bold leading-none tracking-tight"
-                    style={{ color, fontSize: "clamp(3.5rem,5.5vw,5rem)" }}
-                  >
-                    {rothIraHoldings.filter((h) => h.portfolioWeightPct > 0).length}
-                  </p>
-                  <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
-                    positions
-                  </p>
-                </div>
+      <main>
+        {/* Header */}
+        <section
+          className="border-b"
+          style={{ borderColor: "rgba(15,30,53,0.08)" }}
+        >
+          <div
+            style={{
+              height: "2px",
+              background: `linear-gradient(90deg, transparent 0%, ${color}30 15%, ${color}60 50%, ${color}30 85%, transparent 100%)`,
+            }}
+          />
+          <div className="mx-auto max-w-7xl px-6 py-20 lg:px-12">
+            <p
+              className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
+              style={{ color }}
+            >
+              Account View
+            </p>
+            <div className="flex items-end justify-between gap-8">
+              <div className="min-w-0">
+                <h1
+                  className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
+                  style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
+                >
+                  Roth Retirement Account
+                </h1>
+                <p className="mt-2 max-w-xl font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
+                  Weights use manually recorded share counts and delayed market prices when available, with fallback weights when pricing is unavailable. As of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}.
+                </p>
+                <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
+                  Roth IRA · Long-Term Compounding · Tax-Advantaged Growth
+                </p>
+              </div>
+              <div className="shrink-0 text-right">
+                <p
+                  className="font-mono font-bold leading-none tracking-tight"
+                  style={{ color, fontSize: "clamp(3.5rem,5.5vw,5rem)" }}
+                >
+                  {rothIraHoldings.filter((h) => h.portfolioWeightPct > 0).length}
+                </p>
+                <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
+                  positions
+                </p>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* Holdings — TradingView-style sector heatmap. Tile area encodes
-              portfolio weight; tile color encodes the selected-period return.
-              Replaces the prior donut + sector key. */}
-          <section
-            className="border-b"
-            style={{ borderColor: "rgba(15,30,53,0.08)" }}
-          >
-            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-              <p
-                className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em]"
-                style={{ color }}
-              >
-                Holdings
-              </p>
-              <PortfolioHeatmap
-                sectorOrder={sectorOrder}
-                holdings={orderedHoldings.map((h) => ({
-                  ticker: h.ticker,
-                  name: h.company,
-                  href: h.ticker in etfProfiles ? `/etfs/${h.ticker}` : `/positions/${h.ticker}`,
-                  weightPct: h.portfolioWeightPct,
-                  sector: tickerToSector.get(h.ticker) ?? "Other",
-                  returns: {
-                    sincePurchase: h.sincePurchaseReturn ?? h.returnPct,
-                    return12M: h.return12M,
-                    return6M: h.return6M,
-                    return3M: h.return3M,
-                    return1M: h.return1M,
-                  },
-                }))}
-              />
-            </div>
-          </section>
-
-        </main>
-      </QuotesProvider>
+        {/* Performance + holdings — percentage-only snapshot from
+            data/toffel_roth_public.json. No dollar amounts, ever. */}
+        <RothPerformanceSection data={rothPublicData} />
+      </main>
 
       <SleeveFooter />
     </div>
