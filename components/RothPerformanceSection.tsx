@@ -1,8 +1,26 @@
 import type { RothPublicData, RothPublicHolding } from "@/data/rothPublicPerformance";
+import SleeveDashboard, { type SleeveDashboardHolding } from "@/components/SleeveDashboard";
+import { etfProfiles } from "@/data/etfConstituents";
+import { rothIraHoldings } from "@/data/sleeveHoldings";
 
 // Public-safe by construction: renders only weights, unrealized returns, and
 // money-weighted IRR figures from RothPublicData. Never render a dollar
 // amount, balance, or contribution figure here.
+
+// Weight labels + leader lines only render for slices at or above this
+// threshold; smaller slices still appear in the legend, with no leader line.
+const WEIGHT_LABEL_THRESHOLD_PCT = 4;
+
+// Company display name lookup only — never a source of weight or return
+// values, which always come from RothPublicHolding.weight_pct /
+// unrealized_return_pct. Falls back to the ticker itself if unmapped.
+function companyName(ticker: string): string {
+  return rothIraHoldings.find((h) => h.ticker === ticker)?.company ?? ticker;
+}
+
+function tickerHref(ticker: string): string {
+  return ticker in etfProfiles ? `/etfs/${ticker}` : `/positions/${ticker}`;
+}
 
 const ACCENT = "#1a4a2e";
 const POSITIVE = "#15542e";
@@ -65,6 +83,35 @@ function PerformanceSummary({ performance }: { performance: RothPublicData["perf
         />
       </div>
     </div>
+  );
+}
+
+// ── Weighting (logo grid + donut) ────────────────────────────────────────────
+
+// Reuses the sleeve-view dashboard (components/SleeveDashboard.tsx) rather
+// than a parallel implementation. No color is passed per holding, so slices
+// take the component's default sequential palette in weight order — no red
+// or green, since those are reserved for return coloring elsewhere on this
+// page.
+function Weighting({ holdings }: { holdings: RothPublicHolding[] }) {
+  const dashboardHoldings: SleeveDashboardHolding[] = holdings.map((h) => ({
+    ticker: h.ticker,
+    name: companyName(h.ticker),
+    href: tickerHref(h.ticker),
+    portfolioWeightPct: h.weight_pct,
+  }));
+
+  return (
+    <SleeveDashboard
+      label="Weighting"
+      layout="side-by-side"
+      holdings={dashboardHoldings}
+      valueDecimals={1}
+      labelThresholdPct={WEIGHT_LABEL_THRESHOLD_PCT}
+      tileGridClassName="grid grid-cols-3 gap-x-5 gap-y-7 justify-items-center sm:grid-cols-[repeat(auto-fit,minmax(112px,1fr))]"
+      columnSplitClassName="grid gap-8 md:items-center md:gap-10 lg:gap-12 md:grid-cols-[42%_minmax(0,1fr)] lg:grid-cols-[55%_minmax(0,1fr)] xl:grid-cols-[62%_minmax(0,1fr)]"
+      donutMargin={{ top: 24, right: 50, bottom: 24, left: 50 }}
+    />
   );
 }
 
@@ -152,6 +199,10 @@ function HoldingsTable({ holdings }: { holdings: RothPublicHolding[] }) {
 // ── Section ───────────────────────────────────────────────────────────────────
 
 export default function RothPerformanceSection({ data }: { data: RothPublicData }) {
+  // Single sorted source of truth — the weighting section and the returns
+  // table both render from this, never a second copy.
+  const sortedHoldings = [...data.holdings].sort((a, b) => b.weight_pct - a.weight_pct);
+
   return (
     <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
@@ -163,13 +214,17 @@ export default function RothPerformanceSection({ data }: { data: RothPublicData 
         </p>
         <PerformanceSummary performance={data.performance} />
 
+        <div className="mt-12">
+          <Weighting holdings={sortedHoldings} />
+        </div>
+
         <p
           className="mb-6 mt-12 font-mono text-[10px] uppercase tracking-[0.28em]"
           style={{ color: ACCENT }}
         >
           Holdings
         </p>
-        <HoldingsTable holdings={data.holdings} />
+        <HoldingsTable holdings={sortedHoldings} />
 
         <div className="mt-8 space-y-2">
           <p className="font-mono text-[9px] leading-[1.5] text-[#5a6e82]">

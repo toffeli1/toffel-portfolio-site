@@ -8,7 +8,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import type { PieLabelRenderProps } from "recharts";
 import TickerLogo from "./TickerLogo";
+
+interface PieLabelLineRenderProps {
+  value: number;
+  points: [{ x: number; y: number }, { x: number; y: number }];
+}
 
 export interface SleeveDashboardHolding {
   ticker: string;
@@ -53,9 +59,11 @@ interface PiePoint {
 function CustomTooltip({
   active,
   payload,
+  valueDecimals = 2,
 }: {
   active?: boolean;
   payload?: Array<{ payload: PiePoint }>;
+  valueDecimals?: number;
 }) {
   if (!active || !payload || payload.length === 0) return null;
   const d = payload[0].payload;
@@ -93,7 +101,7 @@ function CustomTooltip({
           letterSpacing: "0.04em",
         }}
       >
-        {d.value.toFixed(2)}% weight
+        {d.value.toFixed(valueDecimals)}% weight
       </div>
     </div>
   );
@@ -108,6 +116,11 @@ export default function SleeveDashboard({
   showLegend = true,
   donutSidePanel,
   layout = "stack",
+  valueDecimals = 2,
+  labelThresholdPct,
+  tileGridClassName = "grid grid-cols-3 gap-x-5 gap-y-7 justify-items-center",
+  columnSplitClassName = "grid gap-8 md:items-center md:gap-10 lg:gap-12 md:grid-cols-[42%_minmax(0,1fr)]",
+  donutMargin = { top: 20, right: 16, bottom: 20, left: 16 },
 }: {
   label?: string;
   /** Optional. Omit when the page already provides its own title block. */
@@ -127,6 +140,26 @@ export default function SleeveDashboard({
    *  "side-by-side" wraps tiles + donut in one shared cream-wash card with
    *  tiles on the left and the donut on the right (md+); stacks on mobile. */
   layout?: "stack" | "side-by-side";
+  /** Decimal places for weight % in the tooltip, legend, and default slice label. */
+  valueDecimals?: number;
+  /** When set, outer slice labels + leader lines render only for slices whose
+   *  weight is >= this value; slices below it appear in the legend only, with
+   *  no leader line. Overrides the count-based `showSliceLabels` gate below —
+   *  useful for sleeves with too many holdings to label every slice cleanly. */
+  labelThresholdPct?: number;
+  /** Tailwind classes for the tile grid in the "side-by-side" layout. Default
+   *  matches the original fixed 3-column grid; override for sleeves with many
+   *  more holdings that need more columns at wider breakpoints. */
+  tileGridClassName?: string;
+  /** Tailwind classes for the outer tile/donut column split in the
+   *  "side-by-side" layout (the `md:grid-cols-[…]` template). Default matches
+   *  the original 42%/58% split tuned for a 3-column tile grid. */
+  columnSplitClassName?: string;
+  /** Margin around the "side-by-side" layout's PieChart. Default matches the
+   *  original tight margin; widen when outside labels (esp. `labelThresholdPct`
+   *  mode with many slices) need more horizontal room so they don't get
+   *  clipped by the SVG's own bounds near the left/right edges. */
+  donutMargin?: { top: number; right: number; bottom: number; left: number };
 }) {
   const router = useRouter();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
@@ -141,6 +174,50 @@ export default function SleeveDashboard({
     value: h.portfolioWeightPct,
     color: h.color ?? SLICE_COLORS[i % SLICE_COLORS.length],
   }));
+
+  // Outside label + leader line renderers, gated per-slice by weight when
+  // `labelThresholdPct` is set; otherwise fall back to the original
+  // all-or-nothing `showSliceLabels` behavior.
+  const renderOutsideLabel = (props: PieLabelRenderProps) => {
+    const { value, x, y, textAnchor } = props;
+    if (labelThresholdPct !== undefined && value < labelThresholdPct) return null;
+    return (
+      <text
+        x={x}
+        y={y}
+        textAnchor={textAnchor}
+        dominantBaseline="central"
+        style={{ fontFamily: "var(--font-geist-mono)", fontSize: 11, fill: "#3d4f66" }}
+      >
+        {`${value.toFixed(valueDecimals)}%`}
+      </text>
+    );
+  };
+
+  const renderOutsideLabelLine = (props: PieLabelLineRenderProps) => {
+    const { value, points } = props;
+    // Recharts types this return as non-nullable, so render an empty <g />
+    // rather than null to suppress the leader line for below-threshold slices.
+    if (labelThresholdPct !== undefined && value < labelThresholdPct) return <g />;
+    const [p0, p1] = points;
+    return (
+      <line x1={p0.x} y1={p0.y} x2={p1.x} y2={p1.y} stroke="#5a6e82" strokeWidth={0.75} />
+    );
+  };
+
+  const pieLabel =
+    labelThresholdPct !== undefined
+      ? renderOutsideLabel
+      : showSliceLabels
+      ? ({ value }: { value: number }) => `${value.toFixed(valueDecimals)}%`
+      : false;
+
+  const pieLabelLine =
+    labelThresholdPct !== undefined
+      ? renderOutsideLabelLine
+      : showSliceLabels
+      ? { stroke: "#5a6e82", strokeWidth: 0.75 }
+      : false;
 
   return (
     <div>
@@ -180,7 +257,7 @@ export default function SleeveDashboard({
       )}
 
       <div className={title ? "mt-8" : ""}>
-        {layout === "side-by-side" && title ? (
+        {layout === "side-by-side" ? (
           <div
             className="rounded-2xl px-6 py-7 lg:px-10 lg:py-9"
             style={{
@@ -188,9 +265,10 @@ export default function SleeveDashboard({
               border: "1px solid rgba(15, 30, 53, 0.07)",
             }}
           >
-            <div className="grid gap-8 md:items-center md:gap-10 lg:gap-12 md:grid-cols-[42%_minmax(0,1fr)]">
-              {/* Tiles — compact 3-col grid (5 holdings flow as 3 + 2) */}
-              <div className="grid grid-cols-3 gap-x-5 gap-y-7 justify-items-center">
+            <div className={columnSplitClassName}>
+              {/* Tiles — compact 3-col grid (5 holdings flow as 3 + 2); override
+                  via tileGridClassName for sleeves with many more holdings. */}
+              <div className={tileGridClassName}>
                 {holdings.map((h) => (
                   <Link
                     key={h.ticker}
@@ -225,9 +303,9 @@ export default function SleeveDashboard({
                 </p>
                 <div className="mt-4 h-[300px] md:h-[380px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <PieChart margin={{ top: 20, right: 16, bottom: 20, left: 16 }}>
+                    <PieChart margin={donutMargin}>
                       <Tooltip
-                        content={<CustomTooltip />}
+                        content={<CustomTooltip valueDecimals={valueDecimals} />}
                         wrapperStyle={{ outline: "none" }}
                         cursor={false}
                       />
@@ -248,16 +326,8 @@ export default function SleeveDashboard({
                           if (href) router.push(href);
                         }}
                         style={{ cursor: "pointer" }}
-                        label={
-                          showSliceLabels
-                            ? ({ value }) => `${value.toFixed(2)}%`
-                            : false
-                        }
-                        labelLine={
-                          showSliceLabels
-                            ? { stroke: "#5a6e82", strokeWidth: 0.75 }
-                            : false
-                        }
+                        label={pieLabel}
+                        labelLine={pieLabelLine}
                       >
                         {pieData.map((d, i) => {
                           const dimmed = activeIdx !== null && activeIdx !== i;
@@ -296,7 +366,7 @@ export default function SleeveDashboard({
                           <span className="font-mono text-[10.5px] tracking-[0.08em] text-[#3d4f66]">
                             {d.ticker}{" "}
                             <span className="text-[#7a8799]">
-                              {d.value.toFixed(2)}%
+                              {d.value.toFixed(valueDecimals)}%
                             </span>
                           </span>
                         </Link>
@@ -360,7 +430,7 @@ export default function SleeveDashboard({
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart margin={{ top: 20, right: 16, bottom: 20, left: 16 }}>
                       <Tooltip
-                        content={<CustomTooltip />}
+                        content={<CustomTooltip valueDecimals={valueDecimals} />}
                         wrapperStyle={{ outline: "none" }}
                         cursor={false}
                       />
@@ -381,16 +451,8 @@ export default function SleeveDashboard({
                           if (href) router.push(href);
                         }}
                         style={{ cursor: "pointer" }}
-                        label={
-                          showSliceLabels
-                            ? ({ value }) => `${value.toFixed(2)}%`
-                            : false
-                        }
-                        labelLine={
-                          showSliceLabels
-                            ? { stroke: "#5a6e82", strokeWidth: 0.75 }
-                            : false
-                        }
+                        label={pieLabel}
+                        labelLine={pieLabelLine}
                       >
                         {pieData.map((d, i) => {
                           const dimmed = activeIdx !== null && activeIdx !== i;
@@ -420,7 +482,7 @@ export default function SleeveDashboard({
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart margin={{ top: 32, right: 32, bottom: 32, left: 32 }}>
                     <Tooltip
-                      content={<CustomTooltip />}
+                      content={<CustomTooltip valueDecimals={valueDecimals} />}
                       wrapperStyle={{ outline: "none" }}
                       cursor={false}
                     />
@@ -441,16 +503,8 @@ export default function SleeveDashboard({
                         if (href) router.push(href);
                       }}
                       style={{ cursor: "pointer" }}
-                      label={
-                        showSliceLabels
-                          ? ({ value }) => `${value.toFixed(2)}%`
-                          : false
-                      }
-                      labelLine={
-                        showSliceLabels
-                          ? { stroke: "#5a6e82", strokeWidth: 0.75 }
-                          : false
-                      }
+                      label={pieLabel}
+                      labelLine={pieLabelLine}
                     >
                       {pieData.map((d, i) => {
                         const dimmed = activeIdx !== null && activeIdx !== i;
@@ -492,7 +546,7 @@ export default function SleeveDashboard({
                     />
                     <span className="font-mono text-[11px] tracking-[0.08em] text-[#3d4f66]">
                       {d.ticker}{" "}
-                      <span className="text-[#7a8799]">{d.value.toFixed(2)}%</span>
+                      <span className="text-[#7a8799]">{d.value.toFixed(valueDecimals)}%</span>
                     </span>
                   </Link>
                 );
