@@ -1,4 +1,3 @@
-import { fmtPortfolioDate } from "@/lib/config";
 import type { RothPublicData, RothPublicHolding } from "@/data/rothPublicPerformance";
 
 // Public-safe by construction: renders only weights, unrealized returns, and
@@ -181,9 +180,6 @@ export default function RothPerformanceSection({ data }: { data: RothPublicData 
             Returns are unrealized and marked at delayed prices. Track record is short
             (~3 years) and spans a strong market. Past performance does not indicate
             future results. For informational purposes only; not financial advice.
-          </p>
-          <p className="font-mono text-[9px] leading-[1.5] text-[#5a6e82]">
-            As of {fmtPortfolioDate(data.as_of)}.
           </p>
         </div>
       </div>

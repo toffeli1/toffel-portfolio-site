@@ -188,7 +188,7 @@ function RothIraView() {
                   Roth Retirement Account
                 </h1>
                 <p className="mt-2 max-w-xl font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
-                  Weights use manually recorded share counts and delayed market prices when available, with fallback weights when pricing is unavailable. As of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}.
+                  Manually maintained snapshot of portfolio weights and returns — no live pricing. As of {fmtPortfolioDate(rothPublicData.as_of)}.
                 </p>
                 <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
                   Roth IRA · Long-Term Compounding · Tax-Advantaged Growth
