@@ -310,32 +310,18 @@ export default function PerformancePage() {
                         >
                           <td className="px-5 py-3.5">
                             <div className="flex items-center gap-2">
-                              {p.researchUrl ? (
-                                <Link
-                                  href={p.researchUrl}
-                                  className="inline-block font-mono text-[12px] font-bold transition-opacity hover:opacity-70"
-                                  style={{
-                                    color: ACCENT,
-                                    backgroundColor: "rgba(26,74,46,0.08)",
-                                    padding: "4px 10px",
-                                    borderRadius: "5px",
-                                  }}
-                                >
-                                  {p.ticker}
-                                </Link>
-                              ) : (
-                                <span
-                                  className="inline-block font-mono text-[12px] font-bold"
-                                  style={{
-                                    color: ACCENT,
-                                    backgroundColor: "rgba(26,74,46,0.08)",
-                                    padding: "4px 10px",
-                                    borderRadius: "5px",
-                                  }}
-                                >
-                                  {p.ticker}
-                                </span>
-                              )}
+                              <Link
+                                href={p.href}
+                                className="inline-block font-mono text-[12px] font-bold transition-opacity hover:opacity-70"
+                                style={{
+                                  color: ACCENT,
+                                  backgroundColor: "rgba(26,74,46,0.08)",
+                                  padding: "4px 10px",
+                                  borderRadius: "5px",
+                                }}
+                              >
+                                {p.ticker}
+                              </Link>
                               {flagged && (
                                 <span
                                   className="font-mono text-[8px] uppercase tracking-[0.1em]"
