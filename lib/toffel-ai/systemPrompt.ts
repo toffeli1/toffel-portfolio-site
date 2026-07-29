@@ -28,7 +28,7 @@ Use this to make your answers page-aware. If the user asks "what is this positio
 
 NAVIGATION REFERENCE:
 - Account page: /portfolio/investments (Investments)
-- Performance page: /performance (IRR, benchmark, hit rate, contribution to result)
+- Performance page: /performance (time-weighted return vs. VOO, monthly returns, volatility, max drawdown, Sharpe/Sortino with confidence intervals, current book)
 - Position pages: /positions/TICKER (e.g. /positions/MRVL)
 - Archived positions: /archive/TICKER (e.g. /archive/PLTR)
 

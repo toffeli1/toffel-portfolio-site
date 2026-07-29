@@ -1,0 +1,24 @@
+{
+  "asOf": "2026-05-31",
+  "asOfNote": "Last fully reconciled book. Update to the latest month-end and change asOf.",
+  "positions": [
+    { "ticker": "VOO",  "name": "Vanguard S&P 500 ETF",        "weightPct": 34.75, "theme": "Core index" },
+    { "ticker": "AMD",  "name": "Advanced Micro Devices",       "weightPct": 9.19,  "theme": "Semis / AI infra" },
+    { "ticker": "FBTC", "name": "Fidelity Wise Origin Bitcoin", "weightPct": 6.53,  "theme": "Crypto" },
+    { "ticker": "SMH",  "name": "VanEck Semiconductor ETF",     "weightPct": 6.24,  "theme": "Semis / AI infra" },
+    { "ticker": "RKLB", "name": "Rocket Lab",                   "weightPct": 5.43,  "theme": "Space / defense" },
+    { "ticker": "NBIS", "name": "Nebius Group",                 "weightPct": 5.12,  "theme": "AI infra" },
+    { "ticker": "MELI", "name": "MercadoLibre",                 "weightPct": 5.03,  "theme": "Fintech / LatAm" },
+    { "ticker": "GOOGL","name": "Alphabet Class A",             "weightPct": 4.89,  "theme": "Big tech" },
+    { "ticker": "UNH",  "name": "UnitedHealth",                 "weightPct": 4.31,  "theme": "Healthcare" },
+    { "ticker": "NOW",  "name": "ServiceNow",                   "weightPct": 3.10,  "theme": "Enterprise software" },
+    { "ticker": "META", "name": "Meta Platforms",               "weightPct": 2.82,  "theme": "Big tech" },
+    { "ticker": "DLO",  "name": "dLocal",                       "weightPct": 2.72,  "theme": "Fintech / LatAm", "researchUrl": "" },
+    { "ticker": "ASTS", "name": "AST SpaceMobile",              "weightPct": 2.69,  "theme": "Space / defense" },
+    { "ticker": "CRWD", "name": "CrowdStrike",                  "weightPct": 2.30,  "theme": "Cybersecurity" },
+    { "ticker": "PENG", "name": "Penguin Solutions",            "weightPct": 1.82,  "theme": "AI infra" },
+    { "ticker": "AVEX", "name": "AEVEX Aerospace",               "weightPct": 1.57,  "theme": "Space / defense" },
+    { "ticker": "NU",   "name": "Nu Holdings",                  "weightPct": 1.47,  "theme": "Fintech / LatAm" },
+    { "ticker": "CASH", "name": "Cash",                         "weightPct": 0.02,  "theme": "Cash" }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "n": 11,
+  "inceptionDate": "2025-08-01",
+  "asOfDate": "2026-06-30",
+  "monthlyReturns": [
+    {
+      "date": "2025-08-31",
+      "returnPct": 2.9505799585790666
+    },
+    {
+      "date": "2025-09-30",
+      "returnPct": 10.861900559600826
+    },
+    {
+      "date": "2025-10-31",
+      "returnPct": 5.671429032935425
+    },
+    {
+      "date": "2025-11-30",
+      "returnPct": -5.619639216525489
+    },
+    {
+      "date": "2025-12-31",
+      "returnPct": -2.694402267435978
+    },
+    {
+      "date": "2026-01-31",
+      "returnPct": 2.07329114776152
+    },
+    {
+      "date": "2026-02-28",
+      "returnPct": -7.79531811395968
+    },
+    {
+      "date": "2026-03-31",
+      "returnPct": -3.242842352649058
+    },
+    {
+      "date": "2026-04-30",
+      "returnPct": 17.97279074223251
+    },
+    {
+      "date": "2026-05-31",
+      "returnPct": 14.145400814710868
+    },
+    {
+      "date": "2026-06-30",
+      "returnPct": -1.4179661498028182
+    }
+  ],
+  "cumulativeSeries": [
+    {
+      "date": "2025-07-31",
+      "portfolioIndex": 100,
+      "benchmarkIndex": 100
+    },
+    {
+      "date": "2025-08-31",
+      "portfolioIndex": 102.95057995857906,
+      "benchmarkIndex": 102.07566004612578
+    },
+    {
+      "date": "2025-09-30",
+      "portfolioIndex": 114.13296957921226,
+      "benchmarkIndex": 105.39740456438676
+    },
+    {
+      "date": "2025-10-31",
+      "portfolioIndex": 120.60593995207905,
+      "benchmarkIndex": 107.92055350934562
+    },
+    {
+      "date": "2025-11-30",
+      "portfolioIndex": 113.82832125307284,
+      "benchmarkIndex": 108.15634573680768
+    },
+    {
+      "date": "2025-12-31",
+      "portfolioIndex": 110.76132838424574,
+      "benchmarkIndex": 107.93604350968985
+    },
+    {
+      "date": "2026-01-31",
+      "portfolioIndex": 113.05773320077937,
+      "benchmarkIndex": 109.50053354445632
+    },
+    {
+      "date": "2026-02-28",
+      "portfolioIndex": 104.2445232453468,
+      "benchmarkIndex": 108.60899796908885
+    },
+    {
+      "date": "2026-03-31",
+      "portfolioIndex": 100.8640376952296,
+      "benchmarkIndex": 102.84499672988882
+    },
+    {
+      "date": "2026-04-30",
+      "portfolioIndex": 118.99212012435973,
+      "benchmarkIndex": 113.69316030429246
+    },
+    {
+      "date": "2026-05-31",
+      "portfolioIndex": 135.82403245387266,
+      "benchmarkIndex": 119.70155932670133
+    },
+    {
+      "date": "2026-06-30",
+      "portfolioIndex": 133.89809365037956,
+      "benchmarkIndex": 116.89098481979967
+    }
+  ],
+  "monthComparison": [
+    {
+      "date": "2025-08-31",
+      "portfolioReturnPct": 2.9505799585790666,
+      "benchmarkReturnPct": 2.0756600461257824
+    },
+    {
+      "date": "2025-09-30",
+      "portfolioReturnPct": 10.861900559600826,
+      "benchmarkReturnPct": 3.25419842179806
+    },
+    {
+      "date": "2025-10-31",
+      "portfolioReturnPct": 5.671429032935425,
+      "benchmarkReturnPct": 2.3939384042587886
+    },
+    {
+      "date": "2025-11-30",
+      "portfolioReturnPct": -5.619639216525489,
+      "benchmarkReturnPct": 0.2184868588925859
+    },
+    {
+      "date": "2025-12-31",
+      "portfolioReturnPct": -2.694402267435978,
+      "benchmarkReturnPct": -0.20368867459142903
+    },
+    {
+      "date": "2026-01-31",
+      "portfolioReturnPct": 2.07329114776152,
+      "benchmarkReturnPct": 1.4494602395037859
+    },
+    {
+      "date": "2026-02-28",
+      "portfolioReturnPct": -7.79531811395968,
+      "benchmarkReturnPct": -0.8141837729087498
+    },
+    {
+      "date": "2026-03-31",
+      "portfolioReturnPct": -3.242842352649058,
+      "benchmarkReturnPct": -5.307112068965514
+    },
+    {
+      "date": "2026-04-30",
+      "portfolioReturnPct": 17.97279074223251,
+      "benchmarkReturnPct": 10.548071291105355
+    },
+    {
+      "date": "2026-05-31",
+      "portfolioReturnPct": 14.145400814710868,
+      "benchmarkReturnPct": 5.28474976535771
+    },
+    {
+      "date": "2026-06-30",
+      "portfolioReturnPct": -1.4179661498028182,
+      "benchmarkReturnPct": -2.347984873973752
+    }
+  ],
+  "cumulativeTWRPct": 33.89809365037959,
+  "annualizedEquivalentPct": 37.498936399305634,
+  "arithmeticMeanPct": 2.991384014131563,
+  "geometricMeanPct": 2.689241236195783,
+  "annualizedVolPct": 28.982042300648303,
+  "drawdown": {
+    "maxDrawdownPct": -16.368930306992844,
+    "peakDate": "2025-10-31",
+    "troughDate": "2026-03-31"
+  },
+  "bestMonth": {
+    "date": "2026-04-30",
+    "returnPct": 17.97279074223251
+  },
+  "worstMonth": {
+    "date": "2026-02-28",
+    "returnPct": -7.79531811395968
+  },
+  "hitRateFraction": "6 of 11",
+  "sortino": {
+    "downsideDeviationPct": 3.3916491271110134,
+    "sortinoAnnualized": 2.7148320216467283,
+    "n": 11
+  },
+  "sharpe": {
+    "sharpeAnnualized": 1.100564544026811,
+    "standardError": 1.0704978093385282,
+    "ciLow": -0.9976111622767041,
+    "ciHigh": 3.198740250330326,
+    "n": 11
+  },
+  "benchmarkFullWindow": {
+    "priceReturnLinkedPct": 16.89098481979967,
+    "totalReturnProxyPct": 18.18323398262298
+  },
+  "alphaFullWindowPts": 15.714859667756613,
+  "alphaThroughPriorMonthPts": 14.920056574380137,
+  "priorMonthDate": "2026-05-31"
+}

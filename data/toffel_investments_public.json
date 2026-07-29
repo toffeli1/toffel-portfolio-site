@@ -1,12 +1,7 @@
 {
   "account": "Investments",
   "as_of": "2026-07-28",
-  "note": "Percentages only. IRR is money-weighted since account inception across both custodians; VOO benchmark uses identical contribution timing.",
-  "performance": {
-    "irr_since_inception_pct": 29.4,
-    "voo_benchmark_irr_pct": 18.1,
-    "excess_vs_benchmark_pts": 11.3
-  },
+  "note": "Percentages only — weights and unrealized returns. Performance KPIs (IRR/TWR vs benchmark) live on /performance.",
   "holdings": [
     {
       "ticker": "VOO",

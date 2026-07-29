@@ -1,7 +1,11 @@
-// ─── Public-safe Investments account performance snapshot ────────────────────
-// Percentages only — weights, unrealized returns, and money-weighted IRR vs a
-// VOO benchmark. No dollar amounts, balances, or contribution figures, ever.
-// Update by replacing data/toffel_investments_public.json and redeploying.
+// ─── Public-safe Investments account holdings snapshot ────────────────────────
+// Percentages only — weights and unrealized returns. No dollar amounts,
+// balances, or contribution figures, ever. Update by replacing
+// data/toffel_investments_public.json and redeploying.
+//
+// Money-weighted IRR previously lived here; performance KPIs now live on
+// /performance, computed from a time-weighted (Modified Dietz) methodology —
+// see lib/perf.ts and data/performanceDerived.json.
 
 import raw from "./toffel_investments_public.json";
 
@@ -11,18 +15,10 @@ export interface InvestmentPublicHolding {
   unrealized_return_pct: number;
 }
 
-export interface InvestmentPublicPerformance {
-  irr_since_inception_pct: number;
-  voo_benchmark_irr_pct: number;
-  /** Raw return spread (account IRR minus VOO IRR), in points. Not risk-adjusted — never call this "alpha". */
-  excess_vs_benchmark_pts: number;
-}
-
 export interface InvestmentPublicData {
   account: string;
   as_of: string;
   note: string;
-  performance: InvestmentPublicPerformance;
   holdings: InvestmentPublicHolding[];
 }
 

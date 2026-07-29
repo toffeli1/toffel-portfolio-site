@@ -27,6 +27,12 @@
 # source spreadsheets — never committed (contain private dollar figures)
 *.xlsx
 
+# raw performance seed (real NAV $ and cash-flow $ figures) — never committed.
+# Only the derived, percentage-only output (data/performanceDerived.json) ships.
+# See scripts/computePerformance.mjs and app/performance/README.md.
+*.local.json
+*.local.ts
+
 # debug
 npm-debug.log*
 yarn-debug.log*

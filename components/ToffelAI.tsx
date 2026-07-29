@@ -56,10 +56,10 @@ function getSuggestedPrompts(pathname: string | null): string[] {
 
   if (pathname.includes("/performance")) {
     return [
-      "How is IRR different from the VOO benchmark?",
-      "What's driving the excess return vs. the benchmark?",
-      "What's the hit rate on closed positions?",
-      "Which positions contributed most to the result?",
+      "How does time-weighted return differ from money-weighted?",
+      "What drove the max drawdown?",
+      "Why isn't Sharpe the headline number here?",
+      "What's the largest position in the current book?",
     ];
   }
 
