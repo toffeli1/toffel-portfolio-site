@@ -3,67 +3,13 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { getKnownQuestions, answerQuestion } from "@/lib/toffel-ai/qa";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface Message {
   role: "user" | "assistant";
   content: string;
-}
-
-// ── Suggested prompts ─────────────────────────────────────────────────────────
-
-const GLOBAL_PROMPTS = [
-  "What are the largest sources of portfolio concentration?",
-  "How does ETF exposure affect the overall risk profile?",
-  "What recent decisions changed the portfolio?",
-  "What is the largest position and why?",
-];
-
-function getSuggestedPrompts(pathname: string | null): string[] {
-  if (!pathname) return GLOBAL_PROMPTS;
-
-  const tickerMatch = pathname.match(/^\/positions\/([A-Za-z]+)/);
-  if (tickerMatch) {
-    const t = tickerMatch[1].toUpperCase();
-    return [
-      `What's the bull case for ${t}?`,
-      `What are the key risks for ${t}?`,
-      `Why is ${t} sized this way?`,
-      `What am I watching for ${t}?`,
-    ];
-  }
-
-  const archiveMatch = pathname.match(/^\/archive\/([A-Za-z]+)/);
-  if (archiveMatch) {
-    const t = archiveMatch[1].toUpperCase();
-    return [
-      `Why was ${t} exited?`,
-      `What was the original thesis for ${t}?`,
-      `What's the key lesson from ${t}?`,
-      `How did the ${t} trade play out?`,
-    ];
-  }
-
-  if (pathname.includes("/portfolio/investments")) {
-    return [
-      "What are the largest positions in the account?",
-      "How does the account balance core exposure with compounders?",
-      "Which positions drive the most concentration risk?",
-      "What archived decisions changed the account?",
-    ];
-  }
-
-  if (pathname.includes("/performance")) {
-    return [
-      "How does time-weighted return differ from money-weighted?",
-      "What drove the max drawdown?",
-      "Why isn't Sharpe the headline number here?",
-      "What's the largest position in the current book?",
-    ];
-  }
-
-  return GLOBAL_PROMPTS;
 }
 
 // ── Response post-processor ───────────────────────────────────────────────────
@@ -272,34 +218,19 @@ function MessageContent({ content }: { content: string }) {
 
 // ── Loading dots ──────────────────────────────────────────────────────────────
 
-function ThinkingDots() {
-  return (
-    <span className="flex gap-1 items-center py-0.5">
-      {[0, 150, 300].map((delay) => (
-        <span
-          key={delay}
-          className="w-1.5 h-1.5 rounded-full bg-[#9ca3af] animate-bounce"
-          style={{ animationDelay: `${delay}ms` }}
-        />
-      ))}
-    </span>
-  );
-}
-
 // ── Main component ────────────────────────────────────────────────────────────
 
 export function ToffelAI() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [streaming, setStreaming] = useState(false);
   const pathname = usePathname();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const abortRef = useRef<AbortController | null>(null);
   const textareaRef = inputRef;
 
-  const suggestedPrompts = getSuggestedPrompts(pathname);
+  const knownQuestions = getKnownQuestions(pathname);
+  const suggestedPrompts = knownQuestions.map((q) => q.label);
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -329,78 +260,24 @@ export function ToffelAI() {
     el.style.height = Math.min(el.scrollHeight, 120) + "px";
   };
 
+  // A precomputed lookup, not a live model call — resolves synchronously from
+  // committed data (lib/toffel-ai/qa.ts). There is no network request here, so
+  // there is nothing to stream, time out, or garble.
   const sendMessage = useCallback(
-    async (text: string) => {
-      if (!text.trim() || streaming) return;
+    (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed) return;
 
-      const userMsg: Message = { role: "user", content: text.trim() };
-      const history = [...messages, userMsg];
-      setMessages([...history, { role: "assistant", content: "" }]);
+      const userMsg: Message = { role: "user", content: trimmed };
+      const { text: answer } = answerQuestion(trimmed, pathname);
+      setMessages((prev) => [...prev, userMsg, { role: "assistant", content: answer }]);
       setInput("");
-      setStreaming(true);
 
-      // Reset textarea height
       if (textareaRef.current) {
         textareaRef.current.style.height = "24px";
       }
-
-      const controller = new AbortController();
-      abortRef.current = controller;
-
-      try {
-        const res = await fetch("/api/toffel-ai", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history, pathname }),
-          signal: controller.signal,
-        });
-
-        if (!res.ok) {
-          const errText = await res.text().catch(() => "");
-          console.error(`[toffel-ai] HTTP ${res.status}:`, errText);
-          throw new Error(errText || `HTTP ${res.status}`);
-        }
-
-        const reader = res.body?.getReader();
-        if (!reader) throw new Error("No response stream");
-
-        const decoder = new TextDecoder();
-        let accumulated = "";
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          accumulated += decoder.decode(value, { stream: true });
-          const snap = accumulated;
-          setMessages((prev) => {
-            const updated = [...prev];
-            updated[updated.length - 1] = { role: "assistant", content: snap };
-            return updated;
-          });
-        }
-      } catch (err) {
-        if (err instanceof Error && err.name !== "AbortError") {
-          const raw = err.message ?? "";
-          // Show server-supplied messages verbatim when they're short and
-          // user-facing (e.g. "Model is temporarily rate-limited…").
-          // Fall back to a generic message for raw HTTP codes or unexpected errors.
-          const isUserFacing =
-            raw.length > 0 && raw.length < 160 && !raw.startsWith("HTTP ");
-          setMessages((prev) => {
-            const updated = [...prev];
-            updated[updated.length - 1] = {
-              role: "assistant",
-              content: isUserFacing ? raw : "Something went wrong. Please try again.",
-            };
-            return updated;
-          });
-        }
-      } finally {
-        setStreaming(false);
-        abortRef.current = null;
-      }
     },
-    [messages, streaming, pathname, textareaRef]
+    [pathname, textareaRef]
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -411,10 +288,12 @@ export function ToffelAI() {
   };
 
   const handleClear = () => {
-    abortRef.current?.abort();
     setMessages([]);
-    setStreaming(false);
   };
+
+  // Hidden on the Investments account page — the floating launcher sits
+  // over the weighting donut's legend there and isn't needed on that page.
+  if (pathname === "/portfolio/investments") return null;
 
   return (
     <>
@@ -531,11 +410,7 @@ export function ToffelAI() {
                         : "bg-[#f0ede8] text-[#0f1e35] rounded-bl-sm"
                     }`}
                   >
-                    {msg.role === "assistant" &&
-                    msg.content === "" &&
-                    streaming ? (
-                      <ThinkingDots />
-                    ) : msg.role === "assistant" ? (
+                    {msg.role === "assistant" ? (
                       <MessageContent content={msg.content} />
                     ) : (
                       <p className="leading-relaxed">{msg.content}</p>
@@ -561,13 +436,12 @@ export function ToffelAI() {
               }}
               onKeyDown={handleKeyDown}
               placeholder="Ask about your portfolio…"
-              disabled={streaming}
               className="flex-1 bg-transparent text-[13px] text-[#0f1e35] placeholder:text-[#c4bfba] resize-none outline-none leading-relaxed disabled:opacity-50"
               style={{ height: "24px", maxHeight: "120px" }}
             />
             <button
               onClick={() => sendMessage(input)}
-              disabled={!input.trim() || streaming}
+              disabled={!input.trim()}
               aria-label="Send"
               className="shrink-0 w-11 h-11 flex items-center justify-center rounded-lg bg-[#111111] text-white disabled:opacity-25 transition-opacity hover:opacity-75 active:scale-95"
             >
@@ -589,7 +463,7 @@ export function ToffelAI() {
             </button>
           </div>
           <p className="text-center text-[10.5px] text-[#c4bfba] mt-2">
-            Powered by Claude · For research only
+            Answers are computed from committed portfolio data · For research only
           </p>
         </div>
       </aside>
