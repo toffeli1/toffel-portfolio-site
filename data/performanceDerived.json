@@ -1,7 +1,7 @@
 {
-  "n": 11,
+  "n": 12,
   "inceptionDate": "2025-08-01",
-  "asOfDate": "2026-06-30",
+  "asOfDate": "2026-07-31",
   "monthlyReturns": [
     {
       "date": "2025-08-31",
@@ -46,6 +46,10 @@
     {
       "date": "2026-06-30",
       "returnPct": -1.4179661498028182
+    },
+    {
+      "date": "2026-07-31",
+      "returnPct": -4.485186161201671
     }
   ],
   "cumulativeSeries": [
@@ -108,6 +112,11 @@
       "date": "2026-06-30",
       "portfolioIndex": 133.89809365037956,
       "benchmarkIndex": 116.89098481979967
+    },
+    {
+      "date": "2026-07-31",
+      "portfolioIndex": 127.89251488385989,
+      "benchmarkIndex": 118.18009707066885
     }
   ],
   "monthComparison": [
@@ -165,13 +174,18 @@
       "date": "2026-06-30",
       "portfolioReturnPct": -1.4179661498028182,
       "benchmarkReturnPct": -2.347984873973752
+    },
+    {
+      "date": "2026-07-31",
+      "portfolioReturnPct": -4.485186161201671,
+      "benchmarkReturnPct": 1.1028329112433122
     }
   ],
-  "cumulativeTWRPct": 33.89809365037959,
-  "annualizedEquivalentPct": 37.498936399305634,
-  "arithmeticMeanPct": 2.991384014131563,
-  "geometricMeanPct": 2.689241236195783,
-  "annualizedVolPct": 28.982042300648303,
+  "cumulativeTWRPct": 27.89251488385991,
+  "annualizedEquivalentPct": 27.89251488385991,
+  "arithmeticMeanPct": 2.3683364995204603,
+  "geometricMeanPct": 2.0713269234332143,
+  "annualizedVolPct": 28.626875288504017,
   "drawdown": {
     "maxDrawdownPct": -16.368930306992844,
     "peakDate": "2025-10-31",
@@ -185,24 +199,24 @@
     "date": "2026-02-28",
     "returnPct": -7.79531811395968
   },
-  "hitRateFraction": "6 of 11",
+  "hitRateFraction": "6 of 12",
   "sortino": {
-    "downsideDeviationPct": 3.3916491271110134,
-    "sortinoAnnualized": 2.7148320216467283,
-    "n": 11
+    "downsideDeviationPct": 3.532636550026243,
+    "sortinoAnnualized": 1.995523076028555,
+    "n": 12
   },
   "sharpe": {
-    "sharpeAnnualized": 1.100564544026811,
-    "standardError": 1.0704978093385282,
-    "ciLow": -0.9976111622767041,
-    "ciHigh": 3.198740250330326,
-    "n": 11
+    "sharpeAnnualized": 0.8530458790258578,
+    "standardError": 1.015046946199267,
+    "ciLow": -1.1364461355247055,
+    "ciHigh": 2.8425378935764214,
+    "n": 12
   },
   "benchmarkFullWindow": {
-    "priceReturnLinkedPct": 16.89098481979967,
-    "totalReturnProxyPct": 18.18323398262298
+    "priceReturnLinkedPct": 18.180097070668833,
+    "totalReturnProxyPct": 19.60608418013756
   },
-  "alphaFullWindowPts": 15.714859667756613,
-  "alphaThroughPriorMonthPts": 14.920056574380137,
-  "priorMonthDate": "2026-05-31"
+  "alphaFullWindowPts": 8.286430703722349,
+  "alphaThroughPriorMonthPts": 15.714859667756613,
+  "priorMonthDate": "2026-06-30"
 }
