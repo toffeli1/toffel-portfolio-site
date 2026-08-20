@@ -68,7 +68,7 @@ export default async function EtfDetailPage({
           </div>
         </section>
 
-        {/* ── Price Chart ──────────────────────────────────────────────────── */}
+        {/* ── Performance Chart (percent change; no prices) ────────────────── */}
         <section
           className="border-b"
           style={{ borderColor: "rgba(15,30,53,0.08)" }}

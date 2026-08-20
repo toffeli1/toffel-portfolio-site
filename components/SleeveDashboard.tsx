@@ -19,7 +19,9 @@ interface PieLabelLineRenderProps {
 export interface SleeveDashboardHolding {
   ticker: string;
   name: string;
-  href: string;
+  /** Omit when the ticker has no page to link to yet — tile, donut slice,
+   *  and legend entry render as plain (non-interactive) elements instead. */
+  href?: string;
   portfolioWeightPct: number;
   /** Optional category color used for the tile background/halo and donut slice. */
   color?: string;
@@ -51,7 +53,7 @@ const SLICE_COLORS = [
 interface PiePoint {
   ticker: string;
   name: string;
-  href: string;
+  href?: string;
   value: number;
   color: string;
 }
@@ -269,31 +271,46 @@ export default function SleeveDashboard({
               {/* Tiles — compact 3-col grid (5 holdings flow as 3 + 2); override
                   via tileGridClassName for sleeves with many more holdings. */}
               <div className={tileGridClassName}>
-                {holdings.map((h) => (
-                  <Link
-                    key={h.ticker}
-                    href={h.href}
-                    aria-label={`${h.name} (${h.ticker})`}
-                    className="group flex flex-col items-center"
-                  >
-                    <span className="block transition-transform group-hover:-translate-y-0.5">
-                      <TickerLogo
-                        ticker={h.ticker}
-                        name={h.name}
-                        size="xl"
-                        accentColor={h.color}
-                        accentStyle={h.accentStyle}
-                        accentRingSoft={h.accentRingSoft}
-                      />
-                    </span>
-                    <span
-                      className="mt-3 font-mono text-[12px] font-semibold tracking-[0.1em]"
-                      style={{ color: "#0f1e35" }}
+                {holdings.map((h) => {
+                  const tileContent = (
+                    <>
+                      <span className="block transition-transform group-hover:-translate-y-0.5">
+                        <TickerLogo
+                          ticker={h.ticker}
+                          name={h.name}
+                          size="xl"
+                          accentColor={h.color}
+                          accentStyle={h.accentStyle}
+                          accentRingSoft={h.accentRingSoft}
+                        />
+                      </span>
+                      <span
+                        className="mt-3 font-mono text-[12px] font-semibold tracking-[0.1em]"
+                        style={{ color: "#0f1e35" }}
+                      >
+                        {h.ticker}
+                      </span>
+                    </>
+                  );
+                  return h.href ? (
+                    <Link
+                      key={h.ticker}
+                      href={h.href}
+                      aria-label={`${h.name} (${h.ticker})`}
+                      className="group flex flex-col items-center"
                     >
-                      {h.ticker}
-                    </span>
-                  </Link>
-                ))}
+                      {tileContent}
+                    </Link>
+                  ) : (
+                    <div
+                      key={h.ticker}
+                      aria-label={`${h.name} (${h.ticker})`}
+                      className="group flex flex-col items-center opacity-70"
+                    >
+                      {tileContent}
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Donut + compact legend below */}
@@ -348,16 +365,8 @@ export default function SleeveDashboard({
                   <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
                     {pieData.map((d, i) => {
                       const dimmed = activeIdx !== null && activeIdx !== i;
-                      return (
-                        <Link
-                          key={d.ticker}
-                          href={d.href}
-                          onMouseEnter={() => setActiveIdx(i)}
-                          onMouseLeave={() => setActiveIdx(null)}
-                          className="flex items-center gap-2 transition-opacity"
-                          style={{ opacity: dimmed ? 0.4 : 1 }}
-                          aria-label={`${d.name} (${d.ticker})`}
-                        >
+                      const legendContent = (
+                        <>
                           <span
                             className="inline-block h-2 w-2 rounded-full"
                             style={{ background: d.color }}
@@ -369,7 +378,31 @@ export default function SleeveDashboard({
                               {d.value.toFixed(valueDecimals)}%
                             </span>
                           </span>
+                        </>
+                      );
+                      return d.href ? (
+                        <Link
+                          key={d.ticker}
+                          href={d.href}
+                          onMouseEnter={() => setActiveIdx(i)}
+                          onMouseLeave={() => setActiveIdx(null)}
+                          className="flex items-center gap-2 transition-opacity"
+                          style={{ opacity: dimmed ? 0.4 : 1 }}
+                          aria-label={`${d.name} (${d.ticker})`}
+                        >
+                          {legendContent}
                         </Link>
+                      ) : (
+                        <div
+                          key={d.ticker}
+                          onMouseEnter={() => setActiveIdx(i)}
+                          onMouseLeave={() => setActiveIdx(null)}
+                          className="flex items-center gap-2 transition-opacity"
+                          style={{ opacity: dimmed ? 0.4 : 0.6 }}
+                          aria-label={`${d.name} (${d.ticker})`}
+                        >
+                          {legendContent}
+                        </div>
                       );
                     })}
                   </div>
@@ -381,31 +414,46 @@ export default function SleeveDashboard({
         <>
         {/* Circular holding tiles */}
         <div className="flex flex-wrap items-start justify-center gap-x-10 gap-y-10 sm:gap-x-14">
-          {holdings.map((h) => (
-            <Link
-              key={h.ticker}
-              href={h.href}
-              aria-label={`${h.name} (${h.ticker})`}
-              className="group flex flex-col items-center"
-            >
-              <span className="block transition-transform group-hover:-translate-y-0.5">
-                <TickerLogo
-                  ticker={h.ticker}
-                  name={h.name}
-                  size="xl"
-                  accentColor={h.color}
-                  accentStyle={h.accentStyle}
-                  accentRingSoft={h.accentRingSoft}
-                />
-              </span>
-              <span
-                className="mt-4 font-mono text-[13px] font-semibold tracking-[0.1em]"
-                style={{ color: "#0f1e35" }}
+          {holdings.map((h) => {
+            const tileContent = (
+              <>
+                <span className="block transition-transform group-hover:-translate-y-0.5">
+                  <TickerLogo
+                    ticker={h.ticker}
+                    name={h.name}
+                    size="xl"
+                    accentColor={h.color}
+                    accentStyle={h.accentStyle}
+                    accentRingSoft={h.accentRingSoft}
+                  />
+                </span>
+                <span
+                  className="mt-4 font-mono text-[13px] font-semibold tracking-[0.1em]"
+                  style={{ color: "#0f1e35" }}
+                >
+                  {h.ticker}
+                </span>
+              </>
+            );
+            return h.href ? (
+              <Link
+                key={h.ticker}
+                href={h.href}
+                aria-label={`${h.name} (${h.ticker})`}
+                className="group flex flex-col items-center"
               >
-                {h.ticker}
-              </span>
-            </Link>
-          ))}
+                {tileContent}
+              </Link>
+            ) : (
+              <div
+                key={h.ticker}
+                aria-label={`${h.name} (${h.ticker})`}
+                className="group flex flex-col items-center opacity-70"
+              >
+                {tileContent}
+              </div>
+            );
+          })}
         </div>
 
         {/* Portfolio weighting — single card containing title, donut, and an
@@ -529,16 +577,8 @@ export default function SleeveDashboard({
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               {pieData.map((d, i) => {
                 const dimmed = activeIdx !== null && activeIdx !== i;
-                return (
-                  <Link
-                    key={d.ticker}
-                    href={d.href}
-                    onMouseEnter={() => setActiveIdx(i)}
-                    onMouseLeave={() => setActiveIdx(null)}
-                    className="flex items-center gap-2 transition-opacity"
-                    style={{ opacity: dimmed ? 0.4 : 1 }}
-                    aria-label={`${d.name} (${d.ticker})`}
-                  >
+                const legendContent = (
+                  <>
                     <span
                       className="inline-block h-2.5 w-2.5 rounded-full"
                       style={{ background: d.color }}
@@ -548,7 +588,31 @@ export default function SleeveDashboard({
                       {d.ticker}{" "}
                       <span className="text-[#7a8799]">{d.value.toFixed(valueDecimals)}%</span>
                     </span>
+                  </>
+                );
+                return d.href ? (
+                  <Link
+                    key={d.ticker}
+                    href={d.href}
+                    onMouseEnter={() => setActiveIdx(i)}
+                    onMouseLeave={() => setActiveIdx(null)}
+                    className="flex items-center gap-2 transition-opacity"
+                    style={{ opacity: dimmed ? 0.4 : 1 }}
+                    aria-label={`${d.name} (${d.ticker})`}
+                  >
+                    {legendContent}
                   </Link>
+                ) : (
+                  <div
+                    key={d.ticker}
+                    onMouseEnter={() => setActiveIdx(i)}
+                    onMouseLeave={() => setActiveIdx(null)}
+                    className="flex items-center gap-2 transition-opacity"
+                    style={{ opacity: dimmed ? 0.4 : 0.6 }}
+                    aria-label={`${d.name} (${d.ticker})`}
+                  >
+                    {legendContent}
+                  </div>
                 );
               })}
             </div>

@@ -2,72 +2,14 @@
 
 import { useQuotes } from "./QuotesProvider";
 
-function Dots() {
-  return (
-    <span
-      className="font-mono animate-pulse select-none"
-      style={{ color: "#5a6e82" }}
-    >
-      ···
-    </span>
-  );
-}
-
-function Unavailable({ size = "sm" }: { size?: "sm" | "lg" }) {
-  return (
-    <span
-      className="font-mono select-none"
-      style={{
-        color: "#5a6e82",
-        fontSize: size === "lg" ? "1rem" : undefined,
-      }}
-    >
-      Unavailable
-    </span>
-  );
-}
-
-export function PriceCell({ ticker }: { ticker: string }) {
-  const { quotes, loading, error } = useQuotes();
-
-  if (loading) return <Dots />;
-
-  const q = quotes[ticker];
-  if (!q || q.price === null) {
-    return <Unavailable size="lg" />;
-  }
-
-  return (
-    <span className="font-mono text-sm font-medium" style={{ color: "#0f1e35" }}>
-      $
-      {q.price.toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}
-    </span>
-  );
-}
-
-export function ChangeCell({ ticker }: { ticker: string }) {
-  const { quotes, loading } = useQuotes();
-
-  if (loading) return <Dots />;
-
-  const q = quotes[ticker];
-  if (!q || q.changePercent === null) return null;
-
-  const positive = q.changePercent >= 0;
-
-  return (
-    <span
-      className="font-mono text-sm font-medium tabular-nums"
-      style={{ color: positive ? "#15542e" : "#8b1a1a" }}
-    >
-      {positive ? "+" : ""}
-      {q.changePercent.toFixed(2)}%
-    </span>
-  );
-}
+// NO-PRICE RULE: this module used to export `PriceCell` (a live `$price`) and
+// `ChangeCell` (a daily change %). The site does not display security prices —
+// live, delayed, per-share, or as a daily/intraday change — so both were
+// removed rather than left unrendered: keeping them exported invites silent
+// reintroduction later. Only the last-updated stamp remains, which reports
+// market-data freshness without disclosing a price.
+//
+// Don't re-add a price-rendering export here without a deliberate decision.
 
 export function LastUpdated() {
   const { loading, error, lastUpdated } = useQuotes();

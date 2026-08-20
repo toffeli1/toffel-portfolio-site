@@ -1,67 +1,71 @@
 {
   "account": "Investments",
-  "as_of": "2026-07-31",
+  "as_of": "2026-08-20",
   "note": "Percentages only — weights and unrealized returns. Performance KPIs (IRR/TWR vs benchmark) live on /performance.",
   "holdings": [
     {
-      "ticker": "VOO",
-      "weight_pct": 37.71,
-      "unrealized_return_pct": 26.9
-    },
-    {
-      "ticker": "SMH",
-      "weight_pct": 9.38,
-      "unrealized_return_pct": 6.7
-    },
-    {
-      "ticker": "NOW",
-      "weight_pct": 8.34,
-      "unrealized_return_pct": 12.2
+      "ticker": "AMZN",
+      "weight_pct": 10.31
     },
     {
       "ticker": "GOOGL",
-      "weight_pct": 8.23,
-      "unrealized_return_pct": 33.2
+      "weight_pct": 10.11
     },
     {
-      "ticker": "FBTC",
-      "weight_pct": 5.94,
-      "unrealized_return_pct": -28.4
+      "ticker": "SMH",
+      "weight_pct": 9.34
     },
     {
-      "ticker": "MELI",
-      "weight_pct": 5.92,
-      "unrealized_return_pct": -5.1
-    },
-    {
-      "ticker": "NBIS",
-      "weight_pct": 5.68,
-      "unrealized_return_pct": 125.3
-    },
-    {
-      "ticker": "UNH",
-      "weight_pct": 5.02,
-      "unrealized_return_pct": 46.6
-    },
-    {
-      "ticker": "CRWD",
-      "weight_pct": 4.96,
-      "unrealized_return_pct": 8.7
+      "ticker": "NOW",
+      "weight_pct": 9.08
     },
     {
       "ticker": "META",
-      "weight_pct": 4.39,
-      "unrealized_return_pct": -6.6
+      "weight_pct": 8.97
+    },
+    {
+      "ticker": "SGOV",
+      "weight_pct": 8.95
+    },
+    {
+      "ticker": "NBIS",
+      "weight_pct": 6.32
+    },
+    {
+      "ticker": "GLDM",
+      "weight_pct": 5.86
+    },
+    {
+      "ticker": "CEG",
+      "weight_pct": 5.73
+    },
+    {
+      "ticker": "MELI",
+      "weight_pct": 5.7
+    },
+    {
+      "ticker": "MA",
+      "weight_pct": 5.13
+    },
+    {
+      "ticker": "UNH",
+      "weight_pct": 4.64
     },
     {
       "ticker": "RKLB",
-      "weight_pct": 2.91,
-      "unrealized_return_pct": -19.8
+      "weight_pct": 3.44
+    },
+    {
+      "ticker": "OSCR",
+      "weight_pct": 2.89
+    },
+    {
+      "ticker": "CBRS",
+      "weight_pct": 1.93
     },
     {
       "ticker": "ASTS",
-      "weight_pct": 1.49,
-      "unrealized_return_pct": -43.2
+      "weight_pct": 1.59
     }
   ]
 }

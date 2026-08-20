@@ -93,92 +93,30 @@ export function computeWeightStatus(
 // ── Derive ───────────────────────────────────────────────────────────────────
 
 /**
- * Derive sleeve holdings from raw shares × live price with a denominator-
- * consistent fallback path. Three branches, all guaranteed to produce
- * weights that sum to ~100%:
+ * Derive sleeve holdings from the static, percentage-only weight fallback,
+ * normalized so weights sum to ~100%.
  *
- * (a) ALL tickers have live (shares + valid quote)
- *     weight[t] = liveValue[t] / Σ liveValue × 100
- *
- * (b) SOME tickers live, SOME fallback
- *     impliedTotal = Σ liveValue / (Σ staticPct of live subset / 100)
- *     fallback estimate[t] = impliedTotal × staticPct[t] / 100
- *     totalAll = Σ liveValue + Σ fallbackEstimate (= impliedTotal × staticPctTotal / 100)
- *     weight[t] = (liveValue or fallbackEstimate) / totalAll × 100
- *     ➜ Live tickers do NOT inflate; their values divide by the SAME
- *       denominator as fallback tickers' estimated values.
- *
- * (c) NO live data
- *     weight[t] = staticPct[t] / staticPctTotal × 100
- *     ➜ Pure static fallback, normalized to 100%.
- *
- * In all three cases Σ weights = 100% (within floating-point tolerance).
+ * There used to be a live shares × price branch here, sourced from a
+ * `shares` field on SleeveHolding. That field has been removed structurally
+ * (this repo is public, and a share count next to a public live price lets
+ * anyone back into a dollar position size) — see the note on that interface
+ * in data/sleeveHoldings.ts. Live pricing still feeds `returnPct` below,
+ * which only needs avgCost + a quote, not a share count, so that stays live.
  */
 export function deriveSleeveHoldings(
   rawHoldings: SleeveHolding[],
   quoteMap: QuoteMap | null,
   avgCostFor: (ticker: string) => number | null
 ): DerivedSleeveHolding[] {
-  // Pass 1: bucket tickers and accumulate sums.
-  const liveValues: Record<string, number> = {};
-  let totalLiveValue = 0;
-  let staticPctLive = 0;
-  let staticPctTotal = 0;
-  const fallbackTickers: string[] = [];
-
-  for (const h of rawHoldings) {
-    staticPctTotal += h.portfolioWeightPct;
-    const price = quoteMap?.[h.ticker]?.price ?? null;
-    if (h.shares !== undefined && price !== null && price > 0) {
-      const value = h.shares * price;
-      liveValues[h.ticker] = value;
-      totalLiveValue += value;
-      staticPctLive += h.portfolioWeightPct;
-    } else {
-      fallbackTickers.push(h.ticker);
-    }
-  }
-
-  // Compute the consistent denominator.
+  const staticPctTotal = rawHoldings.reduce((s, h) => s + h.portfolioWeightPct, 0);
   const safeStaticPctTotal = staticPctTotal > 0 ? staticPctTotal : 1;
-  let impliedTotal: number;
-  let totalAll: number;
-  let useStaticOnly: boolean;
-  if (totalLiveValue > 0 && staticPctLive > 0) {
-    impliedTotal = totalLiveValue / (staticPctLive / 100);
-    totalAll = (impliedTotal * safeStaticPctTotal) / 100;
-    useStaticOnly = false;
-  } else {
-    // No live data at all — fall back to pure static, normalized.
-    impliedTotal = 0;
-    totalAll = safeStaticPctTotal;
-    useStaticOnly = true;
-  }
 
-  // Pass 2: build derived rows.
   const derived = rawHoldings.map((h): DerivedSleeveHolding => {
     const quote: Quote | undefined = quoteMap?.[h.ticker];
     const price = quote?.price ?? null;
     const avgCost = avgCostFor(h.ticker);
-    const liveValue = liveValues[h.ticker];
-    const hasLiveShares = liveValue !== undefined;
 
-    let value: number;
-    let isLive: boolean;
-    if (hasLiveShares) {
-      value = liveValue;
-      isLive = true;
-    } else if (useStaticOnly) {
-      value = h.portfolioWeightPct;
-      isLive = false;
-    } else {
-      // Estimate this fallback ticker's value from its static weight share
-      // of the implied total. Same denominator as live tickers — sum stays 100%.
-      value = impliedTotal * (h.portfolioWeightPct / 100);
-      isLive = false;
-    }
-
-    const portfolioPct = totalAll > 0 ? (value / totalAll) * 100 : h.portfolioWeightPct;
+    const portfolioPct = (h.portfolioWeightPct / safeStaticPctTotal) * 100;
 
     let returnPct: number | undefined = h.returnPct;
     if (avgCost !== null && price !== null && price > 0) {
@@ -196,8 +134,8 @@ export function deriveSleeveHoldings(
       thesis: h.thesis,
       currentPrice: price,
       portfolioPct,
-      isLive,
-      hasLiveShares,
+      isLive: false,
+      hasLiveShares: false,
       returnPct,
       returnContribution,
       targetWeight: h.targetWeight,
@@ -206,21 +144,11 @@ export function deriveSleeveHoldings(
     };
   });
 
-  // Dev-only diagnostic: requested / live / fallback / sum.
+  // Dev-only diagnostic: requested count / sum, to catch normalization bugs.
   if (process.env.NODE_ENV !== "production" && rawHoldings.length > 0) {
     const sum = derived.reduce((s, d) => s + d.portfolioPct, 0);
-    const liveCount = rawHoldings.length - fallbackTickers.length;
-    const tag = useStaticOnly
-      ? "static-only"
-      : fallbackTickers.length === 0
-      ? "all-live"
-      : "mixed";
     console.warn(
-      `[deriveSleeveHoldings] mode=${tag} ` +
-      `requested=${rawHoldings.length} live=${liveCount} ` +
-      `fallback=${fallbackTickers.length}` +
-      (fallbackTickers.length > 0 ? ` (${fallbackTickers.join(", ")})` : "") +
-      ` sum=${sum.toFixed(2)}%`
+      `[deriveSleeveHoldings] mode=static-only requested=${rawHoldings.length} sum=${sum.toFixed(2)}%`
     );
   }
 

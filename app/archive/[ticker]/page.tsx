@@ -235,7 +235,8 @@ export default async function ArchivePage({
               Price History
             </p>
             <p className="mb-8 font-mono text-[10px] text-[#5a6e82]">
-              Full price history shown. Exit marker indicates the date of final sale.
+              Full performance history shown, indexed to the start of the selected
+              range. Exit marker indicates the date of final sale.
             </p>
             <ChartWrapper
               ticker={holding.ticker}

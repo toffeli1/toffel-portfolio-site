@@ -6,7 +6,6 @@ import { positionDetails } from "@/data/positionDetails";
 import type { Scenario, TrimEvent } from "@/data/positionDetails";
 import { etfProfiles } from "@/data/etfConstituents";
 import { PositionQuoteProvider } from "@/components/PositionQuoteProvider";
-import { PriceCell, ChangeCell, LastUpdated } from "@/components/QuoteCell";
 import { LiveReturnBadge } from "@/components/LiveReturnBadge";
 import { ChartWrapper } from "@/components/ChartWrapper";
 import TickerLogo from "@/components/TickerLogo";
@@ -238,57 +237,14 @@ export default async function PositionPage({
                   </p>
                 </div>
 
-                {/* Right: live quote + sleeve summary */}
+                {/* Right: sleeve summary */}
+                {/* NO-PRICE RULE: a "Live Quote" card used to sit here, showing
+                    the live price, the daily change %, per-share avg cost, and
+                    a last-updated market-data stamp. The site does not display
+                    security prices in any form (live, delayed, per-share, or
+                    daily change), so it was removed. Position return still
+                    surfaces below as a percentage, per sleeve. */}
                 <div className="flex shrink-0 flex-col gap-4">
-
-                  {/* Live quote card */}
-                  <div
-                    className="rounded-2xl px-8 py-7"
-                    style={{
-                      background: "#ffffff",
-                      border: "1px solid rgba(15,30,53,0.09)",
-                      boxShadow: "0 1px 8px rgba(15,30,53,0.05)",
-                    }}
-                  >
-                    <p className="mb-3 font-mono text-[9px] uppercase tracking-[0.28em] text-[#5a6e82]">
-                      Live Quote
-                    </p>
-                    <div className="flex items-baseline gap-4">
-                      <span className="font-mono text-[2rem] font-bold leading-none text-[#0f1e35]">
-                        <PriceCell ticker={ticker} />
-                      </span>
-                      <ChangeCell ticker={ticker} />
-                    </div>
-                    {avgCost && (
-                      <div
-                        className="mt-4 pt-4"
-                        style={{ borderTop: "1px solid rgba(15,30,53,0.07)" }}
-                      >
-                        <div className="flex items-start justify-between gap-6">
-                          <div>
-                            <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5a6e82]">
-                              Avg Cost
-                            </p>
-                            <p className="font-mono text-sm font-medium text-[#0f1e35]">
-                              ${avgCost.toFixed(2)}
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5a6e82]">
-                              Total Return
-                            </p>
-                            <LiveReturnBadge ticker={ticker} avgCost={avgCost} />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    <div
-                      className="mt-4 pt-4"
-                      style={{ borderTop: "1px solid rgba(15,30,53,0.07)" }}
-                    >
-                      <LastUpdated />
-                    </div>
-                  </div>
 
                   {/* In Your Sleeves */}
                   {sleeveOwnerships.length > 0 && (
@@ -395,27 +351,15 @@ export default async function PositionPage({
           )}
 
           {/* ── Why I Own It ──────────────────────────────────────────────── */}
-          {(detail?.whyIOwnIt || detail?.whyThisSleeve) && (
+          {detail?.whyIOwnIt && (
             <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
               <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
                 <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
                   Why I Own It
                 </p>
-                {detail.whyIOwnIt && (
-                  <p className="max-w-2xl text-[15px] leading-[1.85] text-[#2d3d52]">
-                    {detail.whyIOwnIt}
-                  </p>
-                )}
-                {detail.whyThisSleeve && (
-                  <div className="mt-8">
-                    <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
-                      Why This Sleeve
-                    </p>
-                    <p className="max-w-2xl text-[14px] leading-[1.8] text-[#5a6e82]">
-                      {detail.whyThisSleeve}
-                    </p>
-                  </div>
-                )}
+                <p className="max-w-2xl text-[15px] leading-[1.85] text-[#2d3d52]">
+                  {detail.whyIOwnIt}
+                </p>
               </div>
             </section>
           )}

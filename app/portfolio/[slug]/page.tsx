@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { portfolios, getPortfolio } from "@/data/portfolios";
 import { holdings } from "@/data/holdings";
-import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { etfProfiles } from "@/data/etfConstituents";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import SleeveDashboard from "@/components/SleeveDashboard";
@@ -202,7 +201,7 @@ function InvestmentsView() {
                   className="font-mono font-bold leading-none tracking-tight"
                   style={{ color, fontSize: "clamp(3.5rem,5.5vw,5rem)" }}
                 >
-                  {rothIraHoldings.filter((h) => h.portfolioWeightPct > 0).length}
+                  {investmentPublicData.holdings.length}
                 </p>
                 <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                   positions

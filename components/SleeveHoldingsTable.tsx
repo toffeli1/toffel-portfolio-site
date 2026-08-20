@@ -53,11 +53,6 @@ function ReturnCell({ ticker, sleeve }: { ticker: string; sleeve: string }) {
       ) : (
         <span className="font-mono text-[12px]" style={{ color: "#5a6e82" }}>—</span>
       )}
-      {!loading && q?.changePercent != null && (
-        <span className="font-mono text-[9px] tabular-nums" style={{ color: "#5a6e82" }}>
-          {q.changePercent >= 0 ? "+" : ""}{q.changePercent.toFixed(2)}% today
-        </span>
-      )}
     </div>
   );
 }

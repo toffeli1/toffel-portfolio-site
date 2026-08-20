@@ -12,7 +12,11 @@ import raw from "./toffel_investments_public.json";
 export interface InvestmentPublicHolding {
   ticker: string;
   weight_pct: number;
-  unrealized_return_pct: number;
+  /** Omitted when unrealized return can't be verified against current cost
+   *  basis (e.g. right after a rebalance) — render the column only when at
+   *  least one holding has this set, rather than showing stale or invented
+   *  figures. */
+  unrealized_return_pct?: number;
 }
 
 export interface InvestmentPublicData {

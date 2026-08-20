@@ -19,7 +19,14 @@ function companyName(ticker: string): string {
   return rothIraHoldings.find((h) => h.ticker === ticker)?.company ?? ticker;
 }
 
-function tickerHref(ticker: string): string {
+// Tickers with a real page in the current account routing but a
+// `positionDetails` entry that predates this holding (written for a
+// different, unpublished sleeve) — link would resurface content that
+// hasn't been reviewed for this context, so leave unlinked instead.
+const UNLINKED_TICKERS = new Set(["CEG"]);
+
+function tickerHref(ticker: string): string | undefined {
+  if (UNLINKED_TICKERS.has(ticker)) return undefined;
   return ticker in etfProfiles ? `/etfs/${ticker}` : `/positions/${ticker}`;
 }
 
@@ -35,6 +42,10 @@ const CARD_STYLE = {
 
 function fmtSignedPct(n: number): string {
   return `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
+}
+
+function hasAnyUnrealizedReturn(holdings: InvestmentPublicHolding[]): boolean {
+  return holdings.some((h) => h.unrealized_return_pct !== undefined);
 }
 
 function toneColor(n: number): string {
@@ -76,6 +87,10 @@ function HoldingsTable({ holdings }: { holdings: InvestmentPublicHolding[] }) {
   // Defensive sort — holdings are expected sorted desc by weight, but don't rely on it.
   const sorted = [...holdings].sort((a, b) => b.weight_pct - a.weight_pct);
   const maxWeight = Math.max(...sorted.map((h) => h.weight_pct), 1);
+  // Hidden entirely when no holding has a verified figure (e.g. right after a
+  // rebalance, before fresh cost basis comes in) rather than showing stale or
+  // invented numbers. Reappears automatically once the data is back.
+  const showReturns = hasAnyUnrealizedReturn(sorted);
 
   return (
     <div className="overflow-x-auto rounded-2xl" style={CARD_STYLE}>
@@ -88,9 +103,11 @@ function HoldingsTable({ holdings }: { holdings: InvestmentPublicHolding[] }) {
             <th className="px-5 py-3.5 text-right font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
               Weight
             </th>
-            <th className="px-5 py-3.5 text-right font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
-              Unrealized Return
-            </th>
+            {showReturns && (
+              <th className="px-5 py-3.5 text-right font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
+                Unrealized Return
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -134,14 +151,18 @@ function HoldingsTable({ holdings }: { holdings: InvestmentPublicHolding[] }) {
                     </span>
                   </div>
                 </td>
-                <td className="px-5 py-4 text-right">
-                  <span
-                    className="font-mono text-[12px] font-semibold tabular-nums"
-                    style={{ color: toneColor(h.unrealized_return_pct) }}
-                  >
-                    {fmtSignedPct(h.unrealized_return_pct)}
-                  </span>
-                </td>
+                {showReturns && (
+                  <td className="px-5 py-4 text-right">
+                    {h.unrealized_return_pct !== undefined && (
+                      <span
+                        className="font-mono text-[12px] font-semibold tabular-nums"
+                        style={{ color: toneColor(h.unrealized_return_pct) }}
+                      >
+                        {fmtSignedPct(h.unrealized_return_pct)}
+                      </span>
+                    )}
+                  </td>
+                )}
               </tr>
             );
           })}
@@ -173,9 +194,17 @@ export default function InvestmentSection({ data }: { data: InvestmentPublicData
 
         <div className="mt-8 space-y-2">
           <p className="font-mono text-[9px] leading-[1.5] text-[#5a6e82]">
-            Returns are unrealized and marked at delayed prices. Track record is short
-            (~3 years) and spans a strong market. Past performance does not indicate
-            future results. For informational purposes only; not financial advice.
+            {/* The unrealized-return clause is conditional: the returns column
+                only renders when at least one holding has a verified figure, so
+                claiming it unconditionally would describe a column that isn't
+                there. Neither branch references a displayed price — this page
+                shows weights, not prices. */}
+            {hasAnyUnrealizedReturn(sortedHoldings)
+              ? "Returns are unrealized. "
+              : "Weights are a manually maintained snapshot. "}
+            Track record is short (~3 years) and spans a strong market. Past
+            performance does not indicate future results. For informational
+            purposes only; not financial advice.
           </p>
         </div>
       </div>

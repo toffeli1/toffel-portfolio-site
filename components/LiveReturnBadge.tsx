@@ -3,6 +3,11 @@
 import { useQuotes } from "./QuotesProvider";
 import { getAvgCost, computeReturnPct } from "@/lib/costBasis";
 
+// NO-PRICE RULE: renders a total-return percentage only. A "% today" daily
+// price-change sub-line used to render beneath it — removed, since the site
+// does not display daily/intraday price changes. The live quote is still read
+// here, but only as an input to the return %; the price itself never renders.
+
 export function LiveReturnBadge({
   ticker,
   sleeve,
@@ -41,12 +46,6 @@ export function LiveReturnBadge({
       ) : (
         <span className="font-mono text-[11px]" style={{ color: "#5a6e82" }}>
           —
-        </span>
-      )}
-      {!loading && q?.changePercent != null && (
-        <span className="font-mono text-[9px] tabular-nums" style={{ color: "#5a6e82" }}>
-          {q.changePercent >= 0 ? "+" : ""}
-          {q.changePercent.toFixed(2)}% today
         </span>
       )}
     </div>

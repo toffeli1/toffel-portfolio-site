@@ -77,11 +77,8 @@ function formatTooltipDate(timestamp: number): string {
   });
 }
 
-function formatPrice(v: number): string {
-  return `$${v.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+function formatPercent(v: number, digits = 2): string {
+  return `${v >= 0 ? "+" : ""}${v.toFixed(digits)}%`;
 }
 
 function formatLotDate(dateStr: string): string {
@@ -148,9 +145,14 @@ function clusterLots(lots: PurchaseLot[]): PurchaseCluster[] {
 
 // ── chart data ────────────────────────────────────────────────────────────────
 
+// NO-PRICE RULE: `c` (the raw close) is kept only as an internal input — it
+// feeds the estimated-entry nearest-point match and the percent rebase. Never
+// bind it to a rendered axis, tooltip, or label. `p` is the display value:
+// percent change from the first close in the selected range.
 interface ChartPoint {
   t: number;
   c: number;
+  p: number;
   dateLabel: string;
 }
 
@@ -168,9 +170,9 @@ function findNearestPoint(date: string, chartData: ChartPoint[]): ChartPoint | n
   );
 }
 
-function formatAvgCostLabel(v: number): string {
-  if (v >= 1000) return `avg cost  $${(v / 1000).toFixed(2)}k`;
-  return `avg cost  $${v.toFixed(2)}`;
+// Cost basis expressed as its position on the rebased axis, not as a price.
+function formatCostBasisLabel(pct: number): string {
+  return `cost basis  ${formatPercent(pct, 1)}`;
 }
 
 // ── component ─────────────────────────────────────────────────────────────────
@@ -214,15 +216,28 @@ export function PositionChart({
       });
   }, [ticker, range]);
 
+  // Rebased to percent change from the first close in the range, so the chart
+  // conveys the same shape without rendering a price anywhere.
   const chartData = useMemo(
-    (): ChartPoint[] =>
-      (points ?? []).map((p) => ({
-        t: p.t,
-        c: p.c,
-        dateLabel: formatTooltipDate(p.t),
-      })),
+    (): ChartPoint[] => {
+      const raw = points ?? [];
+      const base = raw[0]?.c ?? 0;
+      return raw.map((pt) => ({
+        t: pt.t,
+        c: pt.c,
+        p: base > 0 ? ((pt.c / base) - 1) * 100 : 0,
+        dateLabel: formatTooltipDate(pt.t),
+      }));
+    },
     [points, range]  // eslint-disable-line react-hooks/exhaustive-deps
   );
+
+  // First close in the range — converts an absolute cost/price input into its
+  // equivalent point on the rebased percent axis. Never rendered directly.
+  const baseClose = chartData[0]?.c ?? 0;
+
+  // Latest close, used to express a purchase lot's return as a percentage.
+  const latestClose = chartData[chartData.length - 1]?.c ?? 0;
 
   // ── legacy single entry marker ─────────────────────────────────────────────
 
@@ -270,7 +285,7 @@ export function PositionChart({
 
   const lineBottom = useMemo(() => {
     if (chartData.length === 0) return 0;
-    const values = chartData.map((p) => p.c);
+    const values = chartData.map((pt) => pt.p);
     const min = Math.min(...values);
     const max = Math.max(...values);
     return min - (max - min) * 0.25;
@@ -278,9 +293,7 @@ export function PositionChart({
 
   // ── chart appearance ───────────────────────────────────────────────────────
 
-  const firstC = chartData[0]?.c ?? 0;
-  const lastC = chartData[chartData.length - 1]?.c ?? 0;
-  const isUp = lastC >= firstC;
+  const isUp = (chartData[chartData.length - 1]?.p ?? 0) >= 0;
   const lineColor =
     chartData.length >= 2 ? (isUp ? "#15542e" : "#8b1a1a") : "#1a3a5c";
   const gradId = `chart-grad-${ticker}`;
@@ -315,7 +328,7 @@ export function PositionChart({
       <div className="mb-5 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#7a8799]">
-            Price Chart
+            Performance
           </p>
           {visibleClusters.length > 0 && (
             <p className="font-mono text-[9px] text-[#5a6e82]">
@@ -329,7 +342,7 @@ export function PositionChart({
           )}
           {averageCost && (
             <p className="font-mono text-[9px] text-[#5a6e82]">
-              — avg cost
+              — cost basis
             </p>
           )}
           {!purchaseLots && entryMarker && (
@@ -421,9 +434,7 @@ export function PositionChart({
                 }}
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(v: number) =>
-                  v >= 1000 ? `$${(v / 1000).toFixed(1)}k` : `$${v.toFixed(0)}`
-                }
+                tickFormatter={(v: number) => formatPercent(v, 0)}
                 domain={["auto", "auto"]}
                 width={52}
               />
@@ -464,7 +475,7 @@ export function PositionChart({
                       fontWeight: 600,
                     }}
                   >
-                    {formatPrice(Number(value))}
+                    {formatPercent(Number(value))}
                   </span>,
                   "",
                 ]}
@@ -474,7 +485,7 @@ export function PositionChart({
 
               <Area
                 type="monotone"
-                dataKey="c"
+                dataKey="p"
                 stroke={lineColor}
                 strokeWidth={1.5}
                 fill={`url(#${gradId})`}
@@ -483,16 +494,18 @@ export function PositionChart({
                 isAnimationActive={false}
               />
 
-              {/* Average cost reference line */}
-              {averageCost && (
+              {/* Cost-basis reference line — plotted as the percent distance
+                  between cost basis and the range's opening close, so the
+                  per-share cost itself is never rendered. */}
+              {averageCost && baseClose > 0 && (
                 <ReferenceLine
-                  y={averageCost}
+                  y={((averageCost / baseClose) - 1) * 100}
                   stroke="#1a3a5c"
                   strokeOpacity={0.22}
                   strokeWidth={1}
                   strokeDasharray="3 5"
                   label={{
-                    value: formatAvgCostLabel(averageCost),
+                    value: formatCostBasisLabel(((averageCost / baseClose) - 1) * 100),
                     position: "insideTopRight",
                     fontSize: 8,
                     fontFamily: "var(--font-geist-mono)",
@@ -513,7 +526,7 @@ export function PositionChart({
                     key={`evtline-${idx}`}
                     segment={[
                       { x: point.t, y: lineBottom },
-                      { x: point.t, y: point.c },
+                      { x: point.t, y: point.p },
                     ]}
                     ifOverflow="visible"
                     stroke="#0f1e35"
@@ -536,7 +549,7 @@ export function PositionChart({
               {entryPoint && !purchaseLots && (
                 <ReferenceDot
                   x={entryPoint.t}
-                  y={entryPoint.c}
+                  y={entryPoint.p}
                   r={5}
                   fill="none"
                   stroke="#7a8799"
@@ -565,7 +578,7 @@ export function PositionChart({
                   <ReferenceDot
                     key={`dot-${idx}`}
                     x={point.t}
-                    y={point.c}
+                    y={point.p}
                     r={0}
                     fill="none"
                     stroke="none"
@@ -653,7 +666,7 @@ export function PositionChart({
                   <ReferenceDot
                     key={`sell-${idx}`}
                     x={point.t}
-                    y={point.c}
+                    y={point.p}
                     r={0}
                     fill="none"
                     stroke="none"
@@ -686,7 +699,7 @@ export function PositionChart({
                   <ReferenceLine
                     segment={[
                       { x: exitPoint.t, y: lineBottom },
-                      { x: exitPoint.t, y: exitPoint.c },
+                      { x: exitPoint.t, y: exitPoint.p },
                     ]}
                     ifOverflow="visible"
                     stroke="#8b2530"
@@ -695,7 +708,7 @@ export function PositionChart({
                   />
                   <ReferenceDot
                     x={exitPoint.t}
-                    y={exitPoint.c}
+                    y={exitPoint.p}
                     r={0}
                     fill="none"
                     stroke="none"
@@ -765,7 +778,7 @@ export function PositionChart({
 
       {/* Purchase marker tooltip overlay */}
       {markerTooltip && (
-        <PurchaseTooltip state={markerTooltip} cardRef={cardRef} />
+        <PurchaseTooltip state={markerTooltip} cardRef={cardRef} latestClose={latestClose} />
       )}
     </div>
   );
@@ -776,9 +789,11 @@ export function PositionChart({
 function PurchaseTooltip({
   state,
   cardRef,
+  latestClose,
 }: {
   state: TooltipState;
   cardRef: React.RefObject<HTMLDivElement | null>;
+  latestClose: number;
 }) {
   const { cluster, x, y } = state;
   const cardWidth = cardRef.current?.offsetWidth ?? 600;
@@ -835,8 +850,12 @@ function PurchaseTooltip({
               borderTop: i > 0 ? "1px solid rgba(15,30,53,0.06)" : "none",
             }}
           >
+            {/* NO-PRICE RULE: this line used to read "$X.XX/sh". The lot's
+                per-share price is now shown only as its return to date. */}
             <p style={{ color: "#0f1e35", fontWeight: 600, fontSize: 13 }}>
-              ${lot.pricePerShare.toFixed(2)}/sh
+              {lot.pricePerShare > 0 && latestClose > 0
+                ? `${formatPercent(((latestClose / lot.pricePerShare) - 1) * 100, 1)} to date`
+                : "Purchase"}
             </p>
             {lot.isPartial && (
               <p style={{ color: "#b0bac5", fontSize: 9, marginTop: 2 }}>
