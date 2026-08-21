@@ -1,18 +1,16 @@
-import { positionAverageCost } from "./positionLots";
-import { holdings } from "@/data/holdings";
-
-// Build a quick lookup of explicit entry prices declared on holdings.
-const HOLDING_ENTRY_PRICE: Record<string, number | undefined> = {};
-for (const h of holdings) {
-  if (h.entryPrice !== undefined) HOLDING_ENTRY_PRICE[h.ticker] = h.entryPrice;
-}
-
-// Sleeve-specific overrides for tickers with materially different entry prices per sleeve.
-const SLEEVE_OVERRIDES: Record<string, Partial<Record<string, number>>> = {
-  // SMH: Roth IRA lot entered Jan 26, 2026 @ $398.63.
-  // ETFs sleeve cost basis is older and untracked — no entry for "etfs".
-  SMH: { "roth-ira": 398.63 },
-};
+// ─── Cost-basis lookup (retired data source) ──────────────────────────────────
+// Per-share cost basis is PRIVATE and is no longer tracked in this repository.
+// The sources this module used to read — lib/positionLots.ts's
+// positionAverageCost, and entryPrice on data/holdings.ts — held real per-share
+// prices in a public repo and have been removed.
+//
+// getAvgCost() therefore always returns null, and its callers already handle
+// that: the return badge renders an em dash rather than a percentage. Return
+// figures now come from the reconstruction pipeline instead, as
+// percentage-only artifacts (data/performanceDerived.json).
+//
+// Kept as a stub rather than deleted so the dormant legacy routes still compile.
+// Do NOT reintroduce a private price source here.
 
 /** ((currentPrice / avgCost) - 1) * 100 */
 export function computeReturnPct(avgCost: number, currentPrice: number): number {
@@ -20,19 +18,9 @@ export function computeReturnPct(avgCost: number, currentPrice: number): number 
 }
 
 /**
- * Average cost per share for a ticker, optionally scoped to a sleeve slug.
- * Returns null when no cost basis is available (untracked entry, recurring lots, wrong sleeve).
+ * Always null: no cost-basis source is tracked in this repository.
+ * Callers must treat null as "unavailable" and render nothing numeric.
  */
-export function getAvgCost(ticker: string, sleeve?: string): number | null {
-  // First prefer an explicit entry price declared on the holding itself.
-  const holdingEntry = HOLDING_ENTRY_PRICE[ticker];
-  if (holdingEntry !== undefined) return holdingEntry;
-  if (sleeve !== undefined) {
-    const overrides = SLEEVE_OVERRIDES[ticker];
-    if (overrides !== undefined) {
-      return overrides[sleeve] ?? null;
-    }
-  }
-  const val = (positionAverageCost as Record<string, number | undefined>)[ticker];
-  return val ?? null;
+export function getAvgCost(_ticker: string, _sleeve?: string): number | null {
+  return null;
 }

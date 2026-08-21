@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "compute-performance": "tsx scripts/computePerformance.ts"
+    "compute-performance": "tsx scripts/computePerformance.ts",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "fetch-fundamentals": "tsx scripts/fetchFundamentals.ts",
+    "fetch-benchmarks": "tsx scripts/fetchBenchmarks.ts",
+    "fetch-prices": "tsx scripts/fetchHistoricalPrices.ts",
+    "reconstruct-july": "tsx scripts/reconstructJuly.ts"
   },
   "dependencies": {
     "@vercel/og": "^0.11.1",

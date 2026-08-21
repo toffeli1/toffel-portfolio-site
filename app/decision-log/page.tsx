@@ -1,5 +1,7 @@
 import { decisionLog } from "@/data/decisionLog";
-import DecisionLogFeed from "@/components/DecisionLogFeed";
+import DecisionLogByCompany from "@/components/DecisionLogByCompany";
+import { decisionsByCompany, pendingWeightEventCount } from "@/data/decisions";
+import { portfolioStrategy } from "@/data/portfolioStrategy";
 
 export const metadata = {
   title: "Decision Log",
@@ -15,7 +17,11 @@ export default function DecisionLogPage() {
   const risk  = decisionLog.filter((e) => e.action === "Trim" || e.action === "Rebalance").length;
   const exits = decisionLog.filter((e) => e.action === "Exit").length;
 
+  const blocks = decisionsByCompany();
+  const pendingCount = pendingWeightEventCount();
+
   const stats = [
+    { label: "Companies", value: blocks.length },
     { label: "Total Decisions", value: total },
     { label: "Buys / Adds",     value: buys,  color: "#1a4a2e" },
     { label: "Risk Management", value: risk,  color: "#7a4520" },
@@ -65,13 +71,43 @@ export default function DecisionLogPage() {
           </div>
         </section>
 
-        {/* Feed */}
+        {/* ── Permanent Portfolio Strategy ─────────────────────────────────
+            Pinned above the company blocks. Not a dated trade — it is the
+            standing rationale every entry below sits underneath. */}
+        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <div className="mx-auto max-w-4xl px-6 py-12 lg:px-12">
+            <div
+              className="rounded-2xl px-7 py-7"
+              style={{
+                background: "#ffffff",
+                border: "1px solid rgba(15,30,53,0.09)",
+                boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
+              }}
+            >
+              <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.28em] text-[#7a8799]">
+                Standing rationale
+              </p>
+              <h2 className="mb-5 text-[19px] font-semibold tracking-tight text-[#0f1e35]">
+                {portfolioStrategy.heading}
+              </h2>
+              <div className="max-w-2xl space-y-4">
+                {portfolioStrategy.body.map((para, i) => (
+                  <p key={i} className="text-[14px] leading-[1.85] text-[#2d3d52]">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Decisions, grouped by company ──────────────────────────────── */}
         <section>
-          <div className="mx-auto max-w-4xl px-6 py-10 lg:px-12">
-            <p className="mb-8 max-w-2xl text-[12px] italic leading-[1.7] text-[#5a6e82]">
-              Return % shown on each entry reflects the realized return on the position at the time of the decision (trim, exit, or buy lot). Current returns on remaining shares are tracked separately on the Analytics page and may differ.
+          <div className="mx-auto max-w-4xl px-6 py-12 lg:px-12">
+            <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
+              By company
             </p>
-            <DecisionLogFeed entries={decisionLog} />
+            <DecisionLogByCompany blocks={blocks} pendingCount={pendingCount} />
           </div>
         </section>
       </main>

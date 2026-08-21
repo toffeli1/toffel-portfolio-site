@@ -1,3 +1,10 @@
+// PRIVACY: share counts, entry prices, estimated entry prices and the whole
+// `purchase` block (cost basis + share quantities) were REMOVED from this file.
+// They were real private position data in a public repo. This sleeve is dormant
+// and unpublished, and nothing needed the figures — every live analytic comes
+// from the private reconstruction pipeline via percentage-only artifacts.
+// Do not re-add quantities, prices or cost basis here.
+
 // ─── 2027 Roth Fund (Individual Brokerage funding sleeve) ─────────────────────
 // All entries are held in the taxable brokerage account, earmarked for a
 // future Roth IRA funding cycle. Privacy: dollar values may be stored here
@@ -13,13 +20,6 @@ export type Subcategory =
   | 'Quantum / Emerging Tech ETF'
   | 'Semiconductor Equity';
 
-export interface Purchase {
-  costBasis: number;
-  shares: number;
-  totalInvested: number;
-  date?: number;
-}
-
 export interface Holding {
   /** Stable sleeve-scoped key for cross-sleeve disambiguation (e.g. VOO_2027_ROTH_FUND). */
   sourceKey: string;
@@ -29,7 +29,6 @@ export interface Holding {
   sleeve: string;
   /** Public-safe weight % within this sleeve. */
   portfolioPct: number;
-  shares: number;
   /** Internal only. Used for derivation; never rendered publicly. */
   averageCost: number;
   returnPct: number;
@@ -39,12 +38,9 @@ export interface Holding {
   subcategory: Subcategory;
   thesis: string;
   // ── Legacy optional fields kept for compatibility with unrelated consumers ──
-  entryPrice?: number;
   livePricing?: boolean;
-  purchase?: Purchase;
   confirmedPurchaseDate?: string;
   estimatedPurchaseDate?: string;
-  estimatedEntryPrice?: number;
   purchaseDateSource?: "confirmed" | "estimated" | "unknown";
 }
 
@@ -55,7 +51,6 @@ export const holdings: Holding[] = [
     company: 'Invesco NASDAQ 100 ETF',
     sleeve: '2027 Roth Fund',
     portfolioPct: 12.28,
-    shares: 3,
     averageCost: 229.17,
     returnPct: 31.51,
     purchaseDate: '2025-08-01',
@@ -69,7 +64,6 @@ export const holdings: Holding[] = [
     company: 'VanEck Semiconductor ETF',
     sleeve: '2027 Roth Fund',
     portfolioPct: 29.52,
-    shares: 3.56071,
     averageCost: 286.74,
     returnPct: 113.08,
     purchaseDate: '2025-08-01',
@@ -83,7 +77,6 @@ export const holdings: Holding[] = [
     company: 'Vanguard S&P 500 ETF',
     sleeve: '2027 Roth Fund',
     portfolioPct: 47.01,
-    shares: 5,
     averageCost: 573.84,
     returnPct: 20.75,
     purchaseDate: '2025-08-01',
@@ -97,7 +90,6 @@ export const holdings: Holding[] = [
     company: 'Fidelity Wise Origin Bitcoin Fund',
     sleeve: '2027 Roth Fund',
     portfolioPct: 6.83,
-    shares: 9.27927,
     averageCost: 89.75,
     returnPct: -39.58,
     purchaseDate: '2025-08-01',
@@ -111,7 +103,6 @@ export const holdings: Holding[] = [
     company: 'Defiance Quantum ETF',
     sleeve: '2027 Roth Fund',
     portfolioPct: 4.35,
-    shares: 1.967597,
     averageCost: 141.80,
     returnPct: 15.01,
     purchaseDate: '2025-05-07',
@@ -126,7 +117,6 @@ export const holdings: Holding[] = [
     company: 'Micron Technology',
     sleeve: '2028 Roth Fund',
     portfolioPct: 29.73,
-    shares: 1.2,
     averageCost: 422.68,
     returnPct: 124.55,
     purchaseDate: '2026-05-26',
@@ -140,7 +130,6 @@ export const holdings: Holding[] = [
     company: 'Ouster',
     sleeve: '2028 Roth Fund',
     portfolioPct: 21.10,
-    shares: 17.731419,
     averageCost: 32.18,
     returnPct: 41.09,
     purchaseDate: '2026-05-18',
@@ -154,7 +143,6 @@ export const holdings: Holding[] = [
     company: 'Penguin Solutions',
     sleeve: '2028 Roth Fund',
     portfolioPct: 10.78,
-    shares: 6,
     averageCost: 45.71,
     returnPct: 49.51,
     purchaseDate: '2026-05-18',
@@ -168,7 +156,6 @@ export const holdings: Holding[] = [
     company: 'Navitas Semiconductor',
     sleeve: '2028 Roth Fund',
     portfolioPct: 11.50,
-    shares: 15,
     averageCost: 31.25,
     returnPct: -6.72,
     purchaseDate: '2026-05-25',
@@ -182,7 +169,6 @@ export const holdings: Holding[] = [
     company: 'Firefly Aerospace Inc.',
     sleeve: '2028 Roth Fund',
     portfolioPct: 26.60,
-    shares: 25,
     averageCost: 42.91,
     returnPct: -5.73,
     purchaseDate: '2026-06-04',

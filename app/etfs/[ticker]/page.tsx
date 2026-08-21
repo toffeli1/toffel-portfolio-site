@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { etfProfiles } from "@/data/etfConstituents";
 import { ChartWrapper } from "@/components/ChartWrapper";
-import { positionLots, positionAverageCost } from "@/lib/positionLots";
 import { fmtPortfolioDate } from "@/lib/config";
 
 export function generateStaticParams() {
@@ -74,11 +73,15 @@ export default async function EtfDetailPage({
           style={{ borderColor: "rgba(15,30,53,0.08)" }}
         >
           <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-            <ChartWrapper
-              ticker={profile.ticker}
-              purchaseLots={positionLots[profile.ticker]}
-              averageCost={positionAverageCost[profile.ticker]}
-            />
+{/* PRIVACY: purchaseLots, averageCost and entryMarker all carry real
+                  per-share PRICES. ChartWrapper is a client component, so passing
+                  them serialised those prices into the page payload — they showed
+                  up in built HTML even though the chart renders percent-only.
+                  Dropped: every ticker that has lot data is now registered and
+                  308-redirects to /thesis/[ticker], so these legacy pages are
+                  unreachable and lose nothing visible. Do not re-add a
+                  price-bearing prop to a client chart. */}
+            <ChartWrapper ticker={profile.ticker} />
           </div>
         </section>
 

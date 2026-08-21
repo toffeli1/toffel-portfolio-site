@@ -1,3 +1,22 @@
+// ╔══════════════════════════════════════════════════════════════════════════╗
+// ║  RETIRED — DO NOT USE FOR ANY PUBLIC SURFACE                             ║
+// ╚══════════════════════════════════════════════════════════════════════════╝
+//
+// Superseded by lib/performanceEngine.ts, which is the one canonical engine.
+// Nothing public reads this file any more.
+//
+// Retired because every assumption below is now wrong:
+//   - inceptionDate 2025-08-01        → real inception is 2025-07-03
+//   - VOO as the benchmark            → an ETF proxy; now S&P 500 TR (^SP500TR)
+//   - benchmarkDividendYieldAnnual    → an assumed yield bolted onto a price
+//                                       return to fake a total return
+//   - monthly Modified Dietz          → the reconstruction now supports daily
+//                                       TWR, so the coarser estimate would only
+//                                       disagree with the canonical series
+//
+// Kept on disk only so the historical methodology stays auditable. If you are
+// reading this looking for a performance number, use data/performance.ts.
+
 // ─── Performance calc engine ───────────────────────────────────────────────────
 // Pure functions only — no embedded data, no I/O. Every derived performance
 // figure on /performance is computed here from raw NAVs/flows/benchmark prices,

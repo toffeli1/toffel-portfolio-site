@@ -16,9 +16,9 @@ export interface Scenario {
 
 export interface TrimEvent {
   date: string;           // "YYYY-MM-DD"
-  quantity?: number;      // shares sold/bought — internal only, never rendered publicly
-  amountUsd?: number;     // internal only, never rendered publicly
-  pricePerShare?: number; // internal only, never rendered publicly
+  // PRIVACY: quantity, amountUsd and pricePerShare were removed. They were real
+  // share counts and execution prices in a public repo, and nothing rendered
+  // them — only `date` and `explanation` reach the page. Do not re-add them.
   type: "partial_trim" | "add" | "recurring_add" | "pending_stop_loss";
   explanation: string;
   inferred?: boolean;
@@ -1104,9 +1104,6 @@ export const positionDetails: Record<string, PositionDetail> = {
     trimEvents: [
       {
         date: "2026-01-23",
-        quantity: 1,
-        amountUsd: 330.12,
-        pricePerShare: 330.12,
         type: "partial_trim",
         explanation: "I trimmed one share after the position had grown beyond my target weighting following a significant re-rating. The core thesis — search durability through the AI transition and Google Cloud's operating leverage — remained intact. This was a sizing decision, not a change in conviction. I retained the remainder of the position.",
         inferred: false,
@@ -1310,9 +1307,6 @@ export const positionDetails: Record<string, PositionDetail> = {
     trimEvents: [
       {
         date: "2026-04-17",
-        quantity: 5,
-        amountUsd: 239.60,
-        pricePerShare: 47.92,
         type: "partial_trim",
         explanation: "I reduced the position by approximately half after a 127% gain from my August 2025 entry. The stock had moved well ahead of where I expected the AI pivot thesis to be priced at this stage, and the position size had grown beyond my intended weighting. I retained the remaining shares — the transition from Bitcoin mining toward AI cloud infrastructure is still in early execution, and the thesis remains intact.",
         inferred: false,
@@ -1726,9 +1720,6 @@ export const positionDetails: Record<string, PositionDetail> = {
     trimEvents: [
       {
         date: "2026-05-01",
-        quantity: 1,
-        amountUsd: 509.50,
-        pricePerShare: 509.50,
         type: "add",
         explanation:
           "Added to SMH on May 1, 2026 to increase broad semiconductor and AI infrastructure exposure within the account.",
@@ -1741,16 +1732,12 @@ export const positionDetails: Record<string, PositionDetail> = {
     trimEvents: [
       {
         date: "2026-05-01",
-        amountUsd: 50.00,
         type: "recurring_add",
         explanation:
           "Recurring VOO investment processed on May 1, 2026, continuing the account's core U.S. equity market exposure.",
       },
       {
         date: "2026-05-01",
-        quantity: 2.707845,
-        amountUsd: 1799.84,
-        pricePerShare: 664.74,
         type: "add",
         explanation:
           "Added to VOO on May 1, 2026 to increase core U.S. equity market exposure within the account.",

@@ -3,15 +3,13 @@ import { notFound } from "next/navigation";
 import { holdings } from "@/data/holdings";
 import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { positionDetails } from "@/data/positionDetails";
-import type { Scenario, TrimEvent } from "@/data/positionDetails";
+import type { TrimEvent } from "@/data/positionDetails";
 import { etfProfiles } from "@/data/etfConstituents";
 import { PositionQuoteProvider } from "@/components/PositionQuoteProvider";
 import { LiveReturnBadge } from "@/components/LiveReturnBadge";
 import { ChartWrapper } from "@/components/ChartWrapper";
 import TickerLogo from "@/components/TickerLogo";
-import { ReturnSinceSection } from "@/components/ReturnSinceSection";
 import DerivedInvestmentWeight from "@/components/DerivedInvestmentWeight";
-import { positionLots, positionAverageCost, positionEvents } from "@/lib/positionLots";
 import {
   getPositionChanges,
   formatPositionChangeDate,
@@ -137,13 +135,9 @@ export default async function PositionPage({
   // Chart ticker override.
   const chartTicker = detail?.chartSymbol ?? ticker;
 
-  // Purchase lots take priority over the legacy single entry marker.
-  // Prefer full historical events when present so chart markers include all
-  // buys and sells (independent of FIFO). Fall back to FIFO-survivor lots.
-  const events = positionEvents[ticker];
-  const lots = events?.buys ?? positionLots[ticker];
-  const sellEvents = events?.sells;
-  const avgCost = positionAverageCost[ticker];
+  // Lot/event data is no longer read here. It carries per-share prices, and this
+  // page's chart is a client component — see the PRIVACY note at the chart.
+  // Position Changes below derives from lib/positionChanges, which emits no prices.
 
   // Position Changes: derive from events when available so the section auto-
   // updates with every sell/trim. Fall back to legacy curated trimEvents for
@@ -152,14 +146,9 @@ export default async function PositionPage({
   const useDerivedChanges = derivedChanges.length > 0;
 
   // Entry marker: only used when no per-lot data is available.
-  const entryPrice =
-    retailHolding?.purchase?.costBasis ?? sleeveHolding?.estimatedEntryPrice;
-  const hasConfirmedDate = !!(
-    retailHolding?.confirmedPurchaseDate ?? sleeveHolding?.confirmedPurchaseDate
-  );
-  const entryMarker = !lots && entryPrice
-    ? ({ price: entryPrice, source: hasConfirmedDate ? "confirmed" : "estimated" } as const)
-    : undefined;
+  // The entry-marker computation lived here and resolved to a per-share PRICE
+  // (costBasis / estimatedEntryPrice) that was handed to the client chart.
+  // Removed for the same reason as the lot props — see the PRIVACY note below.
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
@@ -314,21 +303,22 @@ export default async function PositionPage({
           {/* ── Chart ─────────────────────────────────────────────────────── */}
           <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
             <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-              <ChartWrapper ticker={chartTicker} entryMarker={entryMarker} purchaseLots={lots} sellEvents={sellEvents} averageCost={avgCost} />
+{/* PRIVACY: purchaseLots, averageCost and entryMarker all carry real
+                  per-share PRICES. ChartWrapper is a client component, so passing
+                  them serialised those prices into the page payload — they showed
+                  up in built HTML even though the chart renders percent-only.
+                  Dropped: every ticker that has lot data is now registered and
+                  308-redirects to /thesis/[ticker], so these legacy pages are
+                  unreachable and lose nothing visible. Do not re-add a
+                  price-bearing prop to a client chart. */}
+            <ChartWrapper ticker={chartTicker} />
             </div>
           </section>
 
-          {/* ── Return Since Purchase ─────────────────────────────────────── */}
-          {retailHolding?.purchase && (
-            <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-              <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-                <ReturnSinceSection
-                  ticker={ticker}
-                  purchase={retailHolding.purchase}
-                />
-              </div>
-            </section>
-          )}
+          {/* PRIVACY: a "Return Since Purchase" section stood here, rendering
+              Purchase Price and Current Price as dollar figures from the
+              holdings' private `purchase` block. Both the section and its
+              backing data are gone. */}
 
           {/* ── Position Changes ──────────────────────────────────────────── */}
           {(useDerivedChanges || (detail?.trimEvents && detail.trimEvents.length > 0)) && (
@@ -349,20 +339,9 @@ export default async function PositionPage({
               </div>
             </section>
           )}
-
-          {/* ── Why I Own It ──────────────────────────────────────────────── */}
-          {detail?.whyIOwnIt && (
-            <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-              <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-                <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Why I Own It
-                </p>
-                <p className="max-w-2xl text-[15px] leading-[1.85] text-[#2d3d52]">
-                  {detail.whyIOwnIt}
-                </p>
-              </div>
-            </section>
-          )}
+          {/* The templated "Why I Own It" block was removed. Canonical research
+              lives at /thesis/[ticker], which does not force every company
+              through a shared opener. */}
 
           {/* ── Investment Thesis ─────────────────────────────────────────── */}
           {(thesis || detail?.longDescription) && (
@@ -384,55 +363,10 @@ export default async function PositionPage({
           )}
 
           {/* ── Scenario Analysis ─────────────────────────────────────────── */}
-          {(detail?.bullCase || detail?.baseCase || detail?.bearCase) && (
-            <section
-              className="border-b"
-              style={{ background: "#f3ede1", borderColor: "rgba(15,30,53,0.08)" }}
-            >
-              <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-                <p className="mb-10 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Scenario Analysis
-                </p>
-                <div className="grid gap-5 md:grid-cols-3">
-                  {detail.bullCase && (
-                    <ScenarioCard type="bull" scenario={detail.bullCase} />
-                  )}
-                  {detail.baseCase && (
-                    <ScenarioCard type="base" scenario={detail.baseCase} />
-                  )}
-                  {detail.bearCase && (
-                    <ScenarioCard type="bear" scenario={detail.bearCase} />
-                  )}
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* ── Key Risks ─────────────────────────────────────────────────── */}
-          {detail?.risks && detail.risks.length > 0 && (
-            <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-              <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-                <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Key Risks
-                </p>
-                <ol className="max-w-2xl space-y-5">
-                  {detail.risks.map((risk, i) => (
-                    <li key={i} className="flex gap-5">
-                      <span
-                        className="mt-0.5 shrink-0 font-mono text-[10px] tabular-nums"
-                        style={{ color: "#5a6e82" }}
-                      >
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <p className="text-[13px] leading-[1.75] text-[#3d4f66]">
-                        {risk}
-                      </p>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </section>
-          )}
+          {/* Key Risks and the Bull/Base/Bear scenario grid were removed. The
+              canonical research route is /thesis/[ticker], where risk is argued
+              inside the analysis and no company is forced through a shared
+              template. This dormant legacy route no longer renders either. */}
 
           {/* ── What I'm Watching ────────────────────────────────────────── */}
           {detail?.watchList && detail.watchList.length > 0 && (
@@ -584,58 +518,4 @@ function defaultChangeCopy(card: PositionChangeCard): string {
 
 // ── Scenario card ──────────────────────────────────────────────────────────────
 
-const SCENARIO_META = {
-  bull: { label: "Bull Case", color: "#1a4a2e", border: "rgba(26,74,46,0.2)" },
-  base: { label: "Base Case", color: "#1a3a5c", border: "rgba(26,58,92,0.2)" },
-  bear: { label: "Bear Case", color: "#8b2530", border: "rgba(139,37,48,0.2)" },
-} as const;
 
-function ScenarioCard({
-  type,
-  scenario,
-}: {
-  type: keyof typeof SCENARIO_META;
-  scenario: Scenario;
-}) {
-  const meta = SCENARIO_META[type];
-
-  return (
-    <div
-      className="flex flex-col rounded-2xl p-7"
-      style={{
-        background: "#ffffff",
-        border: `1px solid ${meta.border}`,
-        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-      }}
-    >
-      <p
-        className="mb-4 font-mono text-[9px] uppercase tracking-[0.3em]"
-        style={{ color: meta.color }}
-      >
-        {meta.label}
-      </p>
-
-      <h3 className="mb-3 text-[16px] font-semibold leading-tight text-[#0f1e35]">
-        {scenario.title}
-      </h3>
-
-      <p className="mb-6 text-[12px] leading-[1.75] text-[#5a6e82]">
-        {scenario.summary}
-      </p>
-
-      {scenario.assumptions.length > 0 && (
-        <ul className="mt-auto space-y-3">
-          {scenario.assumptions.map((a, i) => (
-            <li key={i} className="flex items-start gap-3">
-              <span
-                className="mt-[6px] h-1 w-1 shrink-0 rounded-full"
-                style={{ backgroundColor: meta.color, opacity: 0.6 }}
-              />
-              <p className="text-[11px] leading-[1.65] text-[#5a6e82]">{a}</p>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}

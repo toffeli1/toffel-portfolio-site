@@ -1,43 +1,33 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import type { EntryMarker, ExitMarker } from "./PositionChart";
-import type { PurchaseLot, SellEvent } from "@/lib/positionLots";
+// Lazily loads the performance-history chart so recharts stays out of the
+// initial bundle.
+//
+// The price-bearing props (entryMarker, purchaseLots, sellEvents, averageCost)
+// were removed along with the private data behind them. This wrapper's surface
+// is deliberately narrow so a caller cannot pass a share count or a price into
+// a client component again.
 
-// Recharts uses browser-only APIs — load client-side only.
-const DynamicChart = dynamic(
+import dynamic from "next/dynamic";
+import type { ExitMarker } from "./PositionChart";
+
+const PositionChart = dynamic(
   () => import("./PositionChart").then((m) => m.PositionChart),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="h-[380px] w-full animate-pulse rounded-2xl"
+        style={{ background: "rgba(15,30,53,0.04)" }}
+      />
+    ),
+  }
 );
 
-type Range = "1w" | "1m" | "3m" | "6m" | "1y" | "3y" | "5y" | "max";
-
-export function ChartWrapper({
-  ticker,
-  entryMarker,
-  purchaseLots,
-  sellEvents,
-  averageCost,
-  exitMarker,
-  defaultRange,
-}: {
+export function ChartWrapper(props: {
   ticker: string;
-  entryMarker?: EntryMarker;
-  purchaseLots?: PurchaseLot[];
-  sellEvents?: SellEvent[];
-  averageCost?: number;
   exitMarker?: ExitMarker;
-  defaultRange?: Range;
+  defaultRange?: "1w" | "1m" | "3m" | "6m" | "1y" | "3y" | "5y" | "max";
 }) {
-  return (
-    <DynamicChart
-      ticker={ticker}
-      entryMarker={entryMarker}
-      purchaseLots={purchaseLots}
-      sellEvents={sellEvents}
-      averageCost={averageCost}
-      exitMarker={exitMarker}
-      defaultRange={defaultRange}
-    />
-  );
+  return <PositionChart {...props} />;
 }

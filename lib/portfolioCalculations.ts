@@ -3,14 +3,12 @@
 // Source-of-truth split:
 //   - data/sleeveHoldings.ts (rawHoldings) holds qualitative + manual fallback
 //     fields (portfolioWeightPct, returnPct).
-//   - lib/positionLots.ts (positionLots) holds FIFO-surviving lot share counts.
 //   - Live quotes come from lib/quoteCache.ts (server) or QuotesProvider (client).
 //
 // This module derives current-state values (weights, returns, status) from those
 // inputs without exposing dollar amounts or share counts in the return shape.
 // Internal math uses values; public surface only emits percentages.
 
-import { positionLots } from "./positionLots";
 import type { SleeveHolding } from "@/data/sleeveHoldings";
 import type { Quote, QuoteMap } from "./types";
 
@@ -50,16 +48,6 @@ export interface DerivedSleeveHolding {
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-
-/**
- * Sum of FIFO-surviving shares for a ticker from positionLots.
- * Returns undefined if no lots are tracked for this ticker.
- */
-export function getSurvivingShares(ticker: string): number | undefined {
-  const lots = positionLots[ticker];
-  if (!lots || lots.length === 0) return undefined;
-  return lots.reduce((s, l) => s + (l.shares ?? 0), 0);
-}
 
 /** ((current / cost) - 1) * 100 */
 export function calculateReturnPct(currentPrice: number, avgCost: number): number {

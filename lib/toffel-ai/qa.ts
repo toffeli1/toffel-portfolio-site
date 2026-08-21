@@ -133,26 +133,25 @@ function twrVsMwrAnswer(): string {
   return [
     "Time-weighted return (TWR) measures the pure investment performance of the portfolio, removing the effect of when money was added or withdrawn. Money-weighted return (like IRR) blends performance with the timing and size of cash flows, so a well-timed deposit can flatter the number — or a poorly timed one can hurt it — even when nothing about stock selection changed.",
     "",
-    "This page reports TWR via the Modified Dietz method, linked monthly, specifically so the headline number reflects investment decisions rather than contribution timing.",
+    "This page reports TWR from daily portfolio marks, geometrically linked, specifically so the headline number reflects investment decisions rather than contribution timing. Every figure on the page — cumulative, monthly, calendar-year and drawdown — comes from that one series.",
   ].join("\n");
 }
 
 function maxDrawdownAnswer(): string {
   const perf = kb.performanceSummary();
   return [
-    `The maximum drawdown was ${fmtPct(perf.drawdown.maxDrawdownPct)}, from a peak on ${perf.drawdown.peakDate} to a trough on ${perf.drawdown.troughDate}.`,
+    `The maximum drawdown was ${fmtPct(perf.maxDrawdownPct)}, with the trough on ${perf.maxDrawdownDate}.`,
     "",
-    `Annualized volatility over the full window was ${fmtWeight(perf.annualizedVolPct)}, consistent with a concentrated, growth-tilted book.`,
+    "It is measured from the same daily wealth index that produces the cumulative return — wealth divided by its running peak, minus one — rather than from a separate month-end approximation.",
   ].join("\n");
 }
 
 function whySharpeNotHeadlineAnswer(): string {
   const perf = kb.performanceSummary();
   return [
-    `Sharpe and Sortino are shown as supporting context, not headline figures, because they're computed on only ${perf.sharpe.n} monthly observations — too small a sample for the ratio itself to be statistically reliable.`,
+    "Risk-adjusted ratios aren't shown as headline figures. The track record is roughly a year of history, which is far too small a sample for a Sharpe or Sortino point estimate to be statistically meaningful — the confidence interval around either would be wide enough that the number alone would mislead.",
     "",
-    `Sharpe is ${perf.sharpe.sharpeAnnualized.toFixed(2)} (n=${perf.sharpe.n}, 95% CI ${perf.sharpe.ciLow.toFixed(2)} to ${perf.sharpe.ciHigh.toFixed(2)}) — a confidence interval this wide means the point estimate alone would be misleading as a headline.`,
-    `Sortino is ${perf.sortino.sortinoAnnualized.toFixed(2)} (n=${perf.sortino.n}), shown for the same reason.`,
+    `What is reported instead is the return series itself and its drawdown: ${fmtPct(perf.cumulativeReturnPct)} cumulative since ${perf.inceptionDate}, against a maximum drawdown of ${fmtPct(perf.maxDrawdownPct)}. Those are directly observable rather than estimated.`,
   ].join("\n");
 }
 

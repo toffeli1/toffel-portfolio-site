@@ -4,6 +4,12 @@
 export interface DecisionEntry {
   /** Optional stable identifier (kebab-case) for cross-linking from transaction events. */
   id?: string;
+  /**
+   * Groups trades across MULTIPLE DAYS that were driven by one thesis into a
+   * single decision event. Same-day trades in one ticker merge automatically and
+   * do not need this. See the grouping rules in data/decisions.ts.
+   */
+  groupId?: string;
   /** "YYYY-MM-DD" or "YYYY-MM" for month-resolution entries */
   date: string;
   ticker: string;
@@ -58,6 +64,109 @@ export interface DecisionEntry {
 // snapshot and say so in the note. This is the one systematic gap in this
 // rebuild — precise dates for these events aren't preserved in source records.
 export const decisionLog: DecisionEntry[] = [
+  // ── Aug 2026 rebalance: first recorded Roth purchases for these six ──────
+  // Dates are EXECUTION dates in US Eastern, derived from the ledger's
+  // transaction_datetime. The dates originally supplied were settlement dates,
+  // one to two sessions later; using them made a position's "prior close" fall
+  // AFTER its own purchase, so AMZN's opening weight computed as 9.98% instead
+  // of 0%. Weights are now reconstructed (data/decisionWeights.json), so no
+  // weight is hardcoded here.
+  //
+  // CEG spans Aug 7–18 as one thesis-driven add (groupCeg). GLDM and AMZN each
+  // had two fills on a single day, which the grouping layer in data/decisions.ts
+  // merges into one event automatically.
+  {
+    date: "2026-08-06",
+    ticker: "CEG",
+    company: "Constellation Energy",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    decisionAction: "Add, multi-day build",
+    groupId: "ceg-aug-2026-build",
+    note: "Preferred Constellation because it had pulled back, is more established, provides relatively pure exposure to the nuclear thesis, and has stronger underlying metrics than more speculative alternatives. Nuclear currently looks more attractive than wind and solar given the policy and economic environment. Built across several days rather than in a single fill.",
+    status: "Held",
+  },
+  {
+    date: "2026-08-17",
+    ticker: "CEG",
+    company: "Constellation Energy",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    decisionAction: "Add, multi-day build",
+    groupId: "ceg-aug-2026-build",
+    note: "Final tranche of the Constellation build begun Aug 7.",
+    status: "Held",
+  },
+  {
+    date: "2026-08-10",
+    ticker: "GLDM",
+    company: "SPDR Gold MiniShares Trust",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    decisionAction: "Add",
+    groupId: "gldm-aug-2026-build",
+    note: "Added gold exposure for a period expected to remain uncertain. The market is still working through AI capital spending, monetization expectations, macroeconomic conditions, and geopolitical risk including conflict in the Middle East. Intended as stabilising exposure against a growth-heavy portfolio, and a source of funds if equity weakness creates better opportunities.",
+    status: "Held",
+  },
+  {
+    date: "2026-08-11",
+    ticker: "GLDM",
+    company: "SPDR Gold MiniShares Trust",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    decisionAction: "Add",
+    groupId: "gldm-aug-2026-build",
+    note: "Second fill of the gold initiation begun the prior session.",
+    status: "Held",
+  },
+  {
+    date: "2026-08-17",
+    ticker: "AMZN",
+    company: "Amazon.com",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    decisionAction: "Add",
+    note: "The central thesis is AWS: cloud and compute demand should continue compounding, and AWS is one of the largest and highest-quality infrastructure businesses in the world. Amazon also brings dominant e-commerce, logistics scale, robotics optionality and potential long-term automation exposure. The pullback created an attractive entry point.",
+    status: "Held",
+  },
+  {
+    date: "2026-08-17",
+    ticker: "SGOV",
+    company: "iShares 0-3 Month Treasury Bond ETF",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    decisionAction: "Add",
+    note: "Effectively the cash allocation. Keeps capital liquid and productive while waiting for attractive opportunities during a choppy market, and can be redeployed when individual holdings or the broader market create better entry points.",
+    status: "Held",
+  },
+  {
+    date: "2026-08-17",
+    ticker: "MA",
+    company: "Mastercard",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    decisionAction: "Add",
+    note: "Mastercard gives the portfolio exposure away from the AI and compute theme. The appeal is margins, network economics, and the long-term ability to compound alongside increasing total payment volume.",
+    status: "Held",
+  },
+  {
+    date: "2026-08-15",
+    ticker: "CBRS",
+    company: "Cerebras Systems",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    decisionAction: "Add",
+    note: "A higher-risk direct expression of the agentic-AI thesis. Widespread deployment of AI agents should materially increase inference and compute demand, and Cerebras gives direct exposure to that possibility.",
+    status: "Held",
+  },
   {
     date: "2026-07-27",
     ticker: "GEV",
@@ -99,7 +208,7 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Exit",
     type: "Full exit",
-    note: "Fully exited the remaining AMD position following the May trims. Proceeds were redeployed the same day into ServiceNow and VanEck Semiconductor ETF. AMD was the single largest contributor to realized results across the account's history.",
+    note: "Closed the remaining AMD position after the May trims. The freed capital was reallocated the same day to ServiceNow and VanEck Semiconductor ETF. AMD was the single largest contributor to realized results across the account's history.",
     returnPct: 134.8,
     status: "Fully Exited",
     realizedSharePct: 60.66,
@@ -111,7 +220,7 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Add",
     type: "Reallocation from AMD proceeds",
-    note: "Added to ServiceNow using proceeds from the same-day AMD exit, reinforcing the existing enterprise-SaaS allocation.",
+    note: "Increased the ServiceNow allocation with capital freed by the same-day AMD exit, concentrating the enterprise-software exposure into one name.",
     href: "/positions/NOW",
     status: "Held",
   },
@@ -122,7 +231,7 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Add",
     type: "Reallocation from AMD proceeds",
-    note: "Added to VanEck Semiconductor ETF using proceeds from the same-day AMD exit, reinforcing broad AI-infrastructure exposure.",
+    note: "Increased the VanEck Semiconductor allocation with capital freed by the same-day AMD exit, moving that semiconductor exposure from a single company to the basket.",
     href: "/positions/SMH",
     status: "Held",
   },
@@ -232,7 +341,7 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Rebalance",
     type: "Corporate action",
-    note: "CRWD underwent a stock split; share count and cost basis were adjusted accordingly (2.06 sh pre-split, per broker records). No change to the position or thesis — this is a bookkeeping adjustment, not a trade.",
+    note: "CRWD underwent a stock split; the historical position records were adjusted for the split. No change to the position or thesis. This is a bookkeeping adjustment, not a trade.",
     href: "/positions/CRWD",
     status: "Held",
   },
@@ -243,7 +352,7 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Rebalance",
     type: "Corporate action",
-    note: "Historical NOW buy lots include post-split fills; share count and cost basis reflect the adjusted post-split figures. No change to the position or thesis — this is a bookkeeping adjustment, not a trade.",
+    note: "Historical NOW buy lots include post-split fills; the position records were adjusted for the split. No change to the position or thesis. This is a bookkeeping adjustment, not a trade.",
     href: "/positions/NOW",
     status: "Held",
   },
@@ -470,7 +579,7 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Add",
     type: "Position build-out",
-    note: "Completed the initial ServiceNow buildout with additional shares, finalizing the enterprise SaaS allocation within the account.",
+    note: "Completed the initial ServiceNow build with a final allocation, bringing the enterprise-software position to its intended size.",
     href: "/positions/NOW",
     returnPct: 26.37,
     status: "Held",
@@ -707,7 +816,7 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Add",
     type: "Position transfer",
-    note: "Shares transferred in from an external Vanguard account, forming part of VOO's blended cost basis alongside later buys placed directly in this account. Exact transfer date not preserved in source records — placed here at the account's earliest known activity as an approximate marker.",
+    note: "An in-kind transfer from an external Vanguard account established the initial VOO position. Later purchases were made directly in this account. Exact transfer date not preserved in source records. Placed here at the account's earliest known activity as an approximate marker.",
     href: "/positions/VOO",
   },
 ];

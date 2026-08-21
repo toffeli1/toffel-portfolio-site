@@ -1,0 +1,3608 @@
+{
+  "AMZN": {
+    "ticker": "AMZN",
+    "cik": "0001018724",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 143083000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 169961000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 143313000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 147977000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 158877000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 187792000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 155667000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 167702000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 180169000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 213386000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 181519000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 200606000000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 11188000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 13209000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 15307000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 14672000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 17411000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 21203000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 18405000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 19171000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 17422000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 24977000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 23852000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 27461000000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 9879000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 10624000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 10431000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 13485000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 15328000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 20004000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 17127000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 18164000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 21187000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 21192000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 30255000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 62647000000,
+          "derived": false
+        }
+      ],
+      "operatingCashFlow": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 21217000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 42465000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 18989000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 25281000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 25971000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 45636000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 17015000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 32515000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 35525000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 54459000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 26032000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 45387000000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 0.94,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 1,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 0.98,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 1.26,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 1.43,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 1.8600000000000003,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 1.59,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 1.68,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 1.95,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 1.9500000000000002,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 2.78,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 5.75,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "operatingCashFlow": "NetCashProvidedByUsedInOperatingActivities",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "GOOGL": {
+    "ticker": "GOOGL",
+    "cik": "0001652044",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 90234000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 96428000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 102346000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 113828000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 109896000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 119796000000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 21343000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 23697000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 25472000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 27425000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 28521000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 30972000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 30606000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 31271000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 31228000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 35934000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 39696000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 40770000000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 19689000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 20687000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 23662000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 23619000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 26301000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 26536000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 34540000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 28196000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 34979000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 34455000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 62578000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 112193000000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 1.55,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 1.6399999999999997,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 1.89,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 1.89,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 2.12,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 2.139999999999999,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 2.81,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 2.31,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 2.87,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 2.8200000000000003,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 5.11,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 9.11,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "Revenues",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "META": {
+    "ticker": "META",
+    "cik": "0001326801",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 34146000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 40112000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 36455000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 39071000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 40589000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 48386000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 42314000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 47516000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 51242000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 59894000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 56311000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 60801000000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 13748000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 16384000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 13818000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 14847000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 17350000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 23365000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 17555000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 20441000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 20535000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 24745000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 22872000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 18775000000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 11583000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 14018000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 12369000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 13465000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 15688000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 20838000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 16644000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 18337000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 2709000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 22768000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 26773000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 15848000000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 4.39,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 5.299999999999999,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 4.71,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 5.16,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 6.03,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 7.959999999999997,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 6.43,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 7.14,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 1.05,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 8.869999999999997,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 10.44,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 6.18,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "NOW": {
+    "ticker": "NOW",
+    "cik": "0001373715",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 2288000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 2437000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 2603000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 2627000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 2797000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 2957000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 3088000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 3215000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 3407000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 3568000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 3770000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 3987000000,
+          "derived": false
+        }
+      ],
+      "grossProfit": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 1792000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 1921000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 2083000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 2075000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 2213000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 2326000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 2437000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 2491000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 2633000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 2734000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 2830000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 2818000000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 231000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 270000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 332000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 240000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 418000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 374000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 451000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 358000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 572000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 443000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 503000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 162000000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 242000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 295000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 347000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 262000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 432000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 384000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 460000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 385000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 502000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 401000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 469000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 298000000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 1.17,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 1.4399999999999995,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 1.67,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 1.26,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 2.07,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 1.8399999999999999,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 2.2,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 1.84,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 2.4,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": -4.77,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 0.45,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 0.29,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "grossProfit": "GrossProfit",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "CEG": {
+    "ticker": "CEG",
+    "cik": "0001868275",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 6111000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 5796000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 6161000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 5475000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 6550000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 5382000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 6788000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 6101000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 6570000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 6074000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 11122000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 7504000000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 977000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -67000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 813000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 1100000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 1467000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 972000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 451000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 951000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 1086000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 598000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 2332000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 580000000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 731000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -37000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 883000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 814000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 1200000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 852000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 118000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 839000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 930000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 432000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 1590000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 513000000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 2.26,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -0.09999999999999964,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 2.78,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 2.58,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 3.82,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 2.710000000000001,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 0.38,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 2.67,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 2.97,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 1.3800000000000008,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 4.49,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 1.42,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "Revenues",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "MA": {
+    "ticker": "MA",
+    "cik": "0001141391",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 6533000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 6548000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 6348000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 6961000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 7369000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 7489000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 7250000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 8133000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 8602000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 8806000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 8398000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 9277000000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 3844000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 3372000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 3604000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 4036000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 4004000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 3938000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 4149000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 4777000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 5061000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 4910000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 4907000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 5587000000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 3.39,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 2.969999999999999,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 3.22,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 3.5,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 3.53,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 3.6400000000000006,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 3.59,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 4.07,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 4.34,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 4.52,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 4.35,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 4.97,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "Revenues",
+      "operatingIncome": "OperatingIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "UNH": {
+    "ticker": "UNH",
+    "cik": "0000731766",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 92361000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 94427000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 99796000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 98855000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 100820000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 100807000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 109575000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 111616000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 113161000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 113215000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 111721000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 112032000000,
+          "derived": false
+        }
+      ],
+      "premiumsEarned": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 72339000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 73228000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 77988000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 76897000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 77442000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 76483000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 86534000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 87905000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 88979000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 88811000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 87561000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 86956000000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 8526000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 7689000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 7931000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 7875000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 8708000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 7773000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 9119000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 5150000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 4315000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 380000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 8990000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 7991000000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 5841000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 5455000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": -1409000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 4216000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 6055000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 5543000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 6292000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 3406000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 2348000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 10000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 6280000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 5484000000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 6.24,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 5.850000000000001,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": -1.53,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 4.54,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 6.51,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 5.99,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 6.85,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 3.74,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 2.59,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 0.05000000000000071,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 6.9,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 6.04,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "Revenues",
+      "premiumsEarned": "PremiumsEarnedNet",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "RKLB": {
+    "ticker": "RKLB",
+    "cik": "0001819994",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 67661000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 59991000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 92767000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 106251000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 104808000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 132388000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 122569000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 144498000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 155080000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 179652000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 200348000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 234066000,
+          "derived": false
+        }
+      ],
+      "grossProfit": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 14967000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 15492000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 24174000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 27162000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 27996000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 36817000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 35247000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 46388000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 57314000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 68232000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 76493000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 84576000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": -38859000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -47883000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": -43079000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": -43274000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": -51899000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": -51549000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": -59188000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": -59639000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": -58969000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": -51042000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": -55969000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": -57514000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": -40568000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -50497000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": -44260000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": -41631000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": -51939000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": -52345000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": -60616000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": -66414000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": -18257000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": -52922000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": -45022000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": -49258000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": -0.08,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -0.09999999999999998,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": -0.09,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": -0.08,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": -0.1,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": -0.10999999999999999,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": -0.12,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": -0.13,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": -0.03,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": -0.08999999999999997,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": -0.07,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": -0.08,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "grossProfit": "GrossProfit",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "OSCR": {
+    "ticker": "OSCR",
+    "cik": "0001568651",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 1439991000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 1431658000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 2142305000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 2219341000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 2423482000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 2392436000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 3046263000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 2863945000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 2985984000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 2805235000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 4647194000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 4880220000,
+          "derived": false
+        }
+      ],
+      "premiumsEarned": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 1392082000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 1390395000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 2093682000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 2164116000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 2368257000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 2345204000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 2995821000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 2803444000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 2923968000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 2746660000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 4580862000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 4789331000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": -58244000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -145477000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 185558000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 67812000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": -48374000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": -147731000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 297123000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": -230483000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": -129250000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": -333747000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 704085000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 388635000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": -65398000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -150030000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 177368000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 56207000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": -54596000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": -153547000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 275271000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": -228361000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": -137450000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": -352611000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 678996000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 361808000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": -0.29,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -0.6799999999999999,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 0.62,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 0.2,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": -0.22,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": -0.5000000000000001,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 0.92,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": -0.89,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": -0.53,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": -1.19,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 2.07,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 1.1,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "Revenues",
+      "premiumsEarned": "PremiumsEarnedNet",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "ASTS": {
+    "ticker": "ASTS",
+    "cik": "0001780312",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 0,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 0,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 500000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 900000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 1100000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 1918000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 718000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 1156000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 14739000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 54305000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 14735000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 31520000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": -20909000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -31926000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": -19730000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": -72550000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": -171946000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": -35857000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": -45706000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": -99394000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": -122874000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": -73966000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": -191012000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": -230909000,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "RevenueFromContractWithCustomerIncludingAssessedTax",
+      "netIncome": "NetIncomeLoss"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "MELI": {
+    "ticker": "MELI",
+    "cik": "0001099590",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 3760000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 4261000000,
+          "derived": false
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 4333000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 5073000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 5312000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 6059000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 5935000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 6790000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 7409000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 8759000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 8845000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 10169000000,
+          "derived": false
+        }
+      ],
+      "grossProfit": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 1995000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 1955000000,
+          "derived": false
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 2024000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 2365000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 2439000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 2749000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 2771000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 3094000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 3209000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 3784000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 3862000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 4159000000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 685000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 335000000,
+          "derived": false
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 528000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 726000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 557000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 820000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 763000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 825000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 724000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 889000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 611000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 683000000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 359000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 165000000,
+          "derived": false
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 344000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 531000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 397000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 639000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 494000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 523000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 421000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 559000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 417000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 466000000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 7.16,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 3.25,
+          "derived": false
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 6.78,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 10.48,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 7.83,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 12.599999999999994,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 9.74,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 10.31,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 8.32,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 11.029999999999998,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 8.23,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 9.19,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "Revenues",
+      "grossProfit": "GrossProfit",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-08-20"
+  },
+  "CBRS": {
+    "ticker": "CBRS",
+    "cik": "0002021728",
+    "metrics": {},
+    "conceptUsed": {},
+    "fetchedAt": "2026-08-20"
+  }
+}

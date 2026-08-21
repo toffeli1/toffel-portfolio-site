@@ -98,11 +98,6 @@ export default async function ArchivePage({
   const days = daysBetween(holding.ownedFrom, holding.ownedTo);
   const years = (days / 365).toFixed(1);
 
-  const entryMarker =
-    holding.estimatedEntryPrice !== undefined && !holding.purchaseLots
-      ? ({ price: holding.estimatedEntryPrice, source: "estimated" } as const)
-      : undefined;
-
   const exitMarker = { date: holding.ownedTo, reason: holding.exitType };
 
   return (
@@ -238,11 +233,16 @@ export default async function ArchivePage({
               Full performance history shown, indexed to the start of the selected
               range. Exit marker indicates the date of final sale.
             </p>
+{/* PRIVACY: purchaseLots, averageCost and entryMarker all carry real
+                  per-share PRICES. ChartWrapper is a client component, so passing
+                  them serialised those prices into the page payload — they showed
+                  up in built HTML even though the chart renders percent-only.
+                  Dropped: every ticker that has lot data is now registered and
+                  308-redirects to /thesis/[ticker], so these legacy pages are
+                  unreachable and lose nothing visible. Do not re-add a
+                  price-bearing prop to a client chart. */}
             <ChartWrapper
               ticker={holding.ticker}
-              entryMarker={entryMarker}
-              purchaseLots={holding.purchaseLots}
-              averageCost={holding.averageCostPerShare}
               exitMarker={exitMarker}
               defaultRange="max"
             />

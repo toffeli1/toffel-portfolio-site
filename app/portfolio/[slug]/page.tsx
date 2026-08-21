@@ -6,7 +6,7 @@ import { etfProfiles } from "@/data/etfConstituents";
 import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import SleeveDashboard from "@/components/SleeveDashboard";
 import InvestmentSection from "@/components/InvestmentSection";
-import { investmentPublicData } from "@/data/investmentPerformance";
+import { portfolioState, activePositionCount } from "@/data/portfolioState";
 
 export function generateStaticParams() {
   return portfolios.map((p) => ({ slug: p.slug }));
@@ -190,7 +190,7 @@ function InvestmentsView() {
                   Investments
                 </h1>
                 <p className="mt-2 max-w-xl font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
-                  Manually maintained snapshot of portfolio weights and returns — no live pricing. As of {fmtPortfolioDate(investmentPublicData.as_of)}.
+                  Manually maintained snapshot of portfolio weights and returns, with no live pricing. As of {fmtPortfolioDate(portfolioState.asOf)}.
                 </p>
                 <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
                   Long-Term Compounding
@@ -201,7 +201,7 @@ function InvestmentsView() {
                   className="font-mono font-bold leading-none tracking-tight"
                   style={{ color, fontSize: "clamp(3.5rem,5.5vw,5rem)" }}
                 >
-                  {investmentPublicData.holdings.length}
+                  {activePositionCount}
                 </p>
                 <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
                   positions
@@ -214,7 +214,7 @@ function InvestmentsView() {
         {/* Holdings, weighting, and returns — percentage-only snapshot from
             data/toffel_investments_public.json. No dollar amounts, ever.
             Performance KPIs live on /performance. */}
-        <InvestmentSection data={investmentPublicData} />
+        <InvestmentSection />
       </main>
 
       <SleeveFooter />

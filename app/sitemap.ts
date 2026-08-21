@@ -1,20 +1,24 @@
 import type { MetadataRoute } from "next";
-import { holdings } from "@/data/holdings";
-import { rothIraHoldings } from "@/data/sleeveHoldings";
 import { previousHoldings } from "@/data/previousHoldings";
 import { portfolios } from "@/data/portfolios";
-import { etfProfiles } from "@/data/etfConstituents";
+import { thesisTickers } from "@/lib/routes";
+import { getCompany } from "@/data/companies";
 
 const BASE_URL = "https://toffelcapital.com";
+
+// Canonical company URL is /thesis/[ticker]. /positions/*, /etfs/* and
+// /archive/* still resolve for legacy links, but they are intentionally left
+// out of the sitemap for any ticker that now has a thesis page — listing both
+// would advertise two URLs for the same content.
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   const staticEntries: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: now, changeFrequency: "weekly", priority: 1 },
-    { url: `${BASE_URL}/analytics`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/performance`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/decision-log`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE_URL}/performance/historical`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
   ];
 
   const portfolioEntries: MetadataRoute.Sitemap = portfolios.map((p) => ({
@@ -24,30 +28,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const positionTickers = new Set<string>([
-    ...holdings.map((h) => h.ticker),
-    ...rothIraHoldings.map((h) => h.ticker),
-  ]);
-  const positionEntries: MetadataRoute.Sitemap = [...positionTickers].map((ticker) => ({
-    url: `${BASE_URL}/positions/${ticker}`,
+  // Active holdings rank above exited ones — the latter are historical records.
+  const thesisEntries: MetadataRoute.Sitemap = thesisTickers().map((ticker) => ({
+    url: `${BASE_URL}/thesis/${ticker}`,
     lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.6,
+    changeFrequency: getCompany(ticker)?.status === "active" ? "monthly" : "yearly",
+    priority: getCompany(ticker)?.status === "active" ? 0.6 : 0.4,
   }));
 
-  const etfEntries: MetadataRoute.Sitemap = Object.keys(etfProfiles).map((ticker) => ({
-    url: `${BASE_URL}/etfs/${ticker}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.5,
-  }));
+  // Older exited names that predate the company registry still live only at
+  // /archive/[ticker], so they stay listed until they're folded in.
+  const legacyArchive: MetadataRoute.Sitemap = previousHoldings
+    .filter((h) => !getCompany(h.ticker))
+    .map((h) => ({
+      url: `${BASE_URL}/archive/${h.ticker}`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    }));
 
-  const archiveEntries: MetadataRoute.Sitemap = previousHoldings.map((h) => ({
-    url: `${BASE_URL}/archive/${h.ticker}`,
-    lastModified: now,
-    changeFrequency: "yearly",
-    priority: 0.4,
-  }));
-
-  return [...staticEntries, ...portfolioEntries, ...positionEntries, ...etfEntries, ...archiveEntries];
+  return [...staticEntries, ...portfolioEntries, ...thesisEntries, ...legacyArchive];
 }

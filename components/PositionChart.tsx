@@ -1,356 +1,119 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+// ─── Performance history chart ────────────────────────────────────────────────
+// Plots PERCENT CHANGE from the start of the selected range. It never renders a
+// price, and it no longer accepts one.
+//
+// This component previously took `purchaseLots`, `sellEvents`, `averageCost` and
+// `entryMarker` — all of which carried real per-share prices and share counts
+// into a client bundle, where they were serialised into the page payload. All of
+// it is gone, along with the lot-clustering and lot-tooltip machinery that
+// consumed it. The props no longer exist, so a caller cannot reintroduce a
+// private value by passing one.
+//
+// The raw close is fetched to compute the rebase and is never bound to a
+// rendered axis, tooltip or label.
+
+import { useState, useEffect, useMemo } from "react";
 import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ReferenceDot,
-  ReferenceLine,
+  AreaChart, Area, XAxis, YAxis, Tooltip, ReferenceLine, ReferenceDot,
   ResponsiveContainer,
 } from "recharts";
 import type { HistoricalPoint } from "@/lib/types";
-import type { PurchaseLot, SellEvent } from "@/lib/positionLots";
-
-// ── types ─────────────────────────────────────────────────────────────────────
 
 type Range = "1w" | "1m" | "3m" | "6m" | "1y" | "3y" | "5y" | "max";
 
-export interface EntryMarker {
-  price: number;
-  source: "confirmed" | "estimated";
-}
-
 export interface ExitMarker {
-  date: string;     // "YYYY-MM-DD"
-  reason?: string;  // e.g., "Reallocated / Valuation discipline"
-}
-
-interface PurchaseCluster {
-  lots: PurchaseLot[];
   date: string;
-  endDate: string;
-  isCluster: boolean;
-  isRecurring: boolean;
-  totalAmount: number;
+  reason?: string;
 }
-
-interface TooltipState {
-  cluster: PurchaseCluster;
-  x: number;
-  y: number;
-}
-
-// ── constants ─────────────────────────────────────────────────────────────────
 
 const RANGES: { key: Range; label: string }[] = [
-  { key: "1w",  label: "1W"  },
-  { key: "1m",  label: "1M"  },
-  { key: "3m",  label: "3M"  },
-  { key: "6m",  label: "6M"  },
-  { key: "1y",  label: "1Y"  },
-  { key: "3y",  label: "3Y"  },
-  { key: "5y",  label: "5Y"  },
-  { key: "max", label: "MAX" },
+  { key: "1w", label: "1W" }, { key: "1m", label: "1M" }, { key: "3m", label: "3M" },
+  { key: "6m", label: "6M" }, { key: "1y", label: "1Y" }, { key: "3y", label: "3Y" },
+  { key: "5y", label: "5Y" }, { key: "max", label: "MAX" },
 ];
 
-// ── formatters ────────────────────────────────────────────────────────────────
+const MONO = "var(--font-geist-mono)";
+const MUTED = "#5a6e82";
+const FAINT = "#7a8799";
 
-function formatXTick(timestamp: number, range: Range): string {
-  const d = new Date(timestamp * 1000);
-  if (range === "1w" || range === "1m" || range === "3m")
-    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  if (range === "6m")
-    return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
-  if (range === "max")
-    return d.getFullYear().toString();
-  return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
-}
-
-function formatTooltipDate(timestamp: number): string {
-  return new Date(timestamp * 1000).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
+interface ChartPoint { t: number; p: number; dateLabel: string }
 
 function formatPercent(v: number, digits = 2): string {
   return `${v >= 0 ? "+" : ""}${v.toFixed(digits)}%`;
 }
 
-function formatLotDate(dateStr: string): string {
-  const [y, m, d] = dateStr.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+function formatXTick(ts: number, range: Range): string {
+  const d = new Date(ts * 1000);
+  if (range === "1w" || range === "1m" || range === "3m")
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  if (range === "max") return d.getFullYear().toString();
+  return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
 }
 
-function parseLocalDate(dateStr: string): Date {
-  const [y, m, d] = dateStr.split("-").map(Number);
+function parseLocalDate(s: string): Date {
+  const [y, m, d] = s.split("-").map(Number);
   return new Date(y, m - 1, d);
 }
 
-// ── clustering ────────────────────────────────────────────────────────────────
-
-function makePurchaseCluster(lots: PurchaseLot[]): PurchaseCluster {
-  return {
-    lots,
-    date: lots[0].date,
-    endDate: lots[lots.length - 1].date,
-    isCluster: lots.length > 1,
-    isRecurring: lots.every((l) => l.isRecurring),
-    totalAmount: lots.reduce((s, l) => s + l.amountUsd, 0),
-  };
-}
-
-function clusterLots(lots: PurchaseLot[]): PurchaseCluster[] {
-  const sorted = [...lots].sort(
-    (a, b) => parseLocalDate(a.date).getTime() - parseLocalDate(b.date).getTime()
-  );
-
-  const clusters: PurchaseCluster[] = [];
-  let i = 0;
-
-  while (i < sorted.length) {
-    const lot = sorted[i];
-
-    if (lot.isRecurring) {
-      const group: PurchaseLot[] = [lot];
-      let j = i + 1;
-      while (j < sorted.length && sorted[j].isRecurring) {
-        group.push(sorted[j]);
-        j++;
-      }
-      clusters.push(makePurchaseCluster(group));
-      i = j;
-    } else {
-      const group: PurchaseLot[] = [lot];
-      let j = i + 1;
-      while (j < sorted.length && !sorted[j].isRecurring && sorted[j].date === lot.date) {
-        group.push(sorted[j]);
-        j++;
-      }
-      clusters.push(makePurchaseCluster(group));
-      i = i + group.length;
-    }
-  }
-
-  return clusters;
-}
-
-// ── chart data ────────────────────────────────────────────────────────────────
-
-// NO-PRICE RULE: `c` (the raw close) is kept only as an internal input — it
-// feeds the estimated-entry nearest-point match and the percent rebase. Never
-// bind it to a rendered axis, tooltip, or label. `p` is the display value:
-// percent change from the first close in the selected range.
-interface ChartPoint {
-  t: number;
-  c: number;
-  p: number;
-  dateLabel: string;
-}
-
-function findNearestPoint(date: string, chartData: ChartPoint[]): ChartPoint | null {
-  if (chartData.length === 0) return null;
-  const targetSec = parseLocalDate(date).getTime() / 1000;
-  // Prefer the first chart point on or after the target date so a purchase
-  // dot lands on the closest available trading session forward of the buy.
-  // Fall back to the overall nearest point if no on-or-after point exists
-  // (e.g. when the lot is past the most recent chart sample).
-  const onOrAfter = chartData.find((p) => p.t >= targetSec);
-  if (onOrAfter) return onOrAfter;
-  return chartData.reduce((closest, point) =>
-    Math.abs(point.t - targetSec) < Math.abs(closest.t - targetSec) ? point : closest
-  );
-}
-
-// Cost basis expressed as its position on the rebased axis, not as a price.
-function formatCostBasisLabel(pct: number): string {
-  return `cost basis  ${formatPercent(pct, 1)}`;
-}
-
-// ── component ─────────────────────────────────────────────────────────────────
-
 export function PositionChart({
-  ticker,
-  entryMarker,
-  purchaseLots,
-  sellEvents,
-  averageCost,
-  exitMarker,
-  defaultRange,
+  ticker, exitMarker, defaultRange,
 }: {
   ticker: string;
-  entryMarker?: EntryMarker;
-  purchaseLots?: PurchaseLot[];
-  sellEvents?: SellEvent[];
-  averageCost?: number;
   exitMarker?: ExitMarker;
   defaultRange?: Range;
 }) {
   const [range, setRange] = useState<Range>(defaultRange ?? "1y");
   const [points, setPoints] = useState<HistoricalPoint[] | null>(null);
   const [loading, setLoading] = useState(true);
-  const [markerTooltip, setMarkerTooltip] = useState<TooltipState | null>(null);
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setLoading(true);
     setPoints(null);
     fetch(`/api/history/${ticker}?range=${range}`)
       .then((r) => r.json())
-      .then((data: { points: HistoricalPoint[] }) => {
-        setPoints(data.points ?? []);
-        setLoading(false);
-      })
-      .catch(() => {
-        setPoints([]);
-        setLoading(false);
-      });
+      .then((data: { points: HistoricalPoint[] }) => { setPoints(data.points ?? []); setLoading(false); })
+      .catch(() => { setPoints([]); setLoading(false); });
   }, [ticker, range]);
 
-  // Rebased to percent change from the first close in the range, so the chart
-  // conveys the same shape without rendering a price anywhere.
-  const chartData = useMemo(
-    (): ChartPoint[] => {
-      const raw = points ?? [];
-      const base = raw[0]?.c ?? 0;
-      return raw.map((pt) => ({
-        t: pt.t,
-        c: pt.c,
-        p: base > 0 ? ((pt.c / base) - 1) * 100 : 0,
-        dateLabel: formatTooltipDate(pt.t),
-      }));
-    },
-    [points, range]  // eslint-disable-line react-hooks/exhaustive-deps
-  );
-
-  // First close in the range — converts an absolute cost/price input into its
-  // equivalent point on the rebased percent axis. Never rendered directly.
-  const baseClose = chartData[0]?.c ?? 0;
-
-  // Latest close, used to express a purchase lot's return as a percentage.
-  const latestClose = chartData[chartData.length - 1]?.c ?? 0;
-
-  // ── legacy single entry marker ─────────────────────────────────────────────
-
-  const entryPoint = useMemo(() => {
-    if (purchaseLots || !entryMarker || chartData.length === 0) return null;
-    return chartData.reduce((closest, point) =>
-      Math.abs(point.c - entryMarker.price) < Math.abs(closest.c - entryMarker.price)
-        ? point
-        : closest
-    );
-  }, [entryMarker, purchaseLots, chartData]);
-
-  // ── exit marker ───────────────────────────────────────────────────────────
+  // Rebased to percent change from the first close in the range.
+  const chartData = useMemo((): ChartPoint[] => {
+    const raw = points ?? [];
+    const base = raw[0]?.c ?? 0;
+    return raw.map((pt) => ({
+      t: pt.t,
+      p: base > 0 ? ((pt.c / base) - 1) * 100 : 0,
+      dateLabel: new Date(pt.t * 1000).toLocaleDateString("en-US", {
+        month: "short", day: "numeric", year: "numeric",
+      }),
+    }));
+  }, [points]);
 
   const exitPoint = useMemo(() => {
     if (!exitMarker || chartData.length === 0) return null;
-    return findNearestPoint(exitMarker.date, chartData);
+    const target = parseLocalDate(exitMarker.date).getTime() / 1000;
+    return chartData.find((p) => p.t >= target) ?? null;
   }, [exitMarker, chartData]);
 
-  // ── purchase clusters ──────────────────────────────────────────────────────
-
-  const visibleClusters = useMemo(() => {
-    if (!purchaseLots || chartData.length === 0) return [];
-    const rangeStart = chartData[0].t;
-    return clusterLots(purchaseLots).filter(
-      (c) => parseLocalDate(c.date).getTime() / 1000 >= rangeStart
-    );
-  }, [purchaseLots, chartData]);
-
-  // ── sell events ────────────────────────────────────────────────────────────
-  // Sells live in a parallel data store (positionEvents) and survive FIFO,
-  // so they keep rendering on the chart even when the lots they consumed are
-  // gone from positionLots.
-  const visibleSells = useMemo(() => {
-    if (!sellEvents || sellEvents.length === 0 || chartData.length === 0) return [];
-    const rangeStart = chartData[0].t;
-    const rangeEnd = chartData[chartData.length - 1].t;
-    return sellEvents.filter((s) => {
-      const t = parseLocalDate(s.date).getTime() / 1000;
-      return t >= rangeStart && t <= rangeEnd;
-    });
-  }, [sellEvents, chartData]);
-
-  // ── y-range for event line bottoms ─────────────────────────────────────────
-
-  const lineBottom = useMemo(() => {
-    if (chartData.length === 0) return 0;
-    const values = chartData.map((pt) => pt.p);
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    return min - (max - min) * 0.25;
-  }, [chartData]);
-
-  // ── chart appearance ───────────────────────────────────────────────────────
-
   const isUp = (chartData[chartData.length - 1]?.p ?? 0) >= 0;
-  const lineColor =
-    chartData.length >= 2 ? (isUp ? "#15542e" : "#8b1a1a") : "#1a3a5c";
+  const lineColor = chartData.length >= 2 ? (isUp ? "#15542e" : "#8b1a1a") : "#1a3a5c";
   const gradId = `chart-grad-${ticker}`;
-
-  // ── dot hover handlers ─────────────────────────────────────────────────────
-
-  const handleDotEnter = (cluster: PurchaseCluster, idx: number) =>
-    (e: React.MouseEvent) => {
-      const rect = cardRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      setMarkerTooltip({ cluster, x: e.clientX - rect.left, y: e.clientY - rect.top });
-      setHoveredIdx(idx);
-    };
-
-  const handleDotLeave = () => {
-    setMarkerTooltip(null);
-    setHoveredIdx(null);
-  };
 
   return (
     <div
-      ref={cardRef}
       className="rounded-2xl px-6 pt-6 pb-4"
       style={{
         background: "#ffffff",
         border: "1px solid rgba(15,30,53,0.09)",
         boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-        position: "relative",
       }}
     >
-      {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#7a8799]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em]" style={{ color: FAINT }}>
             Performance
           </p>
-          {visibleClusters.length > 0 && (
-            <p className="font-mono text-[9px] text-[#5a6e82]">
-              ◎&ensp;purchase events
-            </p>
-          )}
-          {visibleSells.length > 0 && (
-            <p className="font-mono text-[9px] text-[#5a6e82]">
-              □&ensp;sell / exit events
-            </p>
-          )}
-          {averageCost && (
-            <p className="font-mono text-[9px] text-[#5a6e82]">
-              — cost basis
-            </p>
-          )}
-          {!purchaseLots && entryMarker && (
-            <p className="font-mono text-[9px] text-[#5a6e82]">
-              ◎&ensp;
-              {entryMarker.source === "confirmed" ? "confirmed entry" : "estimated entry"}
-            </p>
-          )}
           {exitMarker && (
             <p className="font-mono text-[9px]" style={{ color: "#8b2530", opacity: 0.7 }}>
               ✕&ensp;exit
@@ -363,19 +126,9 @@ export function PositionChart({
               key={r.key}
               onClick={() => setRange(r.key)}
               className="rounded px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors"
-              style={
-                range === r.key
-                  ? { background: "rgba(15,30,53,0.07)", color: "#0f1e35" }
-                  : { color: "#5a6e82" }
-              }
-              onMouseEnter={(e) => {
-                if (range !== r.key)
-                  (e.currentTarget as HTMLButtonElement).style.color = "#5a6e82";
-              }}
-              onMouseLeave={(e) => {
-                if (range !== r.key)
-                  (e.currentTarget as HTMLButtonElement).style.color = "#5a6e82";
-              }}
+              style={range === r.key
+                ? { background: "rgba(15,30,53,0.07)", color: "#0f1e35" }
+                : { color: MUTED }}
             >
               {r.label}
             </button>
@@ -383,487 +136,78 @@ export function PositionChart({
         </div>
       </div>
 
-      {/* Chart body */}
       <div style={{ height: 300 }}>
         {loading ? (
-          <div
-            className="h-full w-full animate-pulse rounded-xl"
-            style={{ background: "rgba(15,30,53,0.04)" }}
-          />
+          <div className="h-full w-full animate-pulse rounded-xl" style={{ background: "rgba(15,30,53,0.04)" }} />
         ) : chartData.length === 0 ? (
           <div className="flex h-full items-center justify-center">
-            <p className="font-mono text-[11px] text-[#5a6e82]">
+            <p className="font-mono text-[11px]" style={{ color: MUTED }}>
               Historical data unavailable for this range
             </p>
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={chartData}
-              margin={{ top: 16, right: 4, left: 0, bottom: 0 }}
-            >
+            <AreaChart data={chartData} margin={{ top: 16, right: 4, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor={lineColor} stopOpacity={0.14} />
                   <stop offset="100%" stopColor={lineColor} stopOpacity={0} />
                 </linearGradient>
               </defs>
-
               <XAxis
-                dataKey="t"
-                type="number"
-                scale="time"
-                domain={["dataMin", "dataMax"]}
-                tick={{
-                  fill: "#5a6e82",
-                  fontSize: 9,
-                  fontFamily: "var(--font-geist-mono)",
-                }}
-                axisLine={false}
-                tickLine={false}
-                interval="preserveStartEnd"
-                minTickGap={50}
+                dataKey="t" type="number" scale="time" domain={["dataMin", "dataMax"]}
+                tick={{ fill: MUTED, fontSize: 9, fontFamily: MONO }}
+                axisLine={false} tickLine={false}
+                interval="preserveStartEnd" minTickGap={50}
                 tickFormatter={(v: number) => formatXTick(v, range)}
               />
-
               <YAxis
-                tick={{
-                  fill: "#5a6e82",
-                  fontSize: 9,
-                  fontFamily: "var(--font-geist-mono)",
-                }}
-                axisLine={false}
-                tickLine={false}
+                tick={{ fill: MUTED, fontSize: 9, fontFamily: MONO }}
+                axisLine={false} tickLine={false} width={52}
                 tickFormatter={(v: number) => formatPercent(v, 0)}
-                domain={["auto", "auto"]}
-                width={52}
               />
-
+              <ReferenceLine y={0} stroke="rgba(15,30,53,0.2)" />
               <Tooltip
                 contentStyle={{
-                  background: "#ffffff",
-                  border: "1px solid rgba(15,30,53,0.1)",
-                  borderRadius: "8px",
-                  padding: "8px 14px",
-                  boxShadow: "0 4px 16px rgba(15,30,53,0.08)",
+                  background: "#ffffff", border: "1px solid rgba(15,30,53,0.1)",
+                  borderRadius: 8, padding: "8px 14px", fontFamily: MONO, fontSize: 11,
                 }}
                 labelFormatter={(_, payload) => {
-                  const entry = payload?.[0]?.payload as
-                    | { dateLabel?: string }
-                    | undefined;
+                  const e = payload?.[0]?.payload as { dateLabel?: string } | undefined;
                   return (
-                    <span
-                      style={{
-                        color: "#7a8799",
-                        fontSize: 10,
-                        fontFamily: "var(--font-geist-mono)",
-                        display: "block",
-                        marginBottom: 4,
-                      }}
-                    >
-                      {entry?.dateLabel ?? ""}
+                    <span style={{ color: FAINT, fontSize: 10, fontFamily: MONO, display: "block", marginBottom: 4 }}>
+                      {e?.dateLabel ?? ""}
                     </span>
                   );
                 }}
-                formatter={(value: unknown) => [
-                  <span
-                    key="price"
-                    style={{
-                      color: "#0f1e35",
-                      fontSize: 13,
-                      fontFamily: "var(--font-geist-mono)",
-                      fontWeight: 600,
-                    }}
-                  >
-                    {formatPercent(Number(value))}
-                  </span>,
-                  "",
-                ]}
-                itemStyle={{ padding: 0 }}
+                formatter={(v: unknown) => [formatPercent(Number(v)), ""]}
                 separator=""
               />
-
               <Area
-                type="monotone"
-                dataKey="p"
-                stroke={lineColor}
-                strokeWidth={1.5}
-                fill={`url(#${gradId})`}
-                dot={false}
+                type="monotone" dataKey="p" stroke={lineColor} strokeWidth={1.5}
+                fill={`url(#${gradId})`} dot={false}
                 activeDot={{ r: 3, fill: lineColor, strokeWidth: 0 }}
                 isAnimationActive={false}
               />
-
-              {/* Cost-basis reference line — plotted as the percent distance
-                  between cost basis and the range's opening close, so the
-                  per-share cost itself is never rendered. */}
-              {averageCost && baseClose > 0 && (
-                <ReferenceLine
-                  y={((averageCost / baseClose) - 1) * 100}
-                  stroke="#1a3a5c"
-                  strokeOpacity={0.22}
-                  strokeWidth={1}
-                  strokeDasharray="3 5"
-                  label={{
-                    value: formatCostBasisLabel(((averageCost / baseClose) - 1) * 100),
-                    position: "insideTopRight",
-                    fontSize: 8,
-                    fontFamily: "var(--font-geist-mono)",
-                    fill: "#5a6e82",
-                    dy: -5,
-                  }}
-                />
-              )}
-
-              {/* Event lines — rendered behind dots */}
-              {visibleClusters.map((cluster, idx) => {
-                const point = findNearestPoint(cluster.date, chartData);
-                if (!point) return null;
-                const isHighlighted = hoveredIdx === idx;
-                const isDimmed = hoveredIdx !== null && !isHighlighted;
-                return (
-                  <ReferenceLine
-                    key={`evtline-${idx}`}
-                    segment={[
-                      { x: point.t, y: lineBottom },
-                      { x: point.t, y: point.p },
-                    ]}
-                    ifOverflow="visible"
-                    stroke="#0f1e35"
-                    strokeOpacity={
-                      isHighlighted
-                        ? 0.38
-                        : isDimmed
-                        ? 0.04
-                        : cluster.isRecurring
-                        ? 0.09
-                        : 0.16
-                    }
-                    strokeDasharray={cluster.isRecurring ? undefined : "2 4"}
-                    strokeWidth={cluster.isRecurring ? 0.75 : 1}
-                  />
-                );
-              })}
-
-              {/* Legacy single entry marker */}
-              {entryPoint && !purchaseLots && (
-                <ReferenceDot
-                  x={entryPoint.t}
-                  y={entryPoint.p}
-                  r={5}
-                  fill="none"
-                  stroke="#7a8799"
-                  strokeWidth={1.5}
-                  label={{
-                    value:
-                      entryMarker?.source === "confirmed" ? "Entry" : "Est. entry",
-                    position: "top",
-                    fontSize: 9,
-                    fontFamily: "var(--font-geist-mono)",
-                    fill: "#7a8799",
-                    offset: 8,
-                  }}
-                />
-              )}
-
-              {/* Purchase dots — rendered on top of event lines */}
-              {visibleClusters.map((cluster, idx) => {
-                const point = findNearestPoint(cluster.date, chartData);
-                if (!point) return null;
-                const isHighlighted = hoveredIdx === idx;
-                const isDimmed = hoveredIdx !== null && !isHighlighted;
-                const onEnter = handleDotEnter(cluster, idx);
-
-                return (
-                  <ReferenceDot
-                    key={`dot-${idx}`}
-                    x={point.t}
-                    y={point.p}
-                    r={0}
-                    fill="none"
-                    stroke="none"
-                    shape={((props: { cx?: number; cy?: number }) => {
-                      const cx = props.cx ?? 0;
-                      const cy = props.cy ?? 0;
-                      const dotR = cluster.isRecurring
-                        ? 3
-                        : cluster.isCluster
-                        ? 5.5
-                        : 4.5;
-                      const dotFill = cluster.isRecurring
-                        ? "rgba(15,30,53,0.38)"
-                        : cluster.isCluster
-                        ? "#0f1e35"
-                        : "#1a3a5c";
-                      const baseOpacity = cluster.isRecurring ? 0.55 : 0.78;
-                      const opacity = isDimmed
-                        ? 0.1
-                        : isHighlighted
-                        ? 1
-                        : baseOpacity;
-
-                      return (
-                        <g style={{ opacity }}>
-                          {/* Transparent hit area */}
-                          <rect
-                            x={cx - 10}
-                            y={cy - dotR - 6}
-                            width={20}
-                            height={dotR * 2 + 12}
-                            fill="transparent"
-                            style={{ cursor: "default" }}
-                            onMouseEnter={onEnter}
-                            onMouseLeave={handleDotLeave}
-                          />
-                          {/* Hover ring */}
-                          {isHighlighted && (
-                            <circle
-                              cx={cx}
-                              cy={cy}
-                              r={dotR + 5}
-                              fill="none"
-                              stroke="#1a3a5c"
-                              strokeWidth={1}
-                              strokeOpacity={0.22}
-                              style={{ pointerEvents: "none" }}
-                            />
-                          )}
-                          {/* Main dot */}
-                          <circle
-                            cx={cx}
-                            cy={cy}
-                            r={isHighlighted ? dotR + 0.5 : dotR}
-                            fill={dotFill}
-                            style={{ pointerEvents: "none" }}
-                          />
-                          {/* ×N label for same-date multi-lot clusters */}
-                          {cluster.isCluster && !cluster.isRecurring && (
-                            <text
-                              x={cx}
-                              y={cy - dotR - 4}
-                              textAnchor="middle"
-                              fontSize={7}
-                              fontFamily="var(--font-geist-mono)"
-                              fill="#0f1e35"
-                              fillOpacity={0.42}
-                              style={{ pointerEvents: "none" }}
-                            >
-                              ×{cluster.lots.length}
-                            </text>
-                          )}
-                        </g>
-                      );
-                    }) as never}
-                  />
-                );
-              })}
-
-              {/* Sell event markers — open red squares snapped to nearest chart point */}
-              {visibleSells.map((sell, idx) => {
-                const point = findNearestPoint(sell.date, chartData);
-                if (!point) return null;
-                return (
-                  <ReferenceDot
-                    key={`sell-${idx}`}
-                    x={point.t}
-                    y={point.p}
-                    r={0}
-                    fill="none"
-                    stroke="none"
-                    shape={((props: { cx?: number; cy?: number }) => {
-                      const cx = props.cx ?? 0;
-                      const cy = props.cy ?? 0;
-                      const s = 4.5;  // half-side; matches buy dot radius for visual parity
-                      return (
-                        <g style={{ opacity: 0.85 }}>
-                          <rect
-                            x={cx - s}
-                            y={cy - s}
-                            width={s * 2}
-                            height={s * 2}
-                            fill="none"
-                            stroke="#8b2530"
-                            strokeWidth={1.5}
-                            style={{ pointerEvents: "none" }}
-                          />
-                        </g>
-                      );
-                    }) as never}
-                  />
-                );
-              })}
-
-              {/* Exit marker — vertical line + × dot */}
               {exitPoint && (
-                <>
-                  <ReferenceLine
-                    segment={[
-                      { x: exitPoint.t, y: lineBottom },
-                      { x: exitPoint.t, y: exitPoint.p },
-                    ]}
-                    ifOverflow="visible"
-                    stroke="#8b2530"
-                    strokeOpacity={0.45}
-                    strokeWidth={1.25}
-                  />
-                  <ReferenceDot
-                    x={exitPoint.t}
-                    y={exitPoint.p}
-                    r={0}
-                    fill="none"
-                    stroke="none"
-                    shape={((props: { cx?: number; cy?: number }) => {
-                      const cx = props.cx ?? 0;
-                      const cy = props.cy ?? 0;
-                      const r = 5;
-                      return (
-                        <g>
-                          <circle
-                            cx={cx}
-                            cy={cy}
-                            r={r + 4}
-                            fill="transparent"
-                            style={{ pointerEvents: "none" }}
-                          />
-                          <line
-                            x1={cx - r}
-                            y1={cy - r}
-                            x2={cx + r}
-                            y2={cy + r}
-                            stroke="#8b2530"
-                            strokeWidth={1.75}
-                            strokeOpacity={0.8}
-                            style={{ pointerEvents: "none" }}
-                          />
-                          <line
-                            x1={cx + r}
-                            y1={cy - r}
-                            x2={cx - r}
-                            y2={cy + r}
-                            stroke="#8b2530"
-                            strokeWidth={1.75}
-                            strokeOpacity={0.8}
-                            style={{ pointerEvents: "none" }}
-                          />
-                          <text
-                            x={cx}
-                            y={cy - r - 5}
-                            textAnchor="middle"
-                            fontSize={8}
-                            fontFamily="var(--font-geist-mono)"
-                            fill="#8b2530"
-                            fillOpacity={0.65}
-                            style={{ pointerEvents: "none" }}
-                          >
-                            Exited
-                          </text>
-                        </g>
-                      );
-                    }) as never}
-                  />
-                </>
+                <ReferenceDot
+                  x={exitPoint.t} y={exitPoint.p} r={5}
+                  fill="none" stroke="#8b2530" strokeWidth={1.5}
+                  label={{
+                    value: "Exit", position: "top", fontSize: 9,
+                    fontFamily: MONO, fill: "#8b2530", offset: 8,
+                  }}
+                />
               )}
             </AreaChart>
           </ResponsiveContainer>
         )}
       </div>
 
-      {/* Estimated entry footnote */}
-      {!purchaseLots && entryMarker?.source === "estimated" && entryPoint && (
-        <p className="mt-3 font-mono text-[9px] text-[#5a6e82]">
-          Estimated entry dates are inferred from the known entry price and
-          historical price alignment. Not a confirmed purchase date.
+      {exitMarker?.reason && (
+        <p className="mt-3 font-mono text-[9px]" style={{ color: FAINT }}>
+          Exit: {exitMarker.reason}
         </p>
-      )}
-
-      {/* Purchase marker tooltip overlay */}
-      {markerTooltip && (
-        <PurchaseTooltip state={markerTooltip} cardRef={cardRef} latestClose={latestClose} />
-      )}
-    </div>
-  );
-}
-
-// ── Purchase marker tooltip ───────────────────────────────────────────────────
-
-function PurchaseTooltip({
-  state,
-  cardRef,
-  latestClose,
-}: {
-  state: TooltipState;
-  cardRef: React.RefObject<HTMLDivElement | null>;
-  latestClose: number;
-}) {
-  const { cluster, x, y } = state;
-  const cardWidth = cardRef.current?.offsetWidth ?? 600;
-  const tooltipWidth = 224;
-  const left = x + 16 + tooltipWidth > cardWidth ? x - tooltipWidth - 16 : x + 16;
-  const top = Math.max(y - 20, 8);
-
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left,
-        top,
-        zIndex: 60,
-        pointerEvents: "none",
-        background: "#ffffff",
-        border: "1px solid rgba(15,30,53,0.10)",
-        borderRadius: 8,
-        padding: "10px 14px",
-        boxShadow: "0 4px 20px rgba(15,30,53,0.10)",
-        fontFamily: "var(--font-geist-mono)",
-        width: tooltipWidth,
-      }}
-    >
-      <p
-        style={{
-          color: "#7a8799",
-          fontSize: 10,
-          marginBottom: 8,
-          letterSpacing: "0.04em",
-        }}
-      >
-        {cluster.isRecurring
-          ? `${formatLotDate(cluster.date)} – ${formatLotDate(cluster.endDate)}`
-          : formatLotDate(cluster.date)}
-        {cluster.isCluster && !cluster.isRecurring && (
-          <span style={{ color: "#5a6e82", marginLeft: 6 }}>
-            · {cluster.lots.length} lots
-          </span>
-        )}
-      </p>
-
-      {cluster.isRecurring ? (
-        <p style={{ color: "#5a6e82", fontSize: 10, marginTop: 3 }}>
-          {cluster.lots.length} recurring buys
-        </p>
-      ) : (
-        cluster.lots.map((lot, i) => (
-          <div
-            key={i}
-            style={{
-              marginTop: i > 0 ? 8 : 0,
-              paddingTop: i > 0 ? 8 : 0,
-              borderTop: i > 0 ? "1px solid rgba(15,30,53,0.06)" : "none",
-            }}
-          >
-            {/* NO-PRICE RULE: this line used to read "$X.XX/sh". The lot's
-                per-share price is now shown only as its return to date. */}
-            <p style={{ color: "#0f1e35", fontWeight: 600, fontSize: 13 }}>
-              {lot.pricePerShare > 0 && latestClose > 0
-                ? `${formatPercent(((latestClose / lot.pricePerShare) - 1) * 100, 1)} to date`
-                : "Purchase"}
-            </p>
-            {lot.isPartial && (
-              <p style={{ color: "#b0bac5", fontSize: 9, marginTop: 2 }}>
-                Post-sale remainder
-              </p>
-            )}
-          </div>
-        ))
       )}
     </div>
   );
