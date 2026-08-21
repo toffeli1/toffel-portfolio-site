@@ -26,6 +26,16 @@ const SIZE_MAP: Record<"sm" | "md" | "lg" | "xl", { box: number; font: number; r
 // when a fund-specific mark isn't available (VOO→Vanguard, SMH→VanEck, etc.).
 export const TICKER_LOGO_ASSETS: Record<string, string> = {
   // Active Roth IRA holdings
+  AMZN:  "/logos/amazon.png",
+  MA:    "/logos/mastercard.svg",
+  CEG:   "/logos/constellation.png",
+  OSCR:  "/logos/oscar-health.png",
+  CBRS:  "/logos/cerebras.png",
+  GLDM:  "/logos/spdr-gold.png",
+  // SGOV uses the BlackRock mark: the iShares-specific favicon tops out at
+  // 32x32, and the repo already uses issuer marks for funds (VOO->Vanguard,
+  // SMH->VanEck). BlackRock is the iShares issuer.
+  SGOV:  "/logos/blackrock.png",
   AMD:   "/logos/amd.png",
   VOO:   "/logos/vanguard.png",
   SMH:   "/logos/vaneck.png",
@@ -83,6 +93,15 @@ const TICKER_LOGO_SCALE: Record<string, string> = {
   NOW:  "122%",  // fill tile — wordmark fills the teal badge
   UNH:  "74%",   // compact U mark — keep restrained
   ASTS: "92%",   // dark bg wordmark
+  // Aug 2026 additions. Compact square marks run larger; wordmark-style and
+  // padded source icons stay smaller so they do not crowd the tile edge.
+  AMZN: "76%",   // Amazon smile icon ships with generous internal padding
+  MA:   "62%",   // two-circle symbol reads large at its natural aspect
+  CEG:  "84%",
+  OSCR: "72%",   // round badge
+  CBRS: "80%",
+  GLDM: "78%",
+  SGOV: "88%",   // BlackRock wordmark is wide, keep it restrained
 };
 const DEFAULT_SCALE = "82%";
 

@@ -2,7 +2,6 @@ import Link from "next/link";
 import TickerLogo from "@/components/TickerLogo";
 import SleeveDashboard, { type SleeveDashboardHolding } from "@/components/SleeveDashboard";
 import { portfolioState, type PortfolioPosition } from "@/data/portfolioState";
-import { getCompany } from "@/data/companies";
 import { thesisHrefIfPublished } from "@/lib/routes";
 
 // ─── Investments section ──────────────────────────────────────────────────────
@@ -93,28 +92,18 @@ function HoldingsTable({ positions }: { positions: PortfolioPosition[] }) {
         <tbody>
           {positions.map((p, i) => {
             const href = thesisHrefIfPublished(p.ticker);
-            const company = getCompany(p.ticker);
             const isLast = i === positions.length - 1;
 
-            // Logo and name/ticker sit inside one link, so both are clickable.
-            // The monogram fallback lives inside TickerLogo, which means an
-            // unmapped ticker (AMZN, SGOV, GLDM, CEG, MA, OSCR, CBRS today) is
-            // exactly as clickable as one with a real asset.
+            // Logo and name sit inside one link, so both are clickable. The
+            // ticker sub-label that used to sit under the name was removed: the
+            // logo already identifies the holding, and the second line repeated
+            // information the row's own link target encodes.
             const identity = (
               <div className="flex min-w-0 items-center gap-3.5">
                 <TickerLogo ticker={p.ticker} name={p.name} size="md" />
-                <div className="min-w-0">
-                  <p className="truncate text-[13px] font-medium" style={{ color: INK }}>
-                    {p.name}
-                  </p>
-                  <p
-                    className="font-mono text-[10px] tracking-[0.08em]"
-                    style={{ color: MUTED }}
-                  >
-                    {p.ticker}
-                    {company?.kind === "ETF" ? " · ETF" : ""}
-                  </p>
-                </div>
+                <p className="truncate text-[13px] font-medium" style={{ color: INK }}>
+                  {p.name}
+                </p>
               </div>
             );
 

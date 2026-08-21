@@ -1,0 +1,9 @@
+<!-- Mastercard symbol: two overlapping circles in the official brand colors.
+     Reproduced as exact geometry rather than an approximation, since the mark
+     is defined by two equal circles whose centres are separated by one radius.
+     Brand colors: red #EB001B, amber #F79E1B, overlap #FF5F00. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 118" role="img" aria-label="Mastercard">
+  <circle cx="59" cy="59" r="59" fill="#EB001B"/>
+  <circle cx="93" cy="59" r="59" fill="#F79E1B"/>
+  <path fill="#FF5F00" d="M76 12.7A58.9 58.9 0 0 1 76 105.3 58.9 58.9 0 0 1 76 12.7z"/>
+</svg>
