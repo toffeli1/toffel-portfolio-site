@@ -17,6 +17,8 @@ export interface PeriodReturn {
 export interface BenchmarkView {
   key: string; name: string; symbol?: string;
   available: boolean; totalReturn: boolean;
+  /** True when `symbol` proxies the named index rather than being it. */
+  proxy?: boolean;
   sourceNote: string; unavailableReason?: string;
   /** Whether the benchmark series is daily or monthly. */
   granularity?: "daily" | "monthly";
@@ -26,13 +28,35 @@ export interface BenchmarkView {
   monthly: { key: string; returnPct: number }[];
   calendarYear: { key: string; returnPct: number }[];
 }
+export interface HistoricalEpisode {
+  ticker: string;
+  company: string;
+  /** 0-based ownership episode index for this ticker. */
+  episode: number;
+  initiatedOn: string;
+  exitedOn: string | null;
+  sessionsHeld: number;
+  totalReturnPct: number | null;
+  geometricPerSessionReturnPct: number | null;
+  /** True when basis is the tracked-inception mark, not a purchase price. */
+  trackedPeriodBasis: boolean;
+  contributionPts: number | null;
+}
+
 export interface HoldingPerformance {
   ticker: string;
   totalReturnPct: number | null;
-  sessionsHeld: number;
-  intervals: { from: string; to: string; sessions: number }[];
-  firstHeld: string | null;
-  lastHeld: string | null;
+  /** Sessions in the CURRENT interval (active) or all intervals (historical). */
+  sessionsHeld: number | null;
+  /** Active rows: bounds of the current continuous ownership interval. */
+  currentIntervalStart?: string | null;
+  currentIntervalEnd?: string | null;
+  /** Active rows: how many earlier intervals were closed before this one. */
+  priorClosedIntervals?: number;
+  /** Historical rows: every ownership interval. */
+  intervals?: { from: string; to: string; sessions: number }[];
+  firstHeld?: string | null;
+  lastHeld?: string | null;
   reEntered: boolean;
   geometricPerSessionReturnPct: number | null;
   contributionPts: number | null;
@@ -48,6 +72,9 @@ export interface PerformanceArtifact {
     weightBasisNote: string; dividends: string; externalFlows: string;
     dateConvention: string; retired: string[];
   };
+  holdingReturnBasis: string;
+  /** Why a derived active return can differ from the broker's own figure. */
+  valuationMarkNote: string;
   cumulativeReturnPct: number;
   wealth: WealthPoint[];
   monthly: PeriodReturn[];
@@ -57,7 +84,7 @@ export interface PerformanceArtifact {
   maxDrawdownDate: string;
   benchmarks: Record<string, BenchmarkView>;
   activeHoldings: HoldingPerformance[];
-  historicalHoldings: HoldingPerformance[];
+  historicalHoldings: HistoricalEpisode[];
   contributionNote: string;
 }
 

@@ -82,15 +82,24 @@ export default function HistoricalPositionsPage() {
                     const href = thesisHrefIfPublished(h.ticker);
                     const id = (
                       <div className="flex min-w-0 items-center gap-3">
-                        <TickerLogo ticker={h.ticker} name={c?.name} size="sm" />
+                        <TickerLogo ticker={h.ticker} name={h.company} size="sm" />
                         <div className="min-w-0">
-                          <p className="font-mono text-[11px]" style={{ color: INK }}>{h.ticker}</p>
-                          <p className="truncate text-[12px]" style={{ color: MUTED }}>{c?.name ?? h.ticker}</p>
+                          <p className="font-mono text-[11px]" style={{ color: INK }}>
+                            {h.ticker}
+                            {/* Episode index only when a name was owned more than
+                                once, so a single-episode row stays uncluttered. */}
+                            {rows.filter((r) => r.ticker === h.ticker).length > 1 && (
+                              <span style={{ color: FAINT }}> · ep {h.episode + 1}</span>
+                            )}
+                          </p>
+                          <p className="truncate text-[12px]" style={{ color: MUTED }}>
+                            {h.company || c?.name || h.ticker}
+                          </p>
                         </div>
                       </div>
                     );
                     return (
-                      <tr key={h.ticker} style={i < rows.length - 1
+                      <tr key={`${h.ticker}-${h.episode}`} style={i < rows.length - 1
                         ? { borderBottom: "1px solid rgba(15,30,53,0.05)" } : undefined}>
                         <td className="px-5 py-4">
                           {href ? <Link href={href} className="inline-flex transition-opacity hover:opacity-70">{id}</Link> : id}
@@ -98,18 +107,18 @@ export default function HistoricalPositionsPage() {
                         <td className="px-5 py-4 text-right font-mono text-[12px] tabular-nums"
                             style={{ color: h.totalReturnPct === null ? FAINT : tone(h.totalReturnPct) }}>
                           {h.totalReturnPct === null ? "—" : pct(h.totalReturnPct)}
-                        </td>
-                        <td className="px-5 py-4 text-right font-mono text-[11px] tabular-nums" style={{ color: MUTED }}>
-                          {h.sessionsHeld} sessions
-                          {h.reEntered && (
-                            <span className="ml-2 font-mono text-[8px]" style={{ color: FAINT }}
-                                  title={h.intervals.map((x) => `${x.from}→${x.to}`).join("  ")}>
-                              ({h.intervals.length} periods)
+                          {h.trackedPeriodBasis && (
+                            <span className="ml-1 font-mono text-[9px]" style={{ color: FAINT }}
+                                  title="Transferred in from another account. Return is measured from the tracked-inception mark, not from the original purchase.">
+                              *
                             </span>
                           )}
                         </td>
+                        <td className="px-5 py-4 text-right font-mono text-[11px] tabular-nums" style={{ color: MUTED }}>
+                          {h.sessionsHeld} sessions
+                        </td>
                         <td className="px-5 py-4 text-right font-mono text-[10px]" style={{ color: FAINT }}>
-                          {h.firstHeld && h.lastHeld ? `${fmtDate(h.firstHeld)} – ${fmtDate(h.lastHeld)}` : "—"}
+                          {h.exitedOn ? `${fmtDate(h.initiatedOn)} – ${fmtDate(h.exitedOn)}` : fmtDate(h.initiatedOn)}
                         </td>
                         <td className="px-5 py-4 text-right font-mono text-[11px] tabular-nums"
                             style={{ color: h.geometricPerSessionReturnPct === null ? FAINT : tone(h.geometricPerSessionReturnPct) }}>
@@ -124,7 +133,12 @@ export default function HistoricalPositionsPage() {
               </table>
             </div>
             <p className="mt-3 max-w-3xl font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
-              {rows.length} closed positions with reconstructed history. Holding periods are
+              {rows.length} closed ownership episodes, computed from actual ledger cash:
+              realized proceeds plus dividends, less acquisition cost and fees, over cost.
+              A security owned more than once appears once per episode rather than
+              aggregated. An asterisk marks a position transferred in from another
+              account, where return is measured from the tracked-inception mark because
+              the original purchase predates this account. Holding periods are
               counted in <strong>trading sessions</strong>, and a position exited and re-entered
               counts only the sessions inside its real holding intervals. Average geometric return
               per trading session held is (1 + total return)^(1 / sessions held) − 1. A dash means

@@ -31,8 +31,12 @@ export interface PriceCache {
   fetchedAt: string;
   /** ticker → { "YYYY-MM-DD": close } — Yahoo's SPLIT-ADJUSTED close. */
   series: Record<string, Record<string, number>>;
+  /** Dividend+split adjusted closes. Benchmark total-return use ONLY. */
+  adjusted?: Record<string, Record<string, number>>;
   /** ticker → split events, used to recover the as-traded price. */
   splits?: Record<string, SplitEvent[]>;
+  /** ticker → dividend EX-dates, used to attribute distributions to episodes. */
+  dividends?: Record<string, { exDate: string; amount: number }[]>;
   /** Dates the market was open, ascending. */
   tradingDays: string[];
 }

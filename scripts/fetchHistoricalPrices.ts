@@ -45,14 +45,22 @@ async function fetchDaily(symbol: string, from: string) {
   const r = j?.chart?.result?.[0];
   if (!r) throw new Error("no result");
   const ts: number[] = r.timestamp ?? [];
-  // `close`, deliberately NOT `adjclose`.
+  // Two series, kept separate on purpose:
+  //   close     — dividend-UNadjusted. Used to value holdings, because a
+  //               dividend-adjusted close multiplied by a historical share count
+  //               misstates that date's market value.
+  //   adjclose  — dividend+split adjusted. Used ONLY to build a benchmark
+  //               total-return series, where reinvested dividends belong.
   const closes: (number | null)[] = r.indicators?.quote?.[0]?.close ?? [];
+  const adj: (number | null)[] = r.indicators?.adjclose?.[0]?.adjclose ?? [];
   const series: Record<string, number> = {};
+  const adjSeries: Record<string, number> = {};
   for (let i = 0; i < ts.length; i++) {
-    const c = closes[i];
-    if (c == null || !isFinite(c)) continue;
     const d = new Date(ts[i] * 1000).toISOString().slice(0, 10);
-    series[d] = c;
+    const c = closes[i];
+    if (c != null && isFinite(c)) series[d] = c;
+    const a = adj[i];
+    if (a != null && isFinite(a)) adjSeries[d] = a;
   }
   const splits = r.events?.splits
     ? Object.values(r.events.splits as Record<string, { date: number; numerator: number; denominator: number }>)
@@ -61,7 +69,19 @@ async function fetchDaily(symbol: string, from: string) {
           ratio: s.numerator / s.denominator,
         }))
     : [];
-  return { series, splits };
+  // Dividend EX-DATES. These are the attribution evidence for deciding which
+  // ownership episode a cash distribution belongs to, which a pay-date-based
+  // guess cannot establish.
+  const dividends = r.events?.dividends
+    ? Object.values(r.events.dividends as Record<string, { date: number; amount: number }>)
+        .map((d) => ({
+          exDate: new Date(d.date * 1000).toISOString().slice(0, 10),
+          amount: d.amount,
+        }))
+        .sort((a, b) => a.exDate.localeCompare(b.exDate))
+    : [];
+
+  return { series, adjSeries, splits, dividends };
 }
 
 async function main() {
@@ -75,17 +95,23 @@ async function main() {
   const tickers = collectTickers(rows);
   console.log(`Ledger rows: ${rows.length} · tickers: ${tickers.length}`);
 
-  // Benchmarks are public but cached alongside for a single consistent calendar.
-  const symbols = [...tickers, "^SP500TR"];
+  // Benchmarks cached alongside so every series shares one calendar.
+  // QQQ is included because the Nasdaq-100 benchmark is proxied by its
+  // total-return (adjusted-close) series; see data/benchmarks.ts.
+  const symbols = [...tickers, "^SP500TR", "QQQ"];
   const series: Record<string, Record<string, number>> = {};
+  const adjusted: Record<string, Record<string, number>> = {};
   const splits: Record<string, { date: string; ratio: number }[]> = {};
+  const dividends: Record<string, { exDate: string; amount: number }[]> = {};
 
   for (const s of symbols) {
     try {
-      const { series: sv, splits: sp } = await fetchDaily(s, FROM);
+      const { series: sv, adjSeries: av, splits: sp, dividends: dv } = await fetchDaily(s, FROM);
       series[s] = sv;
+      adjusted[s] = av;
       if (sp.length) splits[s] = sp;
-      console.log(`  ${s.padEnd(10)} ${Object.keys(sv).length} closes${sp.length ? ` · ${sp.length} split(s)` : ""}`);
+      if (dv.length) dividends[s] = dv;
+      console.log(`  ${s.padEnd(10)} ${Object.keys(sv).length} closes${sp.length ? ` · ${sp.length} split(s)` : ""}${dv.length ? ` · ${dv.length} div(s)` : ""}`);
     } catch (e) {
       console.warn(`  ${s.padEnd(10)} FAILED: ${e instanceof Error ? e.message : e}`);
     }
@@ -102,7 +128,7 @@ async function main() {
   for (const s of Object.values(series)) for (const d of Object.keys(s)) allDates.add(d);
   const tradingDays = [...allDates].sort();
 
-  writeFileSync(DEST, JSON.stringify({ fetchedAt: new Date().toISOString().slice(0, 10), series, splits, tradingDays }, null, 2) + "\n");
+  writeFileSync(DEST, JSON.stringify({ fetchedAt: new Date().toISOString().slice(0, 10), series, adjusted, splits, dividends, tradingDays }, null, 2) + "\n");
   console.log(`\nWrote ${DEST} (PRIVATE — gitignored). ${tradingDays.length} trading days.`);
 }
 

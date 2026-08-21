@@ -1,52 +1,27 @@
 // Dev-only: replay the full private ledger and verify ending share counts.
 // Run: npx tsx scripts/dev/validateLedger.ts
+import { ingestLedger } from "../../lib/reconstruction/ingest";
 import { readFileSync } from "node:fs";
 import { reconstruct } from "../../lib/reconstruction/engine";
-import { classify, isTradeKind } from "../../lib/reconstruction/classify";
-import { effectiveDate } from "../../lib/reconstruction/dates";
 import { asTradedClose, type PriceCache } from "../../lib/reconstruction/prices";
-import type { Transaction } from "../../lib/reconstruction/types";
 
 const INCEPTION = "2025-07-03";
-const EXPECTED: Record<string, number> = {
-  AMZN: 13, GOOGL: 9.829171, SMH: 5.58843, NOW: 23.93604, META: 5.502409,
-  SGOV: 29.829969, NBIS: 9.467157, GLDM: 22, CEG: 7, MELI: 1, MA: 3,
-  UNH: 4, RKLB: 15.220655, OSCR: 30, CBRS: 3, ASTS: 8,
-};
+// Expected ending share counts are PRIVATE (they are quantities), so they live
+// in the gitignored reconstruction config rather than in this tracked file.
+interface ReconConfig { expectedEndingShares: Record<string, number> }
+const EXPECTED = (
+  JSON.parse(readFileSync("data/reconstructionConfig.local.json", "utf8")) as ReconConfig
+).expectedEndingShares;
 
-interface Row { [k: string]: unknown }
-const pick = <T,>(r: Row, keys: string[]): T | undefined => {
-  for (const k of keys) if (r[k] !== undefined && r[k] !== null) return r[k] as T;
-  return undefined;
-};
-
-const raw = JSON.parse(readFileSync("data/rothTransactions.local.json", "utf8"));
-const rows: Row[] = raw.transactions;
 const px = JSON.parse(readFileSync("data/priceCache.local.json", "utf8")) as PriceCache;
 
-const txs: Transaction[] = rows.map((r) => {
-  const postedDate = String(pick<string>(r, ["date"]) ?? "").slice(0, 10);
-  const dt = pick<string>(r, ["transaction_datetime"]) ?? undefined;
-  const rawType = pick<string>(r, ["type"]);
-  const subtype = pick<string>(r, ["subtype"]);
-  const rawDescription = pick<string>(r, ["name"]);
-  const ticker = pick<string>(r, ["ticker_symbol"]);
-  const quantity = Number(pick<number>(r, ["quantity"]) ?? 0) || undefined;
-  const kind = classify(rawType, rawDescription, subtype, Boolean(ticker?.trim()), quantity ?? 0);
-  return {
-    postedDate, transactionDatetime: dt,
-    effectiveDate: effectiveDate({
-      postedDate, transactionDatetime: dt, isTrade: isTradeKind(kind),
-      isOpeningInKind: kind === "transfer_in_kind" && (!dt || dt.slice(0, 10) <= INCEPTION),
-      inceptionDate: INCEPTION,
-    }),
-    kind, ticker: ticker?.trim().toUpperCase() || undefined,
-    quantity, price: Number(pick<number>(r, ["price"]) ?? 0) || undefined,
-    rawAmount: Number(pick<number>(r, ["amount"]) ?? 0),
-    fees: Number(pick<number>(r, ["fees"]) ?? 0),
-    rawType, rawDescription,
-  };
-});
+// Shared ingestion: identical rows, classification and session normalization to
+// the public pipeline, so this replay validates what actually ships.
+const { transactions: txs, audit } = ingestLedger(px.tradingDays, INCEPTION);
+console.log(
+  `source audit: type=${audit.accountType} rows=${audit.rowCount} ` +
+  `owningAccountIds=${audit.owningAccountIds} foreignRows=${audit.foreignRows}\n`
+);
 
 const unknown = txs.filter((t) => t.kind === "unknown");
 console.log(`rows=${txs.length}  unclassified=${unknown.length}`);

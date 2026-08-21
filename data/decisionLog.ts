@@ -157,7 +157,7 @@ export const decisionLog: DecisionEntry[] = [
     status: "Held",
   },
   {
-    date: "2026-08-15",
+    date: "2026-08-17",
     ticker: "CBRS",
     company: "Cerebras Systems",
     account: "Investments",
@@ -639,19 +639,6 @@ export const decisionLog: DecisionEntry[] = [
     returnPct: 5.38,
     status: "Fully Exited",
     realizedSharePct: 0.59,
-  },
-  {
-    date: "2026-06-01",
-    ticker: "DLO",
-    company: "dLocal",
-    account: "Investments",
-    action: "Exit",
-    type: "Reallocation",
-    note: "Exited dLocal at a modest gain. Capital reallocated toward higher-conviction holdings.",
-    href: "/archive/DLO",
-    returnPct: 3.26,
-    status: "Fully Exited",
-    realizedSharePct: 0.62,
   },
   {
     date: "2026-06-01",

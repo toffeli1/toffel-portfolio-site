@@ -11,17 +11,18 @@
 // ^GSPC. Free, keyless, and validated to return full monthly history.
 //
 // ── Nasdaq-100 ──────────────────────────────────────────────────────────────
-// DELIBERATELY UNAVAILABLE. ^XNDX ("NASDAQ-100 Total Return") resolves but
-// returns a single live datapoint at every interval/range combination tested
-// (1d/1wk/1mo × 2y/5y/max) — there is no usable history. Nasdaq's own index API
-// 404s, and stooq sits behind a JavaScript proof-of-work wall that would be an
-// unstable scraping target.
+// PROXIED by Invesco QQQ total return (dividend- and split-adjusted closes).
 //
-// Per the spec, the alternatives are all refused rather than silently
-// substituted: no QQQ proxy, no price-only ^NDX passed off as total return, and
-// no dividend-yield estimate layered on top to synthesise one. The benchmark is
-// registered as `available: false` so the UI can render a pending state, and the
-// series can be dropped in later without touching the Performance UI.
+// A reliable free historical feed for the official Nasdaq-100 Total Return Index
+// (XNDX) does not exist: ^XNDX returns a single live datapoint at every
+// interval/range, Nasdaq's index site serves a web app whose export endpoint
+// 404s, and stooq is behind a JavaScript challenge. QQQ tracks the Nasdaq-100
+// and its adjusted-close series reinvests distributions, which makes it a
+// defensible free stand-in.
+//
+// It is NOT the official index, and the artifact says so. The public label reads
+// "Nasdaq-100"; the source disclosure names the proxy explicitly. Only
+// normalized index levels reach public output, never a QQQ share price.
 
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -33,6 +34,8 @@ interface BenchmarkSpec {
   totalReturn: boolean;
   sourceNote: string;
   unavailableReason?: string;
+  /** True when `symbol` stands in for the named index rather than being it. */
+  proxy?: boolean;
 }
 
 const SPECS: BenchmarkSpec[] = [
@@ -47,11 +50,11 @@ const SPECS: BenchmarkSpec[] = [
   {
     key: "nasdaq100",
     name: "Nasdaq-100",
+    symbol: "QQQ",
+    proxy: true,
     totalReturn: true,
     sourceNote:
-      "Target series is the Nasdaq-100 Total Return index (XNDX). No reliable free historical source located.",
-    unavailableReason:
-      "^XNDX returns only a single live datapoint with no history; Nasdaq's index API returns 404; stooq is gated behind a JS proof-of-work challenge. Refusing to substitute QQQ, price-only ^NDX, or a synthetic dividend-yield reconstruction.",
+      "Nasdaq-100 is proxied by Invesco QQQ total return because a reliable free historical Nasdaq-100 Total Return Index feed is not available. Uses dividend- and split-adjusted closes, so distributions are reinvested. This is a proxy, not the official XNDX index.",
   },
 ];
 
@@ -118,6 +121,10 @@ async function main() {
         key: spec.key,
         name: spec.name,
         symbol: spec.symbol,
+        // proxy = this symbol stands in for the named index rather than being
+        // it. Consumers must disclose the substitution, never imply the symbol
+        // IS the index.
+        proxy: spec.proxy ?? false,
         totalReturn: spec.totalReturn,
         available: levels.length > 0,
         sourceNote: spec.sourceNote,

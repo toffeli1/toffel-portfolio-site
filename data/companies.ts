@@ -76,7 +76,7 @@ export const companies: Company[] = [
   // navigation by virtue of status: "exited".
   //
   // No thesis content is invented for them. Where an archived write-up exists
-  // in data/previousHoldings.ts (AVEX, DLO, NU, SCHD, IREN, SATL, PLTR) it is
+  // in data/previousHoldings.ts (AVEX, NU, SCHD, IREN, SATL, PLTR) it is
   // migrated verbatim by data/thesis/index.ts. The rest render a restrained
   // historical shell that says a full thesis was not archived.
   { ticker: "ASML", name: "ASML Holding N.V.",       shortName: "ASML",       kind: "Equity", status: "exited", theme: "Semiconductors" },
@@ -96,7 +96,6 @@ export const companies: Company[] = [
   { ticker: "HIMS", name: "Hims & Hers Health",      shortName: "Hims & Hers", kind: "Equity", status: "exited", theme: "Healthcare" },
   { ticker: "DUOL", name: "Duolingo",                shortName: "Duolingo",   kind: "Equity", status: "exited", theme: "Consumer Internet" },
   { ticker: "AVEX", name: "AEVEX Corp.",             shortName: "AEVEX",      kind: "Equity", status: "exited", theme: "Defense" },
-  { ticker: "DLO",  name: "dLocal",                  shortName: "dLocal",     kind: "Equity", status: "exited", theme: "Payments" },
   { ticker: "NU",   name: "Nu Holdings",             shortName: "Nubank",     kind: "Equity", status: "exited", theme: "Emerging Markets" },
   { ticker: "SCHD", name: "Schwab U.S. Dividend Equity ETF", shortName: "Schwab SCHD", kind: "ETF", status: "exited", theme: "Dividend Income",
     fundMandate: "Screens US dividend payers on quality and yield." },

@@ -1,10 +1,11 @@
 {
-  "fetchedAt": "2026-08-20",
+  "fetchedAt": "2026-08-21",
   "benchmarks": {
     "sp500": {
       "key": "sp500",
       "name": "S&P 500",
       "symbol": "^SP500TR",
+      "proxy": false,
       "totalReturn": true,
       "available": true,
       "sourceNote": "S&P 500 Total Return index (^SP500TR) via Yahoo Finance chart API. Dividends reinvested. Free, no API key.",
@@ -251,18 +252,264 @@
         },
         {
           "date": "2026-08-31",
-          "level": 17139.939453125
+          "level": 17115.4609375
         }
       ]
     },
     "nasdaq100": {
       "key": "nasdaq100",
       "name": "Nasdaq-100",
+      "symbol": "QQQ",
+      "proxy": true,
       "totalReturn": true,
-      "available": false,
-      "sourceNote": "Target series is the Nasdaq-100 Total Return index (XNDX). No reliable free historical source located.",
-      "unavailableReason": "^XNDX returns only a single live datapoint with no history; Nasdaq's index API returns 404; stooq is gated behind a JS proof-of-work challenge. Refusing to substitute QQQ, price-only ^NDX, or a synthetic dividend-yield reconstruction.",
-      "levels": []
+      "available": true,
+      "sourceNote": "Nasdaq-100 is proxied by Invesco QQQ total return because a reliable free historical Nasdaq-100 Total Return Index feed is not available. Uses dividend- and split-adjusted closes, so distributions are reinvested. This is a proxy, not the official XNDX index.",
+      "levels": [
+        {
+          "date": "2021-09-30",
+          "level": 357.9599914550781
+        },
+        {
+          "date": "2021-10-31",
+          "level": 386.1099853515625
+        },
+        {
+          "date": "2021-11-30",
+          "level": 393.82000732421875
+        },
+        {
+          "date": "2021-12-31",
+          "level": 397.8500061035156
+        },
+        {
+          "date": "2022-01-31",
+          "level": 363.04998779296875
+        },
+        {
+          "date": "2022-02-28",
+          "level": 346.79998779296875
+        },
+        {
+          "date": "2022-03-31",
+          "level": 362.5400085449219
+        },
+        {
+          "date": "2022-04-30",
+          "level": 313.25
+        },
+        {
+          "date": "2022-05-31",
+          "level": 308.2799987792969
+        },
+        {
+          "date": "2022-06-30",
+          "level": 280.2799987792969
+        },
+        {
+          "date": "2022-07-31",
+          "level": 315.4599914550781
+        },
+        {
+          "date": "2022-08-31",
+          "level": 299.2699890136719
+        },
+        {
+          "date": "2022-09-30",
+          "level": 267.260009765625
+        },
+        {
+          "date": "2022-10-31",
+          "level": 277.95001220703125
+        },
+        {
+          "date": "2022-11-30",
+          "level": 293.3599853515625
+        },
+        {
+          "date": "2022-12-31",
+          "level": 266.2799987792969
+        },
+        {
+          "date": "2023-01-31",
+          "level": 294.6199951171875
+        },
+        {
+          "date": "2023-02-28",
+          "level": 293.55999755859375
+        },
+        {
+          "date": "2023-03-31",
+          "level": 320.92999267578125
+        },
+        {
+          "date": "2023-04-30",
+          "level": 322.55999755859375
+        },
+        {
+          "date": "2023-05-31",
+          "level": 347.989990234375
+        },
+        {
+          "date": "2023-06-30",
+          "level": 369.4200134277344
+        },
+        {
+          "date": "2023-07-31",
+          "level": 383.67999267578125
+        },
+        {
+          "date": "2023-08-31",
+          "level": 377.989990234375
+        },
+        {
+          "date": "2023-09-30",
+          "level": 358.2699890136719
+        },
+        {
+          "date": "2023-10-31",
+          "level": 350.8699951171875
+        },
+        {
+          "date": "2023-11-30",
+          "level": 388.8299865722656
+        },
+        {
+          "date": "2023-12-31",
+          "level": 409.5199890136719
+        },
+        {
+          "date": "2024-01-31",
+          "level": 416.9700012207031
+        },
+        {
+          "date": "2024-02-29",
+          "level": 439
+        },
+        {
+          "date": "2024-03-31",
+          "level": 444.010009765625
+        },
+        {
+          "date": "2024-04-30",
+          "level": 424.5899963378906
+        },
+        {
+          "date": "2024-05-31",
+          "level": 450.7099914550781
+        },
+        {
+          "date": "2024-06-30",
+          "level": 479.1099853515625
+        },
+        {
+          "date": "2024-07-31",
+          "level": 471.07000732421875
+        },
+        {
+          "date": "2024-08-31",
+          "level": 476.2699890136719
+        },
+        {
+          "date": "2024-09-30",
+          "level": 488.07000732421875
+        },
+        {
+          "date": "2024-10-31",
+          "level": 483.8500061035156
+        },
+        {
+          "date": "2024-11-30",
+          "level": 509.739990234375
+        },
+        {
+          "date": "2024-12-31",
+          "level": 511.2300109863281
+        },
+        {
+          "date": "2025-01-31",
+          "level": 522.2899780273438
+        },
+        {
+          "date": "2025-02-28",
+          "level": 508.1700134277344
+        },
+        {
+          "date": "2025-03-31",
+          "level": 468.9200134277344
+        },
+        {
+          "date": "2025-04-30",
+          "level": 475.4700012207031
+        },
+        {
+          "date": "2025-05-31",
+          "level": 519.1099853515625
+        },
+        {
+          "date": "2025-06-30",
+          "level": 551.6400146484375
+        },
+        {
+          "date": "2025-07-31",
+          "level": 565.010009765625
+        },
+        {
+          "date": "2025-08-31",
+          "level": 570.4000244140625
+        },
+        {
+          "date": "2025-09-30",
+          "level": 600.3699951171875
+        },
+        {
+          "date": "2025-10-31",
+          "level": 629.0700073242188
+        },
+        {
+          "date": "2025-11-30",
+          "level": 619.25
+        },
+        {
+          "date": "2025-12-31",
+          "level": 614.3099975585938
+        },
+        {
+          "date": "2026-01-31",
+          "level": 621.8699951171875
+        },
+        {
+          "date": "2026-02-28",
+          "level": 607.2899780273438
+        },
+        {
+          "date": "2026-03-31",
+          "level": 577.1799926757812
+        },
+        {
+          "date": "2026-04-30",
+          "level": 667.739990234375
+        },
+        {
+          "date": "2026-05-31",
+          "level": 738.3099975585938
+        },
+        {
+          "date": "2026-06-30",
+          "level": 736.4000244140625
+        },
+        {
+          "date": "2026-07-31",
+          "level": 687.989990234375
+        },
+        {
+          "date": "2026-08-31",
+          "level": 716.0800170898438
+        },
+        {
+          "date": "2026-08-31",
+          "level": 710.9299926757812
+        }
+      ]
     }
   }
 }

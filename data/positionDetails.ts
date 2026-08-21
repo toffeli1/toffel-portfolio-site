@@ -989,62 +989,6 @@ export const positionDetails: Record<string, PositionDetail> = {
     ],
   },
 
-  DLO: {
-    whyIOwnIt:
-      "dLocal is the most structurally differentiated fintech in the Roth IRA. Its value proposition is genuinely unique: building the payment processing infrastructure that lets global brands accept local payment methods and disburse funds in markets where standard card rails don't work. Uber can't pay Brazilian drivers in PIX, Amazon can't accept Boleto Bancário from Mexican buyers, and Spotify can't process MercadoPago subscriptions in Argentina without a solution like dLocal's. The emerging market digital payments penetration story is one of the longest-duration secular growth themes I can own, and dLocal is the infrastructure pick-and-shovel that benefits regardless of which merchants or platforms win in each market.",
-    whyThisSleeve:
-      "DLO is in the Roth IRA because emerging market fintech is a multi-decade structural growth theme that plays out over a 10+ year horizon. Tax-free compounding is the right structure for a position where the terminal value is substantial if the platform thesis plays out, and I don't want near-term FX or earnings volatility to drive tax-inefficient trading decisions.",
-    longDescription:
-      "dLocal operates a payment processing network in over 40 emerging markets across Latin America, Africa, and Asia. Its core value proposition is enabling global merchants (Uber, Amazon, Spotify) to accept local payment methods and disburse funds in markets where conventional card rails are insufficient or absent. The platform processes transactions in local currencies and handles regulatory complexity across dozens of jurisdictions.",
-    thesisP2:
-      "The network effects in dLocal's business are strong and underappreciated. Once a global merchant integrates dLocal for Brazil, they're likely to expand to Mexico, Argentina, Nigeria, and Southeast Asia through the same API — making dLocal a platform rather than a transactional service vendor. Each new market added to the platform increases the value to existing merchants, and each new merchant relationship validates the platform to future prospects. As the merchant base grows and the geographic footprint expands, revenue per merchant should increase significantly as customers adopt value-added services including FX hedging, instant payouts, and local compliance tooling.",
-    bullCase: {
-      title: "EM Digital Payments Penetration Accelerates",
-      summary:
-        "Rapidly growing merchant base and rising TPV per merchant drive revenue compounding as emerging market e-commerce and gig economy adoption expands.",
-      assumptions: [
-        "Total payment volume (TPV) grows above 40% annually through 2026",
-        "New merchant wins in Africa and Southeast Asia diversify revenue beyond LatAm",
-        "Take rate stabilizes above 1.1% as value-added services (FX, payouts, data) expand margins",
-        "Profitability inflects as fixed cost leverage accrues with volume scale",
-      ],
-    },
-    baseCase: {
-      title: "Steady Volume and Merchant Growth",
-      summary:
-        "dLocal grows TPV at 25-35% annually while maintaining take rates, sustaining double-digit revenue compounding across its merchant network.",
-      assumptions: [
-        "Core LatAm markets (Brazil, Mexico, Argentina) continue growing 20-25% annually",
-        "African and Asian markets contribute a growing share of new merchant additions",
-        "Take rate remains in the 1.0-1.2% range as competitive pressures are offset by service expansion",
-        "Operating cash flow turns consistently positive, reducing reliance on external capital",
-      ],
-    },
-    bearCase: {
-      title: "FX Volatility and Macro Headwinds Compress Margins",
-      summary:
-        "Currency devaluation in key markets reduces USD-reported revenue and creates working capital pressure, while competition erodes take rates.",
-      assumptions: [
-        "Argentine peso or Brazilian real weakness creates significant FX translation losses",
-        "Stripe, Adyen, and local payment networks expand EM coverage, compressing dLocal take rates",
-        "Regulatory changes in Brazil or Mexico restrict cross-border payment flows",
-        "A single large merchant (representing 15%+ of revenue) churns to an in-house solution",
-      ],
-    },
-    risks: [
-      "FX and currency risk — a significant portion of TPV is in Latin American currencies subject to devaluation, creating USD-reported revenue and margin pressure.",
-      "Customer concentration — a small number of large global merchants represent a disproportionate share of TPV; losing one could materially impact results.",
-      "Regulatory fragmentation — operating across 40+ markets requires continuous compliance investment and exposes the company to country-specific regulatory changes.",
-      "Competition from global and local players — Stripe, Adyen, and regional fintechs are all investing in similar emerging market infrastructure.",
-    ],
-    watchList: [
-      "TPV growth rate and take rate trends — the two most important financial metrics each quarter.",
-      "New market launches in Africa and Southeast Asia as indicators of platform expansion.",
-      "Top 5 merchant retention — any disclosed churn from the largest customers is a significant signal.",
-      "Argentine and Brazilian peso FX moves that flow through to USD-reported revenue.",
-      "Stripe and Adyen EM market entry announcements that directly increase competitive pressure.",
-    ],
-  },
 
   GOOGL: {
     whyIOwnIt:

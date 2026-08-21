@@ -55,27 +55,6 @@ export const previousHoldings: PreviousHolding[] = [
       "Small speculative positions require ongoing conviction reviews. Continued sleeve presence has to be justified, not assumed.",
   },
   {
-    ticker: "DLO",
-    company: "dLocal",
-    sleeve: "roth-ira",
-    subcategory: "Fintech / Payments",
-    country: "Latin America",
-    marketCap: "Mid Cap",
-    assetType: "Equity",
-    ownedFrom: "2025-07-15",
-    ownedTo: "2026-06-01",
-    exitType: "Reallocation",
-    summaryReason:
-      "Cross-border payments position exited at a modest gain. Capital reallocated toward higher-conviction holdings.",
-    originalThesis:
-      "Cross-border payments exposure in emerging markets with a high-growth processing volume profile.",
-    whatChanged:
-      "The thesis matured into a slower-growth profile relative to other Latin America fintech expressions, and capital was better deployed elsewhere in the portfolio.",
-    whyExited: "Reallocated to higher-conviction holdings.",
-    lesson:
-      "A modest gain on a slower-growth thesis is still a fair recycle point when better opportunities exist.",
-  },
-  {
     ticker: "NU",
     company: "Nu Holdings",
     sleeve: "roth-ira",

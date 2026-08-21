@@ -29,8 +29,6 @@ export interface Holding {
   sleeve: string;
   /** Public-safe weight % within this sleeve. */
   portfolioPct: number;
-  /** Internal only. Used for derivation; never rendered publicly. */
-  averageCost: number;
   returnPct: number;
   /** YYYY-MM-DD — shown publicly in the holdings box. */
   purchaseDate: string;
@@ -44,6 +42,12 @@ export interface Holding {
   purchaseDateSource?: "confirmed" | "estimated" | "unknown";
 }
 
+// PRIVACY: averageCost was removed. It held real per-share cost basis for ten
+// positions and this repository is public, so "internal only, never rendered"
+// was not a boundary — a tracked file is readable whether or not a page renders
+// it. Nothing consumed the field. Percentage returns (returnPct) and weights
+// stay, because those are derived and publicly safe.
+
 export const holdings: Holding[] = [
   {
     sourceKey: 'QQQM_2027_ROTH_FUND',
@@ -51,7 +55,6 @@ export const holdings: Holding[] = [
     company: 'Invesco NASDAQ 100 ETF',
     sleeve: '2027 Roth Fund',
     portfolioPct: 12.28,
-    averageCost: 229.17,
     returnPct: 31.51,
     purchaseDate: '2025-08-01',
     category: 'ETFs',
@@ -64,7 +67,6 @@ export const holdings: Holding[] = [
     company: 'VanEck Semiconductor ETF',
     sleeve: '2027 Roth Fund',
     portfolioPct: 29.52,
-    averageCost: 286.74,
     returnPct: 113.08,
     purchaseDate: '2025-08-01',
     category: 'ETFs',
@@ -77,7 +79,6 @@ export const holdings: Holding[] = [
     company: 'Vanguard S&P 500 ETF',
     sleeve: '2027 Roth Fund',
     portfolioPct: 47.01,
-    averageCost: 573.84,
     returnPct: 20.75,
     purchaseDate: '2025-08-01',
     category: 'ETFs',
@@ -90,7 +91,6 @@ export const holdings: Holding[] = [
     company: 'Fidelity Wise Origin Bitcoin Fund',
     sleeve: '2027 Roth Fund',
     portfolioPct: 6.83,
-    averageCost: 89.75,
     returnPct: -39.58,
     purchaseDate: '2025-08-01',
     category: 'ETFs',
@@ -103,7 +103,6 @@ export const holdings: Holding[] = [
     company: 'Defiance Quantum ETF',
     sleeve: '2027 Roth Fund',
     portfolioPct: 4.35,
-    averageCost: 141.80,
     returnPct: 15.01,
     purchaseDate: '2025-05-07',
     category: 'ETFs',
@@ -117,7 +116,6 @@ export const holdings: Holding[] = [
     company: 'Micron Technology',
     sleeve: '2028 Roth Fund',
     portfolioPct: 29.73,
-    averageCost: 422.68,
     returnPct: 124.55,
     purchaseDate: '2026-05-26',
     category: 'Equities',
@@ -130,7 +128,6 @@ export const holdings: Holding[] = [
     company: 'Ouster',
     sleeve: '2028 Roth Fund',
     portfolioPct: 21.10,
-    averageCost: 32.18,
     returnPct: 41.09,
     purchaseDate: '2026-05-18',
     category: 'Equities',
@@ -143,7 +140,6 @@ export const holdings: Holding[] = [
     company: 'Penguin Solutions',
     sleeve: '2028 Roth Fund',
     portfolioPct: 10.78,
-    averageCost: 45.71,
     returnPct: 49.51,
     purchaseDate: '2026-05-18',
     category: 'Equities',
@@ -156,7 +152,6 @@ export const holdings: Holding[] = [
     company: 'Navitas Semiconductor',
     sleeve: '2028 Roth Fund',
     portfolioPct: 11.50,
-    averageCost: 31.25,
     returnPct: -6.72,
     purchaseDate: '2026-05-25',
     category: 'Equities',
@@ -169,7 +164,6 @@ export const holdings: Holding[] = [
     company: 'Firefly Aerospace Inc.',
     sleeve: '2028 Roth Fund',
     portfolioPct: 26.60,
-    averageCost: 42.91,
     returnPct: -5.73,
     purchaseDate: '2026-06-04',
     category: 'Equities',

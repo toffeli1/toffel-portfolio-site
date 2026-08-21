@@ -70,3 +70,22 @@ export const DATE_CONVENTION_SUMMARY = [
   "External cash flows, income and fees are dated by posted/settlement date.",
   "Opening in-kind transfers are pinned to the tracking inception date and booked as opening NAV, not as return.",
 ].join(" ");
+
+
+/**
+ * Snap a date to the first trading session on or after it.
+ *
+ * Applied at INGESTION so every downstream consumer — ownership episodes,
+ * current-interval detection, lifecycle events, Decision Log weights, holding
+ * periods — sees one canonical date. Normalizing further downstream produced an
+ * inconsistency where a position's public start date and its private episode
+ * start disagreed: a Saturday-stamped CBRS purchase read 2026-08-15 in the
+ * episode diagnostic and 2026-08-17 everywhere else.
+ *
+ * A trade cannot execute when the exchange is shut, so rolling forward is the
+ * only defensible direction.
+ */
+export function normalizeToSession(date: string, sessions: string[]): string {
+  if (sessions.length === 0) return date;
+  return sessions.find((s) => s >= date) ?? date;
+}

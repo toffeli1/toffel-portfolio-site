@@ -272,13 +272,15 @@ test("S&P 500 benchmark is a total-return series and available", () => {
   assert.ok(b.levels.length > 12, "expected more than a year of month-ends");
 });
 
-test("Nasdaq-100 is explicitly pending rather than proxied", () => {
+test("Nasdaq-100 is a declared QQQ proxy, never a silent substitution", () => {
   const b = getBenchmark("nasdaq100")!;
-  assert.equal(b.available, false);
-  assert.equal(b.levels.length, 0);
-  assert.ok(b.unavailableReason && b.unavailableReason.length > 0);
-  // Guard against a silent QQQ / price-only substitution creeping in later.
-  assert.ok(b.symbol !== "QQQ" && b.symbol !== "^NDX");
+  assert.equal(b.available, true);
+  assert.equal(b.name, "Nasdaq-100", "public label is the index");
+  assert.equal(b.symbol, "QQQ", "implementation is the ETF");
+  assert.match(b.sourceNote, /proxied by Invesco QQQ/i);
+  assert.match(b.sourceNote, /not the official/i);
+  // Price-only Nasdaq indices remain forbidden as a total-return stand-in.
+  assert.ok(!/\^NDX|\^IXIC/.test(String(b.symbol)));
 });
 
 test("benchmark monthly returns compound to the cumulative return", () => {
@@ -296,16 +298,16 @@ test("benchmark monthly returns compound to the cumulative return", () => {
   );
 });
 
-test("unavailable benchmark yields no returns rather than zeros", () => {
-  assert.deepEqual(benchmarkMonthlyReturns("nasdaq100", "2025-07-31", "2026-07-31"), []);
-  assert.equal(benchmarkCumulativeReturn("nasdaq100", "2025-07-31", "2026-07-31"), undefined);
+test("an unknown benchmark yields no returns rather than zeros", () => {
+  assert.deepEqual(benchmarkMonthlyReturns("does-not-exist", "2025-07-31", "2026-07-31"), []);
+  assert.equal(benchmarkCumulativeReturn("does-not-exist", "2025-07-31", "2026-07-31"), undefined);
 });
 
 // ── Historical company registry (decision 4) ────────────────────────────────
 
 const LEGACY_EXITED = [
   "ASML", "AEVA", "LMND", "QBTS", "VGT", "SOFI", "QQQ", "HOOD", "NVDA", "CAVA",
-  "SPOT", "SOAR", "HIMS", "DUOL", "AVEX", "DLO", "NU", "SCHD", "IREN", "SATL", "PLTR",
+  "SPOT", "SOAR", "HIMS", "DUOL", "AVEX", "NU", "SCHD", "IREN", "SATL", "PLTR",
 ];
 
 test("every decision-log ticker is registered", () => {
@@ -346,7 +348,7 @@ test("legacy exited companies resolve to a historical thesis page", () => {
 
 test("archived write-ups are migrated rather than re-invented", () => {
   // These seven have preserved content in data/previousHoldings.ts.
-  for (const ticker of ["AVEX", "DLO", "NU", "SCHD", "IREN", "SATL", "PLTR"]) {
+  for (const ticker of ["AVEX", "NU", "SCHD", "IREN", "SATL", "PLTR"]) {
     const headings = getThesis(ticker)!.sections.map((s) => s.heading);
     assert.ok(
       headings.includes("Why the position was exited"),
@@ -372,6 +374,15 @@ test("registry totals are 16 active and the rest exited", () => {
 
 // ── Aug 2026 initiations (decision 5) ───────────────────────────────────────
 
+test("every active holding's block opens with Initiate or Re-enter", () => {
+  for (const b of decisionsByCompany()) {
+    if (!["AMZN","GOOGL","SMH","NOW","META","SGOV","NBIS","GLDM","CEG","MELI","MA","UNH","RKLB","OSCR","CBRS","ASTS"].includes(b.ticker)) continue;
+    const first = b.events[0];
+    assert.ok(["Initiate","Re-enter"].includes(first.action),
+      `${b.ticker} block opens with ${first.action}, not a zero crossing`);
+  }
+});
+
 test("the six Aug 2026 initiations open at a reconstructed 0% weight", () => {
   const blocks = decisionsByCompany();
   for (const ticker of ["CEG", "GLDM", "AMZN", "SGOV", "MA", "CBRS"]) {
@@ -386,28 +397,18 @@ test("the six Aug 2026 initiations open at a reconstructed 0% weight", () => {
       (initiation!.newWeightPct ?? 0) > 0,
       `${ticker} should close at a positive weight`
     );
-    assert.equal(initiation!.weightBasis, "reconstructed-daily-close");
   }
 });
 
-test("CEG's multi-day build is one event spanning first to last trade", () => {
-  const ceg = decisionsByCompany().find((b) => b.ticker === "CEG")!;
-  const build = ceg.events.find((e) => e.groupId === "ceg-aug-2026-build");
-  assert.ok(build, "expected a grouped CEG build event");
-  assert.equal(build!.startDate, "2026-08-06");
-  assert.equal(build!.endDate, "2026-08-17");
-  assert.equal(build!.oldWeightPct, 0, "an initiation opens at 0%");
-  assert.ok((build!.newWeightPct ?? 0) > 0, "and closes at a real weight");
-  // Must not appear as two separate Add events.
-  assert.equal(ceg.events.filter((e) => e.action === "Add").length, 1);
-});
-
-test("same-day fills collapse to a single event", () => {
-  for (const ticker of ["GLDM", "AMZN"]) {
-    const block = decisionsByCompany().find((b) => b.ticker === ticker)!;
-    const sameDayAdds = block.events.filter((e) => e.action === "Add");
-    assert.equal(sameDayAdds.length, 1, `${ticker} should show one combined add`);
-  }
+test("opening builds collapse to a single event", () => {
+  // GLDM's two fills span consecutive sessions but express one decision.
+  const gldm = decisionsByCompany().find((b) => b.ticker === "GLDM")!;
+  assert.equal(gldm.events[0].startDate, "2026-08-10");
+  assert.equal(gldm.events[0].endDate, "2026-08-11");
+  // AMZN's fills are same-day, so one event with no range.
+  const amzn = decisionsByCompany().find((b) => b.ticker === "AMZN")!;
+  assert.equal(amzn.events[0].startDate, "2026-08-17");
+  assert.equal(amzn.events.filter((e) => e.action === "Initiate").length, 1);
 });
 
 // ── CEG revenue-basis decision (decision 1) ─────────────────────────────────

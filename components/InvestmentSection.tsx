@@ -8,10 +8,14 @@ import { thesisHrefIfPublished } from "@/lib/routes";
 // Reads the canonical current state (data/portfolioState.ts) — not sleeve
 // holdings, not the Decision Log. One weight list, one source.
 //
-// Renders per holding: logo (or monogram fallback), company name, ticker, and
-// portfolio weight. Both the logo and the name/ticker link to the same thesis
-// page via lib/routes.ts, so Investments and the Decision Log can never drift
-// to different destinations.
+// Renders per holding: logo, company name, and portfolio weight with its
+// allocation bar. There is deliberately no ticker sub-label under the name —
+// the logo identifies the holding and the row's own link target encodes the
+// ticker, so a second line only repeated what was already on screen.
+//
+// Logo and name sit inside one link, so both are clickable and resolve through
+// lib/routes.ts — Investments and the Decision Log can never drift to different
+// destinations.
 //
 // Deliberately NOT rendered here: prices, share counts, cost basis, returns, or
 // daily changes. The unrealized-return column that used to live in this table

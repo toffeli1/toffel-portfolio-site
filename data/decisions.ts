@@ -24,8 +24,9 @@
 import { decisionLog, type DecisionEntry } from "./decisionLog";
 import { getCompany, type HoldingStatus } from "./companies";
 import computedWeights from "./decisionWeights.json";
+import lifecycle from "./lifecycleEvents.json";
 
-export type DecisionAction = "Add" | "Trim" | "Exit" | "Rebalance" | "Initiate";
+export type DecisionAction = "Add" | "Trim" | "Exit" | "Rebalance" | "Initiate" | "Re-enter";
 
 /** A weight that may legitimately not be known yet. */
 export type PendingWeight = number | undefined;
@@ -102,6 +103,57 @@ function computedFor(
   endDate?: string
 ): ComputedWeight | undefined {
   return COMPUTED.get(`${ticker}|${startDate}|${endDate ?? ""}`);
+}
+
+// ── Lifecycle events (Initiate / Re-enter) ───────────────────────────────────
+// data/lifecycleEvents.json is derived from the transaction ledger and supplies
+// the zero-crossings the hand-written log omitted. Without them a company block
+// could open mid-story, e.g. "3.70% -> 4.39%" for a position that had already
+// been held for months.
+//
+// Rationale: the six positions opened in the Aug 2026 rebalance carry the
+// reasoning already established for them. Everything else gets factual wording,
+// because inventing a contemporaneous rationale for a years-old transaction
+// would be fabrication.
+
+interface LifecycleRow {
+  ticker: string;
+  action: "Initiate" | "Re-enter";
+  startDate: string;
+  endDate?: string;
+  intervalIndex: number;
+}
+
+const INITIATION_RATIONALE: Record<string, string> = {
+  AMZN: "Opened on weakness. The position is held for AWS: cloud and compute demand should keep compounding, and AWS is one of the largest high-quality infrastructure businesses in the world. Amazon's ecommerce and logistics scale sit underneath that, with robotics as optionality rather than a reason to own it.",
+  SGOV: "Opened as the portfolio's cash allocation. Keeps capital liquid and earning while waiting for better entry points, and can be redeployed when individual holdings or the broader market create them.",
+  GLDM: "Opened as ballast against a growth-heavy book. The market is still working through AI capital spending, monetization expectations, macro conditions and geopolitical risk, and gold responds to a different set of factors than the rest of the portfolio.",
+  CEG: "Opened on weakness as the preferred way to hold the nuclear thesis. More established than the speculative alternatives, with a fleet already operating rather than awaiting permitting.",
+  MA: "Opened to move exposure away from the AI and compute theme. The attraction is network economics, margins, and the ability to compound alongside rising payment volume without taking bank-style credit risk.",
+  CBRS: "Opened as a direct expression of the view that agentic AI increases inference demand. Deliberately small: the company is early and competes against an entrenched accelerator ecosystem.",
+};
+
+const FACTUAL_INITIATION =
+  "Position initiated. Transaction history establishes the allocation change; a separate contemporaneous rationale was not archived.";
+const FACTUAL_REENTRY =
+  "Position re-entered after a full exit. Transaction history establishes the allocation change; a separate contemporaneous rationale was not archived.";
+
+function lifecycleEventsFor(ticker: string): DecisionEvent[] {
+  return (lifecycle.events as LifecycleRow[])
+    .filter((e) => e.ticker === ticker)
+    .map((e) => ({
+      startDate: e.startDate,
+      endDate: e.endDate,
+      action: e.action === "Initiate" ? ("Initiate" as const) : ("Re-enter" as const),
+      actionLabel: e.action,
+      oldWeightPct: undefined,
+      newWeightPct: undefined,
+      rationale:
+        e.action === "Initiate"
+          ? (INITIATION_RATIONALE[ticker] ?? FACTUAL_INITIATION)
+          : FACTUAL_REENTRY,
+      groupId: `lifecycle-${ticker}-${e.intervalIndex}`,
+    }));
 }
 
 // ── Normalisation ────────────────────────────────────────────────────────────
@@ -233,7 +285,20 @@ export function decisionsByCompany(): CompanyDecisions[] {
   const blocks: CompanyDecisions[] = [];
   for (const [ticker, entries] of byTicker) {
     const registry = getCompany(ticker);
-    const events = mergeEvents(entries.map(toEvent), ticker);
+    const lifecycleRows = lifecycleEventsFor(ticker);
+    const lifecycleDates = new Set(lifecycleRows.map((e) => e.startDate));
+    // Months covered by a dated zero-crossing. A hand-written row that only
+    // recorded a month is the same decision the ledger now dates exactly, so it
+    // defers rather than surviving as a second, permanently-pending event.
+    const lifecycleMonths = new Set(lifecycleRows.map((e) => e.startDate.slice(0, 7)));
+    const handWritten = entries
+      .map(toEvent)
+      // A hand-written row on the same date as a derived zero-crossing is the
+      // same decision; the derived one wins because it carries the correct
+      // Initiate/Re-enter action and a 0% opening weight.
+      .filter((e) => !lifecycleDates.has(e.startDate))
+      .filter((e) => !(e.startDate.length === 7 && lifecycleMonths.has(e.startDate)));
+    const events = mergeEvents([...lifecycleRows, ...handWritten], ticker);
 
     blocks.push({
       ticker,

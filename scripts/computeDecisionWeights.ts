@@ -15,49 +15,16 @@
 //
 // Denominator is SECURITIES ONLY — see lib/reconstruction/cashPolicy.ts.
 
+import { ingestLedger } from "../lib/reconstruction/ingest";
 import { readFileSync, writeFileSync } from "node:fs";
 import { reconstruct } from "../lib/reconstruction/engine";
-import { classify, isTradeKind } from "../lib/reconstruction/classify";
-import { effectiveDate } from "../lib/reconstruction/dates";
 import { asTradedClose, type PriceCache } from "../lib/reconstruction/prices";
 import { securitiesOnlyWeightPct } from "../lib/reconstruction/cashPolicy";
-import type { Transaction, DailyState } from "../lib/reconstruction/types";
+import type { DailyState } from "../lib/reconstruction/types";
 import { decisionsByCompany } from "../data/decisions";
+import { isPubliclyExcluded } from "../lib/reconstruction/exclusions";
 
 const INCEPTION = "2025-07-03";
-
-interface Row { [k: string]: unknown }
-const pick = <T,>(r: Row, k: string[]): T | undefined => {
-  for (const x of k) if (r[x] !== undefined && r[x] !== null) return r[x] as T;
-  return undefined;
-};
-
-function loadTransactions(): Transaction[] {
-  const raw = JSON.parse(readFileSync("data/rothTransactions.local.json", "utf8"));
-  return (raw.transactions as Row[]).map((r) => {
-    const postedDate = String(pick<string>(r, ["date"]) ?? "").slice(0, 10);
-    const dt = pick<string>(r, ["transaction_datetime"]) ?? undefined;
-    const rawType = pick<string>(r, ["type"]);
-    const subtype = pick<string>(r, ["subtype"]);
-    const rawDescription = pick<string>(r, ["name"]);
-    const ticker = pick<string>(r, ["ticker_symbol"]);
-    const quantity = Number(pick<number>(r, ["quantity"]) ?? 0) || undefined;
-    const kind = classify(rawType, rawDescription, subtype, Boolean(ticker?.trim()), quantity ?? 0);
-    return {
-      postedDate, transactionDatetime: dt,
-      effectiveDate: effectiveDate({
-        postedDate, transactionDatetime: dt, isTrade: isTradeKind(kind),
-        isOpeningInKind: kind === "transfer_in_kind" && (!dt || dt.slice(0, 10) <= INCEPTION),
-        inceptionDate: INCEPTION,
-      }),
-      kind, ticker: ticker?.trim().toUpperCase() || undefined, quantity,
-      price: Number(pick<number>(r, ["price"]) ?? 0) || undefined,
-      rawAmount: Number(pick<number>(r, ["amount"]) ?? 0),
-      fees: Number(pick<number>(r, ["fees"]) ?? 0),
-      rawType, rawDescription,
-    };
-  });
-}
 
 export interface WeightRecord {
   ticker: string;
@@ -78,7 +45,9 @@ export interface WeightRecord {
 function main() {
   const px = JSON.parse(readFileSync("data/priceCache.local.json", "utf8")) as PriceCache;
   const calendar = px.tradingDays.filter((d) => d >= INCEPTION);
-  const res = reconstruct(loadTransactions(), {
+  const { transactions: ledgerTxs, audit } = ingestLedger(px.tradingDays, INCEPTION);
+  console.log(`source audit: rows=${audit.rowCount} owningAccountIds=${audit.owningAccountIds} foreignRows=${audit.foreignRows}`);
+  const res = reconstruct(ledgerTxs, {
     from: INCEPTION, to: calendar[calendar.length - 1],
     opening: { date: INCEPTION, shares: {}, cash: 0 },
     calendar, splits: px.splits,
@@ -106,6 +75,9 @@ function main() {
 
   const out: WeightRecord[] = [];
   for (const block of decisionsByCompany()) {
+    // Defensive: a hand-written row must not be able to reintroduce a name the
+    // owner has excluded from public surfaces.
+    if (isPubliclyExcluded(block.ticker)) continue;
     for (const e of block.events) {
       const rec: WeightRecord = {
         ticker: block.ticker, startDate: e.startDate, endDate: e.endDate,
@@ -157,6 +129,10 @@ function main() {
       // (a closed position can retain sub-thousandth dust from the source
       // which renders as "-0.00%". A closed position is exactly zero.
       const clamp = (w: number) => (Math.abs(w) < 0.005 ? 0 : Number(w.toFixed(4)));
+      // An Initiate or Re-enter crosses from zero by definition. The prior
+      // close can show a nonzero weight only if the event date is wrong, so
+      // asserting 0 here would hide a data error: instead trust the computed
+      // prior close and let the validation catch a mismatch.
       rec.oldWeightPct = clamp(oldW);
       rec.newWeightPct = clamp(newW);
       rec.priorCloseDate = priorClose;

@@ -22,8 +22,13 @@ const SIZE_MAP: Record<"sm" | "md" | "lg" | "xl", { box: number; font: number; r
 };
 
 // Ticker → file path in /public/logos/. Drop the matching SVG/PNG into that
-// directory to activate the real logo for the ticker. ETFs use issuer logos
-// when a fund-specific mark isn't available (VOO→Vanguard, SMH→VanEck, etc.).
+// directory to activate the real logo for the ticker. ETFs carry their fund
+// family's mark (SGOV→iShares, GLDM→SPDR Gold, VOO→Vanguard, SMH→VanEck), which
+// is the branding a holder actually sees on the fund.
+//
+// Every one of the 16 active holdings is mapped to a real asset; the monogram
+// path exists for future additions before their artwork lands, not as the
+// steady state for anything currently held.
 export const TICKER_LOGO_ASSETS: Record<string, string> = {
   // Active Roth IRA holdings
   AMZN:  "/logos/amazon.png",
@@ -32,10 +37,9 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
   OSCR:  "/logos/oscar-health.png",
   CBRS:  "/logos/cerebras.png",
   GLDM:  "/logos/spdr-gold.png",
-  // SGOV uses the BlackRock mark: the iShares-specific favicon tops out at
-  // 32x32, and the repo already uses issuer marks for funds (VOO->Vanguard,
-  // SMH->VanEck). BlackRock is the iShares issuer.
-  SGOV:  "/logos/blackrock.png",
+  // SGOV is an iShares fund, so it carries the iShares wordmark rather than the
+  // parent BlackRock mark. Vector asset, so it stays crisp at every tile size.
+  SGOV:  "/logos/ishares.svg",
   AMD:   "/logos/amd.png",
   VOO:   "/logos/vanguard.png",
   SMH:   "/logos/vaneck.png",
@@ -60,7 +64,6 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
   FLY:   "/logos/firefly-aerospace.png",
   // Archive / previous holdings
   AVEX:  "/logos/aevex.svg",
-  DLO:   "/logos/dlocal.svg",
   NU:    "/logos/nu.svg",
   SCHD:  "/logos/schwab.svg",
   IREN:  "/logos/iren.svg",
@@ -101,7 +104,7 @@ const TICKER_LOGO_SCALE: Record<string, string> = {
   OSCR: "72%",   // round badge
   CBRS: "80%",
   GLDM: "78%",
-  SGOV: "88%",   // BlackRock wordmark is wide, keep it restrained
+  SGOV: "92%",   // iShares wordmark is wide (2.9:1); cap on width, not height
 };
 const DEFAULT_SCALE = "82%";
 

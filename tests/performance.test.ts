@@ -142,18 +142,50 @@ test("S&P 500 benchmark is a real total-return index", () => {
   assert.ok(sp.wealth.length > 100, "expected a daily series, not monthly levels");
 });
 
-test("QQQ is never used as the Nasdaq-100 total-return benchmark", () => {
-  const blob = JSON.stringify(performance.benchmarks);
-  assert.ok(!/"symbol":\s*"QQQ"/.test(blob));
-  for (const b of Object.values(performance.benchmarks)) {
-    assert.notEqual(b.symbol, "QQQ", `${b.key} must not proxy with QQQ`);
-  }
+test("Nasdaq-100 is a QQQ proxy, and says so explicitly", () => {
+  const nq = performance.benchmarks.nasdaq100;
+  assert.equal(nq.available, true, "the benchmark should now populate");
+  // Public label must be the index, not the ETF.
+  assert.equal(nq.name, "Nasdaq-100");
+  // The substitution must be declared, both as a flag and in prose.
+  assert.equal(nq.proxy, true, "proxy flag must be set");
+  assert.equal(nq.symbol, "QQQ", "implementation symbol is QQQ");
+  assert.match(nq.sourceNote, /proxied by Invesco QQQ/i);
+  assert.match(nq.sourceNote, /not the official/i);
+  assert.match(nq.sourceNote, /adjusted/i, "must state distributions are reinvested");
+  assert.equal(nq.totalReturn, true);
+});
+
+test("the S&P benchmark is the real index and is NOT flagged a proxy", () => {
+  const sp = performance.benchmarks.sp500;
+  assert.equal(sp.symbol, "^SP500TR");
+  assert.equal(sp.proxy, false);
 });
 
 test("the ^NDX price index is never used as a total-return benchmark", () => {
   for (const b of Object.values(performance.benchmarks)) {
     assert.notEqual(b.symbol, "^NDX");
     assert.notEqual(b.symbol, "^IXIC");
+  }
+});
+
+test("no raw QQQ share price reaches the public artifact", () => {
+  const nq = performance.benchmarks.nasdaq100;
+  // Only normalised index levels may ship. QQQ trades in the hundreds; a
+  // wealth index anchored at 100 cannot contain a price-shaped value.
+  for (const w of nq.wealth) {
+    assert.ok(w.index > 0 && w.index < 1000, `index level ${w.index} looks like a price`);
+  }
+  assert.equal(nq.wealth[0].index, 100, "series must be normalised to 100");
+});
+
+test("both benchmarks populate every comparison surface", () => {
+  for (const key of ["sp500", "nasdaq100"]) {
+    const b = performance.benchmarks[key];
+    assert.ok(b.wealth.length > 100, `${key} needs a daily series`);
+    assert.equal(b.monthly.length, performance.monthly.length, `${key} monthly coverage`);
+    assert.equal(b.calendarYear.length, performance.calendarYear.length, `${key} yearly coverage`);
+    assert.ok(typeof b.excessCumulativePts === "number", `${key} excess return`);
   }
 });
 
@@ -170,15 +202,16 @@ test("no dividend-yield approximation is substituted for a total return", () => 
   }
 });
 
-test("an unavailable benchmark fabricates nothing", () => {
-  const nq = performance.benchmarks.nasdaq100;
-  assert.equal(nq.available, false);
-  assert.equal(nq.cumulativeReturnPct, null, "no cumulative may be invented");
-  assert.equal(nq.monthly.length, 0, "no monthly bars may be invented");
-  assert.equal(nq.calendarYear.length, 0);
-  assert.equal(nq.wealth.length, 0);
-  assert.ok(nq.unavailableReason && nq.unavailableReason.length > 30);
-  assert.ok(pendingBenchmarkViews().some((b) => b.key === "nasdaq100"));
+test("an unavailable benchmark would fabricate nothing", () => {
+  // Both benchmarks are available today, so this guards the shape of the
+  // unavailable branch: it must emit nulls and empty series, never zeros.
+  for (const b of pendingBenchmarkViews()) {
+    assert.equal(b.cumulativeReturnPct, null, `${b.key} must not invent a cumulative`);
+    assert.equal(b.monthly.length, 0, `${b.key} must not invent monthly bars`);
+    assert.equal(b.calendarYear.length, 0);
+    assert.equal(b.wealth.length, 0);
+    assert.ok(b.unavailableReason && b.unavailableReason.length > 20);
+  }
 });
 
 test("benchmark series share the portfolio's sessions", () => {
@@ -207,11 +240,23 @@ test("exited holdings are excluded from the active section", () => {
   }
 });
 
-test("historical holdings contain only exited names", () => {
-  const active = new Set(activeCompanies().map((c) => c.ticker));
+test("historical rows are CLOSED episodes, including those of active names", () => {
   assert.ok(performance.historicalHoldings.length > 0);
+  const active = new Set(activeCompanies().map((c) => c.ticker));
+  const activeStart = new Map(
+    performance.activeHoldings.map((h) => [h.ticker, h.currentIntervalStart])
+  );
   for (const h of performance.historicalHoldings) {
-    assert.ok(!active.has(h.ticker), `${h.ticker} is active and must not be historical`);
+    // Every historical row must be closed.
+    assert.ok(h.exitedOn, `${h.ticker} ep${h.episode} must be closed`);
+    // A currently-active ticker may appear here ONLY for an earlier episode that
+    // ended before the current one began. Ownership history does not vanish
+    // because the ticker is held again today.
+    if (active.has(h.ticker)) {
+      const start = activeStart.get(h.ticker);
+      assert.ok(start && h.exitedOn! <= start,
+        `${h.ticker} ep${h.episode} overlaps the current position`);
+    }
   }
 });
 
@@ -224,7 +269,7 @@ test("return per trading session is geometric, not arithmetic", () => {
   // And the artifact must agree with the formula for every holding.
   for (const h of [...performance.activeHoldings, ...performance.historicalHoldings]) {
     if (h.totalReturnPct === null || h.geometricPerSessionReturnPct === null) continue;
-    const expected = geometricPerSessionReturn(h.totalReturnPct, h.sessionsHeld);
+    const expected = geometricPerSessionReturn(h.totalReturnPct, h.sessionsHeld!);
     assert.ok(
       expected !== undefined && Math.abs(expected - h.geometricPerSessionReturnPct) < 1e-9,
       `${h.ticker} geometric per-session return mismatch`
@@ -232,19 +277,89 @@ test("return per trading session is geometric, not arithmetic", () => {
   }
 });
 
-test("re-entered positions are measured over real intervals", () => {
-  const reentered = [...performance.activeHoldings, ...performance.historicalHoldings]
-    .filter((h) => h.reEntered);
-  assert.ok(reentered.length > 0, "expected at least one re-entered holding");
-  for (const h of reentered) {
-    assert.ok(h.intervals.length > 1, `${h.ticker} should have multiple intervals`);
-    const summed = h.intervals.reduce((s, i) => s + i.sessions, 0);
-    assert.equal(summed, h.sessionsHeld, `${h.ticker} days must sum from real intervals`);
-    // Intervals must not overlap or run backwards.
-    for (let i = 1; i < h.intervals.length; i++) {
-      assert.ok(h.intervals[i].from > h.intervals[i - 1].to, `${h.ticker} intervals overlap`);
+test("active returns use the current position, not the ticker's price path", () => {
+  assert.match(performance.holdingReturnBasis, /surviving FIFO cost basis/i);
+  assert.match(performance.holdingReturnBasis, /current continuous ownership interval/i);
+  // A re-entered name must not carry pre-exit ownership in its interval.
+  for (const t of ["UNH", "OSCR"]) {
+    const h = performance.activeHoldings.find((x) => x.ticker === t)!;
+    assert.ok(h.reEntered, `${t} should be flagged re-entered`);
+    assert.ok(h.priorClosedIntervals! >= 1, `${t} should report prior closed intervals`);
+  }
+});
+
+test("current ownership intervals start where the ledger says", () => {
+  const START: Record<string, string> = {
+    AMZN: "2026-08-17", GOOGL: "2025-07-15", SMH: "2026-01-26", NOW: "2026-05-14",
+    META: "2026-01-22", SGOV: "2026-08-17", NBIS: "2025-07-14", GLDM: "2026-08-10",
+    CEG: "2026-08-06", MELI: "2025-08-12", MA: "2026-08-17", UNH: "2026-08-17",
+    RKLB: "2026-01-23", OSCR: "2026-08-07", CBRS: "2026-08-17", ASTS: "2026-01-26",
+  };
+  for (const [t, d] of Object.entries(START)) {
+    const h = performance.activeHoldings.find((x) => x.ticker === t)!;
+    assert.equal(h.currentIntervalStart, d, `${t} interval start`);
+    assert.ok((h.sessionsHeld ?? 0) > 0, `${t} needs sessions`);
+  }
+  // The specific regressions: these three must NOT aggregate old ownership.
+  assert.equal(performance.activeHoldings.find((h) => h.ticker === "UNH")!.sessionsHeld, 4);
+  assert.equal(performance.activeHoldings.find((h) => h.ticker === "CBRS")!.sessionsHeld, 4);
+  assert.ok(performance.activeHoldings.find((h) => h.ticker === "OSCR")!.sessionsHeld! < 20);
+});
+
+test("every active row ends on the final session (no closed intervals)", () => {
+  for (const h of performance.activeHoldings) {
+    assert.equal(h.currentIntervalEnd, performance.asOfDate, `${h.ticker} must still be open`);
+  }
+});
+
+test("multi-episode names appear once per episode, never aggregated", () => {
+  const byTicker = new Map<string, number>();
+  for (const h of performance.historicalHoldings) {
+    byTicker.set(h.ticker, (byTicker.get(h.ticker) ?? 0) + 1);
+  }
+  // OSCR was owned three times; two of those episodes are closed.
+  assert.equal(byTicker.get("OSCR"), 2, "OSCR should show its two closed episodes");
+  assert.equal(byTicker.get("UNH"), 1, "UNH should show its one closed episode");
+  // Episode indices must be distinct per ticker and ranges must not overlap.
+  for (const [t, n] of byTicker) {
+    const eps = performance.historicalHoldings.filter((h) => h.ticker === t);
+    assert.equal(new Set(eps.map((e) => e.episode)).size, n, `${t} episode indices must be unique`);
+    const sorted = [...eps].sort((a, b) => a.episode - b.episode);
+    for (let k = 1; k < sorted.length; k++) {
+      assert.ok(sorted[k].initiatedOn > (sorted[k - 1].exitedOn ?? ""),
+        `${t} episodes overlap`);
     }
   }
+});
+
+test("closed episodes carry real dates and session counts", () => {
+  for (const h of performance.historicalHoldings) {
+    assert.ok(h.exitedOn, `${h.ticker} ep${h.episode} must have an exit date`);
+    assert.ok(h.exitedOn! >= h.initiatedOn, `${h.ticker} exit precedes entry`);
+    assert.ok(h.sessionsHeld > 0, `${h.ticker} needs sessions`);
+  }
+});
+
+test("transferred-in positions are flagged as tracked-period returns", () => {
+  for (const t of ["QQQ", "VGT", "VOO"]) {
+    const eps = performance.historicalHoldings.filter((h) => h.ticker === t);
+    assert.ok(eps.length > 0, `${t} should appear`);
+    for (const e of eps) {
+      assert.equal(e.trackedPeriodBasis, true,
+        `${t} basis comes from the inception mark, which must be disclosed`);
+    }
+  }
+  // Everything else has a real purchase basis.
+  for (const h of performance.historicalHoldings) {
+    if (["QQQ", "VGT", "VOO"].includes(h.ticker)) continue;
+    assert.equal(h.trackedPeriodBasis, false, `${h.ticker} should have ledger basis`);
+  }
+});
+
+test("the AEVA option round trip is not treated as an equity position", () => {
+  assert.ok(!performance.historicalHoldings.some((h) => h.ticker === "AEVA"),
+    "a derivative trade must not appear as a stock episode");
+  assert.ok(!performance.activeHoldings.some((h) => h.ticker === "AEVA"));
 });
 
 test("contribution is omitted rather than approximated", () => {
@@ -295,11 +410,31 @@ test("no client component imports the performance generator or private data", ()
 
 // ── Decision Log weights survive the Performance work ───────────────────────
 
-test("27 computed and 34 pending Decision Log weights remain intact", () => {
-  const doc = JSON.parse(readFileSync("data/decisionWeights.json", "utf8"));
-  const computed = doc.events.filter((e: { status: string }) => e.status === "computed");
-  const pending = doc.events.filter((e: { status: string }) => e.status === "pending");
-  assert.equal(doc.events.length, 61);
-  assert.equal(computed.length, 27);
-  assert.equal(pending.length, 34);
+test("every current holding has an Initiate or Re-enter opening at 0%", () => {
+  const life = JSON.parse(readFileSync("data/lifecycleEvents.json", "utf8"));
+  const weights = JSON.parse(readFileSync("data/decisionWeights.json", "utf8"));
+  const byKey = new Map(
+    weights.events.map((e: { ticker: string; startDate: string }) => [`${e.ticker}|${e.startDate}`, e])
+  );
+  for (const c of activeCompanies()) {
+    const opens = life.events.filter((e: { ticker: string }) => e.ticker === c.ticker);
+    assert.ok(opens.length > 0, `${c.ticker} must have a lifecycle opening event`);
+  }
+  // Every zero-crossing that resolved must open at exactly 0%.
+  for (const e of life.events) {
+    const w = byKey.get(`${e.ticker}|${e.startDate}`) as
+      | { status: string; oldWeightPct: number }
+      | undefined;
+    if (!w || w.status !== "computed") continue;
+    assert.ok(Math.abs(w.oldWeightPct) < 0.005,
+      `${e.ticker} ${e.startDate} opens at ${w.oldWeightPct}%, expected 0%`);
+  }
+});
+
+test("full exits close at 0%", () => {
+  const weights = JSON.parse(readFileSync("data/decisionWeights.json", "utf8"));
+  const exits = weights.events.filter(
+    (e: { status: string; newWeightPct: number }) => e.status === "computed" && e.newWeightPct === 0
+  );
+  assert.ok(exits.length > 0, "expected at least one full exit at 0%");
 });

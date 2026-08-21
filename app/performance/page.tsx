@@ -162,10 +162,21 @@ export default function PerformancePage() {
             <SectionLabel>Cumulative Performance</SectionLabel>
             <div className="rounded-2xl px-5 py-5" style={CARD}>
               <CumulativeChart series={cumulativeSeries} />
-              <p className="mt-3 font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
-                All series indexed to 0% at {fmtDate(p.inceptionDate)} and restricted to the same
-                trading sessions. {sp.available ? sp.sourceNote : ""}
-              </p>
+              <div className="mt-3 space-y-1.5">
+                <p className="font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
+                  All series indexed to 0% at {fmtDate(p.inceptionDate)} and restricted to the same
+                  trading sessions.
+                </p>
+                {/* Every benchmark discloses its own source. A proxied series must
+                    say so explicitly rather than letting the index label imply the
+                    official index was used. */}
+                {available.map((b) => (
+                  <p key={b.key} className="font-mono text-[9px] leading-[1.6]"
+                     style={{ color: b.proxy ? "#8b2530" : FAINT, opacity: b.proxy ? 0.9 : 1 }}>
+                    {b.name}: {b.sourceNote}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -304,8 +315,8 @@ export default function PerformancePage() {
                           {h.reEntered && (
                             <span className="ml-2 rounded font-mono text-[8px] uppercase tracking-[0.1em]"
                                   style={{ color: FAINT, border: "1px solid rgba(15,30,53,0.12)", padding: "1px 5px" }}
-                                  title={h.intervals.map((x) => `${x.from}→${x.to}`).join("  ")}>
-                              {h.intervals.length} periods
+                                  title={`${h.priorClosedIntervals ?? 0} earlier interval(s) closed before this one`}>
+                              re-entered
                             </span>
                           )}
                         </td>
@@ -327,6 +338,7 @@ export default function PerformancePage() {
               return per trading session held is (1 + total return)^(1 / sessions held) − 1, not
               total return divided by sessions. Short holding periods make the per-session figure
               volatile; the adjacent holding-period column is the context for reading it.
+              {" "}{p.valuationMarkNote}
               {" "}{p.contributionNote}
             </p>
             <div className="mt-6">

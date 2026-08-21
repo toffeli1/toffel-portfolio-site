@@ -8,8 +8,10 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { PUBLIC_EXCLUDED_TICKERS } from "../lib/reconstruction/exclusions";
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join } from "node:path";
+import { execSync } from "node:child_process";
 
 function walk(dir: string, exts = [".ts", ".tsx"]): string[] {
   if (!existsSync(dir)) return [];
@@ -137,4 +139,151 @@ test("built HTML contains no private transaction vocabulary", (t) => {
       assert.ok(!re.test(src), `${f} leaks ${re}`);
     }
   }
+});
+
+// ─── Account identifiers must never reach a committed artifact ────────────────
+
+test("no public artifact carries an account identifier", () => {
+  const artifacts = [
+    "data/performanceDerived.json",
+    "data/lifecycleEvents.json",
+    "data/decisionWeights.json",
+    "data/benchmarkSeries.json",
+  ];
+  // Shapes an account id could take: masked tails, long digit runs, and the
+  // provenance keys the guard reads.
+  const banned: [RegExp, string][] = [
+    [/\*{2,}\d{3,}/, "masked account number"],
+    [/\baccount_?[Ii]d\b/, "account id field"],
+    [/\bsourceAccountId\b/, "source account id"],
+    [/ending in \d{4}/, "counterparty account tail"],
+    [/\bRH-[A-Z]+-/, "broker account identifier"],
+  ];
+  for (const f of artifacts) {
+    if (!existsSync(f)) continue;
+    const raw = readFileSync(f, "utf8");
+    for (const [re, label] of banned) {
+      assert.ok(!re.test(raw), `${f} contains a ${label}`);
+    }
+  }
+});
+
+test("the private reconstruction config and ledger are not tracked", () => {
+  const tracked = execSync("git ls-files", { encoding: "utf8" }).split("\n");
+  for (const f of [
+    "data/rothTransactions.local.json",
+    "data/reconstructionConfig.local.json",
+    "data/priceCache.local.json",
+  ]) {
+    assert.ok(!tracked.includes(f), `${f} must never be tracked`);
+  }
+});
+
+// ─── Owner-directed presentation exclusions ──────────────────────────────────
+
+test("publicly excluded tickers appear in no artifact, registry or page", () => {
+  const files = execSync("git ls-files", { encoding: "utf8" })
+    .split("\n")
+    .filter((f) => /\.(ts|tsx|json|md)$/.test(f))
+    .filter((f) => f !== "lib/reconstruction/exclusions.ts" && !f.startsWith("tests/"));
+
+  for (const ticker of PUBLIC_EXCLUDED_TICKERS) {
+    const word = new RegExp(`\\b${ticker}\\b`);
+    for (const f of files) {
+      if (!existsSync(f)) continue;
+      assert.ok(!word.test(readFileSync(f, "utf8")), `${f} still mentions ${ticker}`);
+    }
+  }
+});
+
+test("excluded tickers are absent from every derived holding row", () => {
+  const derived = JSON.parse(readFileSync("data/performanceDerived.json", "utf8"));
+  const rows = [...derived.activeHoldings, ...derived.historicalHoldings];
+  for (const r of rows) {
+    assert.ok(!PUBLIC_EXCLUDED_TICKERS.has(r.ticker), `${r.ticker} must not be published`);
+  }
+});
+
+// ─── Repo-wide sweep for per-share / dollar values ───────────────────────────
+// The fixed-list check above missed data/holdings.ts, which carried real
+// averageCost values for ten positions: its regex only matched JSON-quoted keys
+// ("costBasis"), not TypeScript object literals (averageCost: 123.45), and the
+// file was not on the list. This sweep covers EVERY tracked data module in both
+// syntaxes, so "internal only, never rendered" cannot be used as a boundary in
+// a public repository again.
+
+test("no tracked file assigns a numeric per-share or dollar value", () => {
+  const files = execSync("git ls-files", { encoding: "utf8" })
+    .split("\n")
+    .filter((f) => /^(data|lib|components|app|scripts)\/.*\.(ts|tsx|json)$/.test(f))
+    // Test fixtures and the guard's own pattern lists name these fields on purpose.
+    .filter((f) => !f.startsWith("tests/"));
+
+  // Field names that carry money or share counts, in TS-literal or JSON form,
+  // assigned a NON-ZERO number. Type declarations (`averageCost: number`),
+  // regex/ban-list mentions, and zero-initialised accumulators
+  // (`proceeds: 0`) are not disclosures and do not match.
+  const banned = new RegExp(
+    '"?\\b(' +
+      [
+        "averageCost", "avgCost", "averageCostPerShare", "costBasis", "cost_basis",
+        "pricePerShare", "price_per_share", "entryPrice", "estimatedEntryPrice",
+        "purchasePrice", "lastPrice", "currentPrice", "quotePrice", "marketValue",
+        "amountUsd", "proceeds", "navDollars", "cashBalance",
+      ].join("|") +
+      ')\\b"?\\s*:\\s*-?(?!0[,;\\s}]|0$)\\d',
+    "i"
+  );
+
+  const offenders: string[] = [];
+  for (const f of files) {
+    if (!existsSync(f)) continue;
+    readFileSync(f, "utf8").split("\n").forEach((line, i) => {
+      if (banned.test(line)) offenders.push(`${f}:${i + 1} ${line.trim().slice(0, 70)}`);
+    });
+  }
+  assert.deepEqual(offenders, [], `real money/share values in tracked files:\n${offenders.join("\n")}`);
+});
+
+test("share quantities are not assigned in tracked files", () => {
+  // scripts/ is included deliberately: a dev diagnostic had a hardcoded table of
+  // exact ending share counts for all 16 holdings. Expected quantities belong in
+  // the gitignored reconstruction config, never in a tracked file.
+  const files = execSync("git ls-files", { encoding: "utf8" })
+    .split("\n")
+    .filter((f) => /^(data|lib|scripts)\/.*\.(ts|json)$/.test(f));
+  const banned = /"?\b(shares|shareCount|quantity|qty|lotQuantity)\b"?\s*:\s*-?(?!0[,;\s}]|0$)\d/i;
+  const offenders: string[] = [];
+  for (const f of files) {
+    if (!existsSync(f)) continue;
+    readFileSync(f, "utf8").split("\n").forEach((line, i) => {
+      if (banned.test(line)) offenders.push(`${f}:${i + 1} ${line.trim().slice(0, 70)}`);
+    });
+  }
+  assert.deepEqual(offenders, [], `share quantities in tracked files:\n${offenders.join("\n")}`);
+});
+
+test("no ticker-keyed table of fractional quantities is tracked", () => {
+  // The field-name sweep above cannot see a table keyed by TICKER rather than by
+  // a telling field name — which is exactly the shape the leak took:
+  //   const EXPECTED = { TICKER: 12, OTHER: 3.456789, ... }   (shape, synthetic)
+  // The broker exports quantities to six decimals, while every legitimate
+  // ticker-keyed constant in this repo holds a percentage quoted to two. So a
+  // ticker key assigned four or more decimal places is a share count.
+  // Scoped to TS sources: the JSON artifacts carry normalised index levels at
+  // high precision by design and are validated field-by-field elsewhere.
+  const files = execSync("git ls-files", { encoding: "utf8" })
+    .split("\n")
+    .filter((f) => /^(data|lib|scripts|components|app)\/.*\.tsx?$/.test(f));
+
+  const fractional = /\b[A-Z]{1,6}:\s*-?\d+\.\d{4,}/;
+  const offenders: string[] = [];
+  for (const f of files) {
+    if (!existsSync(f)) continue;
+    readFileSync(f, "utf8").split("\n").forEach((line, i) => {
+      if (fractional.test(line)) offenders.push(`${f}:${i + 1} ${line.trim().slice(0, 70)}`);
+    });
+  }
+  assert.deepEqual(offenders, [],
+    `fractional share quantities in tracked source:\n${offenders.join("\n")}`);
 });
