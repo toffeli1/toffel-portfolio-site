@@ -71,12 +71,6 @@ export default function OverviewPage() {
                   public.
                 </p>
 
-                <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
-                  I opened ASTS and RKLB three days apart in January 2026 and told myself I
-                  had two positions. I had one bet on space, sized at about 5% of the book,
-                  and I did not notice until both moved together.
-                </p>
-
                 {/* Identity strip */}
                 <div
                   className="mt-10 flex flex-wrap gap-x-10 gap-y-4 border-t pt-8"
