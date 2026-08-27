@@ -29,7 +29,7 @@ export default function NavBar() {
         <div className="flex items-center gap-2">
           <Link
             href="/"
-            aria-label="Toffel Capital — Home"
+            aria-label="Toffel Capital, Home"
             className="flex items-center transition-opacity hover:opacity-80"
           >
             <Image

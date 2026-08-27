@@ -28,6 +28,7 @@ const FILTERS: { key: Filter; label: string }[] = [
 const ACTION_COLOR: Record<string, string> = {
   Add: "#1a4a2e",
   Initiate: "#1a4a2e",
+  "Re-enter": "#1a4a2e",
   Trim: "#7a4520",
   Rebalance: "#7a4520",
   Exit: "#8b2530",
@@ -203,10 +204,22 @@ function CompanyBlock({ block }: { block: CompanyDecisions }) {
               </span>
               <WeightTransition event={e} />
             </div>
-            {e.rationale && (
+            {e.hasRealRationale ? (
               <p className="max-w-3xl text-[13px] leading-[1.8]" style={{ color: BODY }}>
                 {e.rationale}
               </p>
+            ) : (
+              <span
+                className="inline-flex items-center gap-1.5 rounded font-mono text-[9px] uppercase tracking-[0.12em]"
+                style={{
+                  color: FAINT,
+                  border: "1px dashed rgba(15,30,53,0.18)",
+                  padding: "3px 8px",
+                }}
+                title="No dated, decision-specific note survives for this event; only the transaction itself is on record."
+              >
+                no contemporaneous rationale
+              </span>
             )}
           </div>
         ))}
@@ -218,9 +231,13 @@ function CompanyBlock({ block }: { block: CompanyDecisions }) {
 export default function DecisionLogByCompany({
   blocks,
   pendingCount,
+  realRationaleCount,
+  totalCount,
 }: {
   blocks: CompanyDecisions[];
   pendingCount: number;
+  realRationaleCount: number;
+  totalCount: number;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
 
@@ -232,21 +249,27 @@ export default function DecisionLogByCompany({
 
   return (
     <div>
-      {/* Pending-data disclosure. Stated up front rather than left implicit. */}
-      {pendingCount > 0 && (
-        <div
-          className="mb-8 rounded-xl px-5 py-4"
-          style={{ background: "#f8f4ee", border: "1px solid rgba(15,30,53,0.08)" }}
-        >
-          <p className="font-mono text-[10px] leading-[1.7]" style={{ color: MUTED }}>
-            <span style={{ color: INK }}>Allocation history pending.</span>{" "}
-            {pendingCount} decision{pendingCount === 1 ? "" : "s"} do not yet show a
-            &ldquo;% of book&rdquo; transition. Computing those correctly needs
-            transaction-level history and dated portfolio values that this dataset
-            does not contain, so they are marked pending rather than estimated.
-          </p>
-        </div>
-      )}
+      {/* Disclosure, stated up front rather than left implicit: what the two
+          tags below mean, and how much of the log is written versus recorded. */}
+      <div
+        className="mb-8 rounded-xl px-5 py-4"
+        style={{ background: "#f8f4ee", border: "1px solid rgba(15,30,53,0.08)" }}
+      >
+        <p className="font-mono text-[10px] leading-[1.7]" style={{ color: MUTED }}>
+          <span style={{ color: INK }}>{realRationaleCount} of {totalCount} decisions</span>{" "}
+          carry a written, decision-specific rationale below. The rest show a
+          &ldquo;no contemporaneous rationale&rdquo; tag: the trade is on record, but no dated
+          note explaining it survived.
+          {pendingCount > 0 && (
+            <>
+              {" "}{pendingCount} decision{pendingCount === 1 ? "" : "s"} also do not yet
+              show a &ldquo;% of book&rdquo; transition, tagged &ldquo;pending&rdquo;
+              rather than estimated, since computing those needs transaction-level
+              history and dated portfolio values this dataset does not contain.
+            </>
+          )}
+        </p>
+      </div>
 
       <div className="mb-8 flex flex-wrap gap-2">
         {FILTERS.map(({ key, label }) => {

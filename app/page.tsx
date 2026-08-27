@@ -65,10 +65,16 @@ export default function OverviewPage() {
                   investment account.
                 </p>
                 <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
-                  The goal is not to be right on every position. It is to build a
-                  repeatable process, track decisions honestly, and understand whether
-                  outcomes came from sound reasoning or luck. This site documents that
-                  process in public.
+                  I won&apos;t be right on every position. That&apos;s fine. What I want
+                  is a repeatable process: track decisions honestly, then check whether the
+                  outcome came from good reasoning or luck. This site is that record, in
+                  public.
+                </p>
+
+                <p className="mt-6 text-[15px] leading-[2.0] text-[#2d3d52]">
+                  I opened ASTS and RKLB three days apart in January 2026 and told myself I
+                  had two positions. I had one bet on space, sized at about 5% of the book,
+                  and I did not notice until both moved together.
                 </p>
 
                 {/* Identity strip */}
@@ -149,45 +155,22 @@ export default function OverviewPage() {
 
                 <div className="max-w-3xl space-y-7">
               <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                The portfolio is built as a system. Every position has a role,
-                every account has a job, and sizing reflects conviction, time
-                horizon, and how directly a name expresses the underlying thesis.
-                The goal is not to own a large number of interesting companies.
-                It is to concentrate capital where the upside is asymmetric and
-                the construction makes sense at the total-book level.
-              </p>
-              <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                The account blends core market exposure with selective growth
-                and measured speculative positions, built for long-duration
-                compounding with low turnover by design.
-              </p>
-              <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                Position size is intentional. Larger weights are reserved for names
-                closest to the center of the thesis. Smaller weights are used for
-                emerging ideas or more speculative expressions where the upside may
-                be meaningful but the path is less certain. A 10% position is not
-                a stock I like more; it is a position that has earned a larger
-                share of risk budget.
-              </p>
-              <p className="text-[15px] leading-[1.9] text-[#2d3d52]">
-                Diversification here is not just sector diversification. It is
-                diversification by driver, maturity, and expression. Two AI-labeled
-                companies can sit on very different parts of the value chain, with
-                different customers, margin structures, and failure modes. What
-                matters is not whether names look different on the surface, but
-                whether they fail for the same reason.
+                I treat the portfolio as one system, not a pile of separate bets.
+                Every position has a job. Sizing tracks how well it does that job,
+                not how much I like the company. I&apos;d rather concentrate capital
+                where the upside is asymmetric than own a long list of names that
+                just look interesting.
               </p>
               <p
-                className="border-t pt-7 text-[15px] font-medium leading-[1.9]"
-                style={{
-                  borderColor: "rgba(15,30,53,0.08)",
-                  color: "#0f1e35",
-                }}
+                className="border-t pt-7 text-[15px] leading-[1.9]"
+                style={{ borderColor: "rgba(15,30,53,0.08)", color: "#2d3d52" }}
               >
-                The portfolio is meant to evolve. New positions have to earn their way
-                in. Existing positions have to keep earning their size. I want the site
-                to reflect not only what I own, but the logic that holds the portfolio
-                together.
+                Two AI-labeled holdings can still fail for completely different
+                reasons. NBIS&apos;s risk is hyperscalers undercutting independent
+                GPU clouds on price. CBRS&apos;s risk is customer concentration, a
+                handful of buyers deciding the outcome. Same label, different ways
+                to lose, which is the diversification I actually care about. The
+                portfolio keeps changing as positions prove or lose that case.
               </p>
                 </div>
               </div>
@@ -228,19 +211,11 @@ export default function OverviewPage() {
               {[
                 {
                   title: "Position sizing",
-                  body: "Core ETFs anchor the portfolio and can hold larger weights because they represent diversified market exposure. Individual equities are sized based on conviction, volatility, thesis maturity, and correlation with the rest of the portfolio. High-conviction individual equities generally target around 10% with a soft 11.5% upper bound unless the thesis is explicitly re-underwritten.",
+                  body: "Core ETFs anchor the portfolio and can hold bigger weights, since they're diversified already. Individual stocks are sized by conviction and volatility. A high-conviction stock targets around 10%, with a soft 11.5% ceiling, unless I explicitly re-underwrite the thesis. The account itself is built for long-duration compounding: core exposure plus selective thematic and speculative bets, low turnover by design. A position stays because it keeps earning its size.",
                 },
                 {
-                  title: "Account role",
-                  body: "The account is used for long-duration compounding and asymmetric growth, blending core market exposure with selective thematic and speculative positions. Low turnover is by design — a position stays because it keeps earning its size, not out of inertia.",
-                },
-                {
-                  title: "Trim / re-underwrite",
-                  body: "A position moving above its target weight is not an automatic sell signal. It is a review signal. If the thesis has improved enough to justify the larger weight, the position can be re-underwritten. If price appreciation has outpaced thesis improvement, the position can be trimmed back toward target.",
-                },
-                {
-                  title: "Sell discipline",
-                  body: "Positions can be reduced or exited when the thesis breaks, valuation outruns evidence, a better opportunity emerges, or position size exceeds the intended risk budget. The goal is not to avoid volatility, but to make sure each position’s size still matches its evidence, upside, and downside risk.",
+                  title: "When I trim or sell",
+                  body: "A position moving above target doesn't trigger an automatic sell. I treat it as a signal to review the thesis. If the thesis has gotten better, I re-underwrite and let the bigger weight stand. If price ran ahead of the thesis, I trim back toward target. I also cut a position when the thesis breaks, valuation outruns the evidence, a better idea shows up, or the size grows past what I want in my risk budget.",
                 },
               ].map(({ title, body }) => (
                 <div

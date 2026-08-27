@@ -22,7 +22,7 @@
 //                                  to after the final one.
 
 import { decisionLog, type DecisionEntry } from "./decisionLog";
-import { getCompany, type HoldingStatus } from "./companies";
+import { companies, getCompany, type HoldingStatus } from "./companies";
 import computedWeights from "./decisionWeights.json";
 import lifecycle from "./lifecycleEvents.json";
 
@@ -48,6 +48,10 @@ export interface DecisionEvent {
   groupId?: string;
   /** True when dated to a month snapshot because no exact date survives. */
   dateApproximate?: boolean;
+  /** False when `rationale` is a template fallback rather than something
+   *  actually written about this decision. Drives whether the UI renders it
+   *  as prose or as a small "no contemporaneous rationale" tag. */
+  hasRealRationale: boolean;
   /** How the weights were derived, when they were. */
   weightBasis?: "reconstructed-daily-close";
   /** Valuation close used for oldWeightPct — provenance shown on hover. */
@@ -138,22 +142,83 @@ const FACTUAL_INITIATION =
 const FACTUAL_REENTRY =
   "Position re-entered after a full exit. Transaction history establishes the allocation change; a separate contemporaneous rationale was not archived.";
 
+// ── Boilerplate detection ────────────────────────────────────────────────────
+// The hand-written log (data/decisionLog.ts) predates the company registry and
+// carries a handful of template fallbacks of its own, written when a real,
+// dated rationale for that specific decision was not on record. Matched by
+// their stable anchor phrase rather than full-string equality, since the
+// surrounding sentence names a different ticker or theme each time.
+const BOILERPLATE_PATTERNS: RegExp[] = [
+  /^Position initiated\. Transaction history establishes the allocation change/,
+  /^Position re-entered after a full exit\. Transaction history establishes the allocation change/,
+  /^Closed position\. No further rationale recorded in source/,
+  /^Currently held\. Specific buy-decision dates for this position are not captured/,
+  /Exact trim date not preserved in source records/,
+  /, extending the .+ allocation within the account\.$/,
+];
+
+/** True when `text` is a template fallback, not something written about this decision. */
+function isBoilerplateRationale(text: string | undefined): boolean {
+  if (!text) return true;
+  return BOILERPLATE_PATTERNS.some((re) => re.test(text));
+}
+
+// ── Guard: a Trim or Add requires evidence of an actual transaction ─────────
+// A weight decrease between two tracker snapshots can come from dilution
+// (capital added to other positions) or price depreciation, not a sale. A
+// weight increase can come from other holdings' prices falling or an
+// unrelated allocation shift, not a purchase. Treating a snapshot-to-snapshot
+// weight delta alone as evidence of a Trim or Add produced five phantom
+// events (Aug 2026: META, GOOGL, NBIS, UNH tagged "Trim"; RKLB, MELI, FBTC
+// tagged "Add"), none of which could be confirmed against transaction
+// records and all of which were removed from data/decisionLog.ts.
+//
+// The note text alone cannot be the check: a real, confirmed trade with an
+// unknown exact day (VOO's July trim) reads identically to a purely inferred
+// one. So this requires a positive, human-asserted flag instead of pattern-
+// matching the prose. Fails the build if a month-resolution Trim or Add is
+// missing it.
+function assertNoUnevidencedTransactionEvents(log: DecisionEntry[]): void {
+  const offenders = log.filter(
+    (e) =>
+      e.date.length === 7 &&
+      (e.action === "Trim" || e.action === "Add") &&
+      !e.dateApproximateButConfirmed
+  );
+  if (offenders.length > 0) {
+    const list = offenders.map((e) => `${e.ticker} (${e.date})`).join(", ");
+    throw new Error(
+      `data/decisionLog.ts has a month-resolution Trim or Add event without ` +
+        `dateApproximateButConfirmed set: ${list}. A weight change between two ` +
+        `tracker snapshots is not evidence of a trade on its own. Confirm the ` +
+        `transaction actually happened (e.g. against real transaction history) ` +
+        `and set dateApproximateButConfirmed: true, or remove the event.`
+    );
+  }
+}
+
+assertNoUnevidencedTransactionEvents(decisionLog);
+
 function lifecycleEventsFor(ticker: string): DecisionEvent[] {
   return (lifecycle.events as LifecycleRow[])
     .filter((e) => e.ticker === ticker)
-    .map((e) => ({
-      startDate: e.startDate,
-      endDate: e.endDate,
-      action: e.action === "Initiate" ? ("Initiate" as const) : ("Re-enter" as const),
-      actionLabel: e.action,
-      oldWeightPct: undefined,
-      newWeightPct: undefined,
-      rationale:
+    .map((e) => {
+      const rationale =
         e.action === "Initiate"
           ? (INITIATION_RATIONALE[ticker] ?? FACTUAL_INITIATION)
-          : FACTUAL_REENTRY,
-      groupId: `lifecycle-${ticker}-${e.intervalIndex}`,
-    }));
+          : FACTUAL_REENTRY;
+      return {
+        startDate: e.startDate,
+        endDate: e.endDate,
+        action: e.action === "Initiate" ? ("Initiate" as const) : ("Re-enter" as const),
+        actionLabel: e.action,
+        oldWeightPct: undefined,
+        newWeightPct: undefined,
+        rationale,
+        hasRealRationale: !isBoilerplateRationale(rationale),
+        groupId: `lifecycle-${ticker}-${e.intervalIndex}`,
+      };
+    });
 }
 
 // ── Normalisation ────────────────────────────────────────────────────────────
@@ -230,6 +295,9 @@ function mergeEvents(events: DecisionEvent[], ticker: string): DecisionEvent[] {
       newWeightPct: last.newWeightPct,
       // Keep every distinct rationale; identical text isn't repeated.
       rationale: [...new Set(sorted.map((e) => e.rationale).filter(Boolean))].join(" "),
+      // A merged event counts as "real" if any of the trades it absorbed did,
+      // even when a boilerplate fallback from another trade rides along.
+      hasRealRationale: sorted.some((e) => e.hasRealRationale),
       dateApproximate: sorted.some((e) => e.dateApproximate),
     });
   }
@@ -262,6 +330,7 @@ function toEvent(entry: DecisionEntry): DecisionEvent {
     oldWeightPct: parseWeight(entry.oldWeight),
     newWeightPct: parseWeight(entry.newWeight),
     rationale: entry.note,
+    hasRealRationale: !isBoilerplateRationale(entry.note),
     groupId: entry.groupId,
     dateApproximate: entry.date.length === 7,
   };
@@ -281,6 +350,15 @@ export function decisionsByCompany(): CompanyDecisions[] {
     if (list) list.push(entry);
     else byTicker.set(entry.ticker, [entry]);
   }
+  // A ticker can have real, dated lifecycle events reconstructed from actual
+  // transaction history with zero surviving hand-written rows, e.g. after an
+  // inferred entry with no real evidence behind it is removed (see the
+  // no-weight-delta-inference guard below). Seed those tickers too, or a
+  // company with a perfectly real history would silently vanish from this
+  // page for having no entry in the hand-written log.
+  for (const row of lifecycle.events as LifecycleRow[]) {
+    if (!byTicker.has(row.ticker)) byTicker.set(row.ticker, []);
+  }
 
   const blocks: CompanyDecisions[] = [];
   for (const [ticker, entries] of byTicker) {
@@ -299,12 +377,15 @@ export function decisionsByCompany(): CompanyDecisions[] {
       .filter((e) => !lifecycleDates.has(e.startDate))
       .filter((e) => !(e.startDate.length === 7 && lifecycleMonths.has(e.startDate)));
     const events = mergeEvents([...lifecycleRows, ...handWritten], ticker);
+    // Nothing survived for this ticker at all (shouldn't happen given the
+    // seeding above, but guards against a future refactor silently regressing it).
+    if (events.length === 0) continue;
 
     blocks.push({
       ticker,
-      company: registry?.name ?? entries[0].company ?? ticker,
+      company: registry?.name ?? entries[0]?.company ?? ticker,
       status: registry?.status ?? "unknown",
-      statusLabel: statusLabelFor(registry?.status, entries[0].status),
+      statusLabel: statusLabelFor(registry?.status, entries[0]?.status),
       events,
       hasPendingWeights: events.some(
         (e) => e.oldWeightPct === undefined || e.newWeightPct === undefined
@@ -336,3 +417,66 @@ export function pendingWeightEventCount(): number {
     0
   );
 }
+
+/** Total events across every company, held or exited. */
+export function totalEventCount(): number {
+  return decisionsByCompany().reduce((n, b) => n + b.events.length, 0);
+}
+
+/** Count of events with an actual written rationale, not a template fallback. */
+export function realRationaleEventCount(): number {
+  return decisionsByCompany().reduce(
+    (n, b) => n + b.events.filter((e) => e.hasRealRationale).length,
+    0
+  );
+}
+
+// ── Guard: Held/Exited status must derive from one rule ─────────────────────
+// data/companies.ts hand-sets status: "active" | "exited" per ticker. That
+// field is the practical source Investments and thesis navigation read, but
+// it can drift silently from the decision history it is supposed to
+// summarize — exactly what happened when VOO, CRWD, and FBTC were removed
+// from the Aug 2026 holdings snapshot without a corresponding Exit event ever
+// being added to data/decisionLog.ts. The registry said "exited"; the log
+// said nothing happened. Both cannot be true.
+//
+// The rule, enforced here rather than just documented: a company is exited
+// if and only if its most recent decision-log event (lifecycle events
+// included) is an explicit Exit. This throws at module load, so a future
+// registry/log mismatch fails the build instead of shipping quietly.
+function assertStatusMatchesLastEvent(): void {
+  const blocks = decisionsByCompany();
+  const byTicker = new Map(blocks.map((b) => [b.ticker, b]));
+  const mismatches: string[] = [];
+
+  for (const c of companies) {
+    const block = byTicker.get(c.ticker);
+    const last = block?.events[block.events.length - 1];
+    const lastIsExit = last?.action === "Exit";
+
+    if (c.status === "exited" && !lastIsExit) {
+      mismatches.push(
+        `${c.ticker}: registry says "exited" but its most recent decision-log ` +
+          `event is ${last ? `"${last.action}" (${last.startDate})` : "missing entirely"}, not an Exit.`
+      );
+    }
+    if (c.status === "active" && lastIsExit) {
+      mismatches.push(
+        `${c.ticker}: registry says "active" but its most recent decision-log ` +
+          `event is an Exit (${last!.startDate}).`
+      );
+    }
+  }
+
+  if (mismatches.length > 0) {
+    throw new Error(
+      `Held/Exited status mismatch between data/companies.ts and the decision log:\n` +
+        mismatches.join("\n") +
+        `\nEither the registry status is wrong, or the log is missing the event that ` +
+        `actually justifies it. Do not fix this by guessing a date; find the real ` +
+        `transaction and add it, or correct the registry.`
+    );
+  }
+}
+
+assertStatusMatchesLastEvent();

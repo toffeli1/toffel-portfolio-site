@@ -12,6 +12,22 @@ export interface DecisionEntry {
   groupId?: string;
   /** "YYYY-MM-DD" or "YYYY-MM" for month-resolution entries */
   date: string;
+  /**
+   * Required (checked at build time, see the guard in data/decisions.ts) on
+   * any month-resolution Trim or Add: an explicit, positive statement that a
+   * real transaction is confirmed to have happened, even though the exact
+   * day is not preserved. The absence of this flag is NOT itself evidence of
+   * anything; it exists because a weight change between two tracker
+   * snapshots is not evidence of a trade on its own; a partial-trim weight
+   * decrease can be dilution from capital added elsewhere or price
+   * depreciation, and a partial-add weight increase can be other holdings'
+   * prices falling. Five entries were published in Aug 2026 inferring a
+   * Trim/Add from a weight delta alone with no other evidence; none could be
+   * confirmed and all were removed. Set this only when you have actually
+   * confirmed the transaction happened, e.g. against Robinhood history, not
+   * because the weight moved.
+   */
+  dateApproximateButConfirmed?: boolean;
   ticker: string;
   company: string;
   account: string;
@@ -75,6 +91,40 @@ export const decisionLog: DecisionEntry[] = [
   // CEG spans Aug 7–18 as one thesis-driven add (groupCeg). GLDM and AMZN each
   // had two fills on a single day, which the grouping layer in data/decisions.ts
   // merges into one event automatically.
+  //
+  // The other side of the same rebalance: VOO, CRWD, and FBTC were each fully
+  // sold in a single transaction, funding the adds above. Dates and full-exit
+  // quantities are exact, confirmed against the transaction ledger.
+  {
+    date: "2026-08-18",
+    ticker: "VOO",
+    company: "Vanguard S&P 500 ETF",
+    account: "Investments",
+    action: "Exit",
+    type: "Full exit",
+    note: "Fully exited VOO as part of the August 2026 portfolio restructuring.",
+    status: "Fully Exited",
+  },
+  {
+    date: "2026-08-12",
+    ticker: "FBTC",
+    company: "Fidelity Wise Origin Bitcoin Fund",
+    account: "Investments",
+    action: "Exit",
+    type: "Full exit",
+    note: "Fully exited FBTC as part of the August 2026 portfolio restructuring.",
+    status: "Fully Exited",
+  },
+  {
+    date: "2026-08-07",
+    ticker: "CRWD",
+    company: "CrowdStrike Holdings",
+    account: "Investments",
+    action: "Exit",
+    type: "Full exit",
+    note: "Fully exited CRWD as part of the August 2026 portfolio restructuring.",
+    status: "Fully Exited",
+  },
   {
     date: "2026-08-06",
     ticker: "CEG",
@@ -271,6 +321,7 @@ export const decisionLog: DecisionEntry[] = [
   },
   {
     date: "2026-07",
+    dateApproximateButConfirmed: true,
     ticker: "VOO",
     company: "Vanguard S&P 500 ETF",
     account: "Investments",
@@ -281,58 +332,6 @@ export const decisionLog: DecisionEntry[] = [
     returnPct: 12.5,
     status: "Partially Trimmed",
     realizedSharePct: 17.67,
-  },
-  {
-    date: "2026-07",
-    ticker: "GOOGL",
-    company: "Alphabet Class A",
-    account: "Investments",
-    action: "Trim",
-    type: "Partial trim, position remains held",
-    note: "Trimmed a small portion of GOOGL; the remainder continues to be held. Exact trim date not preserved in source records; recorded as of the account's July 2026 tracker snapshot.",
-    href: "/positions/GOOGL",
-    returnPct: 36.1,
-    status: "Partially Trimmed",
-    realizedSharePct: 1.90,
-  },
-  {
-    date: "2026-07",
-    ticker: "NBIS",
-    company: "Nebius Group",
-    account: "Investments",
-    action: "Trim",
-    type: "Partial trim, position remains held",
-    note: "Trimmed a small portion of NBIS; the remainder continues to be held. Exact trim date not preserved in source records; recorded as of the account's July 2026 tracker snapshot.",
-    href: "/positions/NBIS",
-    returnPct: 19.0,
-    status: "Partially Trimmed",
-    realizedSharePct: 0.69,
-  },
-  {
-    date: "2026-07",
-    ticker: "UNH",
-    company: "UnitedHealth",
-    account: "Investments",
-    action: "Trim",
-    type: "Partial trim, position remains held",
-    note: "Trimmed a small portion of UNH; the remainder continues to be held. Exact trim date not preserved in source records; recorded as of the account's July 2026 tracker snapshot.",
-    href: "/positions/UNH",
-    returnPct: 20.4,
-    status: "Partially Trimmed",
-    realizedSharePct: 0.98,
-  },
-  {
-    date: "2026-07",
-    ticker: "META",
-    company: "Meta Platforms",
-    account: "Investments",
-    action: "Trim",
-    type: "Partial trim, position remains held",
-    note: "Trimmed a small portion of META at a modest loss; the remainder continues to be held. Exact trim date not preserved in source records; recorded as of the account's July 2026 tracker snapshot.",
-    href: "/positions/META",
-    returnPct: -4.1,
-    status: "Partially Trimmed",
-    realizedSharePct: -0.27,
   },
   {
     date: "2026-07",
@@ -354,42 +353,6 @@ export const decisionLog: DecisionEntry[] = [
     type: "Corporate action",
     note: "Historical NOW buy lots include post-split fills; the position records were adjusted for the split. No change to the position or thesis. This is a bookkeeping adjustment, not a trade.",
     href: "/positions/NOW",
-    status: "Held",
-  },
-  {
-    date: "2026-07",
-    ticker: "FBTC",
-    company: "Fidelity Wise Origin Bitcoin Fund",
-    account: "Investments",
-    action: "Add",
-    type: "Current holding",
-    note: "Currently held. Specific buy-decision dates for this position are not captured in source records beyond the account's July 2026 tracker snapshot.",
-    href: "/positions/FBTC",
-    returnPct: -28.4,
-    status: "Held",
-  },
-  {
-    date: "2026-07",
-    ticker: "MELI",
-    company: "MercadoLibre",
-    account: "Investments",
-    action: "Add",
-    type: "Current holding",
-    note: "Currently held. Specific buy-decision dates for this position are not captured in source records beyond the account's July 2026 tracker snapshot.",
-    href: "/positions/MELI",
-    returnPct: -5.1,
-    status: "Held",
-  },
-  {
-    date: "2026-07",
-    ticker: "RKLB",
-    company: "Rocket Lab",
-    account: "Investments",
-    action: "Add",
-    type: "Current holding",
-    note: "Currently held. Specific buy-decision dates for this position are not captured in source records beyond the account's July 2026 tracker snapshot.",
-    href: "/positions/RKLB",
-    returnPct: -19.8,
     status: "Held",
   },
   {
@@ -612,7 +575,7 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Add",
     type: "Rebalance into weakness",
-    note: "Re-added to META after a small mid-May trim, restoring sizing into recent price weakness.",
+    note: "Added to META, restoring sizing into recent price weakness.",
     href: "/positions/META",
     returnPct: -5.35,
   },
@@ -665,6 +628,7 @@ export const decisionLog: DecisionEntry[] = [
   },
   {
     date: "2026-05",
+    dateApproximateButConfirmed: true,
     ticker: "CRWD",
     company: "CrowdStrike Holdings",
     account: "Investments",
@@ -675,6 +639,7 @@ export const decisionLog: DecisionEntry[] = [
   },
   {
     date: "2026-05",
+    dateApproximateButConfirmed: true,
     ticker: "NOW",
     company: "ServiceNow",
     account: "Investments",
@@ -685,6 +650,7 @@ export const decisionLog: DecisionEntry[] = [
   },
   {
     date: "2026-05",
+    dateApproximateButConfirmed: true,
     ticker: "PENG",
     company: "Penguin Solutions",
     account: "Investments",
@@ -798,6 +764,7 @@ export const decisionLog: DecisionEntry[] = [
   },
   {
     date: "2023-06",
+    dateApproximateButConfirmed: true,
     ticker: "VOO",
     company: "Vanguard S&P 500 ETF",
     account: "Investments",

@@ -14,8 +14,8 @@ const SITE_DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Toffel Capital — Investment Portfolio",
-    template: "%s — Toffel Capital",
+    default: "Toffel Capital: Investment Portfolio",
+    template: "%s | Toffel Capital",
   },
   description: SITE_DESCRIPTION,
   icons: {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Toffel Capital — Investment Portfolio",
+    title: "Toffel Capital: Investment Portfolio",
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: "Toffel Capital",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Toffel Capital — Investment Portfolio",
+    title: "Toffel Capital: Investment Portfolio",
     description: SITE_DESCRIPTION,
     images: ["/og"],
   },

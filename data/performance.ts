@@ -82,6 +82,17 @@ export interface PerformanceArtifact {
   drawdown: DrawdownPoint[];
   maxDrawdownPct: number;
   maxDrawdownDate: string;
+  annualizedVolatilityPct: number;
+  volatilityNote: string;
+  betaVsSp500: number | null;
+  sensitivity: {
+    excludingNBIS: {
+      label: string;
+      cumulativeReturnPct: number;
+      excessVsSp500Pts: number | null;
+      methodologyNote: string;
+    };
+  };
   benchmarks: Record<string, BenchmarkView>;
   activeHoldings: HoldingPerformance[];
   historicalHoldings: HistoricalEpisode[];

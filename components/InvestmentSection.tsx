@@ -3,6 +3,7 @@ import TickerLogo from "@/components/TickerLogo";
 import SleeveDashboard, { type SleeveDashboardHolding } from "@/components/SleeveDashboard";
 import { portfolioState, type PortfolioPosition } from "@/data/portfolioState";
 import { thesisHrefIfPublished } from "@/lib/routes";
+import { trackRecordLengthLabel } from "@/lib/performanceConfig";
 
 // ─── Investments section ──────────────────────────────────────────────────────
 // Reads the canonical current state (data/portfolioState.ts) — not sleeve
@@ -186,9 +187,9 @@ export default function InvestmentSection() {
             <Link href="/performance" className="underline">
               Performance
             </Link>
-            . Track record is short (~3 years) and spans a strong market. Past
-            performance does not indicate future results. For informational purposes
-            only; not financial advice.
+            . Track record is short ({trackRecordLengthLabel(portfolioState.asOf)}) and spans a
+            strong market. Past performance does not indicate future results. For
+            informational purposes only; not financial advice.
           </p>
         </div>
       </div>

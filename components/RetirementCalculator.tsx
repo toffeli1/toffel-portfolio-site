@@ -398,7 +398,7 @@ export function RetirementCalculator() {
         </h2>
         <p className="mt-2 max-w-xl text-[13px] leading-[1.75] text-[#5a6e82]">
           Estimate the long-term effect of disciplined contributions and
-          tax-free compounding — and how much the Roth structure changes
+          tax-free compounding, and how much the Roth structure changes
           the outcome versus a taxable account.
         </p>
       </div>
@@ -716,13 +716,13 @@ export function RetirementCalculator() {
         </p>
         <p className="font-mono text-[10px] leading-[1.8]" style={{ color: "#5a6e82" }}>
           Roth IRA compounds at the gross return rate tax-free. The taxable account
-          applies an annual tax drag — {(ANNUAL_REALIZATION_RATE * 100).toFixed(0)}% of annual gains are
+          applies an annual tax drag: {(ANNUAL_REALIZATION_RATE * 100).toFixed(0)}% of annual gains are
           assumed realized each year (dividends &amp; turnover) and taxed at your
           marginal rate; remaining unrealized gains are taxed at a flat{" "}
           {(LTCG_RATE_AT_WITHDRAWAL * 100).toFixed(0)}% LTCG rate at retirement. Contributions are
           identical in both accounts. Roth limits: ${ROTH_LIMIT_UNDER_50.toLocaleString()}/yr under 50,{" "}
           ${ROTH_LIMIT_50_PLUS.toLocaleString()}/yr at 50+. Compounding is annual.
-          Illustrative only — not financial advice. Simplified assumptions; actual
+          Illustrative only, not financial advice. Simplified assumptions; actual
           results will differ.
         </p>
       </div>

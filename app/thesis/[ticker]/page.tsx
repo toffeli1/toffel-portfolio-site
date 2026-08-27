@@ -44,7 +44,7 @@ export async function generateMetadata({
   if (!company || !thesis) return {};
   const kind = thesis.historical ? "Historical position" : "Investment thesis";
   return {
-    title: `${company.name} (${t}) — ${kind}`,
+    title: `${company.name} (${t}): ${kind}`,
     description:
       thesis.headline ??
       thesis.sections[0]?.body[0]?.slice(0, 155) ??
@@ -208,29 +208,41 @@ export default async function ThesisPage({
         )}
 
         {/* ── Analysis ────────────────────────────────────────────────────── */}
-        {thesis.sections.map((section, i) => (
-          <section
-            key={i}
-            className="border-b"
-            style={{ borderColor: "rgba(15,30,53,0.08)" }}
-          >
-            <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
-              <p
-                className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em]"
-                style={{ color: FAINT }}
-              >
-                {section.heading}
-              </p>
-              <div className="max-w-3xl space-y-5">
-                {section.body.map((para, j) => (
-                  <p key={j} className="text-[15px] leading-[1.85]" style={{ color: BODY }}>
-                    {para}
-                  </p>
-                ))}
+        {/* Placeholder sections (isPlaceholder: true) are dev-only prompts
+            awaiting Isaac's answer — never shipped to production. */}
+        {thesis.sections
+          .filter((section) => !section.isPlaceholder || process.env.NODE_ENV !== "production")
+          .map((section, i) => (
+            <section
+              key={i}
+              className="border-b"
+              style={{
+                borderColor: section.isPlaceholder ? "#c98a4b" : "rgba(15,30,53,0.08)",
+                borderStyle: section.isPlaceholder ? "dashed" : "solid",
+                background: section.isPlaceholder ? "#fdf1e7" : undefined,
+              }}
+            >
+              <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
+                <p
+                  className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em]"
+                  style={{ color: section.isPlaceholder ? "#7a4520" : FAINT }}
+                >
+                  {section.isPlaceholder ? `TODO — ${section.heading}` : section.heading}
+                </p>
+                <div className="max-w-3xl space-y-5">
+                  {section.body.map((para, j) => (
+                    <p
+                      key={j}
+                      className="text-[15px] leading-[1.85]"
+                      style={{ color: section.isPlaceholder ? "#7a4520" : BODY }}
+                    >
+                      {para}
+                    </p>
+                  ))}
+                </div>
               </div>
-            </div>
-          </section>
-        ))}
+            </section>
+          ))}
 
         {/* ── Reported financials ─────────────────────────────────────────── */}
         {thesis.charts.length > 0 && (

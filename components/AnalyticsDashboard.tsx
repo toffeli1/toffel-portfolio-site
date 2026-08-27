@@ -533,7 +533,7 @@ export default function AnalyticsDashboard() {
           </h2>
           <p className="mb-10 max-w-2xl text-[13px] leading-[1.8]" style={{ color: MUTED }}>
             The Herfindahl-Hirschman Index (HHI) measures concentration: 1/N for equal weights,
-            1.0 for a single holding. Effective N is 1/HHI — the equivalent number of equal-weight
+            1.0 for a single holding. Effective N is 1/HHI, the equivalent number of equal-weight
             positions that would produce the same concentration level.
           </p>
 

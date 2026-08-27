@@ -164,13 +164,13 @@ export const positionDetails: Record<string, PositionDetail> = {
 
   MU: {
     whyIOwnIt:
-      "Memory is the most cyclical subsector in semiconductors, and that cyclicality creates the opportunity. Micron is the only American company in the global DRAM oligopoly — a three-player market where scale, process technology, and capital intensity create near-impenetrable barriers to entry. HBM3E is transforming what was previously a pure commodity cycle business into something with real pricing power with AI customers. I bought the position mid-inventory correction, anticipating the HBM ramp would arrive before standard DRAM normalized, giving Micron a window of particularly favorable blended ASPs. The position reflects both the cyclical recovery thesis and the structural HBM narrative.",
+      "Memory is the most cyclical subsector in semiconductors, and that cyclicality creates the opportunity. Micron is the only American company in the global DRAM oligopoly, a three-player market where scale, process technology, and capital intensity create near-impenetrable barriers to entry. HBM3E is transforming what was previously a pure commodity cycle business into something with real pricing power with AI customers. I bought the position mid-inventory correction, anticipating the HBM ramp would arrive before standard DRAM normalized, giving Micron a window of particularly favorable blended ASPs. The position reflects both the cyclical recovery thesis and the structural HBM narrative.",
     whyThisSleeve:
       "MU is in the taxable retail portfolio because memory semiconductors require active position management through cycles — adding during downturns and trimming during upcycles. That dynamic doesn't fit the long-duration, set-and-compound orientation of the Roth IRA. Tax loss harvesting during memory cycle troughs has also historically been valuable in this name.",
     longDescription:
-      "Micron Technology is the US anchor in the global DRAM oligopoly, competing with SK Hynix and Samsung in a market where scale, process technology, and capital intensity create near-impenetrable barriers to entry. The traditional DRAM business — commodity server, PC, and mobile memory — remains deeply cyclical and subject to oversupply risk, but High Bandwidth Memory is creating a structurally different revenue layer. HBM3E, the fourth-generation stacked memory required by NVIDIA's AI accelerators, commands ASP premiums of 5-8x over standard DRAM, and demand from AI training infrastructure is growing faster than any of the three producers can add capacity.",
+      "Micron Technology is the US anchor in the global DRAM oligopoly, competing with SK Hynix and Samsung in a market where scale, process technology, and capital intensity create near-impenetrable barriers to entry. The traditional DRAM business, commodity server, PC, and mobile memory, remains deeply cyclical and subject to oversupply risk, but High Bandwidth Memory is creating a structurally different revenue layer. HBM3E, the fourth-generation stacked memory required by NVIDIA's AI accelerators, commands ASP premiums of 5-8x over standard DRAM, and demand from AI training infrastructure is growing faster than any of the three producers can add capacity.",
     thesisP2:
-      "Micron's competitive position in HBM has improved dramatically. With HBM3E qualification at NVIDIA and growing supply into AI training clusters, Micron is capturing share in a market where the pricing dynamics are fundamentally different from commodity DRAM. The key question for the next 12-18 months is the pace of standard DRAM inventory normalization — if PC and mobile destocking completes on schedule, blended ASPs should rise sharply as the AI-driven product mix improves. That combination creates earnings leverage that is among the highest of any semiconductor company in a recovery cycle.",
+      "Micron's competitive position in HBM has improved dramatically. With HBM3E qualification at NVIDIA and growing supply into AI training clusters, Micron is capturing share in a market where the pricing dynamics are fundamentally different from commodity DRAM. The key question for the next 12-18 months is the pace of standard DRAM inventory normalization. If PC and mobile destocking completes on schedule, blended ASPs should rise sharply as the AI-driven product mix improves. That combination creates earnings leverage that is among the highest of any semiconductor company in a recovery cycle.",
     bullCase: {
       title: "HBM Shortage Creates Pricing Power",
       summary:
@@ -202,14 +202,14 @@ export const positionDetails: Record<string, PositionDetail> = {
       ],
     },
     risks: [
-      "Semiconductor memory is among the most cyclical subsectors — a downturn can erase multiple years of earnings rapidly.",
+      "Semiconductor memory is among the most cyclical subsectors, and a downturn can erase multiple years of earnings rapidly.",
       "Samsung and SK Hynix aggressive capacity expansion could oversupply the DRAM market.",
       "Geopolitical risk including incremental export controls on sales to China.",
-      "HBM customer concentration — primarily NVIDIA supply chain — creates binary dependency.",
+      "HBM customer concentration, primarily the NVIDIA supply chain, creates binary dependency.",
     ],
     watchList: [
       "HBM3E qualification status and supply agreements at customers beyond NVIDIA.",
-      "Standard DRAM spot price trends — the leading indicator for the commodity segment recovery.",
+      "Standard DRAM spot price trends, the leading indicator for the commodity segment recovery.",
       "SK Hynix and Samsung capacity announcements across both HBM and standard DRAM.",
       "MU's quarterly guidance for HBM revenue mix as a percentage of total data center revenue.",
       "Export control developments affecting China DRAM and NAND sales.",
@@ -992,7 +992,7 @@ export const positionDetails: Record<string, PositionDetail> = {
 
   GOOGL: {
     whyIOwnIt:
-      "Alphabet is the portfolio's core technology compounding position — a business with durable near-monopoly economics in search advertising, a fast-growing cloud platform, and more AI infrastructure investment underway than nearly any other company. The AI disruption narrative around Search is real but overstated in the near term: the vast majority of advertising revenue ties to commercial intent queries where AI summaries can actually improve ad conversion rates by surfacing higher-quality intent signals. Meanwhile, Gemini's integration across the Google product suite is driving Cloud adoption and creating new monetization surfaces that didn't exist two years ago. I own GOOGL as the application-layer AI compounder — not just chips and inference, but the platform where AI value ultimately gets monetized.",
+      "Alphabet is the portfolio's core technology compounding position — a business with durable near-monopoly economics in search advertising, a fast-growing cloud platform, and more AI infrastructure investment underway than nearly any other company. The AI disruption narrative around Search is real but overstated in the near term: the vast majority of advertising revenue ties to commercial intent queries where AI summaries can actually improve ad conversion rates by surfacing higher-quality intent signals. Meanwhile, Gemini's integration across the Google product suite is driving Cloud adoption and creating new monetization surfaces that didn't exist two years ago. I own GOOGL as the application-layer AI compounder, the platform where AI value ultimately gets monetized, beyond chips and inference.",
     whyThisSleeve:
       "GOOGL is in the account because it's a large-cap compounder that benefits from holding through the AI transition cycle without pressure to trade around quarterly volatility. Alphabet's history of generating exceptional capital appreciation, and the multi-decade nature of the AI monetization thesis, is best expressed through a long, low-turnover hold rather than active trading around it.",
     longDescription:
@@ -1547,7 +1547,7 @@ export const positionDetails: Record<string, PositionDetail> = {
 
   NOW: {
     whyIOwnIt:
-      "ServiceNow is in the account as the portfolio's primary enterprise software expression. My thesis is that ServiceNow has moved well beyond IT service management and is becoming a core workflow and automation layer across large organizations, not just an IT service management vendor. Its value comes from being embedded into business processes, where switching costs can grow as more departments use the platform. The AI angle is also more practical than speculative: ServiceNow can use AI to improve internal productivity, automate enterprise workflows, and increase the value of its existing platform.",
+      "ServiceNow is in the account as the portfolio's primary enterprise software expression. My thesis is that ServiceNow has moved well beyond IT service management and is becoming a core workflow and automation layer across large organizations. Its value comes from being embedded into business processes, where switching costs can grow as more departments use the platform. The AI angle is also more practical than speculative: ServiceNow can use AI to improve internal productivity, automate enterprise workflows, and increase the value of its existing platform.",
     whyThisSleeve:
       "NOW is in the account because the workflow expansion thesis is a multi-year platform compounding story rather than a quarter-to-quarter trade. A long, low-turnover hold is the right structure for a premium-multiple, durable-growth name where near-term price action will be driven by software-multiple regime more than by the underlying business.",
     longDescription:

@@ -95,7 +95,7 @@ export async function generateMetadata({
   if (!company) return {};
   return {
     title: `${ticker} ${company}`,
-    description: thesis ?? `${ticker} ${company} — position thesis and research.`,
+    description: thesis ?? `${ticker} ${company}: position thesis and research.`,
   };
 }
 

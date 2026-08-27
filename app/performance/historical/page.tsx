@@ -142,7 +142,7 @@ export default function HistoricalPositionsPage() {
               counted in <strong>trading sessions</strong>, and a position exited and re-entered
               counts only the sessions inside its real holding intervals. Average geometric return
               per trading session held is (1 + total return)^(1 / sessions held) − 1. A dash means
-              no defensible figure exists — left blank rather than approximated. Decision rationale
+              no defensible figure exists, left blank rather than approximated. Decision rationale
               for each exit is in the{" "}
               <Link href="/decision-log" className="underline">Decision Log</Link>.
             </p>

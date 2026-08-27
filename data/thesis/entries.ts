@@ -41,7 +41,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
       {
         heading: "Entry and what would change the view",
         body: [
-          "The position was initiated on a pullback rather than earlier. That framing carries an obvious risk: buying a large-cap on weakness only works if the weakness was about price rather than about the business. The combination that would falsify it is AWS growth decelerating while capital spending stays elevated, which would mean the company is building into demand that is not arriving.\n\nSizing has to account for what else the book already owns. AWS, Google Cloud and Meta's data-center build are all funded out of the same AI capital-spending cycle, so the correlation between these holdings is higher than their different end markets suggest.",
+          "I initiated the position on a pullback rather than earlier. That framing carries an obvious risk: buying a large-cap on weakness only works if the weakness was about price rather than about the business. The combination that would falsify it is AWS growth decelerating while capital spending stays elevated, which would mean the company is building into demand that is not arriving.\n\nSizing has to account for what else the book already owns. AWS, Google Cloud and Meta's data-center build are all funded out of the same AI capital-spending cycle, so the correlation between these holdings is higher than their different end markets suggest.",
         ],
         weighsRisk: true,
       },
@@ -161,7 +161,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
       {
         heading: "What the risk actually is",
         body: [
-          "The bear case is not usually competitive displacement; the network is genuinely hard to replicate. It is regulatory pressure on interchange and scheme fees, plus the slow emergence of account-to-account rails that bypass card networks. Neither moves quickly, but both compress the toll rather than the volume. That is why operating margin, not payment volume, is the line to watch.",
+          "The network itself is genuinely hard to replicate, so competitive displacement isn't the real bear case. The real risk is regulatory pressure on interchange and scheme fees, plus the slow emergence of account-to-account rails that bypass card networks. Neither moves quickly, but both compress the toll rather than the volume. That's why operating margin, not payment volume, is the line to watch.",
         ],
         weighsRisk: true,
       },
@@ -177,7 +177,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
       {
         heading: "Structural growth in Latin America",
         body: [
-          "MercadoLibre is the portfolio's only meaningful exposure outside the United States, and its economics are driven by household formation, credit access and payment adoption in Latin America rather than by enterprise technology budgets. That makes it one of the few holdings whose results do not depend on the AI capital-spending cycle.\n\nThe valuation was considered reasonable relative to the growth and the quality of the franchise when the position was built.",
+          "MercadoLibre is the portfolio's only meaningful exposure outside the United States, and its economics are driven by household formation, credit access and payment adoption in Latin America rather than by enterprise technology budgets. That makes it one of the few holdings whose results do not depend on the AI capital-spending cycle.\n\nI considered the valuation reasonable relative to the growth and the quality of the franchise when I built the position.",
           "The business is two reinforcing engines: a commerce marketplace and a payments and credit operation built on top of it. Payments started as a way to make the marketplace work and became a large business in its own right.",
         ],
       },
@@ -209,7 +209,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
       {
         heading: "Position history: reassessment and re-entry",
         body: [
-          "There was a short period during which the position was sold and subsequently rebuilt. That sequence is best described as a reassessment followed by a re-entry: the holding was exited, the situation was re-examined, and the position was re-established.",
+          "There was a short period during which I sold the position and later rebuilt it. That sequence is best described as a reassessment followed by a re-entry: I exited the holding, re-examined the situation, and re-established the position.",
         ],
       },
       {
@@ -285,7 +285,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
       {
         heading: "What the earnings result changed",
         body: [
-          "The position was added after earnings strengthened conviction that scarce GPU compute demand is translating into real financial growth. That is the specific thing the report confirmed: not that demand exists, which was already visible, but that it is arriving as revenue.",
+          "I added to the position after earnings strengthened my conviction that scarce GPU compute demand is translating into real financial growth. That is the specific thing the report confirmed: not that demand exists, which was already visible, but that it is arriving as revenue.",
           "The thesis centers on very strong compute revenue growth, large contracted demand and backlog, scarce GPU capacity, strong utilization, and pricing power. Those are connected. Scarcity produces the pricing power, utilization turns installed capacity into revenue, and backlog makes the next period visible in advance.",
         ],
       },
@@ -300,16 +300,28 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
       {
         heading: "Competition from hyperscalers, and why sizing stays controlled",
         body: [
-          "Position sizing remains deliberately controlled. Nebius is extremely volatile and competes against hyperscalers with cheaper financing, larger balance sheets, greater infrastructure scale, and the ability to access capital at better rates. Every one of those is a durable advantage in a business where the constraint is capital and power rather than software.",
-          "There is no assumption here that independent GPU cloud providers automatically win the long-term compute market. It is entirely possible that hyperscalers ultimately dominate compute, and that independents end up serving overflow demand at thinner margins. That possibility is why the position is small rather than why I avoid it. The return if scarcity persists is large enough to justify a controlled allocation against a real chance of being wrong.",
+          "I keep it small because Nebius is extremely volatile and competes against hyperscalers with cheaper financing, larger balance sheets, greater infrastructure scale, and the ability to access capital at better rates. Every one of those is a durable advantage in a business where the constraint is capital and power rather than software.",
+          "There is no assumption here that independent GPU cloud providers automatically win the long-term compute market. It is entirely possible that hyperscalers ultimately dominate compute, and that independents end up serving overflow demand at thinner margins. That possibility is why I keep it small rather than why I avoid it. The return if scarcity persists is large enough to justify a controlled allocation against a real chance of being wrong.",
         ],
         weighsRisk: true,
       },
       {
         heading: "Valuation basis",
         body: [
-          "Earnings are not the right lens yet. The comparable basis against other neoclouds is a revenue multiple, and The peers worth comparing against are the other independent AI-infrastructure businesses, with CoreWeave the closest match on business model and capital structure. The hyperscalers compete hard for the same workloads, but a diversified platform's multiple describes a different financial object and should not be averaged in.",
+          "Earnings are not the right lens yet. The comparable basis against other neoclouds is a revenue multiple, and the peers worth comparing against are the other independent AI-infrastructure businesses, with CoreWeave the closest match on business model and capital structure. The hyperscalers compete hard for the same workloads, but a diversified platform's multiple describes a different financial object and should not be averaged in.",
         ],
+      },
+      // TODO(isaac): NBIS is +174.77% and dominates the account's excess
+      // return. The sections above cover the original thesis in depth, but
+      // not whether the size of the gain has changed the sizing decision.
+      // Write one or two sentences: have you trimmed this position given how
+      // large the move has been, or do you intend to, and why or why not?
+      {
+        heading: "Trim status",
+        body: [
+          "PLACEHOLDER: one or two sentences on whether NBIS has been trimmed given the size of the gain, or whether that's intended, and why.",
+        ],
+        isPlaceholder: true,
       },
     ],
     charts: [],
@@ -375,7 +387,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
         heading: "Neutron is where the upside is, and the risk",
         body: [
           "Neutron is the larger vehicle in development and carries most of the potential value. It is also the main risk. Development is progressing, but new launch vehicles are historically late and expensive, and a first flight is a binary event. Neutron matters enough to the upside case that schedule slippage or a materially more expensive development path would change the economics of the position.",
-          "The recent selloff appeared larger than the underlying developments justified, which was the entry argument. The upside is substantial, but execution risk remains real, and the position is kept relatively small precisely because the outcome remains high-risk.",
+          "The recent selloff appeared larger than the underlying developments justified, which was the entry argument. The upside is substantial, but execution risk remains real, and I keep it relatively small precisely because the outcome remains high-risk.",
         ],
         weighsRisk: true,
       },
@@ -474,7 +486,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
       {
         heading: "Exited as part of the strategy shift",
         body: [
-          "This position was exited as part of the broader move away from broad S&P 500 indexing. The reasoning is recorded in the Portfolio Strategy note at the top of the Decision Log rather than as a company-specific view. Nothing about the fund itself prompted the sale.",
+          "I exited this position as part of the broader move away from broad S&P 500 indexing. The reasoning is recorded in the Portfolio Strategy note at the top of the Decision Log rather than as a company-specific view. Nothing about the fund itself prompted the sale.",
         ],
       },
     ],
@@ -487,8 +499,15 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
       {
         heading: "Exited on valuation and relative preference",
         body: [
-          "The position was exited because the narrative had moved ahead of the underlying story, and valuation had become less attractive, particularly relative to NVIDIA.",
+          "I exited the position because the narrative had moved ahead of the underlying story, and valuation had become less attractive, particularly relative to NVIDIA.",
           "After a very large move the odds of a consolidation period looked high, and the same capital seemed better used elsewhere. The company did not become worse; the expected return at that price did.",
+        ],
+      },
+      {
+        heading: "What the trims got right and wrong",
+        body: [
+          "The trims did what they were supposed to do. AMD hit 11.45% in May 2026, above my band, and I cut it back over several sessions on size rather than on view. That is the policy working, and AMD still ended up the largest realized contributor in the account.",
+          "The part I would question is the gap between May and July. In May I said explicitly that the trim was not a thesis reversal. By late July I exited the rest on valuation. If the thesis was intact in May, something should have changed in the two months between, and I cannot point to what did. The honest read is that the July exit was partly a reaction to a position that had already been shrinking.",
         ],
       },
     ],

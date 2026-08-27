@@ -179,7 +179,7 @@ export function selectPeers(ticker: string): PeerSet {
     return {
       direct: [],
       strategic: [],
-      method: "No peer profile — comparable analysis not applicable.",
+      method: "No peer profile: comparable analysis not applicable.",
     };
   }
 

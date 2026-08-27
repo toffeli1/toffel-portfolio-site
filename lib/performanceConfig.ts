@@ -25,6 +25,23 @@ export interface InceptionGap {
 export const TRACKING_INCEPTION_DATE = "2025-07-03";
 
 /**
+ * Human-readable track-record length from tracking inception to `asOfDate`,
+ * e.g. "~1 year". Derived so it never goes stale like a hand-typed duration
+ * would (this repo shipped "(~3 years)" against an inception date that was
+ * actually about 13 months prior).
+ */
+export function trackRecordLengthLabel(asOfDate: string): string {
+  const start = new Date(TRACKING_INCEPTION_DATE);
+  const end = new Date(asOfDate);
+  const totalMonths =
+    (end.getFullYear() - start.getFullYear()) * 12 +
+    (end.getMonth() - start.getMonth()) -
+    (end.getDate() < start.getDate() ? 1 : 0);
+  const years = Math.max(1, Math.round(totalMonths / 12));
+  return years === 1 ? "~1 year" : `~${years} years`;
+}
+
+/**
  * Compare intent against what the seed can support.
  * `seedBaseNavDate` is the seed's base NAV date (currently 2025-07-31).
  */

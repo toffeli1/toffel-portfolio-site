@@ -59,6 +59,10 @@ export interface ThesisSection {
   body: string[];
   /** True when this section argues the bear side as well as the bull side. */
   weighsRisk?: boolean;
+  /** True for an unwritten section awaiting Isaac's actual answer. Never
+   *  rendered in production; shown with a dashed dev-only treatment locally
+   *  so an empty prompt never ships as if it were finished analysis. */
+  isPlaceholder?: boolean;
 }
 
 /** Forward P/E history for the company itself — the "vs its own past" comparison. */

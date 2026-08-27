@@ -200,6 +200,46 @@ export function excessReturn(portfolioPct: number, benchmarkPct: number): number
   return portfolioPct - benchmarkPct;
 }
 
+/**
+ * Annualized volatility: population standard deviation of daily returns,
+ * scaled by sqrt(252) trading days per year. Descriptive, not a skill claim.
+ */
+export function annualizedVolatility(returns: DailyReturn[]): number {
+  const n = returns.length;
+  if (n < 2) return 0;
+  const mean = returns.reduce((s, r) => s + r.returnPct, 0) / n;
+  const variance = returns.reduce((s, r) => s + (r.returnPct - mean) ** 2, 0) / n;
+  return Math.sqrt(variance) * Math.sqrt(252);
+}
+
+/**
+ * Beta of `returns` against `benchmark`: covariance / benchmark variance,
+ * over dates present in both series. Undefined when fewer than two dates
+ * overlap or the benchmark has no variance to divide by.
+ */
+export function beta(
+  returns: DailyReturn[],
+  benchmark: DailyReturn[]
+): number | undefined {
+  const benchByDate = new Map(benchmark.map((b) => [b.date, b.returnPct]));
+  const pairs: [number, number][] = [];
+  for (const r of returns) {
+    const b = benchByDate.get(r.date);
+    if (b !== undefined) pairs.push([r.returnPct, b]);
+  }
+  if (pairs.length < 2) return undefined;
+  const meanP = pairs.reduce((s, [p]) => s + p, 0) / pairs.length;
+  const meanB = pairs.reduce((s, [, b]) => s + b, 0) / pairs.length;
+  let covariance = 0;
+  let benchVariance = 0;
+  for (const [p, b] of pairs) {
+    covariance += (p - meanP) * (b - meanB);
+    benchVariance += (b - meanB) ** 2;
+  }
+  if (benchVariance === 0) return undefined;
+  return covariance / benchVariance;
+}
+
 // ── Holding-level analytics ──────────────────────────────────────────────────
 
 export interface HoldingInterval {

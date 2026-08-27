@@ -136,7 +136,7 @@ export const previousHoldings: PreviousHolding[] = [
     whyExited:
       "Exited SCHD fully on April 30. SCHD no longer fit the intended role of the portfolio. While the fund provides quality dividend exposure, it created overlap with broader defensive/value exposure and did not offer enough alignment with current long-term return objectives. This was a portfolio role clarity decision rather than a negative view on SCHD itself.",
     lesson:
-      "Every position needs a clear, non-redundant role in the portfolio. A quality fund can be correct on its own merits while still being the wrong fit for a specific book at a specific time. Portfolio construction requires asking not just whether a holding is good, but whether it is good in relation to everything else already owned. And whether its presence sharpens or dilutes the portfolio's overall mandate.",
+      "Every position needs a clear, non-redundant role in the portfolio. A quality fund can be correct on its own merits while still being the wrong fit for a specific book at a specific time. Portfolio construction means asking whether a holding is good on its own and whether it is good in relation to everything else already owned, then whether its presence sharpens or dilutes the portfolio's overall mandate.",
   },
   {
     ticker: "PLTR",

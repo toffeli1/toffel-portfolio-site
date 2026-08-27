@@ -23,7 +23,7 @@ import type { Transaction, DailyState } from "../lib/reconstruction/types";
 import {
   wealthIndex, cumulativeFromWealth, monthlyReturns, calendarYearReturns,
   drawdownSeries, maxDrawdown, benchmarkDailyReturns, linkReturns, excessReturn,
-  geometricPerSessionReturn, type DailyReturn,
+  geometricPerSessionReturn, annualizedVolatility, beta, type DailyReturn,
 } from "../lib/performanceEngine";
 import { activeCompanies } from "../data/companies";
 import { isPubliclyExcluded } from "../lib/reconstruction/exclusions";
@@ -35,11 +35,13 @@ import { companyName } from "../data/companies";
 
 const INCEPTION = "2025-07-03";
 
-/** Daily TWR from reconstructed NAV, with external flows removed. */
-function portfolioDailyReturns(days: DailyState[]): DailyReturn[] {
+/** Daily TWR from a NAV + external-flow series. */
+function dailyReturnsFromNav(
+  rows: { date: string; nav: number; externalFlow: number }[]
+): DailyReturn[] {
   const out: DailyReturn[] = [];
-  for (let i = 1; i < days.length; i++) {
-    const prev = days[i - 1], cur = days[i];
+  for (let i = 1; i < rows.length; i++) {
+    const prev = rows[i - 1], cur = rows[i];
     if (prev.nav <= 0) continue;
     out.push({
       date: cur.date,
@@ -47,6 +49,31 @@ function portfolioDailyReturns(days: DailyState[]): DailyReturn[] {
     });
   }
   return out;
+}
+
+/** Daily TWR from reconstructed NAV, with external flows removed. */
+function portfolioDailyReturns(days: DailyState[]): DailyReturn[] {
+  return dailyReturnsFromNav(days.map((d) => ({
+    date: d.date, nav: d.nav, externalFlow: d.externalFlow,
+  })));
+}
+
+/**
+ * Sensitivity check, not attribution: subtract `ticker`'s daily market value
+ * from total NAV every day and re-run the same daily-TWR formula. Real
+ * external flows (contributions, withdrawals) are untouched, since they are
+ * unrelated to which security is excluded. This is mechanical, not a true
+ * decomposition: it does not model what would have happened to the capital
+ * that would otherwise have bought `ticker`, and a trade in `ticker` landing
+ * on the same day as a real external flow is not perfectly separated. Good
+ * enough for a single rough sensitivity line, not for attribution.
+ */
+function dailyReturnsExcludingTicker(days: DailyState[], ticker: string): DailyReturn[] {
+  return dailyReturnsFromNav(days.map((d) => ({
+    date: d.date,
+    nav: d.nav - (d.positionValues[ticker] ?? 0),
+    externalFlow: d.externalFlow,
+  })));
 }
 
 // The dust threshold that keeps a fully-exited name from reading as an open
@@ -204,6 +231,8 @@ function main() {
 
   // ── Benchmarks ────────────────────────────────────────────────────────────
   const benchOut: Record<string, unknown> = {};
+  let sp500Daily: DailyReturn[] | undefined;
+  let sp500Wealth: ReturnType<typeof wealthIndex> | undefined;
   for (const b of Object.values(bench.benchmarks) as {
     key: string; name: string; symbol?: string; available: boolean; proxy?: boolean;
     totalReturn: boolean; sourceNote: string; unavailableReason?: string;
@@ -238,6 +267,10 @@ function main() {
     const bw = wealthIndex(bd, INCEPTION);
     const bMonths = monthlyReturns(bd, INCEPTION);
     const bYears = calendarYearReturns(bd, INCEPTION);
+    if (b.key === "sp500") {
+      sp500Daily = bd;
+      sp500Wealth = bw;
+    }
     benchOut[b.key] = {
       key: b.key, name: b.name, symbol: b.symbol, available: true,
       proxy: b.proxy ?? false,
@@ -251,6 +284,18 @@ function main() {
       excessCumulativePts: excessReturn(cumulative, cumulativeFromWealth(bw)),
     };
   }
+
+  // ── Descriptive risk stats ─────────────────────────────────────────────────
+  const volatilityPct = annualizedVolatility(daily);
+  const betaVsSp500 = sp500Daily ? beta(daily, sp500Daily) ?? null : null;
+
+  // ── Sensitivity: NBIS excluded from NAV, not true attribution ─────────────
+  const dailyExclNBIS = dailyReturnsExcludingTicker(days, "NBIS");
+  const wealthExclNBIS = wealthIndex(dailyExclNBIS, INCEPTION);
+  const cumulativeExclNBIS = cumulativeFromWealth(wealthExclNBIS);
+  const excessExclNBISvsSp500 = sp500Wealth
+    ? excessReturn(cumulativeExclNBIS, cumulativeFromWealth(sp500Wealth))
+    : null;
 
   // ── Holding analytics: ACTIVE set from the registry, never the log ────────
   const lots = survivingLots(txs, px.splits);
@@ -296,6 +341,18 @@ function main() {
     drawdown: dd,
     maxDrawdownPct: worst.pct,
     maxDrawdownDate: worst.date,
+    annualizedVolatilityPct: volatilityPct,
+    volatilityNote: "Population standard deviation of daily returns, annualized by the square root of 252 trading days. Descriptive, not a forecast.",
+    betaVsSp500,
+    sensitivity: {
+      excludingNBIS: {
+        label: "Excluding NBIS",
+        cumulativeReturnPct: cumulativeExclNBIS,
+        excessVsSp500Pts: excessExclNBISvsSp500,
+        methodologyNote:
+          "NBIS's daily market value is subtracted from total NAV every day and the same daily-TWR formula is reapplied. This is a mechanical sensitivity check, not return attribution: it does not model what would have happened to the capital that would otherwise have bought NBIS, and a trade in NBIS landing on the same day as a real contribution or withdrawal is not perfectly separated from it. Provided as a single rough exclusion test, not a decomposition of the excess return above.",
+      },
+    },
     benchmarks: benchOut,
     activeHoldings: activeRows(days, lots, closeOf, activeCompanies().map((c) => c.ticker)),
     historicalHoldings: historicalEpisodeRows(days, txs, px),
@@ -331,6 +388,8 @@ function main() {
   writeFileSync("data/performanceDerived.json", JSON.stringify(artifact, null, 2) + "\n");
   console.log(`inception ${INCEPTION}  asOf ${artifact.asOfDate}  sessions ${sessions.length}`);
   console.log(`cumulative TWR ${cumulative.toFixed(2)}%  maxDD ${worst.pct.toFixed(2)}% (${worst.date})`);
+  console.log(`annualized volatility ${volatilityPct.toFixed(2)}%  beta vs S&P500 ${betaVsSp500 === null ? "N/A" : betaVsSp500.toFixed(2)}`);
+  console.log(`excluding NBIS: cumulative ${cumulativeExclNBIS.toFixed(2)}%  excess vs S&P500 ${excessExclNBISvsSp500 === null ? "N/A" : `${excessExclNBISvsSp500.toFixed(2)} pts`}`);
   console.log(`months ${months.length}  years ${years.length}`);
   for (const [k, v] of Object.entries(benchOut)) {
     const b = v as { available: boolean; cumulativeReturnPct: number | null };

@@ -20,7 +20,7 @@ function cleanAssistantContent(raw: string): string {
 
   // 2. Convert markdown pipe tables into bullet lines so they render cleanly.
   //    First pipe row = header (skipped). Separator row (---) = skipped.
-  //    Data rows become: "- TICKER — col2 — col3"
+  //    Data rows become: "- TICKER: col2, col3"
   const tableNormalized: string[] = [];
   let tablePhase: "none" | "header" | "data" = "none";
   for (const line of out.split("\n")) {
@@ -38,8 +38,8 @@ function cleanAssistantContent(raw: string): string {
       }
       // data row
       const [first, ...rest] = cells;
-      const restStr = rest.filter(Boolean).join(" — ");
-      tableNormalized.push(`- ${first}${restStr ? " — " + restStr : ""}`);
+      const restStr = rest.filter(Boolean).join(", ");
+      tableNormalized.push(`- ${first}${restStr ? ": " + restStr : ""}`);
     } else {
       tablePhase = "none";
       tableNormalized.push(line);

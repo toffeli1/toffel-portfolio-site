@@ -189,7 +189,7 @@ function historicalFallback(ticker: string): Omit<CompanyThesis, "ticker"> | und
       {
         heading: "Historical position",
         body: [
-          `${company.name} was held and has since been exited. A full written thesis was not archived for this position, so none is reproduced here — nothing has been reconstructed after the fact.`,
+          `${company.name} was held and has since been exited. A full written thesis was not archived for this position, so none is reproduced here. Nothing has been reconstructed after the fact.`,
           "The decision history for this holding is preserved in the Decision Log, including the dated actions taken and the rationale recorded at the time.",
         ],
       },

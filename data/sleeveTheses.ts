@@ -230,7 +230,7 @@ export const sleeveTheses: Record<string, SleeveThesis> = {
     thesis:
       "Navitas gives the 2028 Roth Fund exposure to power semiconductors, a part of the chip market focused on efficiency rather than pure compute. My thesis is that power conversion becomes more important as data centers, EVs, industrial systems, consumer electronics, and energy infrastructure all require smaller, faster, and more efficient power systems. Navitas is a speculative way to express this theme through next-generation power semiconductor technology.",
     whyIOwnIt:
-      "I view NVTS as a small-cap semiconductor position with asymmetric potential if its technology gains wider adoption. The company is not just tied to one end market. The broader thesis is that higher power density and energy efficiency matter more as computing loads rise and electrification expands. If Navitas can translate design wins into scaled revenue, the business could become more strategically relevant.",
+      "I view NVTS as a small-cap semiconductor position with asymmetric potential if its technology gains wider adoption. The company touches multiple end markets rather than a single one. The broader thesis is that higher power density and energy efficiency matter more as computing loads rise and electrification expands. If Navitas can translate design wins into scaled revenue, the business could become more strategically relevant.",
     keyRisks: [
       "Adoption of newer power semiconductor technologies may take longer than expected.",
       "The company is smaller and more execution-sensitive than established semiconductor peers.",

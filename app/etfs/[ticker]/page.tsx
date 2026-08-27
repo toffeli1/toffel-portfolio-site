@@ -18,7 +18,7 @@ export async function generateMetadata({
   if (!profile) return {};
   return {
     title: `${profile.ticker} ${profile.fullName}`,
-    description: `${profile.ticker} ${profile.fullName} — look-through composition, sector exposure, and portfolio role.`,
+    description: `${profile.ticker} ${profile.fullName}: look-through composition, sector exposure, and portfolio role.`,
   };
 }
 

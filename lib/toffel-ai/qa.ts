@@ -41,7 +41,7 @@ function concentrationAnswer(): string {
     lines.push(`These single-name positions are currently above the ${fmtWeight(capPct)} concentration cap:`);
     lines.push("");
     for (const p of flagged) {
-      lines.push(`- [${p.ticker}](${p.href}) — ${p.name} — ${fmtWeight(p.weightPct)} of the account`);
+      lines.push(`- [${p.ticker}](${p.href}), ${p.name}: ${fmtWeight(p.weightPct)} of the account`);
     }
     lines.push("");
   } else {
@@ -52,7 +52,7 @@ function concentrationAnswer(): string {
   lines.push("Largest positions overall:");
   for (const p of ranked.slice(0, 5)) {
     const capNote = p.assetType !== "Equity" ? ` (${p.assetType}, exempt from the single-name cap)` : "";
-    lines.push(`- [${p.ticker}](${p.href}) — ${p.name} — ${fmtWeight(p.weightPct)}${capNote}`);
+    lines.push(`- [${p.ticker}](${p.href}), ${p.name}: ${fmtWeight(p.weightPct)}${capNote}`);
   }
   return lines.join("\n");
 }
@@ -62,7 +62,7 @@ function etfExposureAnswer(): string {
   const lines = [
     `ETF and crypto-linked ETF exposure totals ${fmtWeight(totalWeightPct)} of the account:`,
     "",
-    ...positions.map((p) => `- [${p.ticker}](${p.href}) — ${p.name} — ${fmtWeight(p.weightPct)}`),
+    ...positions.map((p) => `- [${p.ticker}](${p.href}), ${p.name}: ${fmtWeight(p.weightPct)}`),
     "",
     "These are diversified baskets rather than single-company bets, so they're exempt from the single-name concentration cap and lower the account's idiosyncratic risk relative to an all-equity book.",
   ];
@@ -73,7 +73,7 @@ function recentDecisionsAnswer(): string {
   const entries = kb.recentDecisions(5);
   const lines = ["Most recent portfolio decisions:", ""];
   for (const d of entries) {
-    lines.push(`- **${d.ticker}** (${d.date}) — ${d.action}: ${d.note}`);
+    lines.push(`- **${d.ticker}** (${d.date}), ${d.action}: ${d.note}`);
   }
   return lines.join("\n");
 }
@@ -84,7 +84,7 @@ function largestPositionAnswer(): string {
   const narrative = kb.positionNarrative(top.ticker);
   const why = narrative?.whyIOwnIt ?? "See the position page for the full thesis.";
   return [
-    `The largest position is [${top.ticker}](${top.href}) — ${top.name} — at ${fmtWeight(top.weightPct)} of the account.`,
+    `The largest position is [${top.ticker}](${top.href}), ${top.name}, at ${fmtWeight(top.weightPct)} of the account.`,
     "",
     why,
   ].join("\n");
@@ -94,7 +94,7 @@ function largestPositionsListAnswer(): string {
   const ranked = kb.holdingsRankedByWeight();
   const lines = ["Largest positions in the account:", ""];
   for (const p of ranked.slice(0, 6)) {
-    lines.push(`- [${p.ticker}](${p.href}) — ${p.name} — ${fmtWeight(p.weightPct)}`);
+    lines.push(`- [${p.ticker}](${p.href}), ${p.name}: ${fmtWeight(p.weightPct)}`);
   }
   return lines.join("\n");
 }
@@ -110,9 +110,9 @@ function coreCompoundersAnswer(): string {
     "",
     "The remainder is allocated across selective, higher-conviction compounder themes:",
     "",
-    ...others.map((t) => `- ${t.theme} — ${fmtWeight(t.weightPct)} (${t.tickers.join(", ")})`),
+    ...others.map((t) => `- ${t.theme}: ${fmtWeight(t.weightPct)} (${t.tickers.join(", ")})`),
     "",
-    "This barbell — broad core exposure plus a smaller set of concentrated, high-conviction names — is the account's central construction principle: market-level exposure for durability, paired with selective bets sized to reflect conviction and risk tolerance.",
+    "This barbell, broad core exposure plus a smaller set of concentrated, high-conviction names, is the account's central construction principle: market-level exposure for durability, paired with selective bets sized to reflect conviction and risk tolerance.",
   ];
   return lines.join("\n");
 }
@@ -121,7 +121,7 @@ function archivedDecisionsAnswer(): string {
   const entries = kb.archivedDecisions(5);
   const lines = ["Recent archived positions:", ""];
   for (const d of entries) {
-    const ret = d.returnPct !== undefined ? ` — ${fmtPct(d.returnPct)}` : "";
+    const ret = d.returnPct !== undefined ? `, ${fmtPct(d.returnPct)}` : "";
     lines.push(`- **${d.ticker}** (${d.date})${ret}: ${d.note}`);
   }
   return lines.join("\n");
@@ -131,9 +131,9 @@ function archivedDecisionsAnswer(): string {
 
 function twrVsMwrAnswer(): string {
   return [
-    "Time-weighted return (TWR) measures the pure investment performance of the portfolio, removing the effect of when money was added or withdrawn. Money-weighted return (like IRR) blends performance with the timing and size of cash flows, so a well-timed deposit can flatter the number — or a poorly timed one can hurt it — even when nothing about stock selection changed.",
+    "Time-weighted return (TWR) measures the pure investment performance of the portfolio, removing the effect of when money was added or withdrawn. Money-weighted return (like IRR) blends performance with the timing and size of cash flows, so a well-timed deposit can flatter the number, or a poorly timed one can hurt it, even when nothing about stock selection changed.",
     "",
-    "This page reports TWR from daily portfolio marks, geometrically linked, specifically so the headline number reflects investment decisions rather than contribution timing. Every figure on the page — cumulative, monthly, calendar-year and drawdown — comes from that one series.",
+    "This page reports TWR from daily portfolio marks, geometrically linked, specifically so the headline number reflects investment decisions rather than contribution timing. Every figure on the page, cumulative, monthly, calendar-year and drawdown, comes from that one series.",
   ].join("\n");
 }
 
@@ -142,14 +142,14 @@ function maxDrawdownAnswer(): string {
   return [
     `The maximum drawdown was ${fmtPct(perf.maxDrawdownPct)}, with the trough on ${perf.maxDrawdownDate}.`,
     "",
-    "It is measured from the same daily wealth index that produces the cumulative return — wealth divided by its running peak, minus one — rather than from a separate month-end approximation.",
+    "It is measured from the same daily wealth index that produces the cumulative return, wealth divided by its running peak, minus one, rather than from a separate month-end approximation.",
   ].join("\n");
 }
 
 function whySharpeNotHeadlineAnswer(): string {
   const perf = kb.performanceSummary();
   return [
-    "Risk-adjusted ratios aren't shown as headline figures. The track record is roughly a year of history, which is far too small a sample for a Sharpe or Sortino point estimate to be statistically meaningful — the confidence interval around either would be wide enough that the number alone would mislead.",
+    "Risk-adjusted ratios aren't shown as headline figures. The track record is roughly a year of history, which is far too small a sample for a Sharpe or Sortino point estimate to be statistically meaningful, and the confidence interval around either would be wide enough that the number alone would mislead.",
     "",
     `What is reported instead is the return series itself and its drawdown: ${fmtPct(perf.cumulativeReturnPct)} cumulative since ${perf.inceptionDate}, against a maximum drawdown of ${fmtPct(perf.maxDrawdownPct)}. Those are directly observable rather than estimated.`,
   ].join("\n");

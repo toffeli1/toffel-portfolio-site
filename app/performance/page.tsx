@@ -9,6 +9,7 @@ import {
 } from "@/data/performance";
 import { getCompany } from "@/data/companies";
 import { thesisHrefIfPublished } from "@/lib/routes";
+import PostMortemSection from "@/components/PostMortemSection";
 
 // ─── Performance ──────────────────────────────────────────────────────────────
 // Every number on this page comes from data/performanceDerived.json, generated
@@ -123,8 +124,8 @@ export default function PerformancePage() {
             <p className="mt-3 max-w-2xl font-mono text-[10px] leading-[1.7]" style={{ color: MUTED }}>
               Daily TWR, geometrically linked. Contributions, withdrawals and transfers are removed
               from return so deposited capital is never counted as performance; dividends and
-              distributions are return and are treated as reinvested. Every figure on this page —
-              cumulative, monthly, calendar-year and drawdown — derives from that one series.
+              distributions are return and are treated as reinvested. Every figure on this page,
+              cumulative, monthly, calendar-year and drawdown, derives from that one series.
             </p>
           </div>
         </section>
@@ -147,10 +148,31 @@ export default function PerformancePage() {
               )}
               <Stat label="Max drawdown" value={`${p.maxDrawdownPct.toFixed(2)}%`}
                     color={NEG} note={`Trough ${fmtDate(p.maxDrawdownDate)}`} />
+              <Stat label="Annualized volatility" value={`${p.annualizedVolatilityPct.toFixed(2)}%`}
+                    note="Std. dev. of daily returns" />
+              {p.betaVsSp500 !== null && (
+                <Stat label="Beta vs S&P 500" value={p.betaVsSp500.toFixed(2)}
+                      note="Daily returns, since inception" />
+              )}
             </div>
             {pending.length > 0 && (
               <p className="mt-5 font-mono text-[10px] leading-[1.7]" style={{ color: NEG, opacity: 0.85 }}>
-                {pending.map((b) => `${b.name} total return unavailable — ${b.unavailableReason}`).join(" ")}
+                {pending.map((b) => `${b.name} total return unavailable: ${b.unavailableReason}`).join(" ")}
+              </p>
+            )}
+            {sp.available && sp.excessCumulativePts !== undefined && (
+              <p className="mt-5 max-w-2xl font-mono text-[10px] leading-[1.7]" style={{ color: MUTED }}>
+                {p.sensitivity.excludingNBIS.excessVsSp500Pts !== null && (
+                  <>
+                    <span style={{ color: INK }}>
+                      {p.sensitivity.excludingNBIS.label}, the excess vs. S&P 500 above falls to{" "}
+                      {p.sensitivity.excludingNBIS.excessVsSp500Pts >= 0 ? "+" : ""}
+                      {p.sensitivity.excludingNBIS.excessVsSp500Pts.toFixed(2)} pts
+                    </span>
+                    {" "}({pct(p.sensitivity.excludingNBIS.cumulativeReturnPct)} cumulative).{" "}
+                  </>
+                )}
+                {p.sensitivity.excludingNBIS.methodologyNote}
               </p>
             )}
           </div>
@@ -265,7 +287,7 @@ export default function PerformancePage() {
             <div className="rounded-2xl px-5 py-5" style={CARD}>
               <DrawdownChart points={p.drawdown} />
               <p className="mt-3 font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
-                Peak-to-trough decline of the same daily wealth index used above —
+                Peak-to-trough decline of the same daily wealth index used above:
                 wealth ÷ running peak − 1. Worst: {p.maxDrawdownPct.toFixed(2)}% on{" "}
                 {fmtDate(p.maxDrawdownDate)}.
               </p>
@@ -348,6 +370,14 @@ export default function PerformancePage() {
                 Historical positions →
               </Link>
             </div>
+          </div>
+        </section>
+
+        {/* ── 8. Post-mortems ─────────────────────────────────────────────── */}
+        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <div className="mx-auto max-w-6xl px-6 py-12 lg:px-12">
+            <SectionLabel>Post-Mortems</SectionLabel>
+            <PostMortemSection />
           </div>
         </section>
 

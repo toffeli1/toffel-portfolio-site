@@ -44,7 +44,7 @@ export const companies: Company[] = [
   { ticker: "NOW",   name: "ServiceNow",              shortName: "ServiceNow", kind: "Equity", status: "active", theme: "Enterprise Software" },
   { ticker: "META",  name: "Meta Platforms",          shortName: "Meta",       kind: "Equity", status: "active", theme: "Cloud & Compute" },
   { ticker: "SGOV",  name: "iShares 0-3 Month Treasury Bond ETF", shortName: "iShares SGOV", kind: "ETF", status: "active", theme: "Cash & Equivalents",
-    fundMandate: "Treasury bills maturing in under three months — the portfolio's cash allocation." },
+    fundMandate: "Treasury bills maturing in under three months, the portfolio's cash allocation." },
   { ticker: "NBIS",  name: "Nebius Group",            shortName: "Nebius",     kind: "Equity", status: "active", theme: "AI Infrastructure" },
   { ticker: "GLDM",  name: "SPDR Gold MiniShares Trust", shortName: "SPDR GLDM", kind: "ETF",  status: "active", theme: "Real Assets",
     fundMandate: "Physically-backed gold bullion held in trust." },

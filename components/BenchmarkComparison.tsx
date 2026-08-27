@@ -669,7 +669,7 @@ export function BenchmarkComparison({
                       onClick={() => toggleHolding(ticker)}
                       title={
                         isPartial
-                          ? `${ticker} — limited history in this timeframe`
+                          ? `${ticker}: limited history in this timeframe`
                           : ticker
                       }
                       className="flex items-center gap-1.5 rounded px-2.5 py-1 font-mono text-[10px] transition-all"
@@ -708,7 +708,7 @@ export function BenchmarkComparison({
               <span className="text-[#c8d0d8]">~</span>{" "}
               {visiblePartial.join(", ")}{" "}
               {visiblePartial.length === 1 ? "has" : "have"} a shorter trading
-              history than this period — {visiblePartial.length === 1 ? "its" : "their"} line
+              history than this period, and {visiblePartial.length === 1 ? "its" : "their"} line
               {visiblePartial.length === 1 ? " starts" : "s start"} at the first available
               data point, normalized to 100.
             </p>
@@ -724,7 +724,7 @@ export function BenchmarkComparison({
           {/* Log-scale note */}
           {useLog && (
             <p className="font-mono text-[9px] text-[#c8d0d8]">
-              Log scale — equal vertical distances represent equal percentage moves.
+              Log scale: equal vertical distances represent equal percentage moves.
             </p>
           )}
         </div>
