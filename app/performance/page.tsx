@@ -9,7 +9,6 @@ import {
 } from "@/data/performance";
 import { getCompany } from "@/data/companies";
 import { thesisHrefIfPublished } from "@/lib/routes";
-import PostMortemSection from "@/components/PostMortemSection";
 
 // ─── Performance ──────────────────────────────────────────────────────────────
 // Every number on this page comes from data/performanceDerived.json, generated
@@ -379,14 +378,6 @@ export default function PerformancePage() {
                 Historical positions →
               </Link>
             </div>
-          </div>
-        </section>
-
-        {/* ── 8. Post-mortems ─────────────────────────────────────────────── */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-6xl px-6 py-12 lg:px-12">
-            <SectionLabel>Post-Mortems</SectionLabel>
-            <PostMortemSection />
           </div>
         </section>
 
