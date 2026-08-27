@@ -211,7 +211,7 @@ export default function OverviewPage() {
               {[
                 {
                   title: "Position sizing",
-                  body: "Core ETFs anchor the portfolio and can hold bigger weights, since they're diversified already. Individual stocks are sized by conviction and volatility. A high-conviction stock targets around 10%, with a soft 11.5% ceiling, unless I explicitly re-underwrite the thesis. The account itself is built for long-duration compounding: core exposure plus selective thematic and speculative bets, low turnover by design. A position stays because it keeps earning its size.",
+                  body: "The book is concentrated single names, plus sector, commodity, and cash sleeves. There is no broad-market index position today. Individual equities are sized on conviction, volatility, thesis maturity, and correlation with what is already owned, generally targeting around 10% with a soft 11.5% ceiling unless I explicitly re-underwrite the thesis. A position stays because it keeps earning its size.",
                 },
                 {
                   title: "When I trim or sell",

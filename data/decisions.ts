@@ -60,6 +60,9 @@ export interface DecisionEvent {
   endCloseDate?: string;
   /** Why a weight could not be reconstructed. */
   weightPendingReason?: string;
+  /** Dev-only: rationale still needed from Isaac before ship. See DecisionEntry. */
+  isPlaceholder?: boolean;
+  placeholderPrompt?: string;
 }
 
 export interface CompanyDecisions {
@@ -333,6 +336,8 @@ function toEvent(entry: DecisionEntry): DecisionEvent {
     hasRealRationale: !isBoilerplateRationale(entry.note),
     groupId: entry.groupId,
     dateApproximate: entry.date.length === 7,
+    isPlaceholder: entry.isPlaceholder,
+    placeholderPrompt: entry.placeholderPrompt,
   };
 }
 

@@ -36,7 +36,7 @@ export const postMortems: PostMortem[] = [
     ticker: "META",
     body: [
       "META is the position where I let price be the thesis. I initiated small in January 2026 and added meaningfully in June, and the reason I gave myself at the time was that the stock had fallen.",
-      "That is not a reason. Adding on weakness only works when the weakness is disconnected from the business, and I never established that it was. I just liked the entry better. It is down about 9% since and I still hold it at 4.4%, on the original view rather than on the averaging down. The lesson is not that the add was unprofitable. It is that I could not have told you what had improved.",
+      "That is not a reason. Adding on weakness only works when the weakness is disconnected from the business, and I never established that it was. I just liked the entry better. It is down about 9% since. It also sits at roughly 9% of the book today, up from 4.4% in July, and that happened because I sold VOO rather than because I bought more META. Same mechanic as ASTS in reverse: the weight moved without a decision behind it. The lesson is not that the add was unprofitable. It is that I could not have told you what had improved.",
     ],
   },
 ];

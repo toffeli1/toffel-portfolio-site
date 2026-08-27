@@ -175,6 +175,15 @@ export default function PerformancePage() {
                 {p.sensitivity.excludingNBIS.methodologyNote}
               </p>
             )}
+            {p.betaVsSp500 !== null && p.sensitivity.excludingNBIS.excessVsSp500Pts !== null && (
+              <p className="mt-4 max-w-2xl text-[13px] leading-[1.85]" style={{ color: INK }}>
+                Two things follow from these numbers. Roughly 90% of the excess return traces
+                to one position, and at a beta of 1.75 the book did not beat what that risk
+                alone would imply. A 14 month record with one dominant name is not evidence of
+                skill, and I would rather state that than let the headline return stand on its
+                own.
+              </p>
+            )}
           </div>
         </section>
 

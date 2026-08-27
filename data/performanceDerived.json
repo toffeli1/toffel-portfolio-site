@@ -5401,6 +5401,6 @@
     }
   ],
   "holdingReturnBasis": "Active holdings show the return on the CURRENT position: market value of the quantity held divided by the surviving FIFO cost basis, minus one, over the current continuous ownership interval. A position fully exited and later re-entered starts a new interval, and the earlier ownership is not blended in. Exited holdings show realized return on the lots disposed of, computed from actual ledger cash: proceeds plus dividends less acquisition cost and fees, over the cost. Each closed ownership episode is its own row, so a name owned several times is never aggregated. Valuation uses one consistent daily closing source for every holding.",
-  "valuationMarkNote": "The remaining difference is caused by the valuation mark. The connected Robinhood/Plaid snapshot and the selected Aug. 20 market close are not identical. Active holding returns use one consistent closing-price source across all holdings.",
-  "contributionNote": "Holding periods are counted in trading sessions, not calendar days. Holding-level contribution to portfolio return is omitted. Attribution would require intra-day valuation at every execution, and this book has frequent partial exits, re-entries and same-day multi-fill builds. An approximation would not be defensible, so it is left out rather than estimated."
+  "valuationMarkNote": "Active holding returns use one consistent closing-price source across all holdings.",
+  "contributionNote": "Holding-level contribution to portfolio return is omitted. Attribution would require intra-day valuation at every execution, and this book has frequent partial exits, re-entries and same-day multi-fill builds. An approximation would not be defensible, so it is left out rather than estimated."
 }

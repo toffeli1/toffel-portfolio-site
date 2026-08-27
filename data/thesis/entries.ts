@@ -314,12 +314,20 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
       // TODO(isaac): NBIS is +174.77% and dominates the account's excess
       // return. The sections above cover the original thesis in depth, but
       // not whether the size of the gain has changed the sizing decision.
-      // Write one or two sentences: have you trimmed this position given how
-      // large the move has been, or do you intend to, and why or why not?
+      // The ledger shows exactly one sale, dated 2025-11-13 (effective date),
+      // dropping the position from roughly 4.56% of securities value on
+      // 2025-11-12 to roughly 3.49% on 2025-11-13.
+      // Some of that drop is price movement, not the sale itself; NBIS is
+      // volatile enough that the two are not cleanly separable from this
+      // data alone. Write one or two sentences using these real figures:
+      // was this trim a deliberate sizing decision, or something else (e.g.
+      // raising cash for another position)? Has anything been sold since,
+      // and does the current 6.32% weight reflect a decision not to trim
+      // further, or just price appreciation since November?
       {
         heading: "Trim status",
         body: [
-          "PLACEHOLDER: one or two sentences on whether NBIS has been trimmed given the size of the gain, or whether that's intended, and why.",
+          "PLACEHOLDER: one sale on record, 2025-11-13, roughly 4.56% of the book down to roughly 3.49%. Write one or two sentences on whether that was a deliberate trim and why, and whether the current weight reflects a decision to hold or just price movement since.",
         ],
         isPlaceholder: true,
       },

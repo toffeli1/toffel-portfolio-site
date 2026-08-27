@@ -221,6 +221,19 @@ function CompanyBlock({ block }: { block: CompanyDecisions }) {
                 no contemporaneous rationale
               </span>
             )}
+            {e.isPlaceholder && process.env.NODE_ENV !== "production" && (
+              <div
+                className="mt-3 rounded-xl px-4 py-3"
+                style={{ background: "#fdf1e7", border: "1px dashed #c98a4b" }}
+              >
+                <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.14em]" style={{ color: "#7a4520" }}>
+                  TODO, dev only, not shown in production
+                </p>
+                <p className="text-[12px] leading-[1.7]" style={{ color: "#7a4520" }}>
+                  {e.placeholderPrompt}
+                </p>
+              </div>
+            )}
           </div>
         ))}
       </div>

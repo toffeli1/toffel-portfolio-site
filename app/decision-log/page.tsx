@@ -31,6 +31,26 @@ export default function DecisionLogPage() {
   const risk  = allEvents.filter((e) => e.action === "Trim" || e.action === "Rebalance").length;
   const exits = allEvents.filter((e) => e.action === "Exit").length;
 
+  // DecisionLogByCompany is a client component, so whatever it receives as
+  // `blocks` gets serialised into the page payload for hydration, regardless
+  // of what its own NODE_ENV check chooses to render. A dev-only prompt has
+  // to be stripped HERE, on the server, before it ever crosses that boundary,
+  // or the raw text ships to every visitor even though the UI hides it.
+  // Deleting the keys outright, not just blanking their values: React's RSC
+  // serialisation encodes an explicit `undefined` value as a literal
+  // "$undefined" string, so setting isPlaceholder/placeholderPrompt to
+  // undefined still leaves the field NAME sitting in the payload.
+  const isProd = process.env.NODE_ENV === "production";
+  const publicBlocks = isProd
+    ? blocks.map((b) => ({
+        ...b,
+        events: b.events.map((e) => {
+          const { isPlaceholder: _isPlaceholder, placeholderPrompt: _placeholderPrompt, ...rest } = e;
+          return rest;
+        }),
+      }))
+    : blocks;
+
   const stats = [
     { label: "Companies", value: blocks.length },
     { label: "Total Decisions", value: totalEvents },
@@ -113,15 +133,14 @@ export default function DecisionLogPage() {
         </section>
 
         {/*
-          TODO(isaac): July 2026 restructuring note. Roughly 15 positions
-          closed in one month (visible below in the "Exited" filter) with no
-          explanation beyond the generic "no contemporaneous rationale" tag.
-          Write a few sentences, in your own words, on what happened that
-          month and why: was this one decision (e.g. a planned rebalance) or
-          several unrelated ones that happened to land in the same window?
-          Delete this block and the dev-only section below once written, and
-          fold the real note into a StrategyNote-shaped constant the same way
-          data/portfolioStrategy.ts does.
+          TODO(isaac): July 2026 restructuring note. This is a DRAFT written
+          for you to approve or edit, not final copy; it has not been
+          verified against a specific external event (brokerage transfer,
+          account consolidation, etc.) beyond what the ledger shows, which is
+          16 of 19 exits recorded to month-resolution only. Read it, correct
+          anything wrong, and only then fold it into a StrategyNote-shaped
+          constant the same way data/portfolioStrategy.ts does and delete this
+          block and the dev-only section below.
         */}
         {process.env.NODE_ENV !== "production" && (
           <section className="border-b" style={{ borderColor: "#c98a4b" }}>
@@ -131,15 +150,19 @@ export default function DecisionLogPage() {
                 style={{ background: "#fdf1e7", border: "1px dashed #c98a4b" }}
               >
                 <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.28em] text-[#7a4520]">
-                  TODO — dev only, not shown in production
+                  TODO — dev only, not shown in production, draft awaiting approval
                 </p>
                 <h2 className="mb-3 text-[19px] font-semibold tracking-tight text-[#7a4520]">
                   July 2026 Restructuring Note
                 </h2>
                 <p className="max-w-2xl text-[13px] leading-[1.8] text-[#7a4520]">
-                  PLACEHOLDER: explain, in your own words, what happened across the roughly 15
-                  positions closed in July 2026 and why. See the comment above this block for
-                  what to cover.
+                  Sixteen positions show a July 2026 exit with no exact date. That is not
+                  sixteen decisions made in one month, it is sixteen positions whose exit dates
+                  were never recorded and which surfaced together in the July tracker snapshot.
+                  I cannot tell you what day most of them closed. The tail was small
+                  speculative names I could not have defended in detail, and the capital went
+                  into fewer, larger positions in August. The record keeping is the failure
+                  here, and it is why this log exists now.
                 </p>
               </div>
             </div>
@@ -153,7 +176,7 @@ export default function DecisionLogPage() {
               By company
             </p>
             <DecisionLogByCompany
-              blocks={blocks}
+              blocks={publicBlocks}
               pendingCount={pendingCount}
               realRationaleCount={realRationaleCount}
               totalCount={totalEvents}

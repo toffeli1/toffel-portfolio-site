@@ -37,6 +37,13 @@ export interface DecisionEntry {
   type: string;
   /** Public-safe rationale */
   note: string;
+  /** Dev-only: this entry is missing rationale substantial enough to publish
+   *  and needs Isaac's own words before ship. Gated out of production by the
+   *  renderer, same pattern as ThesisSection.isPlaceholder. `note` above still
+   *  renders normally in production; this is an addendum, not a replacement. */
+  isPlaceholder?: boolean;
+  /** The question(s) to answer, shown only in the dev-only block. */
+  placeholderPrompt?: string;
   /** /positions/TICKER for active, /archive/TICKER for exited. Omit when
    *  neither page exists (e.g. a closed position with no archive write-up). */
   href?: string;
@@ -104,6 +111,9 @@ export const decisionLog: DecisionEntry[] = [
     type: "Full exit",
     note: "Fully exited VOO as part of the August 2026 portfolio restructuring.",
     status: "Fully Exited",
+    isPlaceholder: true,
+    placeholderPrompt:
+      "This was roughly 37-40% of the book, the largest single capital decision in the account's history, and it currently has no rationale beyond \"restructuring.\" Before ship, answer in your own words: (1) why was the core index position sold, (2) where did the capital go, and (3) does this change the account's intended structure going forward, or is it a temporary reallocation pending redeployment?",
   },
   {
     date: "2026-08-12",
