@@ -3,12 +3,15 @@ import { notFound } from "next/navigation";
 import TickerLogo from "@/components/TickerLogo";
 import MetricChart from "@/components/MetricChart";
 import ValuationPanel from "@/components/ValuationPanel";
+import Eyebrow from "@/components/Eyebrow";
+import { Tag } from "@/components/Tag";
 import { getCompany } from "@/data/companies";
 import { weightFor } from "@/data/portfolioState";
 import { getThesis } from "@/data/thesis";
 import { thesisTickers } from "@/lib/routes";
 import { fmtPortfolioDate } from "@/lib/config";
 import { portfolioState } from "@/data/portfolioState";
+import { INK, BODY, MUTED, FAINT, HAIRLINE, CARD, ACCENT, NEGATIVE, AMBER, SECTION_Y } from "@/lib/theme";
 
 // ─── Company thesis page ──────────────────────────────────────────────────────
 // The single canonical research route. Investments and the Decision Log both
@@ -21,12 +24,6 @@ import { portfolioState } from "@/data/portfolioState";
 // Deliberately absent: prices of any kind, share counts, cost basis, position
 // return, and Core/Satellite/Speculative-style sizing labels. The header shows
 // portfolio weight and nothing else numeric about the position.
-
-const ACCENT = "#1a4a2e";
-const INK = "#0f1e35";
-const BODY = "#2d3d52";
-const MUTED = "#5a6e82";
-const FAINT = "#7a8799";
 
 export function generateStaticParams() {
   return thesisTickers().map((ticker) => ({ ticker }));
@@ -67,42 +64,17 @@ export default async function ThesisPage({
   const weightPct = isActive ? weightFor(t) : undefined;
 
   return (
-    <div className="min-h-screen bg-[#faf7f2]">
+    <div className="min-h-screen" style={{ background: "#faf7f2" }}>
       <main>
         {/* ── Header ──────────────────────────────────────────────────────── */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div
-            style={{
-              height: "2px",
-              background: `linear-gradient(90deg, transparent 0%, ${ACCENT}30 15%, ${ACCENT}60 50%, ${ACCENT}30 85%, transparent 100%)`,
-            }}
-          />
-          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-7xl px-6 ${SECTION_Y} lg:px-12`}>
             <div className="mb-6 flex flex-wrap items-center gap-2">
-              <span
-                className="rounded font-mono text-[9px] uppercase tracking-[0.2em]"
-                style={{
-                  color: thesis.historical ? "#8b2530" : ACCENT,
-                  backgroundColor: thesis.historical ? "rgba(139,37,48,0.08)" : `${ACCENT}14`,
-                  padding: "4px 12px",
-                }}
-              >
+              <Tag variant="solid" color={thesis.historical ? NEGATIVE : ACCENT}>
                 {thesis.historical ? "Historical position" : "Investment thesis"}
-              </span>
-              <span
-                className="rounded px-3 py-1 font-mono text-[9px]"
-                style={{ border: "1px solid rgba(15,30,53,0.1)", color: FAINT }}
-              >
-                {company.kind}
-              </span>
-              {company.theme && (
-                <span
-                  className="rounded px-3 py-1 font-mono text-[9px]"
-                  style={{ border: "1px solid rgba(15,30,53,0.1)", color: FAINT }}
-                >
-                  {company.theme}
-                </span>
-              )}
+              </Tag>
+              <Tag>{company.kind}</Tag>
+              {company.theme && <Tag>{company.theme}</Tag>}
             </div>
 
             <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
@@ -111,15 +83,15 @@ export default async function ThesisPage({
                 <div className="flex items-center gap-4">
                   <TickerLogo ticker={t} name={company.name} size="lg" />
                   <h1
-                    className="font-bold leading-[0.88] tracking-[-0.03em]"
-                    style={{ color: INK, fontSize: "clamp(3.2rem,8vw,7rem)" }}
+                    className="font-mono font-semibold leading-none tracking-tight"
+                    style={{ color: INK, fontSize: "clamp(2.4rem,6vw,4.5rem)" }}
                   >
                     {t}
                   </h1>
                 </div>
                 <p
-                  className="mt-5 font-medium"
-                  style={{ color: "#3d4f66", fontSize: "clamp(1.1rem,2.5vw,1.5rem)" }}
+                  className="font-display mt-5 font-semibold"
+                  style={{ color: INK, fontSize: "clamp(1.3rem,2.6vw,1.75rem)" }}
                 >
                   {company.name}
                 </p>
@@ -135,51 +107,31 @@ export default async function ThesisPage({
 
               {/* Portfolio weight — the only position-level number on this page. */}
               <div className="shrink-0">
-                {weightPct !== undefined ? (
-                  <div
-                    className="rounded-2xl px-8 py-6"
-                    style={{
-                      background: "#ffffff",
-                      border: "1px solid rgba(15,30,53,0.09)",
-                      boxShadow: "0 1px 8px rgba(15,30,53,0.05)",
-                    }}
+                <div className="px-8 py-6" style={CARD}>
+                  <p
+                    className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em]"
+                    style={{ color: MUTED }}
                   >
-                    <p
-                      className="mb-2 font-mono text-[9px] uppercase tracking-[0.28em]"
-                      style={{ color: MUTED }}
-                    >
-                      Portfolio weight
-                    </p>
-                    <p
-                      className="font-mono font-bold leading-none tracking-tight"
-                      style={{ color: ACCENT, fontSize: "clamp(2.2rem,4vw,3rem)" }}
-                    >
-                      {weightPct.toFixed(2)}%
-                    </p>
-                    <p className="mt-2 font-mono text-[9px]" style={{ color: FAINT }}>
-                      As of {fmtPortfolioDate(portfolioState.asOf)}
-                    </p>
-                  </div>
-                ) : (
-                  <div
-                    className="rounded-2xl px-8 py-6"
-                    style={{
-                      background: "#ffffff",
-                      border: "1px solid rgba(15,30,53,0.09)",
-                      boxShadow: "0 1px 8px rgba(15,30,53,0.05)",
-                    }}
-                  >
-                    <p
-                      className="mb-2 font-mono text-[9px] uppercase tracking-[0.28em]"
-                      style={{ color: MUTED }}
-                    >
-                      Portfolio weight
-                    </p>
+                    Portfolio weight
+                  </p>
+                  {weightPct !== undefined ? (
+                    <>
+                      <p
+                        className="font-mono font-semibold leading-none tracking-tight"
+                        style={{ color: ACCENT, fontSize: "clamp(2rem,3.5vw,2.75rem)" }}
+                      >
+                        {weightPct.toFixed(2)}%
+                      </p>
+                      <p className="mt-2 font-mono text-[9px]" style={{ color: FAINT }}>
+                        As of {fmtPortfolioDate(portfolioState.asOf)}
+                      </p>
+                    </>
+                  ) : (
                     <p className="font-mono text-[15px]" style={{ color: FAINT }}>
                       Not currently held
                     </p>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
 
@@ -193,7 +145,7 @@ export default async function ThesisPage({
 
         {/* ── Historical notice ───────────────────────────────────────────── */}
         {thesis.historical && (
-          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <section className="border-b" style={{ borderColor: HAIRLINE }}>
             <div className="mx-auto max-w-7xl px-6 py-6 lg:px-12">
               <p className="max-w-3xl font-mono text-[11px] leading-[1.7]" style={{ color: MUTED }}>
                 This position has been exited. The analysis below is kept as a record of
@@ -217,24 +169,21 @@ export default async function ThesisPage({
               key={i}
               className="border-b"
               style={{
-                borderColor: section.isPlaceholder ? "#c98a4b" : "rgba(15,30,53,0.08)",
+                borderColor: section.isPlaceholder ? AMBER : HAIRLINE,
                 borderStyle: section.isPlaceholder ? "dashed" : "solid",
                 background: section.isPlaceholder ? "#fdf1e7" : undefined,
               }}
             >
-              <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
-                <p
-                  className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em]"
-                  style={{ color: section.isPlaceholder ? "#7a4520" : FAINT }}
-                >
+              <div className={`mx-auto max-w-7xl px-6 ${SECTION_Y} lg:px-12`}>
+                <Eyebrow color={section.isPlaceholder ? AMBER : FAINT}>
                   {section.isPlaceholder ? `TODO — ${section.heading}` : section.heading}
-                </p>
+                </Eyebrow>
                 <div className="max-w-3xl space-y-5">
                   {section.body.map((para, j) => (
                     <p
                       key={j}
                       className="text-[15px] leading-[1.85]"
-                      style={{ color: section.isPlaceholder ? "#7a4520" : BODY }}
+                      style={{ color: section.isPlaceholder ? AMBER : BODY }}
                     >
                       {para}
                     </p>
@@ -246,15 +195,10 @@ export default async function ThesisPage({
 
         {/* ── Reported financials ─────────────────────────────────────────── */}
         {thesis.charts.length > 0 && (
-          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-            <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
+          <section className="border-b" style={{ borderColor: HAIRLINE }}>
+            <div className={`mx-auto max-w-7xl px-6 ${SECTION_Y} lg:px-12`}>
               <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-                <p
-                  className="font-mono text-[10px] uppercase tracking-[0.28em]"
-                  style={{ color: FAINT }}
-                >
-                  Reported financials
-                </p>
+                <Eyebrow className="">Reported financials</Eyebrow>
                 {thesis.dataThrough && (
                   <p className="font-mono text-[9px]" style={{ color: MUTED }}>
                     {thesis.dataThrough}
@@ -277,20 +221,20 @@ export default async function ThesisPage({
         <ValuationPanel ticker={t} valuation={thesis.valuation} />
 
         {/* ── Footer ──────────────────────────────────────────────────────── */}
-        <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
+        <footer style={{ borderTop: `1px solid ${HAIRLINE}` }}>
           <div className="mx-auto max-w-7xl px-6 py-8 lg:px-12">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex gap-6">
                 <Link
                   href="/portfolio/investments"
-                  className="font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-[#0f1e35]"
+                  className="font-mono text-[11px] uppercase tracking-[0.18em] transition-colors hover:opacity-70"
                   style={{ color: MUTED }}
                 >
                   ← Investments
                 </Link>
                 <Link
                   href="/decision-log"
-                  className="font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-[#0f1e35]"
+                  className="font-mono text-[11px] uppercase tracking-[0.18em] transition-colors hover:opacity-70"
                   style={{ color: MUTED }}
                 >
                   Decision Log

@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { etfProfiles } from "@/data/etfConstituents";
 import { ChartWrapper } from "@/components/ChartWrapper";
 import { fmtPortfolioDate } from "@/lib/config";
+import Eyebrow from "@/components/Eyebrow";
+import { Tag } from "@/components/Tag";
+import { INK, HAIRLINE, CARD } from "@/lib/theme";
 
 export function generateStaticParams() {
   return Object.keys(etfProfiles).map((ticker) => ({ ticker }));
@@ -32,32 +35,27 @@ export default async function EtfDetailPage({
   if (!profile) notFound();
 
   return (
-    <div className="min-h-screen bg-[#faf7f2]">
+    <div className="min-h-screen" style={{ background: "#faf7f2" }}>
       <main>
         {/* ── Hero ─────────────────────────────────────────────────────────── */}
         <section
           className="relative overflow-hidden border-b"
-          style={{ borderColor: "rgba(15,30,53,0.08)" }}
+          style={{ borderColor: HAIRLINE }}
         >
           <div className="absolute inset-0 hero-grid" />
           <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-12">
             <div className="mb-5">
-              <span
-                className="rounded px-3 py-1 font-mono text-[9px] text-[#7a8799]"
-                style={{ border: "1px solid rgba(15,30,53,0.1)" }}
-              >
-                ETF
-              </span>
+              <Tag>ETF</Tag>
             </div>
             <h1
-              className="font-bold leading-[0.88] tracking-[-0.03em] text-[#0f1e35]"
-              style={{ fontSize: "clamp(4.5rem,10vw,9rem)" }}
+              className="font-mono font-semibold leading-none tracking-tight"
+              style={{ color: INK, fontSize: "clamp(2.4rem,6vw,4.5rem)" }}
             >
               {profile.ticker}
             </h1>
             <p
-              className="mt-5 font-medium text-[#3d4f66]"
-              style={{ fontSize: "clamp(1.1rem,2.5vw,1.5rem)" }}
+              className="font-display mt-5 font-semibold"
+              style={{ color: INK, fontSize: "clamp(1.3rem,2.6vw,1.75rem)" }}
             >
               {profile.fullName}
             </p>
@@ -70,7 +68,7 @@ export default async function EtfDetailPage({
         {/* ── Performance Chart (percent change; no prices) ────────────────── */}
         <section
           className="border-b"
-          style={{ borderColor: "rgba(15,30,53,0.08)" }}
+          style={{ borderColor: HAIRLINE }}
         >
           <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
 {/* PRIVACY: purchaseLots, averageCost and entryMarker all carry real
@@ -89,27 +87,21 @@ export default async function EtfDetailPage({
         {profile.sectorBreakdown && profile.sectorBreakdown.length > 0 && (() => {
           const maxSectorWeight = Math.max(...profile.sectorBreakdown!.map((s) => s.weightPct));
           return (
-            <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+            <section className="border-b" style={{ borderColor: HAIRLINE }}>
               <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
                 <div className="mb-8 flex items-end justify-between gap-6">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                    Sector Allocation
-                  </p>
+                  <Eyebrow className="">Sector Allocation</Eyebrow>
                   <p className="font-mono text-[9px] text-[#5a6e82]">
                     ETF allocation data as of {fmtPortfolioDate(profile.asOf)}. Representative only.
                   </p>
                 </div>
                 <div
-                  className="overflow-x-auto rounded-2xl"
-                  style={{
-                    background: "#ffffff",
-                    border: "1px solid rgba(15,30,53,0.09)",
-                    boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-                  }}
+                  className="overflow-x-auto"
+                  style={CARD}
                 >
                   <table className="w-full text-sm">
                     <thead>
-                      <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
+                      <tr style={{ background: "#f8f4ee", borderBottom: `1px solid ${HAIRLINE}` }}>
                         {["Sector", "VOO Weight"].map((h) => (
                           <th key={h} className="px-5 py-3.5 text-left font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
                             {h}
@@ -121,7 +113,7 @@ export default async function EtfDetailPage({
                       {profile.sectorBreakdown!.map((s, i) => (
                         <tr
                           key={s.sector}
-                          style={i < profile.sectorBreakdown!.length - 1 ? { borderBottom: "1px solid rgba(15,30,53,0.05)" } : undefined}
+                          style={i < profile.sectorBreakdown!.length - 1 ? { borderBottom: `1px solid ${HAIRLINE}` } : undefined}
                         >
                           <td className="px-5 py-4 text-[13px] text-[#2d3d52]">{s.sector}</td>
                           <td className="px-5 py-4">
@@ -149,27 +141,20 @@ export default async function EtfDetailPage({
 
         {/* ── Top Holdings (when individual constituents are available) ──────── */}
         {profile.constituents.length > 0 && (
-          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <section className="border-b" style={{ borderColor: HAIRLINE }}>
             <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
               <div className="mb-8 flex items-end justify-between gap-6">
-                <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Top Holdings
-                </p>
+                <Eyebrow className="">Top Holdings</Eyebrow>
                 <p className="max-w-md font-mono text-[9px] leading-[1.55] text-[#5a6e82]">
                   ETF allocation data as of {fmtPortfolioDate(profile.asOf)}.{profile.constituentsNote ? ` ${profile.constituentsNote}` : ""}
                 </p>
               </div>
               <div
-                className="overflow-x-auto rounded-2xl"
-                style={{
-                  background: "#ffffff",
-                  border: "1px solid rgba(15,30,53,0.09)",
-                  boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-                }}
+                className="overflow-x-auto" style={CARD}
               >
                 <table className="w-full text-sm">
                   <thead>
-                    <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
+                    <tr style={{ background: "#f8f4ee", borderBottom: `1px solid ${HAIRLINE}` }}>
                       {["#", "Ticker", "Company", "Weight", "Sector"].map((h) => (
                         <th key={h} className="px-5 py-3.5 text-left font-mono text-[9px] uppercase tracking-[0.2em] text-[#7a8799]">
                           {h}
@@ -181,7 +166,7 @@ export default async function EtfDetailPage({
                     {profile.constituents.map((c, i) => (
                       <tr
                         key={c.ticker}
-                        style={i < profile.constituents.length - 1 ? { borderBottom: "1px solid rgba(15,30,53,0.05)" } : undefined}
+                        style={i < profile.constituents.length - 1 ? { borderBottom: `1px solid ${HAIRLINE}` } : undefined}
                       >
                         <td className="px-5 py-4 font-mono text-[10px] tabular-nums text-[#5a6e82]">
                           {String(i + 1).padStart(2, "0")}
@@ -221,7 +206,7 @@ export default async function EtfDetailPage({
       </main>
 
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
-      <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
+      <footer style={{ borderTop: `1px solid ${HAIRLINE}` }}>
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-12">
           <div className="flex items-center justify-between">
             <Link

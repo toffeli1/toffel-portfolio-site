@@ -4,6 +4,8 @@ import SleeveDashboard, { type SleeveDashboardHolding } from "@/components/Sleev
 import { portfolioState, type PortfolioPosition } from "@/data/portfolioState";
 import { thesisHrefIfPublished } from "@/lib/routes";
 import { trackRecordLengthLabel } from "@/lib/performanceConfig";
+import Eyebrow from "@/components/Eyebrow";
+import { ACCENT, INK, MUTED, FAINT, HAIRLINE, CARD } from "@/lib/theme";
 
 // ─── Investments section ──────────────────────────────────────────────────────
 // Reads the canonical current state (data/portfolioState.ts) — not sleeve
@@ -23,20 +25,9 @@ import { trackRecordLengthLabel } from "@/lib/performanceConfig";
 // was removed on purpose — return and contribution analytics belong on
 // /performance only.
 
-const ACCENT = "#1a4a2e";
-const INK = "#0f1e35";
-const MUTED = "#5a6e82";
-const FAINT = "#7a8799";
-
 // Weight labels + leader lines only render for slices at or above this
 // threshold; smaller slices still appear in the legend, with no leader line.
 const WEIGHT_LABEL_THRESHOLD_PCT = 4;
-
-const CARD_STYLE = {
-  background: "#ffffff",
-  border: "1px solid rgba(15,30,53,0.09)",
-  boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-} as const;
 
 // ── Weighting (logo grid + donut) ────────────────────────────────────────────
 // Reuses the sleeve-view dashboard rather than a parallel implementation. No
@@ -71,13 +62,13 @@ function HoldingsTable({ positions }: { positions: PortfolioPosition[] }) {
   const maxWeight = Math.max(...positions.map((p) => p.weightPct), 1);
 
   return (
-    <div className="overflow-x-auto rounded-2xl" style={CARD_STYLE}>
+    <div className="overflow-x-auto" style={CARD}>
       <table className="w-full text-sm">
         <thead>
           <tr
             style={{
               background: "#f8f4ee",
-              borderBottom: "1px solid rgba(15,30,53,0.07)",
+              borderBottom: `1px solid ${HAIRLINE}`,
             }}
           >
             <th
@@ -115,7 +106,7 @@ function HoldingsTable({ positions }: { positions: PortfolioPosition[] }) {
             return (
               <tr
                 key={p.ticker}
-                style={isLast ? undefined : { borderBottom: "1px solid rgba(15,30,53,0.05)" }}
+                style={isLast ? undefined : { borderBottom: `1px solid ${HAIRLINE}` }}
               >
                 <td className="px-5 py-4">
                   {href ? (
@@ -168,16 +159,11 @@ export default function InvestmentSection() {
   const positions = portfolioState.positions;
 
   return (
-    <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+    <section className="border-b" style={{ borderColor: HAIRLINE }}>
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
         <Weighting positions={positions} />
 
-        <p
-          className="mb-6 mt-12 font-mono text-[10px] uppercase tracking-[0.28em]"
-          style={{ color: ACCENT }}
-        >
-          Holdings
-        </p>
+        <Eyebrow className="mb-6 mt-12" color={ACCENT}>Holdings</Eyebrow>
         <HoldingsTable positions={positions} />
 
         <div className="mt-8 space-y-2">

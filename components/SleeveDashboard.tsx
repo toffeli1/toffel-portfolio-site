@@ -10,6 +10,8 @@ import { useState, type ReactNode } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import type { PieLabelRenderProps } from "recharts";
 import TickerLogo from "./TickerLogo";
+import Eyebrow from "./Eyebrow";
+import { INK, MUTED, BODY, ACCENT, HAIRLINE } from "@/lib/theme";
 
 interface PieLabelLineRenderProps {
   value: number;
@@ -228,43 +230,34 @@ export default function SleeveDashboard({
           the section label. */}
       {title ? (
         <>
-          <p
-            className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em]"
-            style={{ color: "#1a4a2e" }}
-          >
-            {label}
-          </p>
+          <Eyebrow className="mb-3" color={ACCENT}>{label}</Eyebrow>
           <h2
-            className="font-bold leading-[0.95] tracking-tight text-[#0f1e35]"
-            style={{ fontSize: "clamp(2rem,3.5vw,2.75rem)" }}
+            className="font-display font-semibold leading-[0.95] tracking-tight"
+            style={{ fontSize: "clamp(2rem,3.5vw,2.75rem)", color: INK }}
           >
             {title}
           </h2>
           {subtitle && (
-            <p className="mt-3 max-w-xl text-[13.5px] leading-[1.7] text-[#3d4f66]">
+            <p className="mt-3 max-w-xl text-[13.5px] leading-[1.7]" style={{ color: BODY }}>
               {subtitle}
             </p>
           )}
-          <p className="mt-4 font-mono text-[11px] text-[#5a6e82]">
+          <p className="mt-4 font-mono text-[11px]" style={{ color: MUTED }}>
             {holdings.length} Positions
           </p>
         </>
       ) : (
-        <p
-          className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em]"
-          style={{ color: "#1a4a2e" }}
-        >
-          {label}
-        </p>
+        <Eyebrow className="mb-8" color={ACCENT}>{label}</Eyebrow>
       )}
 
       <div className={title ? "mt-8" : ""}>
         {layout === "side-by-side" ? (
           <div
-            className="rounded-2xl px-6 py-7 lg:px-10 lg:py-9"
+            className="px-6 py-7 lg:px-10 lg:py-9"
             style={{
               background: "rgba(250, 247, 242, 0.55)",
-              border: "1px solid rgba(15, 30, 53, 0.07)",
+              border: `1px solid ${HAIRLINE}`,
+              borderRadius: 10,
             }}
           >
             <div className={columnSplitClassName}>
@@ -460,11 +453,11 @@ export default function SleeveDashboard({
             optional side panel (e.g. sector key) so the section reads as one
             unified visual rather than separate floating pieces. */}
         <div
-          className="mt-14 rounded-2xl"
+          className="mt-14"
           style={{
             background: "rgba(250, 247, 242, 0.55)",
-            border: "1px solid rgba(15, 30, 53, 0.07)",
-            boxShadow: "none",
+            border: `1px solid ${HAIRLINE}`,
+            borderRadius: 10,
           }}
         >
           <div className="px-7 py-8 lg:px-12 lg:py-10">

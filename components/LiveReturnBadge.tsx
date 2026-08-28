@@ -2,6 +2,7 @@
 
 import { useQuotes } from "./QuotesProvider";
 import { getAvgCost, computeReturnPct } from "@/lib/costBasis";
+import { MUTED, POSITIVE, NEGATIVE } from "@/lib/theme";
 
 // NO-PRICE RULE: renders a total-return percentage only. A "% today" daily
 // price-change sub-line used to render beneath it — removed, since the site
@@ -32,19 +33,19 @@ export function LiveReturnBadge({
   return (
     <div className="flex flex-col items-end gap-0.5">
       {loading && q === undefined ? (
-        <span className="font-mono text-[11px] animate-pulse" style={{ color: "#5a6e82" }}>
+        <span className="font-mono text-[11px] animate-pulse" style={{ color: MUTED }}>
           ···
         </span>
       ) : liveReturn !== null ? (
         <span
           className="font-mono text-[11px] font-semibold tabular-nums"
-          style={{ color: pos ? "#15542e" : "#8b1a1a" }}
+          style={{ color: pos ? POSITIVE : NEGATIVE }}
         >
           {pos ? "+" : ""}
           {liveReturn.toFixed(2)}%
         </span>
       ) : (
-        <span className="font-mono text-[11px]" style={{ color: "#5a6e82" }}>
+        <span className="font-mono text-[11px]" style={{ color: MUTED }}>
           —
         </span>
       )}

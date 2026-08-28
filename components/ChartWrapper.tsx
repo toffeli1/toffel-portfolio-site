@@ -17,8 +17,8 @@ const PositionChart = dynamic(
     ssr: false,
     loading: () => (
       <div
-        className="h-[380px] w-full animate-pulse rounded-2xl"
-        style={{ background: "rgba(15,30,53,0.04)" }}
+        className="h-[380px] w-full animate-pulse"
+        style={{ background: "rgba(15,30,53,0.04)", borderRadius: 10 }}
       />
     ),
   }

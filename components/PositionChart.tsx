@@ -20,6 +20,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { HistoricalPoint } from "@/lib/types";
+import { MUTED, FAINT, NEGATIVE, POSITIVE, INK, CARD, HAIRLINE } from "@/lib/theme";
 
 type Range = "1w" | "1m" | "3m" | "6m" | "1y" | "3y" | "5y" | "max";
 
@@ -35,8 +36,6 @@ const RANGES: { key: Range; label: string }[] = [
 ];
 
 const MONO = "var(--font-geist-mono)";
-const MUTED = "#5a6e82";
-const FAINT = "#7a8799";
 
 interface ChartPoint { t: number; p: number; dateLabel: string }
 
@@ -97,25 +96,18 @@ export function PositionChart({
   }, [exitMarker, chartData]);
 
   const isUp = (chartData[chartData.length - 1]?.p ?? 0) >= 0;
-  const lineColor = chartData.length >= 2 ? (isUp ? "#15542e" : "#8b1a1a") : "#1a3a5c";
+  const lineColor = chartData.length >= 2 ? (isUp ? POSITIVE : NEGATIVE) : "#1a3a5c";
   const gradId = `chart-grad-${ticker}`;
 
   return (
-    <div
-      className="rounded-2xl px-6 pt-6 pb-4"
-      style={{
-        background: "#ffffff",
-        border: "1px solid rgba(15,30,53,0.09)",
-        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-      }}
-    >
+    <div className="px-6 pt-6 pb-4" style={CARD}>
       <div className="mb-5 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <p className="font-mono text-[10px] uppercase tracking-[0.25em]" style={{ color: FAINT }}>
             Performance
           </p>
           {exitMarker && (
-            <p className="font-mono text-[9px]" style={{ color: "#8b2530", opacity: 0.7 }}>
+            <p className="font-mono text-[9px]" style={{ color: NEGATIVE, opacity: 0.7 }}>
               ✕&ensp;exit
             </p>
           )}
@@ -127,7 +119,7 @@ export function PositionChart({
               onClick={() => setRange(r.key)}
               className="rounded px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors"
               style={range === r.key
-                ? { background: "rgba(15,30,53,0.07)", color: "#0f1e35" }
+                ? { background: HAIRLINE, color: INK }
                 : { color: MUTED }}
             >
               {r.label}

@@ -12,18 +12,14 @@ import {
   LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip,
   ReferenceLine, ResponsiveContainer, Legend, Cell,
 } from "recharts";
+import { ACCENT as GREEN, AMBER, NEGATIVE, MUTED, FAINT, CARD_BORDER } from "@/lib/theme";
 
-const GREEN = "#1a4a2e";
 const NAVY = "#1a3a5c";
-const AMBER = "#7a4520";
-const NEGATIVE = "#8b1a1a";
-const MUTED = "#5a6e82";
-const FAINT = "#7a8799";
 const MONO = "var(--font-geist-mono)";
 
 const TOOLTIP = {
   background: "#ffffff",
-  border: "1px solid rgba(15,30,53,0.1)",
+  border: `1px solid ${CARD_BORDER}`,
   borderRadius: 8,
   padding: "8px 12px",
   fontFamily: MONO,

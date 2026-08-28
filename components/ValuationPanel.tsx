@@ -1,9 +1,12 @@
 import Link from "next/link";
 import TickerLogo from "@/components/TickerLogo";
+import Eyebrow from "@/components/Eyebrow";
+import { Tag } from "@/components/Tag";
 import { selectPeers, directPeerAverageForwardPE } from "@/lib/peerSelection";
 import { PEER_FORWARD_PE } from "@/data/fundamentals/manual";
 import { thesisHrefIfPublished } from "@/lib/routes";
 import type { Valuation } from "@/data/thesis/types";
+import { INK, BODY, MUTED, FAINT, HAIRLINE, CARD, ACCENT, NEGATIVE, SECTION_Y } from "@/lib/theme";
 
 // ─── Relative valuation + peer sets ───────────────────────────────────────────
 // Renders the valuation architecture whether or not forward P/E is populated.
@@ -15,18 +18,6 @@ import type { Valuation } from "@/data/thesis/types";
 // feed the average. Strategic Competitors render with the reason they were held
 // out, so a reader can see that excluding them was a decision rather than an
 // oversight.
-
-const ACCENT = "#1a4a2e";
-const INK = "#0f1e35";
-const BODY = "#2d3d52";
-const MUTED = "#5a6e82";
-const FAINT = "#7a8799";
-
-const CARD = {
-  background: "#ffffff",
-  border: "1px solid rgba(15,30,53,0.09)",
-  boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-} as const;
 
 function PeerRow({
   ticker,
@@ -61,7 +52,7 @@ function PeerRow({
   return (
     <div
       className="flex flex-col gap-2 py-3.5"
-      style={{ borderTop: "1px solid rgba(15,30,53,0.06)" }}
+      style={{ borderTop: `1px solid ${HAIRLINE}` }}
     >
       <div className="flex items-start justify-between gap-4">
         {href ? (
@@ -82,23 +73,11 @@ function PeerRow({
       </div>
       {drivers.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
-          {drivers.map((d) => (
-            <span
-              key={d}
-              className="rounded font-mono text-[9px]"
-              style={{
-                color: FAINT,
-                border: "1px solid rgba(15,30,53,0.1)",
-                padding: "2px 7px",
-              }}
-            >
-              {d}
-            </span>
-          ))}
+          {drivers.map((d) => <Tag key={d}>{d}</Tag>)}
         </div>
       )}
       {heldOutReason && (
-        <p className="font-mono text-[9px] leading-[1.5]" style={{ color: "#8b2530", opacity: 0.75 }}>
+        <p className="font-mono text-[9px] leading-[1.5]" style={{ color: NEGATIVE, opacity: 0.75 }}>
           Excluded from peer average: {heldOutReason.toLowerCase()}
         </p>
       )}
@@ -122,15 +101,10 @@ export default function ValuationPanel({
   const history = valuation?.history ?? [];
 
   return (
-    <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-      <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12">
+    <section className="border-b" style={{ borderColor: HAIRLINE }}>
+      <div className={`mx-auto max-w-7xl px-6 ${SECTION_Y} lg:px-12`}>
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-          <p
-            className="font-mono text-[10px] uppercase tracking-[0.28em]"
-            style={{ color: FAINT }}
-          >
-            Relative valuation
-          </p>
+          <Eyebrow className="">Relative valuation</Eyebrow>
           {valuation && (
             <p className="font-mono text-[9px]" style={{ color: MUTED }}>
               Valuation updated {valuation.updated}
@@ -140,7 +114,7 @@ export default function ValuationPanel({
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
           {/* ── Multiples ───────────────────────────────────────────────── */}
-          <div className="rounded-2xl px-6 py-6" style={CARD}>
+          <div className="px-6 py-6" style={CARD}>
             {valuation?.notApplicableReason ? (
               <>
                 <p
@@ -155,7 +129,7 @@ export default function ValuationPanel({
                 {valuation.alternate && (
                   <div
                     className="mt-5 pt-5"
-                    style={{ borderTop: "1px solid rgba(15,30,53,0.07)" }}
+                    style={{ borderTop: `1px solid ${HAIRLINE}` }}
                   >
                     <p
                       className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em]"
@@ -229,7 +203,7 @@ export default function ValuationPanel({
                 {/* Own valuation history — the "vs its own past" comparison. */}
                 <div
                   className="mt-6 pt-5"
-                  style={{ borderTop: "1px solid rgba(15,30,53,0.07)" }}
+                  style={{ borderTop: `1px solid ${HAIRLINE}` }}
                 >
                   <p
                     className="mb-3 font-mono text-[9px] uppercase tracking-[0.2em]"
@@ -269,7 +243,7 @@ export default function ValuationPanel({
           </div>
 
           {/* ── Peers ──────────────────────────────────────────────────── */}
-          <div className="rounded-2xl px-6 py-6" style={CARD}>
+          <div className="px-6 py-6" style={CARD}>
             {peers.direct.length > 0 && (
               <>
                 <div className="mb-1 flex items-baseline justify-between gap-4">
@@ -297,7 +271,7 @@ export default function ValuationPanel({
                 <div className="mb-1 flex items-baseline justify-between gap-4">
                   <p
                     className="font-mono text-[10px] uppercase tracking-[0.2em]"
-                    style={{ color: "#8b2530" }}
+                    style={{ color: NEGATIVE }}
                   >
                     Strategic competitors
                   </p>
@@ -328,7 +302,7 @@ export default function ValuationPanel({
             {hasPeers && (
               <p
                 className="mt-6 pt-4 font-mono text-[9px] leading-[1.6]"
-                style={{ color: FAINT, borderTop: "1px solid rgba(15,30,53,0.06)" }}
+                style={{ color: FAINT, borderTop: `1px solid ${HAIRLINE}` }}
               >
                 {peers.method}
               </p>

@@ -29,12 +29,9 @@ import {
   Cell,
 } from "recharts";
 import type { MetricSeries, MetricUnit } from "@/data/thesis/types";
+import { ACCENT as GREEN, NEGATIVE, MUTED, FAINT, INK, CARD } from "@/lib/theme";
 
-const GREEN = "#1a4a2e";
 const NAVY = "#1a3a5c";
-const NEGATIVE = "#8b1a1a";
-const MUTED = "#5a6e82";
-const FAINT = "#7a8799";
 const MONO = "var(--font-geist-mono)";
 
 function formatValue(v: number, unit: MetricUnit): string {
@@ -81,18 +78,11 @@ export default function MetricChart({ series }: { series: MetricSeries }) {
   const asLine = series.unit === "pct";
 
   return (
-    <div
-      className="rounded-2xl px-5 pt-5 pb-4"
-      style={{
-        background: "#ffffff",
-        border: "1px solid rgba(15,30,53,0.09)",
-        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-      }}
-    >
+    <div className="px-5 pt-5 pb-4" style={CARD}>
       <div className="mb-1 flex items-baseline justify-between gap-4">
         <p
           className="font-mono text-[10px] uppercase tracking-[0.2em]"
-          style={{ color: "#0f1e35" }}
+          style={{ color: INK }}
         >
           {series.label}
         </p>

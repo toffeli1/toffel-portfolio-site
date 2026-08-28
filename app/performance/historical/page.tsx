@@ -3,6 +3,8 @@ import TickerLogo from "@/components/TickerLogo";
 import { performance } from "@/data/performance";
 import { getCompany } from "@/data/companies";
 import { thesisHrefIfPublished } from "@/lib/routes";
+import Eyebrow from "@/components/Eyebrow";
+import { INK, MUTED, FAINT, POSITIVE, NEGATIVE, HAIRLINE, CARD, SECTION_Y } from "@/lib/theme";
 
 // ─── Historical Positions ─────────────────────────────────────────────────────
 // Secondary surface for EXITED securities, linked modestly from Performance so
@@ -19,20 +21,8 @@ export const metadata = {
     "Realized performance for closed positions: total return over the actual holding period, with average geometric return per trading session held.",
 };
 
-const INK = "#0f1e35";
-const MUTED = "#5a6e82";
-const FAINT = "#7a8799";
-const POS = "#15542e";
-const NEG = "#8b1a1a";
-
-const CARD = {
-  background: "#ffffff",
-  border: "1px solid rgba(15,30,53,0.09)",
-  boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-} as const;
-
 const pct = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
-const tone = (n: number) => (n >= 0 ? POS : NEG);
+const tone = (n: number) => (n >= 0 ? POSITIVE : NEGATIVE);
 const fmtDate = (d: string) =>
   new Date(`${d}T00:00:00Z`).toLocaleDateString("en-US", {
     month: "short", day: "numeric", year: "numeric", timeZone: "UTC",
@@ -44,17 +34,15 @@ export default function HistoricalPositionsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#faf7f2]">
+    <div className="min-h-screen" style={{ background: "#faf7f2" }}>
       <main>
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
           <div className="mx-auto max-w-5xl px-6 py-12 lg:px-12">
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]" style={{ color: "#8b2530" }}>
-              Closed Positions
-            </p>
-            <h1 className="text-2xl font-bold tracking-tight" style={{ color: INK }}>
+            <Eyebrow className="mb-3" color={NEGATIVE}>Closed Positions</Eyebrow>
+            <h1 className="font-display text-[28px] font-semibold tracking-tight" style={{ color: INK }}>
               Historical Positions
             </h1>
-            <p className="mt-3 max-w-2xl text-[14px] leading-[1.75]" style={{ color: "#3d4f66" }}>
+            <p className="mt-3 max-w-2xl text-[14px] leading-[1.75]" style={{ color: MUTED }}>
               Securities the portfolio no longer holds. Measured over the{" "}
               <strong>trading sessions</strong> each position was actually open, on the same daily
               basis as active holdings. These do not appear in current allocation or portfolio
@@ -63,12 +51,12 @@ export default function HistoricalPositionsPage() {
           </div>
         </section>
 
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
           <div className="mx-auto max-w-5xl px-6 py-10 lg:px-12">
-            <div className="overflow-x-auto rounded-2xl" style={CARD}>
+            <div className="overflow-x-auto" style={CARD}>
               <table className="w-full text-sm">
                 <thead>
-                  <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
+                  <tr style={{ background: "#f8f4ee", borderBottom: `1px solid ${HAIRLINE}` }}>
                     {["Position", "Total return", "Held", "Period", "Avg geometric / trading session"].map((h, i) => (
                       <th key={h}
                           className={`px-5 py-3.5 font-mono text-[9px] uppercase tracking-[0.2em] ${i === 0 ? "text-left" : "text-right"}`}
@@ -100,7 +88,7 @@ export default function HistoricalPositionsPage() {
                     );
                     return (
                       <tr key={`${h.ticker}-${h.episode}`} style={i < rows.length - 1
-                        ? { borderBottom: "1px solid rgba(15,30,53,0.05)" } : undefined}>
+                        ? { borderBottom: `1px solid ${HAIRLINE}` } : undefined}>
                         <td className="px-5 py-4">
                           {href ? <Link href={href} className="inline-flex transition-opacity hover:opacity-70">{id}</Link> : id}
                         </td>
@@ -149,11 +137,11 @@ export default function HistoricalPositionsPage() {
           </div>
         </section>
 
-        <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
+        <footer style={{ borderTop: `1px solid ${HAIRLINE}` }}>
           <div className="mx-auto max-w-5xl px-6 py-8 lg:px-12">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <Link href="/performance"
-                    className="font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-[#0f1e35]"
+                    className="font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:opacity-70"
                     style={{ color: MUTED }}>← Performance</Link>
               <p className="font-mono text-[10px]" style={{ color: MUTED }}>
                 For informational purposes only. Not financial advice.

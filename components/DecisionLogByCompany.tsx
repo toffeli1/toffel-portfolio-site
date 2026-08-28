@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import TickerLogo from "./TickerLogo";
+import { Tag } from "./Tag";
 import type { CompanyDecisions, DecisionEvent } from "@/data/decisions";
+import { INK, BODY, MUTED, FAINT, HAIRLINE, CARD, ACCENT, AMBER, NEGATIVE } from "@/lib/theme";
 
 // ─── Decision Log, grouped by company ─────────────────────────────────────────
 // One block per ticker; decisions run chronologically inside it. Replaces the
@@ -26,18 +28,13 @@ const FILTERS: { key: Filter; label: string }[] = [
 ];
 
 const ACTION_COLOR: Record<string, string> = {
-  Add: "#1a4a2e",
-  Initiate: "#1a4a2e",
-  "Re-enter": "#1a4a2e",
-  Trim: "#7a4520",
-  Rebalance: "#7a4520",
-  Exit: "#8b2530",
+  Add: ACCENT,
+  Initiate: ACCENT,
+  "Re-enter": ACCENT,
+  Trim: AMBER,
+  Rebalance: AMBER,
+  Exit: NEGATIVE,
 };
-
-const INK = "#0f1e35";
-const BODY = "#2d3d52";
-const MUTED = "#5a6e82";
-const FAINT = "#7a8799";
 
 function formatDate(date: string): string {
   if (date.length === 7) {
@@ -87,17 +84,9 @@ function WeightTransition({ event }: { event: DecisionEvent }) {
   const known = hasOld && hasNew;
   if (!known) {
     return (
-      <span
-        className="inline-flex items-center gap-1.5 rounded font-mono text-[9px] uppercase tracking-[0.12em]"
-        style={{
-          color: FAINT,
-          border: "1px dashed rgba(15,30,53,0.18)",
-          padding: "3px 8px",
-        }}
-        title={event.weightPendingReason ?? "Awaiting transaction-level history; not estimated."}
-      >
+      <Tag variant="dashed" title={event.weightPendingReason ?? "Awaiting transaction-level history; not estimated."}>
         % of book pending
-      </span>
+      </Tag>
     );
   }
 
@@ -121,6 +110,7 @@ function WeightTransition({ event }: { event: DecisionEvent }) {
 function CompanyBlock({ block }: { block: CompanyDecisions }) {
   const href = `/thesis/${block.ticker}`;
   const linkable = block.status !== "unknown";
+  const statusColor = block.status === "active" ? ACCENT : NEGATIVE;
 
   const identity = (
     <div className="flex min-w-0 items-center gap-3.5">
@@ -137,14 +127,7 @@ function CompanyBlock({ block }: { block: CompanyDecisions }) {
   );
 
   return (
-    <div
-      className="rounded-2xl px-6 py-5"
-      style={{
-        background: "#ffffff",
-        border: "1px solid rgba(15,30,53,0.09)",
-        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-      }}
-    >
+    <div className="px-6 py-5" style={CARD}>
       {/* Block header: logo + name + current status */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         {linkable ? (
@@ -158,17 +141,7 @@ function CompanyBlock({ block }: { block: CompanyDecisions }) {
         ) : (
           identity
         )}
-        <span
-          className="rounded font-mono text-[9px] uppercase tracking-[0.14em]"
-          style={{
-            color: block.status === "active" ? "#1a4a2e" : "#8b2530",
-            background:
-              block.status === "active" ? "rgba(26,74,46,0.08)" : "rgba(139,37,48,0.08)",
-            padding: "4px 10px",
-          }}
-        >
-          {block.statusLabel}
-        </span>
+        <Tag variant="solid" color={statusColor}>{block.statusLabel}</Tag>
       </div>
 
       {/* Decisions, oldest first */}
@@ -177,7 +150,7 @@ function CompanyBlock({ block }: { block: CompanyDecisions }) {
           <div
             key={`${e.startDate}-${i}`}
             className="pt-4"
-            style={{ borderTop: "1px solid rgba(15,30,53,0.06)" }}
+            style={{ borderTop: `1px solid ${HAIRLINE}` }}
           >
             <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-2">
               <span className="font-mono text-[10px]" style={{ color: MUTED }}>
@@ -192,16 +165,7 @@ function CompanyBlock({ block }: { block: CompanyDecisions }) {
                   month-resolution
                 </span>
               )}
-              <span
-                className="rounded font-mono text-[9px] uppercase tracking-[0.14em]"
-                style={{
-                  color: ACTION_COLOR[e.action] ?? "#1a3a5c",
-                  border: `1px solid ${ACTION_COLOR[e.action] ?? "#1a3a5c"}33`,
-                  padding: "2px 8px",
-                }}
-              >
-                {e.actionLabel}
-              </span>
+              <Tag color={ACTION_COLOR[e.action] ?? "#1a3a5c"}>{e.actionLabel}</Tag>
               <WeightTransition event={e} />
             </div>
             {e.hasRealRationale ? (
@@ -209,27 +173,19 @@ function CompanyBlock({ block }: { block: CompanyDecisions }) {
                 {e.rationale}
               </p>
             ) : (
-              <span
-                className="inline-flex items-center gap-1.5 rounded font-mono text-[9px] uppercase tracking-[0.12em]"
-                style={{
-                  color: FAINT,
-                  border: "1px dashed rgba(15,30,53,0.18)",
-                  padding: "3px 8px",
-                }}
-                title="No dated, decision-specific note survives for this event; only the transaction itself is on record."
-              >
+              <Tag variant="dashed" title="No dated, decision-specific note survives for this event; only the transaction itself is on record.">
                 no contemporaneous rationale
-              </span>
+              </Tag>
             )}
             {e.isPlaceholder && process.env.NODE_ENV !== "production" && (
               <div
-                className="mt-3 rounded-xl px-4 py-3"
-                style={{ background: "#fdf1e7", border: "1px dashed #c98a4b" }}
+                className="mt-3 px-4 py-3"
+                style={{ background: "#fdf1e7", border: `1px dashed ${AMBER}`, borderRadius: 8 }}
               >
-                <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.14em]" style={{ color: "#7a4520" }}>
+                <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.14em]" style={{ color: AMBER }}>
                   TODO, dev only, not shown in production
                 </p>
-                <p className="text-[12px] leading-[1.7]" style={{ color: "#7a4520" }}>
+                <p className="text-[12px] leading-[1.7]" style={{ color: AMBER }}>
                   {e.placeholderPrompt}
                 </p>
               </div>
@@ -264,10 +220,7 @@ export default function DecisionLogByCompany({
     <div>
       {/* Disclosure, stated up front rather than left implicit: what the two
           tags below mean, and how much of the log is written versus recorded. */}
-      <div
-        className="mb-8 rounded-xl px-5 py-4"
-        style={{ background: "#f8f4ee", border: "1px solid rgba(15,30,53,0.08)" }}
-      >
+      <div className="mb-8 border-l-2 pl-5" style={{ borderColor: HAIRLINE }}>
         <p className="font-mono text-[10px] leading-[1.7]" style={{ color: MUTED }}>
           <span style={{ color: INK }}>{realRationaleCount} of {totalCount} decisions</span>{" "}
           carry a written, decision-specific rationale below. The rest show a
@@ -275,7 +228,7 @@ export default function DecisionLogByCompany({
           note explaining it survived.
           {pendingCount > 0 && (
             <>
-              {" "}{pendingCount} decision{pendingCount === 1 ? "" : "s"} also do not yet
+              {" "}{pendingCount} decision{pendingCount === 1 ? "" : "s"}{" "}also do not yet
               show a &ldquo;% of book&rdquo; transition, tagged &ldquo;pending&rdquo;
               rather than estimated, since computing those needs transaction-level
               history and dated portfolio values this dataset does not contain.
@@ -291,12 +244,13 @@ export default function DecisionLogByCompany({
             <button
               key={key}
               onClick={() => setFilter(key)}
-              className="rounded-full font-mono text-[11px] transition-colors"
+              className="font-mono text-[11px] transition-colors"
               style={{
-                padding: "10px 16px",
-                background: active ? "#111111" : "transparent",
+                padding: "8px 14px",
+                borderRadius: 4,
+                background: active ? INK : "transparent",
                 color: active ? "#ffffff" : FAINT,
-                border: `1px solid ${active ? "#111111" : "rgba(15,30,53,0.15)"}`,
+                border: `1px solid ${active ? INK : HAIRLINE}`,
               }}
             >
               {label}
@@ -305,7 +259,7 @@ export default function DecisionLogByCompany({
         })}
       </div>
 
-      <div className="space-y-5">
+      <div className="space-y-4">
         {visible.map((b) => (
           <CompanyBlock key={b.ticker} block={b} />
         ))}

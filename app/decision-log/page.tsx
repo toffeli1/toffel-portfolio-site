@@ -1,4 +1,5 @@
 import DecisionLogByCompany from "@/components/DecisionLogByCompany";
+import Eyebrow from "@/components/Eyebrow";
 import {
   decisionsByCompany,
   pendingWeightEventCount,
@@ -6,6 +7,7 @@ import {
   totalEventCount,
 } from "@/data/decisions";
 import { portfolioStrategy } from "@/data/portfolioStrategy";
+import { INK, BODY, MUTED, HAIRLINE, CARD, ACCENT, AMBER, NEGATIVE, SECTION_Y } from "@/lib/theme";
 
 export const metadata = {
   title: "Decision Log",
@@ -54,46 +56,40 @@ export default function DecisionLogPage() {
   const stats = [
     { label: "Companies", value: blocks.length },
     { label: "Total Decisions", value: totalEvents },
-    { label: "Buys / Adds",     value: buys,  color: "#1a4a2e" },
-    { label: "Risk Management", value: risk,  color: "#7a4520" },
-    { label: "Exits",           value: exits, color: "#8b2530" },
+    { label: "Buys / Adds",     value: buys,  color: ACCENT },
+    { label: "Risk Management", value: risk,  color: AMBER },
+    { label: "Exits",           value: exits, color: NEGATIVE },
   ];
 
   return (
-    <div className="min-h-screen bg-[#faf7f2]">
+    <div className="min-h-screen" style={{ background: "#faf7f2" }}>
 
       <main>
         {/* Header + stats */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-4xl px-6 py-14 lg:px-12">
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-              Process
-            </p>
-            <h1 className="text-3xl font-bold tracking-tight text-[#0f1e35]">
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-4xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-3">Process</Eyebrow>
+            <h1 className="font-display text-[32px] font-semibold tracking-tight" style={{ color: INK }}>
               Decision Log
             </h1>
-            <p className="mt-3 max-w-lg text-[14px] leading-[1.75] text-[#3d4f66]">
+            <p className="mt-3 max-w-lg text-[14px] leading-[1.75]" style={{ color: BODY }}>
               A record of portfolio decisions, trims, exits, and allocation changes used to evaluate process quality over time.
             </p>
 
             {/* Summary stats */}
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div
+              className="mt-8 grid grid-cols-2 divide-x divide-y border-y sm:grid-cols-5 sm:divide-y-0"
+              style={{ borderColor: HAIRLINE }}
+            >
               {stats.map(({ label, value, color }) => (
-                <div
-                  key={label}
-                  className="flex items-baseline gap-2 rounded-xl px-4 py-3"
-                  style={{
-                    background: "#ffffff",
-                    border: "1px solid rgba(15,30,53,0.09)",
-                  }}
-                >
+                <div key={label} className="px-5 py-4 first:pl-0">
                   <span
-                    className="font-mono text-[18px] font-bold tabular-nums"
-                    style={{ color: color ?? "#0f1e35" }}
+                    className="block font-mono font-semibold leading-none tracking-tight"
+                    style={{ color: color ?? INK, fontSize: "1.5rem" }}
                   >
                     {value}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5a6e82]">
+                  <span className="mt-2 block font-mono text-[9px] uppercase tracking-[0.18em]" style={{ color: MUTED }}>
                     {label}
                   </span>
                 </div>
@@ -105,25 +101,16 @@ export default function DecisionLogPage() {
         {/* ── Permanent Portfolio Strategy ─────────────────────────────────
             Pinned above the company blocks. Not a dated trade — it is the
             standing rationale every entry below sits underneath. */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-4xl px-6 py-12 lg:px-12">
-            <div
-              className="rounded-2xl px-7 py-7"
-              style={{
-                background: "#ffffff",
-                border: "1px solid rgba(15,30,53,0.09)",
-                boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-              }}
-            >
-              <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.28em] text-[#7a8799]">
-                Standing rationale
-              </p>
-              <h2 className="mb-5 text-[19px] font-semibold tracking-tight text-[#0f1e35]">
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-4xl px-6 ${SECTION_Y} lg:px-12`}>
+            <div className="px-7 py-7" style={CARD}>
+              <Eyebrow className="mb-1">Standing rationale</Eyebrow>
+              <h2 className="font-display mb-5 text-[20px] font-semibold tracking-tight" style={{ color: INK }}>
                 {portfolioStrategy.heading}
               </h2>
               <div className="max-w-2xl space-y-4">
                 {portfolioStrategy.body.map((para, i) => (
-                  <p key={i} className="text-[14px] leading-[1.85] text-[#2d3d52]">
+                  <p key={i} className="text-[14px] leading-[1.85]" style={{ color: BODY }}>
                     {para}
                   </p>
                 ))}
@@ -143,19 +130,19 @@ export default function DecisionLogPage() {
           block and the dev-only section below.
         */}
         {process.env.NODE_ENV !== "production" && (
-          <section className="border-b" style={{ borderColor: "#c98a4b" }}>
-            <div className="mx-auto max-w-4xl px-6 py-12 lg:px-12">
+          <section className="border-b" style={{ borderColor: AMBER }}>
+            <div className={`mx-auto max-w-4xl px-6 ${SECTION_Y} lg:px-12`}>
               <div
-                className="rounded-2xl px-7 py-7"
-                style={{ background: "#fdf1e7", border: "1px dashed #c98a4b" }}
+                className="px-7 py-7"
+                style={{ background: "#fdf1e7", border: `1px dashed ${AMBER}`, borderRadius: 10 }}
               >
-                <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.28em] text-[#7a4520]">
+                <p className="mb-1 font-mono text-[9px] uppercase tracking-[0.2em]" style={{ color: AMBER }}>
                   TODO — dev only, not shown in production, draft awaiting approval
                 </p>
-                <h2 className="mb-3 text-[19px] font-semibold tracking-tight text-[#7a4520]">
+                <h2 className="font-display mb-3 text-[20px] font-semibold tracking-tight" style={{ color: AMBER }}>
                   July 2026 Restructuring Note
                 </h2>
-                <p className="max-w-2xl text-[13px] leading-[1.8] text-[#7a4520]">
+                <p className="max-w-2xl text-[13px] leading-[1.8]" style={{ color: AMBER }}>
                   Sixteen positions show a July 2026 exit with no exact date. That is not
                   sixteen decisions made in one month, it is sixteen positions whose exit dates
                   were never recorded and which surfaced together in the July tracker snapshot.
@@ -171,10 +158,8 @@ export default function DecisionLogPage() {
 
         {/* ── Decisions, grouped by company ──────────────────────────────── */}
         <section>
-          <div className="mx-auto max-w-4xl px-6 py-12 lg:px-12">
-            <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-              By company
-            </p>
+          <div className={`mx-auto max-w-4xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-8">By company</Eyebrow>
             <DecisionLogByCompany
               blocks={publicBlocks}
               pendingCount={pendingCount}
@@ -185,9 +170,9 @@ export default function DecisionLogPage() {
         </section>
       </main>
 
-      <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
+      <footer style={{ borderTop: `1px solid ${HAIRLINE}` }}>
         <div className="mx-auto max-w-4xl px-6 py-8 lg:px-12">
-          <p className="font-mono text-[10px] text-[#5a6e82]">
+          <p className="font-mono text-[10px]" style={{ color: MUTED }}>
             For informational purposes only. Not financial advice.
           </p>
         </div>

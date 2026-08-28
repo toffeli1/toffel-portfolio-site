@@ -3,6 +3,7 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-serif);
 }
 
 * { box-sizing: border-box; }
@@ -19,6 +20,13 @@ body {
 .hero-grid {
   background-image: radial-gradient(circle, rgba(15,30,53,0.055) 1px, transparent 1px);
   background-size: 28px 28px;
+}
+
+/* Display serif — headlines and large standalone numerals only. Never body
+   copy, never data tables: those stay on Geist Sans/Mono. */
+.font-display {
+  font-family: var(--font-serif), serif;
+  font-feature-settings: "ss01" 1;
 }
 
 /* Scrollbar */

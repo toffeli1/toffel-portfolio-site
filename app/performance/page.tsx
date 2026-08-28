@@ -1,5 +1,7 @@
 import Link from "next/link";
 import TickerLogo from "@/components/TickerLogo";
+import Eyebrow from "@/components/Eyebrow";
+import { Tag } from "@/components/Tag";
 import {
   CumulativeChart, MonthlyGroupedBars, DrawdownChart, SERIES_COLORS,
   type CumulativeSeries, type MonthlyRow,
@@ -9,6 +11,7 @@ import {
 } from "@/data/performance";
 import { getCompany } from "@/data/companies";
 import { thesisHrefIfPublished } from "@/lib/routes";
+import { INK, BODY, MUTED, FAINT, HAIRLINE, CARD, POSITIVE, NEGATIVE, SECTION_Y } from "@/lib/theme";
 
 // ─── Performance ──────────────────────────────────────────────────────────────
 // Every number on this page comes from data/performanceDerived.json, generated
@@ -23,44 +26,23 @@ export const metadata = {
     "Time-weighted return since July 3, 2025 versus the S&P 500 total-return index, with monthly, calendar-year, drawdown and holding-level analytics.",
 };
 
-const ACCENT = "#1a4a2e";
-const INK = "#0f1e35";
-const MUTED = "#5a6e82";
-const FAINT = "#7a8799";
-const POS = "#15542e";
-const NEG = "#8b1a1a";
-
-const CARD = {
-  background: "#ffffff",
-  border: "1px solid rgba(15,30,53,0.09)",
-  boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-} as const;
-
 const pct = (n: number, d = 2) => `${n >= 0 ? "+" : ""}${n.toFixed(d)}%`;
-const tone = (n: number) => (n >= 0 ? POS : NEG);
+const tone = (n: number) => (n >= 0 ? POSITIVE : NEGATIVE);
 const fmtDate = (d: string) =>
   new Date(`${d}T00:00:00Z`).toLocaleDateString("en-US", {
     month: "short", day: "numeric", year: "numeric", timeZone: "UTC",
   });
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.28em]" style={{ color: FAINT }}>
-      {children}
-    </p>
-  );
-}
-
 function Stat({
   label, value, color, note,
 }: { label: string; value: string; color?: string; note?: string }) {
   return (
-    <div className="rounded-2xl px-6 py-5" style={CARD}>
-      <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em]" style={{ color: MUTED }}>
+    <div className="px-5 py-4 first:pl-0">
+      <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.18em]" style={{ color: MUTED }}>
         {label}
       </p>
-      <p className="font-mono font-bold leading-none tracking-tight"
-         style={{ color: color ?? INK, fontSize: "clamp(1.5rem,2.6vw,2rem)" }}>
+      <p className="font-mono font-semibold leading-none tracking-tight"
+         style={{ color: color ?? INK, fontSize: "1.7rem" }}>
         {value}
       </p>
       {note && <p className="mt-2 font-mono text-[9px]" style={{ color: FAINT }}>{note}</p>}
@@ -104,19 +86,24 @@ export default function PerformancePage() {
     (a, b) => (b.totalReturnPct ?? -Infinity) - (a.totalReturnPct ?? -Infinity)
   );
 
+  const stats = [
+    { label: "Portfolio TWR", value: pct(p.cumulativeReturnPct), color: tone(p.cumulativeReturnPct), note: `Since ${fmtDate(p.inceptionDate)}` },
+    ...(sp.available ? [{ label: "S&P 500 total return", value: pct(sp.cumulativeReturnPct!), color: tone(sp.cumulativeReturnPct!), note: "Dividends reinvested" }] : []),
+    ...(sp.available && sp.excessCumulativePts !== undefined ? [{ label: "Excess vs S&P 500", value: `${sp.excessCumulativePts >= 0 ? "+" : ""}${sp.excessCumulativePts.toFixed(2)} pts`, color: tone(sp.excessCumulativePts), note: "Portfolio minus benchmark" }] : []),
+    { label: "Max drawdown", value: `${p.maxDrawdownPct.toFixed(2)}%`, color: NEGATIVE, note: `Trough ${fmtDate(p.maxDrawdownDate)}` },
+    { label: "Annualized volatility", value: `${p.annualizedVolatilityPct.toFixed(2)}%`, note: "Std. dev. of daily returns" },
+    ...(p.betaVsSp500 !== null ? [{ label: "Beta vs S&P 500", value: p.betaVsSp500.toFixed(2), note: "Daily returns, since inception" }] : []),
+  ];
+
   return (
-    <div className="min-h-screen bg-[#faf7f2]">
+    <div className="min-h-screen" style={{ background: "#faf7f2" }}>
       <main>
         {/* ── 1. Header + methodology ────────────────────────────────────── */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div style={{ height: "2px", background:
-            `linear-gradient(90deg, transparent 0%, ${ACCENT}30 15%, ${ACCENT}60 50%, ${ACCENT}30 85%, transparent 100%)` }} />
-          <div className="mx-auto max-w-6xl px-6 py-14 lg:px-12">
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]" style={{ color: ACCENT }}>
-              Track Record
-            </p>
-            <h1 className="text-3xl font-bold tracking-tight" style={{ color: INK }}>Performance</h1>
-            <p className="mt-3 max-w-2xl text-[14px] leading-[1.75]" style={{ color: "#3d4f66" }}>
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-6xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-3">Track Record</Eyebrow>
+            <h1 className="font-display text-[32px] font-semibold tracking-tight" style={{ color: INK }}>Performance</h1>
+            <p className="mt-3 max-w-2xl text-[14px] leading-[1.75]" style={{ color: BODY }}>
               Time-weighted return since <strong>{fmtDate(p.inceptionDate)}</strong>, the first day of
               Roth account activity. Through {fmtDate(p.asOfDate)} across {p.sessions} trading sessions.
             </p>
@@ -126,36 +113,16 @@ export default function PerformancePage() {
               distributions are return and are treated as reinvested. Every figure on this page,
               cumulative, monthly, calendar-year and drawdown, derives from that one series.
             </p>
-          </div>
-        </section>
 
-        {/* ── 2. Summary cards ───────────────────────────────────────────── */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-6xl px-6 py-12 lg:px-12">
-            <SectionLabel>Since Inception</SectionLabel>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Stat label="Portfolio TWR" value={pct(p.cumulativeReturnPct)}
-                    color={tone(p.cumulativeReturnPct)} note={`Since ${fmtDate(p.inceptionDate)}`} />
-              {sp.available && (
-                <Stat label="S&P 500 total return" value={pct(sp.cumulativeReturnPct!)}
-                      color={tone(sp.cumulativeReturnPct!)} note="Dividends reinvested" />
-              )}
-              {sp.available && sp.excessCumulativePts !== undefined && (
-                <Stat label="Excess vs S&P 500"
-                      value={`${sp.excessCumulativePts >= 0 ? "+" : ""}${sp.excessCumulativePts.toFixed(2)} pts`}
-                      color={tone(sp.excessCumulativePts)} note="Portfolio − benchmark" />
-              )}
-              <Stat label="Max drawdown" value={`${p.maxDrawdownPct.toFixed(2)}%`}
-                    color={NEG} note={`Trough ${fmtDate(p.maxDrawdownDate)}`} />
-              <Stat label="Annualized volatility" value={`${p.annualizedVolatilityPct.toFixed(2)}%`}
-                    note="Std. dev. of daily returns" />
-              {p.betaVsSp500 !== null && (
-                <Stat label="Beta vs S&P 500" value={p.betaVsSp500.toFixed(2)}
-                      note="Daily returns, since inception" />
-              )}
+            {/* ── Since-inception stat strip ─────────────────────────────── */}
+            <div
+              className="mt-10 grid grid-cols-2 divide-x divide-y border-y sm:grid-cols-3 sm:divide-y-0 lg:grid-cols-6"
+              style={{ borderColor: HAIRLINE }}
+            >
+              {stats.map((s) => <Stat key={s.label} {...s} />)}
             </div>
             {pending.length > 0 && (
-              <p className="mt-5 font-mono text-[10px] leading-[1.7]" style={{ color: NEG, opacity: 0.85 }}>
+              <p className="mt-5 font-mono text-[10px] leading-[1.7]" style={{ color: NEGATIVE, opacity: 0.85 }}>
                 {pending.map((b) => `${b.name} total return unavailable: ${b.unavailableReason}`).join(" ")}
               </p>
             )}
@@ -186,57 +153,53 @@ export default function PerformancePage() {
           </div>
         </section>
 
-        {/* ── 3. Cumulative ──────────────────────────────────────────────── */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-6xl px-6 py-12 lg:px-12">
-            <SectionLabel>Cumulative Performance</SectionLabel>
-            <div className="rounded-2xl px-5 py-5" style={CARD}>
-              <CumulativeChart series={cumulativeSeries} />
-              <div className="mt-3 space-y-1.5">
-                <p className="font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
-                  All series indexed to 0% at {fmtDate(p.inceptionDate)} and restricted to the same
-                  trading sessions.
-                </p>
-                {/* Every benchmark discloses its own source. A proxied series must
-                    say so explicitly rather than letting the index label imply the
-                    official index was used. */}
-                {available.map((b) => (
-                  <p key={b.key} className="font-mono text-[9px] leading-[1.6]"
-                     style={{ color: b.proxy ? "#8b2530" : FAINT, opacity: b.proxy ? 0.9 : 1 }}>
-                    {b.name}: {b.sourceNote}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── 4. Monthly ─────────────────────────────────────────────────── */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-6xl px-6 py-12 lg:px-12">
-            <SectionLabel>Monthly Returns</SectionLabel>
-            <div className="rounded-2xl px-5 py-5" style={CARD}>
-              <MonthlyGroupedBars rows={monthlyRows} benchmarks={monthlyBenchmarks} />
-              <p className="mt-3 font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
-                {p.monthly.length} periods. July 2025 is a partial month beginning{" "}
-                {fmtDate(p.inceptionDate)}; the latest month runs through {fmtDate(p.asOfDate)}.
-                Monthly returns link exactly to the cumulative figure above.
+        {/* ── 2. Cumulative ──────────────────────────────────────────────── */}
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-6xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-6">Cumulative Performance</Eyebrow>
+            <CumulativeChart series={cumulativeSeries} />
+            <div className="mt-4 space-y-1.5">
+              <p className="font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
+                All series indexed to 0% at {fmtDate(p.inceptionDate)} and restricted to the same
+                trading sessions.
               </p>
+              {/* Every benchmark discloses its own source. A proxied series must
+                  say so explicitly rather than letting the index label imply the
+                  official index was used. */}
+              {available.map((b) => (
+                <p key={b.key} className="font-mono text-[9px] leading-[1.6]"
+                   style={{ color: b.proxy ? NEGATIVE : FAINT, opacity: b.proxy ? 0.9 : 1 }}>
+                  {b.name}: {b.sourceNote}
+                </p>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* ── 5. Calendar year ───────────────────────────────────────────── */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-6xl px-6 py-12 lg:px-12">
-            <SectionLabel>Calendar-Year Performance</SectionLabel>
-            <div className="overflow-x-auto rounded-2xl" style={CARD}>
+        {/* ── 3. Monthly ─────────────────────────────────────────────────── */}
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-6xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-6">Monthly Returns</Eyebrow>
+            <MonthlyGroupedBars rows={monthlyRows} benchmarks={monthlyBenchmarks} />
+            <p className="mt-4 font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
+              {p.monthly.length} periods. July 2025 is a partial month beginning{" "}
+              {fmtDate(p.inceptionDate)}; the latest month runs through {fmtDate(p.asOfDate)}.
+              Monthly returns link exactly to the cumulative figure above.
+            </p>
+          </div>
+        </section>
+
+        {/* ── 4. Calendar year ───────────────────────────────────────────── */}
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-6xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-6">Calendar-Year Performance</Eyebrow>
+            <div className="overflow-x-auto" style={CARD}>
               <table className="w-full text-sm">
                 <thead>
-                  <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
+                  <tr style={{ borderBottom: `1px solid ${HAIRLINE}` }}>
                     {["Period", "Portfolio", ...available.map((b) => b.name),
                       ...available.map((b) => `Excess vs ${b.name}`)].map((h) => (
-                      <th key={h} className="px-5 py-3.5 text-left font-mono text-[9px] uppercase tracking-[0.2em]"
+                      <th key={h} className="px-5 py-3.5 text-left font-mono text-[9px] uppercase tracking-[0.18em]"
                           style={{ color: FAINT }}>{h}</th>
                     ))}
                   </tr>
@@ -244,13 +207,12 @@ export default function PerformancePage() {
                 <tbody>
                   {p.calendarYear.map((y, i) => (
                     <tr key={y.key} style={i < p.calendarYear.length - 1
-                      ? { borderBottom: "1px solid rgba(15,30,53,0.05)" } : undefined}>
+                      ? { borderBottom: `1px solid ${HAIRLINE}` } : undefined}>
                       <td className="px-5 py-4">
                         <span className="font-mono text-[12px] font-semibold" style={{ color: INK }}>{y.label}</span>
                         {y.partial && (
-                          <span className="ml-2 rounded font-mono text-[8px] uppercase tracking-[0.12em]"
-                                style={{ color: FAINT, border: "1px solid rgba(15,30,53,0.12)", padding: "2px 6px" }}>
-                            partial · from {fmtDate(y.from)}
+                          <span className="ml-2">
+                            <Tag>partial · from {fmtDate(y.from)}</Tag>
                           </span>
                         )}
                       </td>
@@ -288,31 +250,29 @@ export default function PerformancePage() {
           </div>
         </section>
 
-        {/* ── 6. Drawdown ────────────────────────────────────────────────── */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-6xl px-6 py-12 lg:px-12">
-            <SectionLabel>Drawdown</SectionLabel>
-            <div className="rounded-2xl px-5 py-5" style={CARD}>
-              <DrawdownChart points={p.drawdown} />
-              <p className="mt-3 font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
-                Peak-to-trough decline of the same daily wealth index used above:
-                wealth ÷ running peak − 1. Worst: {p.maxDrawdownPct.toFixed(2)}% on{" "}
-                {fmtDate(p.maxDrawdownDate)}.
-              </p>
-            </div>
+        {/* ── 5. Drawdown ────────────────────────────────────────────────── */}
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-6xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-6">Drawdown</Eyebrow>
+            <DrawdownChart points={p.drawdown} />
+            <p className="mt-4 font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
+              Peak-to-trough decline of the same daily wealth index used above:
+              wealth ÷ running peak − 1. Worst: {p.maxDrawdownPct.toFixed(2)}% on{" "}
+              {fmtDate(p.maxDrawdownDate)}.
+            </p>
           </div>
         </section>
 
-        {/* ── 7. Active holding performance ──────────────────────────────── */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div className="mx-auto max-w-6xl px-6 py-12 lg:px-12">
-            <SectionLabel>Active Holding Performance</SectionLabel>
-            <div className="overflow-x-auto rounded-2xl" style={CARD}>
+        {/* ── 6. Active holding performance ──────────────────────────────── */}
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-6xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-6">Active Holding Performance</Eyebrow>
+            <div className="overflow-x-auto" style={CARD}>
               <table className="w-full text-sm">
                 <thead>
-                  <tr style={{ background: "#f8f4ee", borderBottom: "1px solid rgba(15,30,53,0.07)" }}>
+                  <tr style={{ borderBottom: `1px solid ${HAIRLINE}` }}>
                     {["Holding", "Total return", "Holding period", "Avg geometric / trading session"].map((h, i) => (
-                      <th key={h} className={`px-5 py-3.5 font-mono text-[9px] uppercase tracking-[0.2em] ${i === 0 ? "text-left" : "text-right"}`}
+                      <th key={h} className={`px-5 py-3.5 font-mono text-[9px] uppercase tracking-[0.18em] ${i === 0 ? "text-left" : "text-right"}`}
                           style={{ color: FAINT }}>{h}</th>
                     ))}
                   </tr>
@@ -332,7 +292,7 @@ export default function PerformancePage() {
                     );
                     return (
                       <tr key={h.ticker} style={i < activeSorted.length - 1
-                        ? { borderBottom: "1px solid rgba(15,30,53,0.05)" } : undefined}>
+                        ? { borderBottom: `1px solid ${HAIRLINE}` } : undefined}>
                         <td className="px-5 py-4">
                           {href ? <Link href={href} className="inline-flex transition-opacity hover:opacity-70">{id}</Link> : id}
                         </td>
@@ -343,10 +303,8 @@ export default function PerformancePage() {
                         <td className="px-5 py-4 text-right font-mono text-[11px] tabular-nums" style={{ color: MUTED }}>
                           {h.sessionsHeld} sessions
                           {h.reEntered && (
-                            <span className="ml-2 rounded font-mono text-[8px] uppercase tracking-[0.1em]"
-                                  style={{ color: FAINT, border: "1px solid rgba(15,30,53,0.12)", padding: "1px 5px" }}
-                                  title={`${h.priorClosedIntervals ?? 0} earlier interval(s) closed before this one`}>
-                              re-entered
+                            <span className="ml-2" title={`${h.priorClosedIntervals ?? 0} earlier interval(s) closed before this one`}>
+                              <Tag>re-entered</Tag>
                             </span>
                           )}
                         </td>
@@ -381,11 +339,11 @@ export default function PerformancePage() {
           </div>
         </section>
 
-        <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
+        <footer style={{ borderTop: `1px solid ${HAIRLINE}` }}>
           <div className="mx-auto max-w-6xl px-6 py-8 lg:px-12">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <Link href="/portfolio/investments"
-                    className="font-mono text-[11px] uppercase tracking-[0.2em] transition-colors hover:text-[#0f1e35]"
+                    className="font-mono text-[11px] uppercase tracking-[0.18em] transition-colors hover:opacity-70"
                     style={{ color: MUTED }}>← Investments</Link>
               <p className="font-mono text-[10px]" style={{ color: MUTED }}>
                 Track record is short and spans a strong market. Past performance does not indicate

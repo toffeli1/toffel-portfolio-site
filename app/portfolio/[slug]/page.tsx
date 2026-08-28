@@ -7,6 +7,8 @@ import { PORTFOLIO_UPDATED_AT, fmtPortfolioDate } from "@/lib/config";
 import SleeveDashboard from "@/components/SleeveDashboard";
 import InvestmentSection from "@/components/InvestmentSection";
 import { portfolioState, activePositionCount } from "@/data/portfolioState";
+import Eyebrow from "@/components/Eyebrow";
+import { INK, MUTED, BODY, HAIRLINE, ACCENT, SECTION_Y } from "@/lib/theme";
 
 export function generateStaticParams() {
   return portfolios.map((p) => ({ slug: p.slug }));
@@ -44,16 +46,17 @@ export default async function PortfolioPage({
 
 function SleeveFooter() {
   return (
-    <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
+    <footer style={{ borderTop: `1px solid ${HAIRLINE}` }}>
       <div className="mx-auto max-w-7xl px-6 py-8 lg:px-12">
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5a6e82] transition-colors hover:text-[#0f1e35]"
+            className="font-mono text-[11px] uppercase tracking-[0.18em] transition-colors hover:opacity-70"
+            style={{ color: MUTED }}
           >
             ← Overview
           </Link>
-          <p className="font-mono text-[10px] text-[#5a6e82]">
+          <p className="font-mono text-[10px]" style={{ color: MUTED }}>
             For informational purposes only. Not financial advice.
           </p>
         </div>
@@ -71,38 +74,26 @@ function SleeveFooter() {
 const SHOW_2028_SLEEVE = false;
 
 function RetailView() {
-  const color = "#1a3a5c";
   const fund2027 = holdings.filter((h) => h.sleeve === "2027 Roth Fund");
   const fund2028 = holdings.filter((h) => h.sleeve === "2028 Roth Fund");
 
   return (
-    <div className="min-h-screen bg-[#faf7f2]">
+    <div className="min-h-screen" style={{ background: "#faf7f2" }}>
       <main>
         {/* Header */}
-        <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
-          <div
-            style={{
-              height: "2px",
-              background: `linear-gradient(90deg, transparent 0%, ${color}30 15%, ${color}60 50%, ${color}30 85%, transparent 100%)`,
-            }}
-          />
-          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-            <p
-              className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
-              style={{ color }}
-            >
-              Taxable Account
-            </p>
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-7xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-3">Taxable Account</Eyebrow>
             <h1
-              className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
-              style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
+              className="font-display font-semibold leading-[0.95] tracking-tight"
+              style={{ fontSize: "clamp(2.25rem,4vw,3.5rem)", color: INK }}
             >
               Individual Brokerage
             </h1>
-            <p className="mt-2 max-w-xl font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
+            <p className="mt-3 max-w-xl font-mono text-[10px] leading-[1.5]" style={{ color: MUTED }}>
               Weights and returns are sleeve-scoped. As of {fmtPortfolioDate(PORTFOLIO_UPDATED_AT)}.
             </p>
-            <p className="mt-4 max-w-xl text-[14px] leading-[1.7] text-[#3d4f66]">
+            <p className="mt-4 max-w-xl text-[14px] leading-[1.7]" style={{ color: BODY }}>
               Taxable brokerage account organized into funding sleeves used to
               build future Roth IRA contributions.
             </p>
@@ -112,7 +103,7 @@ function RetailView() {
         {/* 2027 Roth Fund — visual sleeve dashboard */}
         {fund2027.length > 0 && (
           <section>
-            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+            <div className={`mx-auto max-w-7xl px-6 ${SECTION_Y} lg:px-12`}>
               <SleeveDashboard
                 label="Sleeve View"
                 title="2027 Roth Fund"
@@ -132,7 +123,7 @@ function RetailView() {
         {/* 2028 Roth Fund — visual sleeve dashboard. ARCHIVED via SHOW_2028_SLEEVE. */}
         {SHOW_2028_SLEEVE && fund2028.length > 0 && (
           <section>
-            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
+            <div className={`mx-auto max-w-7xl px-6 ${SECTION_Y} lg:px-12`}>
               <SleeveDashboard
                 label="Sleeve View"
                 title="2028 Roth Fund"
@@ -158,52 +149,36 @@ function RetailView() {
 // ── Investments view ───────────────────────────────────────────────────────────
 
 function InvestmentsView() {
-  const color = "#1a4a2e";
-
   return (
-    <div className="min-h-screen bg-[#faf7f2]">
+    <div className="min-h-screen" style={{ background: "#faf7f2" }}>
       <main>
         {/* Header */}
-        <section
-          className="border-b"
-          style={{ borderColor: "rgba(15,30,53,0.08)" }}
-        >
-          <div
-            style={{
-              height: "2px",
-              background: `linear-gradient(90deg, transparent 0%, ${color}30 15%, ${color}60 50%, ${color}30 85%, transparent 100%)`,
-            }}
-          />
-          <div className="mx-auto max-w-7xl px-6 py-20 lg:px-12">
-            <p
-              className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em]"
-              style={{ color }}
-            >
-              Account View
-            </p>
+        <section className="border-b" style={{ borderColor: HAIRLINE }}>
+          <div className={`mx-auto max-w-7xl px-6 ${SECTION_Y} lg:px-12`}>
+            <Eyebrow className="mb-3">Account View</Eyebrow>
             <div className="flex items-end justify-between gap-8">
               <div className="min-w-0">
                 <h1
-                  className="font-bold leading-[0.93] tracking-tight text-[#0f1e35]"
-                  style={{ fontSize: "clamp(2.5rem,4.5vw,4rem)" }}
+                  className="font-display font-semibold leading-[0.95] tracking-tight"
+                  style={{ fontSize: "clamp(2.25rem,4vw,3.5rem)", color: INK }}
                 >
                   Investments
                 </h1>
-                <p className="mt-2 max-w-xl font-mono text-[10px] leading-[1.5] text-[#5a6e82]">
+                <p className="mt-3 max-w-xl font-mono text-[10px] leading-[1.5]" style={{ color: MUTED }}>
                   Manually maintained snapshot of portfolio weights and returns, with no live pricing. As of {fmtPortfolioDate(portfolioState.asOf)}.
                 </p>
-                <p className="mt-4 max-w-lg text-[14px] leading-[1.7] text-[#3d4f66]">
+                <p className="mt-4 max-w-lg text-[14px] leading-[1.7]" style={{ color: BODY }}>
                   Long-Term Compounding
                 </p>
               </div>
               <div className="shrink-0 text-right">
                 <p
-                  className="font-mono font-bold leading-none tracking-tight"
-                  style={{ color, fontSize: "clamp(3.5rem,5.5vw,5rem)" }}
+                  className="font-mono font-semibold leading-none tracking-tight"
+                  style={{ color: ACCENT, fontSize: "clamp(3rem,5vw,4.25rem)" }}
                 >
                   {activePositionCount}
                 </p>
-                <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
+                <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.2em]" style={{ color: MUTED }}>
                   positions
                 </p>
               </div>

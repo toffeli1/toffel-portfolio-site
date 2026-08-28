@@ -10,6 +10,9 @@ import { LiveReturnBadge } from "@/components/LiveReturnBadge";
 import { ChartWrapper } from "@/components/ChartWrapper";
 import TickerLogo from "@/components/TickerLogo";
 import DerivedInvestmentWeight from "@/components/DerivedInvestmentWeight";
+import Eyebrow from "@/components/Eyebrow";
+import { Tag } from "@/components/Tag";
+import { INK, BODY, MUTED, FAINT, HAIRLINE, CARD } from "@/lib/theme";
 import {
   getPositionChanges,
   formatPositionChangeDate,
@@ -151,14 +154,14 @@ export default async function PositionPage({
   // Removed for the same reason as the lot props — see the PRIVACY note below.
 
   return (
-    <div className="min-h-screen bg-[#faf7f2]">
+    <div className="min-h-screen" style={{ background: "#faf7f2" }}>
       <PositionQuoteProvider ticker={ticker}>
         <main>
 
           {/* ── Hero ──────────────────────────────────────────────────────── */}
           <section
             className="relative overflow-hidden border-b"
-            style={{ borderColor: "rgba(15,30,53,0.08)" }}
+            style={{ borderColor: HAIRLINE }}
           >
             <div className="absolute inset-0 hero-grid" />
 
@@ -166,42 +169,10 @@ export default async function PositionPage({
 
               {/* Overline badges */}
               <div className="mb-8 flex flex-wrap items-center gap-2">
-                {assetType && (
-                  <span
-                    className="rounded-full font-mono text-[9px] uppercase tracking-[0.2em]"
-                    style={{
-                      color: accentColor,
-                      backgroundColor: `${accentColor}14`,
-                      padding: "4px 12px",
-                    }}
-                  >
-                    {assetType}
-                  </span>
-                )}
-                {subcategory && (
-                  <span
-                    className="rounded px-3 py-1 font-mono text-[9px] text-[#7a8799]"
-                    style={{ border: "1px solid rgba(15,30,53,0.1)" }}
-                  >
-                    {subcategory}
-                  </span>
-                )}
-                {country && (
-                  <span
-                    className="rounded px-3 py-1 font-mono text-[9px] text-[#7a8799]"
-                    style={{ border: "1px solid rgba(15,30,53,0.1)" }}
-                  >
-                    {country}
-                  </span>
-                )}
-                {marketCap && (
-                  <span
-                    className="rounded px-3 py-1 font-mono text-[9px] text-[#7a8799]"
-                    style={{ border: "1px solid rgba(15,30,53,0.1)" }}
-                  >
-                    {marketCap}
-                  </span>
-                )}
+                {assetType && <Tag variant="solid" color={accentColor}>{assetType}</Tag>}
+                {subcategory && <Tag>{subcategory}</Tag>}
+                {country && <Tag>{country}</Tag>}
+                {marketCap && <Tag>{marketCap}</Tag>}
               </div>
 
               {/* Ticker + company + live quote */}
@@ -212,15 +183,15 @@ export default async function PositionPage({
                   <div className="flex items-center gap-4">
                     <TickerLogo ticker={ticker} name={company} size="lg" />
                     <h1
-                      className="font-bold leading-[0.88] tracking-[-0.03em] text-[#0f1e35]"
-                      style={{ fontSize: "clamp(4.5rem,10vw,9rem)" }}
+                      className="font-mono font-semibold leading-none tracking-tight"
+                      style={{ color: INK, fontSize: "clamp(2.4rem,6vw,4.5rem)" }}
                     >
                       {ticker}
                     </h1>
                   </div>
                   <p
-                    className="mt-5 font-medium text-[#3d4f66]"
-                    style={{ fontSize: "clamp(1.1rem,2.5vw,1.5rem)" }}
+                    className="font-display mt-5 font-semibold"
+                    style={{ color: INK, fontSize: "clamp(1.3rem,2.6vw,1.75rem)" }}
                   >
                     {company}
                   </p>
@@ -237,15 +208,8 @@ export default async function PositionPage({
 
                   {/* In Your Sleeves */}
                   {sleeveOwnerships.length > 0 && (
-                    <div
-                      className="rounded-2xl px-8 py-6"
-                      style={{
-                        background: "#ffffff",
-                        border: "1px solid rgba(15,30,53,0.09)",
-                        boxShadow: "0 1px 8px rgba(15,30,53,0.05)",
-                      }}
-                    >
-                      <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.28em] text-[#5a6e82]">
+                    <div className="px-8 py-6" style={CARD}>
+                      <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.2em]" style={{ color: MUTED }}>
                         In Your Sleeves
                       </p>
                       <div className="space-y-3">
@@ -301,7 +265,7 @@ export default async function PositionPage({
           </section>
 
           {/* ── Chart ─────────────────────────────────────────────────────── */}
-          <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+          <section className="border-b" style={{ borderColor: HAIRLINE }}>
             <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
 {/* PRIVACY: purchaseLots, averageCost and entryMarker all carry real
                   per-share PRICES. ChartWrapper is a client component, so passing
@@ -322,11 +286,9 @@ export default async function PositionPage({
 
           {/* ── Position Changes ──────────────────────────────────────────── */}
           {(useDerivedChanges || (detail?.trimEvents && detail.trimEvents.length > 0)) && (
-            <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+            <section className="border-b" style={{ borderColor: HAIRLINE }}>
               <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-                <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Position Changes
-                </p>
+                <Eyebrow className="mb-8">Position Changes</Eyebrow>
                 <div className="space-y-5">
                   {useDerivedChanges
                     ? derivedChanges.map((card, i) => (
@@ -345,11 +307,9 @@ export default async function PositionPage({
 
           {/* ── Investment Thesis ─────────────────────────────────────────── */}
           {(thesis || detail?.longDescription) && (
-            <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+            <section className="border-b" style={{ borderColor: HAIRLINE }}>
               <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-                <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  Investment Thesis
-                </p>
+                <Eyebrow className="mb-5">Investment Thesis</Eyebrow>
                 <p className="max-w-2xl text-[15px] leading-[1.85] text-[#2d3d52]">
                   {detail?.longDescription ?? thesis}
                 </p>
@@ -370,11 +330,9 @@ export default async function PositionPage({
 
           {/* ── What I'm Watching ────────────────────────────────────────── */}
           {detail?.watchList && detail.watchList.length > 0 && (
-            <section className="border-b" style={{ borderColor: "rgba(15,30,53,0.08)" }}>
+            <section className="border-b" style={{ borderColor: HAIRLINE }}>
               <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12">
-                <p className="mb-8 font-mono text-[10px] uppercase tracking-[0.28em] text-[#7a8799]">
-                  What I&apos;m Watching
-                </p>
+                <Eyebrow className="mb-8">What I&apos;m Watching</Eyebrow>
                 <ul className="max-w-2xl space-y-4">
                   {detail.watchList.map((item, i) => (
                     <li key={i} className="flex items-start gap-4">
@@ -394,7 +352,7 @@ export default async function PositionPage({
       </PositionQuoteProvider>
 
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
-      <footer style={{ borderTop: "1px solid rgba(15,30,53,0.08)" }}>
+      <footer style={{ borderTop: `1px solid ${HAIRLINE}` }}>
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-12">
           <div className="flex items-center justify-between">
             <Link
@@ -439,27 +397,16 @@ function TrimEventCard({ event }: { event: TrimEvent }) {
   // amountUsd. Public surfaces are date + qualitative action + explanation.
   return (
     <div
-      className="max-w-2xl rounded-2xl p-7"
-      style={{
-        background: "#ffffff",
-        border: "1px solid rgba(15,30,53,0.09)",
-        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-      }}
+      className="max-w-2xl p-7"
+      style={CARD}
     >
       <div className="mb-5 flex items-start justify-between gap-8">
         <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
           {formatDetailDate(event.date)}
         </p>
-        <span
-          className="shrink-0 rounded font-mono text-[8px] uppercase tracking-[0.18em]"
-          style={{
-            color: "#5a6e82",
-            backgroundColor: "rgba(15,30,53,0.05)",
-            padding: "3px 8px",
-          }}
-        >
+        <Tag>
           {EVENT_TYPE_LABEL[event.type]}
-        </span>
+        </Tag>
       </div>
       <p className="text-[13px] leading-[1.85] text-[#3d4f66]">
         {event.explanation}
@@ -480,27 +427,16 @@ function TrimEventCard({ event }: { event: TrimEvent }) {
 function DerivedChangeCard({ card }: { card: PositionChangeCard }) {
   return (
     <div
-      className="max-w-2xl rounded-2xl p-7"
-      style={{
-        background: "#ffffff",
-        border: "1px solid rgba(15,30,53,0.09)",
-        boxShadow: "0 1px 4px rgba(15,30,53,0.04)",
-      }}
+      className="max-w-2xl p-7"
+      style={CARD}
     >
       <div className="mb-5 flex items-start justify-between gap-8">
         <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#5a6e82]">
           {formatPositionChangeDate(card)}
         </p>
-        <span
-          className="shrink-0 rounded font-mono text-[8px] uppercase tracking-[0.18em]"
-          style={{
-            color: "#5a6e82",
-            backgroundColor: "rgba(15,30,53,0.05)",
-            padding: "3px 8px",
-          }}
-        >
+        <Tag>
           {positionChangeLabel(card)}
-        </span>
+        </Tag>
       </div>
       <p className="text-[13px] leading-[1.85] text-[#3d4f66]">
         {card.note ?? defaultChangeCopy(card)}
