@@ -86,6 +86,32 @@ export default function PerformancePage() {
     (a, b) => (b.totalReturnPct ?? -Infinity) - (a.totalReturnPct ?? -Infinity)
   );
 
+  // The framing paragraph below states conclusions drawn from these figures,
+  // so its numbers derive from the artifact rather than being typed in; a
+  // regenerated series can then never leave the prose describing old data.
+  const exclNbis = p.sensitivity.excludingNBIS.excessVsSp500Pts;
+  const framing =
+    p.betaVsSp500 !== null && exclNbis !== null && sp.available && sp.excessCumulativePts
+      ? (() => {
+          const beta = p.betaVsSp500!;
+          const riskImplied = beta * sp.cumulativeReturnPct!;
+          const gap = p.cumulativeReturnPct - riskImplied;
+          const start = new Date(`${p.inceptionDate}T00:00:00Z`);
+          const end = new Date(`${p.asOfDate}T00:00:00Z`);
+          const months = Math.round(
+            (end.getUTCFullYear() - start.getUTCFullYear()) * 12 +
+              (end.getUTCMonth() - start.getUTCMonth()) +
+              (end.getUTCDate() - start.getUTCDate()) / 30
+          );
+          return {
+            nbisSharePct: Math.round(((sp.excessCumulativePts! - exclNbis) / sp.excessCumulativePts!) * 10) * 10,
+            beta: beta.toFixed(2),
+            vsRisk: gap < 0 ? "did not beat" : gap < 2 ? "only about matched" : `beat by ${gap.toFixed(1)} points`,
+            months,
+          };
+        })()
+      : null;
+
   const stats = [
     { label: "Portfolio TWR", value: pct(p.cumulativeReturnPct), color: tone(p.cumulativeReturnPct), note: `Since ${fmtDate(p.inceptionDate)}` },
     ...(sp.available ? [{ label: "S&P 500 total return", value: pct(sp.cumulativeReturnPct!), color: tone(sp.cumulativeReturnPct!), note: "Dividends reinvested" }] : []),
@@ -112,6 +138,9 @@ export default function PerformancePage() {
               from return so deposited capital is never counted as performance; dividends and
               distributions are return and are treated as reinvested. Every figure on this page,
               cumulative, monthly, calendar-year and drawdown, derives from that one series.
+              Two September trades, the Oscar Health sale and a Vistra add, are not yet on a
+              statement and are dated by inference to September 21 to 23; every placement inside
+              that window moves cumulative return by less than 0.1 points.
             </p>
 
             {/* ── Since-inception stat strip ─────────────────────────────── */}
@@ -141,13 +170,13 @@ export default function PerformancePage() {
                 {p.sensitivity.excludingNBIS.methodologyNote}
               </p>
             )}
-            {p.betaVsSp500 !== null && p.sensitivity.excludingNBIS.excessVsSp500Pts !== null && (
+            {framing && (
               <p className="mt-4 max-w-2xl text-[13px] leading-[1.85]" style={{ color: INK }}>
-                Two things follow from these numbers. Roughly 90% of the excess return traces
-                to one position, and at a beta of 1.75 the book did not beat what that risk
-                alone would imply. A 14 month record with one dominant name is not evidence of
-                skill, and I would rather state that than let the headline return stand on its
-                own.
+                Two things follow from these numbers. Roughly {framing.nbisSharePct}% of the excess
+                return traces to one position, and at a beta of {framing.beta} the book{" "}
+                {framing.vsRisk} what that risk alone would imply. A {framing.months} month record
+                with one dominant name is not evidence of skill, and I would rather state that than
+                let the headline return stand on its own.
               </p>
             )}
           </div>
@@ -319,10 +348,7 @@ export default function PerformancePage() {
               </table>
             </div>
             <p className="mt-3 max-w-3xl font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
-              {p.activeHoldings.length} holdings active as of {fmtDate(p.asOfDate)}, the date this
-              page is measured through. The book has changed since; the current holdings are on{" "}
-              <Link href="/portfolio/investments" className="underline">Investments</Link>.
-              Holding periods are counted in{" "}
+              {p.activeHoldings.length} active holdings. Holding periods are counted in{" "}
               <strong>trading sessions</strong> the position was actually open, not calendar days.
               A position exited and later re-entered counts only the sessions inside its real
               holding intervals rather than being treated as continuously owned. Average geometric

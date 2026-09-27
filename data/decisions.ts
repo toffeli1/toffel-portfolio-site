@@ -138,6 +138,10 @@ const INITIATION_RATIONALE: Record<string, string> = {
   CEG: "Opened on weakness as the preferred way to hold the nuclear thesis. More established than the speculative alternatives, with a fleet already operating rather than awaiting permitting.",
   MA: "Opened to move exposure away from the AI and compute theme. The attraction is network economics, margins, and the ability to compound alongside rising payment volume without taking bank-style credit risk.",
   CBRS: "Opened as a direct expression of the view that agentic AI increases inference demand. Deliberately small: the company is early and competes against an entrenched accelerator ecosystem.",
+  // VST and SPCX: condensed from Isaac's "Assessing the Frontier" research note
+  // (Sep 2026), in his own wording. Not written here.
+  VST: "Bought partly on my read that federal and state policy currently favors new generation for data centers, and because power exposure holds up better than compute in a pause in AI spending. The weakness is timing: most of the long-term contracts start after my two-year window, so Vistra still sells much of its output at market prices until then.",
+  SPCX: "Sold Rocket Lab and AST SpaceMobile and put most of the proceeds into SpaceX. My own post-mortem showed the two traded on one driver, sentiment toward pre-profit space companies, so I consolidated that exposure into the company that leads the industry in both launch and satellite broadband. I did not make the trade because SpaceX is cheap. I made it to hold one space position instead of two that moved together.",
 };
 
 const FACTUAL_INITIATION =

@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-21",
+  "fetchedAt": "2026-09-27",
   "benchmarks": {
     "sp500": {
       "key": "sp500",
@@ -10,10 +10,6 @@
       "available": true,
       "sourceNote": "S&P 500 Total Return index (^SP500TR) via Yahoo Finance chart API. Dividends reinvested. Free, no API key.",
       "levels": [
-        {
-          "date": "2021-09-30",
-          "level": 8994.830078125
-        },
         {
           "date": "2021-10-31",
           "level": 9625.01953125
@@ -248,11 +244,15 @@
         },
         {
           "date": "2026-08-31",
-          "level": 17263.099609375
+          "level": 17219.939453125
         },
         {
-          "date": "2026-08-31",
-          "level": 17115.4609375
+          "date": "2026-09-30",
+          "level": 17276.4609375
+        },
+        {
+          "date": "2026-09-30",
+          "level": 17364.7890625
         }
       ]
     },
@@ -265,10 +265,6 @@
       "available": true,
       "sourceNote": "Nasdaq-100 is proxied by Invesco QQQ total return because a reliable free historical Nasdaq-100 Total Return Index feed is not available. Uses dividend- and split-adjusted closes, so distributions are reinvested. This is a proxy, not the official XNDX index.",
       "levels": [
-        {
-          "date": "2021-09-30",
-          "level": 357.9599914550781
-        },
         {
           "date": "2021-10-31",
           "level": 386.1099853515625
@@ -503,11 +499,15 @@
         },
         {
           "date": "2026-08-31",
-          "level": 716.0800170898438
+          "level": 716.760009765625
         },
         {
-          "date": "2026-08-31",
-          "level": 710.9299926757812
+          "date": "2026-09-30",
+          "level": 741.0999755859375
+        },
+        {
+          "date": "2026-09-30",
+          "level": 744.5
         }
       ]
     }

@@ -88,25 +88,16 @@ export interface DecisionEntry {
 // rebuild — precise dates for these events aren't preserved in source records.
 export const decisionLog: DecisionEntry[] = [
   // ── Sep 2026 ──────────────────────────────────────────────────────────────
-  // Sourced from the Robinhood positions view and trade history as of
-  // 2026-09-27, not yet from a transaction export. ASTS, RKLB and SPCX dates
-  // are exact (Sep 24 trade history). OSCR's exit, the VST purchase(s) and the
-  // SGOV reduction are confirmed by share counts (present on the Aug 31
-  // statement, changed or gone by Sep 25) but their exact days are not yet
-  // known, so they are month-resolution until the September statement lands.
-  {
-    date: "2026-09-24",
-    ticker: "SPCX",
-    company: "SpaceX",
-    account: "Investments",
-    action: "Add",
-    type: "New position",
-    note: "Opened a SpaceX position the same day ASTS and RKLB were fully sold.",
-    status: "Held",
-    isPlaceholder: true,
-    placeholderPrompt:
-      "ASTS and RKLB were both sold and SpaceX bought on the same day. That reads as one decision: consolidating two small space names into one. Confirm or correct that in your own words, and say why SpaceX rather than keeping either.",
-  },
+  // Sources: the Aug 2026 statement, the 2026-09-11 activity snapshot and the
+  // Sep 24 app trade history. The OSCR sale and the second VST add are not on
+  // a statement yet; both are bracketed to Sep 21-23 (after the Sep 21 VST
+  // ex-date, since the pending dividend covers only 10.5 shares, and before the
+  // Sep 23 close, where the research note shows both done) and placed on Sep 22,
+  // matching the performance reconstruction. Rationale is condensed from
+  // Isaac's "Assessing the Frontier" note, in his wording.
+  //
+  // SPCX's and VST's opening buys are dated by the lifecycle reconstruction;
+  // their rationale lives in INITIATION_RATIONALE in data/decisions.ts.
   {
     date: "2026-09-24",
     ticker: "ASTS",
@@ -114,7 +105,7 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Exit",
     type: "Full exit",
-    note: "Fully exited AST SpaceMobile.",
+    note: "Sold together with Rocket Lab, the same day, to fund SpaceX. The two traded on one driver, sentiment toward pre-profit space companies, so I consolidated that exposure into one position.",
     status: "Fully Exited",
   },
   {
@@ -124,40 +115,48 @@ export const decisionLog: DecisionEntry[] = [
     account: "Investments",
     action: "Exit",
     type: "Full exit",
-    note: "Fully exited Rocket Lab.",
+    note: "Sold together with AST SpaceMobile, the same day, to fund SpaceX. The two traded on one driver, sentiment toward pre-profit space companies, so I consolidated that exposure into one position.",
     status: "Fully Exited",
   },
   {
-    date: "2026-09",
-    ticker: "VST",
-    company: "Vistra",
-    account: "Investments",
-    action: "Add",
-    type: "New position",
-    note: "Opened a Vistra position. Not held on the Aug 31 statement; held on the Sep 25 snapshot. Exact purchase date(s) not yet confirmed.",
-    status: "Held",
-    dateApproximateButConfirmed: true,
-  },
-  {
-    date: "2026-09",
+    date: "2026-09-22",
     ticker: "OSCR",
     company: "Oscar Health",
     account: "Investments",
     action: "Exit",
     type: "Full exit",
-    note: "Fully exited Oscar Health. Held on the Aug 31 statement, absent from the Sep 25 snapshot. Exact sale date not yet confirmed.",
+    note: "Exited because Oscar's revenue depends on ACA subsidies: the enhanced credits expired at the end of 2025, insurers filed mostly double-digit increases for 2027, and the underlying cost trend is running near 10%. Sale date inferred to between Sep 21 and 23.",
     status: "Fully Exited",
   },
   {
-    date: "2026-09",
+    date: "2026-09-22",
+    ticker: "VST",
+    company: "Vistra",
+    account: "Investments",
+    action: "Add",
+    type: "Add",
+    note: "Added to Vistra in the same window as the Oscar Health exit. Purchase date inferred to between Sep 21 and 23.",
+    status: "Held",
+  },
+  {
+    date: "2026-09-03",
+    ticker: "VST",
+    company: "Vistra",
+    account: "Investments",
+    action: "Add",
+    type: "Add",
+    note: "Added to Vistra two sessions after opening it, funded by the same-day SGOV reduction.",
+    status: "Held",
+  },
+  {
+    date: "2026-09-03",
     ticker: "SGOV",
     company: "iShares 0-3 Month Treasury Bond ETF",
     account: "Investments",
     action: "Trim",
     type: "Partial trim",
-    note: "Reduced the Treasury-bill position by roughly a third between the Aug 31 statement and the Sep 25 snapshot. Exact date not yet confirmed.",
+    note: "Sold about a third of SGOV to fund the second Vistra purchase the same day. The reserve now runs on a rule: half deploys if QQQ falls 10% from its high and half at 20%, with individual setups bought in between.",
     status: "Partially Trimmed",
-    dateApproximateButConfirmed: true,
   },
 
   // ── Late Aug 2026 (Aug 31 statement) ──────────────────────────────────────
@@ -483,13 +482,13 @@ export const decisionLog: DecisionEntry[] = [
     realizedSharePct: 1.81,
   },
   {
-    date: "2026-07",
+    date: "2026-05-12",
     ticker: "AEVA",
     company: "Aeva Technologies",
     account: "Investments",
     action: "Exit",
     type: "Closed position",
-    note: "Closed position. No further rationale recorded in source; realized outcome captured in the account's July 2026 tracker snapshot.",
+    note: "A single call-option contract, bought May 11 and sold May 12, 2026. AEVA was never held as stock in this account; the return is on the option premium.",
     returnPct: 68.1,
     status: "Fully Exited",
     realizedSharePct: 1.63,

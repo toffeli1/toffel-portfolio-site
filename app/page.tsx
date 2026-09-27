@@ -158,8 +158,9 @@ export default function OverviewPage() {
                   >
                     Two AI-labeled holdings can still fail for completely different
                     reasons. NBIS&apos;s risk is hyperscalers undercutting independent
-                    GPU clouds on price. CBRS&apos;s risk is customer concentration, a
-                    handful of buyers deciding the outcome. Same label, different ways
+                    GPU clouds on price. VST&apos;s risk is timing: its long-term
+                    data-center contracts start after my window, so until then it sells
+                    much of its output at market prices. Same label, different ways
                     to lose, which is the diversification I actually care about. The
                     portfolio keeps changing as positions prove or lose that case.
                   </p>

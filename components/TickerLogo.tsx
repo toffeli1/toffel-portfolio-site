@@ -43,6 +43,8 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
   AMD:   "/logos/amd.png",
   VOO:   "/logos/vanguard.png",
   SMH:   "/logos/vaneck.png",
+  VST:   "/logos/vistra.svg",
+  SPCX:  "/logos/spacex.svg",
   FBTC:  "/logos/fbtc.png",
   NBIS:  "/logos/nebius.png",
   GOOGL: "/logos/alphabet.png",
@@ -80,6 +82,8 @@ export const TICKER_BRAND_COLORS: Record<string, string> = {
   AMZN:  "#232f3e",
   GOOGL: "#3a7cec",
   SMH:   "#002b73",
+  VST:   "#193958",
+  SPCX:  "#000000",
   NOW:   "#62d84e",
   META:  "#0081fb",
   SGOV:  "#000000",
@@ -102,6 +106,8 @@ const TICKER_LOGO_SCALE: Record<string, string> = {
   // 2027 / 2028 sleeves
   QQQM: "86%",
   SMH:  "122%",  // ring tile — VanEck wordmark zoomed further
+  VST:  "78%",   // wide wordmark, kept off the circle edge
+  SPCX: "90%",   // thin wordmark; runs wider than most to stay legible
   VOO:  "118%",  // ring tile — bigger Vanguard V
   FBTC: "138%",  // fill tile — orange Bitcoin coin fills the badge, white padding around the PNG clips out
   QTUM: "84%",

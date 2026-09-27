@@ -111,6 +111,14 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
         ],
         weighsRisk: true,
       },
+      {
+        heading: "Why it runs above the 11.5% ceiling",
+        body: [
+          "Meta is my largest holding at about 12%, above the 11.5% soft ceiling, and I have re-underwritten it there deliberately. It has the fastest revenue growth of the three hyperscalers and the lowest bar in price terms, which tells me investors are treating its capex as a cost rather than an investment. I think Muse turns that spending into a second revenue line, and that Meta's operating income grows again in 2027.",
+          "If operating income is still falling through 2027, or Muse has shown no path to paid revenue by then, I am wrong and the 12% weight is too large.",
+        ],
+        weighsRisk: true,
+      },
     ],
     charts: [],
   },
@@ -228,6 +236,12 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
     headline: "A speculative position on growth plus genuine AI use inside insurance operations.",
     sections: [
       {
+        heading: "Why I exited",
+        body: [
+          "I exited Oscar Health in September 2026 because its revenue depends on ACA subsidies: the enhanced credits expired at the end of 2025, insurers filed mostly double-digit increases for 2027, and the underlying cost trend is running near 10%.",
+        ],
+      },
+      {
         heading: "Growth and the technology angle",
         body: [
           "This is a more speculative healthcare position. The appeal is strong growth combined with significant use of AI inside the insurance operation itself, applied to claims handling, utilization review and administrative cost rather than used as a marketing layer.",
@@ -271,6 +285,36 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
         body: [
           "A generator earns a spread. Revenue moves with power prices while much of the cost base is fixed, so the leverage works in both directions and quarterly results are lumpy. A weak quarter often reflects power prices and outage scheduling rather than any change in the asset base.",
           "The real risks are an unplanned extended outage at a major unit, and power prices falling while the fixed cost of running a nuclear fleet does not.",
+        ],
+        weighsRisk: true,
+      },
+    ],
+    charts: [],
+  },
+
+  // VST and SPCX: condensed from Isaac's "Assessing the Frontier" research
+  // note (Sep 2026), in his wording. Figures are his, as of the Sep 23 close.
+  VST: {
+    headline: "Contracted power for data centers, at a price that asks little of the business.",
+    sections: [
+      {
+        heading: "Why power, and why this vehicle",
+        body: [
+          "Power moves on a longer clock than compute. Generators are now signing contracts that run for decades, and a New Era filing describes a 20-year agreement to buy up to 207 megawatts from Vistra's Odessa gas plant.",
+          "I bought Vistra partly on my read that federal and state policy currently favors new generation for data centers, and because power exposure holds up better than compute in a pause in AI spending.",
+        ],
+      },
+      {
+        heading: "What the price asks",
+        body: [
+          "Vistra's price requires about 6% annual earnings growth for a decade, and the business is currently doing better than that. It is one of the cheapest names in the book, and one of the more levered.",
+        ],
+      },
+      {
+        heading: "Timing is the weakness",
+        body: [
+          "Most of the long-term contracts start after my two-year window, so Vistra still sells much of its output at market prices until then. Its CFO said ERCOT forward prices are meaningfully lower than last October and that 2027 is trending toward the low end of its range.",
+          "Policy support cuts both ways: management said a Texas interconnection audit will pause some reviews for a couple of months. What I am watching is 2027 results against that range.",
         ],
         weighsRisk: true,
       },
@@ -389,6 +433,12 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
     headline: "Electron generating revenue today, Neutron carrying the upside and the execution risk.",
     sections: [
       {
+        heading: "Why I sold",
+        body: [
+          "I sold AST SpaceMobile and Rocket Lab on the same day, September 24, 2026, and put most of the proceeds into SpaceX. My own post-mortem showed the two traded on one driver, sentiment toward pre-profit space companies, so I consolidated that exposure into the company that leads the industry in both launch and satellite broadband.",
+        ],
+      },
+      {
         heading: "Electron and launch cadence",
         body: [
           "Electron is the operating business. It launches regularly and generates revenue, which distinguishes Rocket Lab from most companies with comparable ambitions. Launch cadence is the metric that matters. Each launch is revenue, and a rising rate is the evidence that manufacturing and operations are working.",
@@ -418,6 +468,12 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
     historical: true,
     headline: "Asymmetric upside on direct-to-device connectivity, sized for a wide range of outcomes.",
     sections: [
+      {
+        heading: "Why I sold",
+        body: [
+          "I sold AST SpaceMobile and Rocket Lab on the same day, September 24, 2026, and put most of the proceeds into SpaceX. My own post-mortem showed the two traded on one driver, sentiment toward pre-profit space companies, so I consolidated that exposure into the company that leads the industry in both launch and satellite broadband.",
+        ],
+      },
       {
         heading: "Why confidence increased",
         body: [
@@ -481,6 +537,36 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
         body: [
           "It can also be sold if equity-market weakness creates more attractive opportunities. That makes it closer to a second reserve than a permanent allocation.",
           "Gold produces no cash flow, so it cannot be valued on fundamentals and its price is set by what others will pay. It is also not a reliable hedge in every drawdown, since there are stretches when gold falls alongside equities. I hold it as diversification, not insurance, and I do not claim it compounds better than equities over time.",
+        ],
+        weighsRisk: true,
+      },
+    ],
+    charts: [],
+  },
+
+  SPCX: {
+    headline: "One space position instead of two that moved together, in the company that leads launch and satellite broadband.",
+    sections: [
+      {
+        heading: "Why SpaceX replaced Rocket Lab and AST SpaceMobile",
+        body: [
+          "On September 24, 2026 I sold Rocket Lab and AST SpaceMobile and put most of the proceeds into SpaceX. My own post-mortem showed the two traded on one driver, sentiment toward pre-profit space companies, so I consolidated that exposure into the company that leads the industry in both launch and satellite broadband.",
+          "I did not make the trade because SpaceX is cheap. I made it to hold one space position instead of two that moved together, in a company with a large operating business and a net cash balance behind it.",
+        ],
+      },
+      {
+        heading: "What the price asks",
+        body: [
+          "SpaceX is priced for more than any other holding. Its forward P/E is 102.5x, and the price needs about 53% annual revenue growth for ten years, reaching roughly $1.6 trillion, about twice Amazon's revenue today. Rocket Lab and AST SpaceMobile required 55% to 77%, so the swap replaced two expensive options with one expensive leader rather than lowering the bar.",
+          "It also adds to the book's AI exposure, because its AI segment develops the Grok models and builds large data centers.",
+        ],
+        weighsRisk: true,
+      },
+      {
+        heading: "Funding and supply",
+        body: [
+          "SpaceX burns cash, but it held about $60 billion of net cash at its last report after raising $75 billion in its June IPO.",
+          "The supply risk is different: up to 328.4 million shares became eligible for sale on September 24 as IPO lockups expired, and Elon Musk holds most of the voting power. What I am watching is Starlink growth and Starship milestones.",
         ],
         weighsRisk: true,
       },
