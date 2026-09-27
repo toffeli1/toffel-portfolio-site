@@ -40,10 +40,11 @@ interface RawHolding {
 
 const rawDoc = raw as { account: string; as_of: string; holdings: RawHolding[] };
 
-// Residual cash was $0.75 against a ~$30.8k book on the 2026-08-20 statement —
-// under half a basis point. Recorded as a rounded percentage so the dollar
-// figure stays out of the public repo.
-const RESIDUAL_CASH_PCT = 0.0;
+// Residual uninvested cash on the 2026-09-25 snapshot, as a percentage of total
+// account value. Recorded only as a rounded percentage so no dollar figure
+// enters the public repo. Position weights above use a securities-only
+// denominator, so they sum to 100 on their own; this sits alongside them.
+const RESIDUAL_CASH_PCT = 2.02;
 
 export const portfolioState: PortfolioState = {
   account: rawDoc.account,

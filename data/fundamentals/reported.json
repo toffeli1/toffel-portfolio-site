@@ -382,7 +382,7 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "GOOGL": {
     "ticker": "GOOGL",
@@ -656,7 +656,7 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "META": {
     "ticker": "META",
@@ -966,7 +966,7 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "NOW": {
     "ticker": "NOW",
@@ -1351,7 +1351,7 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "CEG": {
     "ticker": "CEG",
@@ -1661,7 +1661,7 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "MA": {
     "ticker": "MA",
@@ -1896,7 +1896,7 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "UNH": {
     "ticker": "UNH",
@@ -2281,7 +2281,7 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "RKLB": {
     "ticker": "RKLB",
@@ -2666,7 +2666,7 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "OSCR": {
     "ticker": "OSCR",
@@ -3051,7 +3051,7 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "ASTS": {
     "ticker": "ASTS",
@@ -3211,7 +3211,7 @@
       "netIncome": "NetIncomeLoss"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "MELI": {
     "ticker": "MELI",
@@ -3596,13 +3596,330 @@
       "epsDiluted": "EarningsPerShareDiluted"
     },
     "latestPeriodEnd": "2026-06-30",
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
   },
   "CBRS": {
     "ticker": "CBRS",
     "cik": "0002021728",
     "metrics": {},
     "conceptUsed": {},
-    "fetchedAt": "2026-08-20"
+    "fetchedAt": "2026-09-27"
+  },
+  "VST": {
+    "ticker": "VST",
+    "cik": "0001692819",
+    "metrics": {
+      "revenue": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 4086000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 3079000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 3054000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 3845000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 6288000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 4037000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": 3933000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 4250000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 4971000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 4584000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 5640000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 4017000000,
+          "derived": false
+        }
+      ],
+      "operatingIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 834000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": 105000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": 86000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 808000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 2588000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 599000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": -120000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 515000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 1037000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 474000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 1499000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 553000000,
+          "derived": false
+        }
+      ],
+      "netIncome": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 502000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -184000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": -35000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 365000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 1888000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 441000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": -268000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 327000000,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 652000000,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 233000000,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 1029000000,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 305000000,
+          "derived": false
+        }
+      ],
+      "epsDiluted": [
+        {
+          "period": "Q3 2023",
+          "periodEnd": "2023-09-30",
+          "value": 1.25,
+          "derived": false
+        },
+        {
+          "period": "Q4 2023",
+          "periodEnd": "2023-12-31",
+          "value": -0.5499999999999998,
+          "derived": true
+        },
+        {
+          "period": "Q1 2024",
+          "periodEnd": "2024-03-31",
+          "value": -0.24,
+          "derived": false
+        },
+        {
+          "period": "Q2 2024",
+          "periodEnd": "2024-06-30",
+          "value": 0.9,
+          "derived": false
+        },
+        {
+          "period": "Q3 2024",
+          "periodEnd": "2024-09-30",
+          "value": 5.25,
+          "derived": false
+        },
+        {
+          "period": "Q4 2024",
+          "periodEnd": "2024-12-31",
+          "value": 1.0899999999999999,
+          "derived": true
+        },
+        {
+          "period": "Q1 2025",
+          "periodEnd": "2025-03-31",
+          "value": -0.93,
+          "derived": false
+        },
+        {
+          "period": "Q2 2025",
+          "periodEnd": "2025-06-30",
+          "value": 0.81,
+          "derived": false
+        },
+        {
+          "period": "Q3 2025",
+          "periodEnd": "2025-09-30",
+          "value": 1.75,
+          "derived": false
+        },
+        {
+          "period": "Q4 2025",
+          "periodEnd": "2025-12-31",
+          "value": 0.5500000000000003,
+          "derived": true
+        },
+        {
+          "period": "Q1 2026",
+          "periodEnd": "2026-03-31",
+          "value": 2.87,
+          "derived": false
+        },
+        {
+          "period": "Q2 2026",
+          "periodEnd": "2026-06-30",
+          "value": 0.76,
+          "derived": false
+        }
+      ]
+    },
+    "conceptUsed": {
+      "revenue": "Revenues",
+      "operatingIncome": "OperatingIncomeLoss",
+      "netIncome": "NetIncomeLoss",
+      "epsDiluted": "EarningsPerShareDiluted"
+    },
+    "latestPeriodEnd": "2026-06-30",
+    "fetchedAt": "2026-09-27"
+  },
+  "SPCX": {
+    "ticker": "SPCX",
+    "cik": "0001181412",
+    "metrics": {},
+    "conceptUsed": {},
+    "fetchedAt": "2026-09-27"
   }
 }

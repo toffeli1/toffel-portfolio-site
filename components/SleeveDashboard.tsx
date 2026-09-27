@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import type { PieLabelRenderProps } from "recharts";
-import TickerLogo from "./TickerLogo";
+import TickerLogo, { TICKER_BRAND_COLORS } from "./TickerLogo";
 import Eyebrow from "./Eyebrow";
 import { INK, MUTED, BODY, ACCENT, HAIRLINE } from "@/lib/theme";
 
@@ -176,7 +176,7 @@ export default function SleeveDashboard({
     name: h.name,
     href: h.href,
     value: h.portfolioWeightPct,
-    color: h.color ?? SLICE_COLORS[i % SLICE_COLORS.length],
+    color: h.color ?? TICKER_BRAND_COLORS[h.ticker] ?? SLICE_COLORS[i % SLICE_COLORS.length],
   }));
 
   // Outside label + leader line renderers, gated per-slice by weight when

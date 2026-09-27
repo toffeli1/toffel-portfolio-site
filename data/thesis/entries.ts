@@ -224,6 +224,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
   },
 
   OSCR: {
+    historical: true,
     headline: "A speculative position on growth plus genuine AI use inside insurance operations.",
     sections: [
       {
@@ -336,6 +337,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
   },
 
   CBRS: {
+    historical: true,
     headline: "A direct, higher-risk expression of the view that agentic AI drives inference demand.",
     sections: [
       {
@@ -383,6 +385,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
   // ══ Space ═══════════════════════════════════════════════════════════════
 
   RKLB: {
+    historical: true,
     headline: "Electron generating revenue today, Neutron carrying the upside and the execution risk.",
     sections: [
       {
@@ -412,6 +415,7 @@ export const thesisEntries: Record<string, Omit<CompanyThesis, "ticker">> = {
   },
 
   ASTS: {
+    historical: true,
     headline: "Asymmetric upside on direct-to-device connectivity, sized for a wide range of outcomes.",
     sections: [
       {

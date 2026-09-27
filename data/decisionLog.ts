@@ -87,6 +87,111 @@ export interface DecisionEntry {
 // snapshot and say so in the note. This is the one systematic gap in this
 // rebuild — precise dates for these events aren't preserved in source records.
 export const decisionLog: DecisionEntry[] = [
+  // ── Sep 2026 ──────────────────────────────────────────────────────────────
+  // Sourced from the Robinhood positions view and trade history as of
+  // 2026-09-27, not yet from a transaction export. ASTS, RKLB and SPCX dates
+  // are exact (Sep 24 trade history). OSCR's exit, the VST purchase(s) and the
+  // SGOV reduction are confirmed by share counts (present on the Aug 31
+  // statement, changed or gone by Sep 25) but their exact days are not yet
+  // known, so they are month-resolution until the September statement lands.
+  {
+    date: "2026-09-24",
+    ticker: "SPCX",
+    company: "SpaceX",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    note: "Opened a SpaceX position the same day ASTS and RKLB were fully sold.",
+    status: "Held",
+    isPlaceholder: true,
+    placeholderPrompt:
+      "ASTS and RKLB were both sold and SpaceX bought on the same day. That reads as one decision: consolidating two small space names into one. Confirm or correct that in your own words, and say why SpaceX rather than keeping either.",
+  },
+  {
+    date: "2026-09-24",
+    ticker: "ASTS",
+    company: "AST SpaceMobile",
+    account: "Investments",
+    action: "Exit",
+    type: "Full exit",
+    note: "Fully exited AST SpaceMobile.",
+    status: "Fully Exited",
+  },
+  {
+    date: "2026-09-24",
+    ticker: "RKLB",
+    company: "Rocket Lab",
+    account: "Investments",
+    action: "Exit",
+    type: "Full exit",
+    note: "Fully exited Rocket Lab.",
+    status: "Fully Exited",
+  },
+  {
+    date: "2026-09",
+    ticker: "VST",
+    company: "Vistra",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    note: "Opened a Vistra position. Not held on the Aug 31 statement; held on the Sep 25 snapshot. Exact purchase date(s) not yet confirmed.",
+    status: "Held",
+    dateApproximateButConfirmed: true,
+  },
+  {
+    date: "2026-09",
+    ticker: "OSCR",
+    company: "Oscar Health",
+    account: "Investments",
+    action: "Exit",
+    type: "Full exit",
+    note: "Fully exited Oscar Health. Held on the Aug 31 statement, absent from the Sep 25 snapshot. Exact sale date not yet confirmed.",
+    status: "Fully Exited",
+  },
+  {
+    date: "2026-09",
+    ticker: "SGOV",
+    company: "iShares 0-3 Month Treasury Bond ETF",
+    account: "Investments",
+    action: "Trim",
+    type: "Partial trim",
+    note: "Reduced the Treasury-bill position by roughly a third between the Aug 31 statement and the Sep 25 snapshot. Exact date not yet confirmed.",
+    status: "Partially Trimmed",
+    dateApproximateButConfirmed: true,
+  },
+
+  // ── Late Aug 2026 (Aug 31 statement) ──────────────────────────────────────
+  {
+    date: "2026-08-31",
+    ticker: "APP",
+    company: "AppLovin",
+    account: "Investments",
+    action: "Exit",
+    type: "Full exit",
+    note: "Sold the AppLovin position three trading sessions after opening it.",
+    status: "Fully Exited",
+  },
+  {
+    date: "2026-08-26",
+    ticker: "APP",
+    company: "AppLovin",
+    account: "Investments",
+    action: "Add",
+    type: "New position",
+    note: "Opened a small AppLovin position.",
+    status: "Fully Exited",
+  },
+  {
+    date: "2026-08-26",
+    ticker: "CBRS",
+    company: "Cerebras Systems",
+    account: "Investments",
+    action: "Exit",
+    type: "Full exit",
+    note: "Fully exited Cerebras Systems, nine days after the position was opened.",
+    status: "Fully Exited",
+  },
+
   // ── Aug 2026 rebalance: first recorded Roth purchases for these six ──────
   // Dates are EXECUTION dates in US Eastern, derived from the ledger's
   // transaction_datetime. The dates originally supplied were settlement dates,
@@ -103,7 +208,7 @@ export const decisionLog: DecisionEntry[] = [
   // sold in a single transaction, funding the adds above. Dates and full-exit
   // quantities are exact, confirmed against the transaction ledger.
   {
-    date: "2026-08-18",
+    date: "2026-08-17",
     ticker: "VOO",
     company: "Vanguard S&P 500 ETF",
     account: "Investments",
@@ -116,7 +221,7 @@ export const decisionLog: DecisionEntry[] = [
       "This was roughly 37-40% of the book, the largest single capital decision in the account's history, and it currently has no rationale beyond \"restructuring.\" Before ship, answer in your own words: (1) why was the core index position sold, (2) where did the capital go, and (3) does this change the account's intended structure going forward, or is it a temporary reallocation pending redeployment?",
   },
   {
-    date: "2026-08-12",
+    date: "2026-08-11",
     ticker: "FBTC",
     company: "Fidelity Wise Origin Bitcoin Fund",
     account: "Investments",
@@ -126,7 +231,7 @@ export const decisionLog: DecisionEntry[] = [
     status: "Fully Exited",
   },
   {
-    date: "2026-08-07",
+    date: "2026-08-06",
     ticker: "CRWD",
     company: "CrowdStrike Holdings",
     account: "Investments",

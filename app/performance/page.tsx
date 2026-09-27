@@ -319,7 +319,10 @@ export default function PerformancePage() {
               </table>
             </div>
             <p className="mt-3 max-w-3xl font-mono text-[9px] leading-[1.6]" style={{ color: FAINT }}>
-              {p.activeHoldings.length} active holdings. Holding periods are counted in{" "}
+              {p.activeHoldings.length} holdings active as of {fmtDate(p.asOfDate)}, the date this
+              page is measured through. The book has changed since; the current holdings are on{" "}
+              <Link href="/portfolio/investments" className="underline">Investments</Link>.
+              Holding periods are counted in{" "}
               <strong>trading sessions</strong> the position was actually open, not calendar days.
               A position exited and later re-entered counts only the sessions inside its real
               holding intervals rather than being treated as continuously owned. Average geometric

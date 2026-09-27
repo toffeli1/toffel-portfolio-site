@@ -70,6 +70,31 @@ export const TICKER_LOGO_ASSETS: Record<string, string> = {
   SATL:  "/logos/satellogic.svg",
 };
 
+// Each ticker's own brand color, sampled directly from its logo asset in
+// /public/logos/ (dominant fill for solid marks, the vivid accent color for
+// marks on a dark/neutral card). Used for the portfolio-weighting donut so a
+// slice reads as that company rather than an arbitrary palette index. Only
+// covers currently active holdings; anything absent falls back to the
+// sequential palette in SleeveDashboard.
+export const TICKER_BRAND_COLORS: Record<string, string> = {
+  AMZN:  "#232f3e",
+  GOOGL: "#3a7cec",
+  SMH:   "#002b73",
+  NOW:   "#62d84e",
+  META:  "#0081fb",
+  SGOV:  "#000000",
+  NBIS:  "#e1ff4f",
+  GLDM:  "#ceb454",
+  CEG:   "#184998",
+  MELI:  "#ffe600",
+  MA:    "#eb001b",
+  UNH:   "#002279",
+  RKLB:  "#e52826",
+  OSCR:  "#2854a1",
+  CBRS:  "#ef5a28",
+  ASTS:  "#ffa220",
+};
+
 // Per-ticker scale tuning (max width/height of the logo image as a % of the
 // container box). Compact marks can run larger; wide wordmarks stay smaller
 // so they don't crowd the circle edges. Unmapped tickers use DEFAULT_SCALE.

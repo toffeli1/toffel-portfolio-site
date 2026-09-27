@@ -48,6 +48,8 @@ const CIKS: Record<string, string> = {
   ASTS: "0001780312",
   MELI: "0001099590",
   CBRS: "0002021728",
+  VST: "0001692819",
+  SPCX: "0001181412",
   // NBIS intentionally absent — 20-F filer, no usable US-GAAP quarterly tags.
 };
 

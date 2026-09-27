@@ -52,10 +52,8 @@ export const companies: Company[] = [
   { ticker: "MELI",  name: "MercadoLibre",            shortName: "MercadoLibre", kind: "Equity", status: "active", theme: "Emerging Markets" },
   { ticker: "MA",    name: "Mastercard",              shortName: "Mastercard", kind: "Equity", status: "active", theme: "Payments" },
   { ticker: "UNH",   name: "UnitedHealth Group",      shortName: "UnitedHealth", kind: "Equity", status: "active", theme: "Healthcare" },
-  { ticker: "RKLB",  name: "Rocket Lab",              shortName: "Rocket Lab", kind: "Equity", status: "active", theme: "Space" },
-  { ticker: "OSCR",  name: "Oscar Health",            shortName: "Oscar",      kind: "Equity", status: "active", theme: "Healthcare" },
-  { ticker: "CBRS",  name: "Cerebras Systems",        shortName: "Cerebras",   kind: "Equity", status: "active", theme: "AI Infrastructure" },
-  { ticker: "ASTS",  name: "AST SpaceMobile",         shortName: "AST SpaceMobile", kind: "Equity", status: "active", theme: "Space" },
+  { ticker: "VST",   name: "Vistra",                  shortName: "Vistra",     kind: "Equity", status: "active", theme: "Power Generation" },
+  { ticker: "SPCX",  name: "SpaceX",                  shortName: "SpaceX",     kind: "Equity", status: "active", theme: "Space" },
 
   // ── Exited — kept for the Decision Log and historical thesis pages ────────
   // These must never surface in active allocation, active thesis nav, or
@@ -66,6 +64,11 @@ export const companies: Company[] = [
   { ticker: "CRWD", name: "CrowdStrike",            shortName: "CrowdStrike", kind: "Equity", status: "exited", theme: "Enterprise Software" },
   { ticker: "PENG", name: "Penguin Solutions",      shortName: "Penguin", kind: "Equity", status: "exited", theme: "AI Infrastructure" },
   { ticker: "GEV",  name: "GE Vernova",             shortName: "GE Vernova", kind: "Equity", status: "exited", theme: "Power Generation" },
+  { ticker: "RKLB", name: "Rocket Lab",             shortName: "Rocket Lab", kind: "Equity", status: "exited", theme: "Space" },
+  { ticker: "ASTS", name: "AST SpaceMobile",        shortName: "AST SpaceMobile", kind: "Equity", status: "exited", theme: "Space" },
+  { ticker: "OSCR", name: "Oscar Health",           shortName: "Oscar",      kind: "Equity", status: "exited", theme: "Healthcare" },
+  { ticker: "CBRS", name: "Cerebras Systems",       shortName: "Cerebras",   kind: "Equity", status: "exited", theme: "AI Infrastructure" },
+  { ticker: "APP",  name: "AppLovin",               shortName: "AppLovin",   kind: "Equity", status: "exited", theme: "Advertising Tech" },
   { ticker: "FBTC", name: "Fidelity Wise Origin Bitcoin Fund", shortName: "Fidelity FBTC", kind: "ETF", status: "exited", theme: "Digital Assets",
     fundMandate: "Spot bitcoin held with a qualified custodian." },
 
