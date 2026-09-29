@@ -10,6 +10,7 @@ const sourceSerif = Source_Serif_4({
   variable: "--font-serif",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 const SITE_URL = "https://toffelcapital.com";

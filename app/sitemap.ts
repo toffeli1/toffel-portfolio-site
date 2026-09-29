@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/performance`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/decision-log`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/performance/historical`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${BASE_URL}/research/assessing-the-frontier`, lastModified: new Date("2026-09-25"), changeFrequency: "monthly", priority: 0.7 },
   ];
 
   const portfolioEntries: MetadataRoute.Sitemap = portfolios.map((p) => ({

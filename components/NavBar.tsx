@@ -86,6 +86,14 @@ export default function NavBar() {
           >
             Decision Log
           </Link>
+          <Link
+            href="/research/assessing-the-frontier"
+            className={navLinkClass(pathname === "/research/assessing-the-frontier")}
+            style={{ color: INK }}
+            title="Assessing the Frontier: a Toffelcapital Paper"
+          >
+            Assessing the Frontier
+          </Link>
         </div>
       </div>
     </nav>
